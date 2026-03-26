@@ -46,6 +46,31 @@
 }
 
 .text {
-padding-bottom: 2rem;
 padding: 0.5rem;
+padding-bottom: 2rem;
+
 }
+
+
+.ul li {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    list-style: circle inside;
+}
+
+.footer {
+    border-top: 1px solid var(--mg-btn-border);
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.a {
+    color: var(--mg-neon);
+  
+  }
+  .a:hover {
+    color: var(--mg-neon-hover);
+  }
+  

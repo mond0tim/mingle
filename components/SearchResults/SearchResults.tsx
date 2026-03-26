@@ -57,18 +57,19 @@ const SearchResults: React.FC<SearchResultsProps> = ({ results }) => {
 
                     <button
                       className={styles.playButton}
-                      onClick={(e) => {
+                      onClick={async (e) => {
                         e.preventDefault();
                         e.stopPropagation(); // Предотвращаем переход по ссылке
                         if (playlistIsPlaying?.id === result.id) {
                           togglePlay();
                         } else {
-                          playPlaylist(result);
+                          await playPlaylist(result);
                           if (result.tracks.length > 0) {
-                            playTrack(result.tracks[0], result);
+                            await playTrack(result.tracks[0], result, true);
                           }
                         }
                       }}
+                      
                     >
                       <span className='material-symbols-outlined'>
                         {playlistIsPlaying?.id === result.id && playing ? (

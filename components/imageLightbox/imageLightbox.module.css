@@ -1,0 +1,8 @@
+.buttonColor {
+	color: lch(from var(--dominant-color) calc((49.44 - l) * infinity) 0 0);
+	background-color: var(--dominant-color);
+}
+
+.buttonColor:hover {
+	filter:brightness(1.1);
+}

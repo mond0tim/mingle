@@ -1,0 +1,96 @@
+.animatedHeader {
+  position: fixed;
+  top: 0;
+  left: 12.6rem;
+  right: 2px;
+  backdrop-filter: blur(.5rem) brightness(100%) saturate(140%);
+  background: linear-gradient(180deg, var(--playlist-dominant-color) , transparent 50%);
+  z-index: 100;
+  padding: 10px 20px;
+  z-index: 2;
+  border-radius: 0px 0px 25px 25px;
+  @media (max-width: 768px) {
+    left: 2px;
+    border-radius: 15px;
+  }
+}
+
+.animatedHeader::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url("/noise.png");
+  background-size: 100px;
+  background-repeat: repeat;
+  z-index: -1;
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 52px;
+}
+
+.coverContainer {
+  margin-right: 15px;
+  @media (max-width: 768px) {
+    display: none;
+    
+  }
+
+}
+
+.miniCover {
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.titleInfo {
+  flex: 1;
+  width: 100%;
+  overflow: hidden;
+  @media (max-width: 768px) {
+    padding-left: 2.5rem;
+  }
+}
+
+.titleInfo h2 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  word-break: keep-all;
+  text-overflow: ellipsis;
+  width: 100%;
+  overflow-x: hidden;
+  white-space: nowrap;
+  display: block;
+
+}
+
+.nowPlaying {
+  font-size: 0.8rem;
+  opacity: 0.8;
+  word-break: keep-all;
+  text-overflow: ellipsis;
+  width: 100%;
+  overflow-x: hidden;
+  white-space: nowrap;
+  display: block;
+}
+
+.headerPlayButton {
+  padding: 8px;
+  min-width: auto;
+  height: auto;
+}
+
+@media (max-width: 768px) {
+  .headerContent {
+    padding-left: 10px;
+  }
+}

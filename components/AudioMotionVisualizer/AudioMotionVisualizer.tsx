@@ -7,7 +7,7 @@ import ReactHowler from 'react-howler';
 
 interface AudioMotionVisualizerProps {
   audioContext: AudioContext | any;
-currentTrack: Track | null; // Замените any на более конкретный тип, если это возможно
+  currentTrack: Track | null; // Замените any на более конкретный тип, если это возможно
   howlerRef: React.RefObject<ReactHowler>; // Замените any на более конкретный тип, если это возможно
 }
 

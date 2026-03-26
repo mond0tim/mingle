@@ -3,23 +3,21 @@
 		top: 0;
 		left: 0;
 		width: 100%;
-		height: 100%;
+		height: 100vh;
 		/* z-index: -1; */
 	  mask-image: linear-gradient(0deg, transparent, rgb(0, 0, 0) 10%, rgb(0, 0, 0) 100%);
 mask-size: 100%;
 mask-position: right center;
 mask-repeat: no-repeat;
+filter: hue-rotate(30deg) brightness(1.4) contrast(1.2) saturate(1.2);
 }
 
 .noise_canvas {
-	position: relative;
-   top: 0;
-   left: 0;
-   width: 100%;
-   height: 100%;
+	position: absolute;
+  inset: 0;
    z-index: 3;
    background-image: url("https://mafiko.top/assets/templ/temlplates/EntranceAnimationForImages-main/img/noise.png");
-   background-size: 150px;
+   background-size: 100px;
    pointer-events: none;
  }
 

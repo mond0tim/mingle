@@ -1,8 +1,8 @@
 'use client';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Playlist, Track } from '@/types';
 import styles from './Player.module.css';
-import Image from 'next/image';
+
 // import PlayIcon from '../../public/icons/play.svg'
 // import PauseIcon from '../../public/icons/pause.svg'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -20,9 +20,14 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from '../Button/Button';
 import MoreIcon from '../../public/icons/more.svg'
+import LyricsDrawer from './LyricsDrawer';
+import ImageLightbox from '../imageLightbox/ImageLightbox';
+
 
 interface PlayerControlsProps {
   currentTrack: Track | null;
+  nextTrack: Track | null;
+  prevTrack: Track | null;
   playing: boolean;
   duration: number;
   seek: number;
@@ -31,11 +36,14 @@ interface PlayerControlsProps {
   onNextTrack: () => void;
   onSeek: (seek: number) => void;
   isDragging: boolean; // Добавлено для стилизации
-  isDrawerOpen: boolean;
-  setIsDrawerOpen: (isOpen: boolean) => void;
+  isQueueDrawerOpen: boolean;
+  setIsQueueDrawerOpen: (isOpen: boolean) => void;
+  isLyricsDrawerOpen: boolean;
+  setIsLyricsDrawerOpen: (isOpen: boolean) => void;
   tracks: Track[];
   onTrackSelect: (track: Track) => void;
   playlistIsPlaying: Playlist | null;
+  togglePlay: () => void;
 }
 
 const PlayerControls: React.FC<PlayerControlsProps> = ({
@@ -49,11 +57,14 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
   onNextTrack,
   onSeek,
   isDragging,
-  isDrawerOpen,
-  setIsDrawerOpen,
+  isQueueDrawerOpen,
+  setIsQueueDrawerOpen,
+  isLyricsDrawerOpen,
+  setIsLyricsDrawerOpen,
   tracks,
   onTrackSelect,
-  playlistIsPlaying
+  playlistIsPlaying,
+  togglePlay
 }) => {
 
     const formatTime = (seconds: number) => (
@@ -75,16 +86,73 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
       </NumberFlowGroup>
     );
 
-    const handleSeek = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (progressRef.current) {
-          const progressRect = progressRef.current.getBoundingClientRect();
-          const clickX = e.clientX - progressRect.left;
-          const newSeek = (clickX / progressRect.width) * duration;
-          onSeek(newSeek);
-        }
+    const progressRef = useRef<HTMLDivElement>(null);
+    const [isSeeking, setIsSeeking] = useState(false);
+    const [seekValue, setSeekValue] = useState(seek);
+
+    // Сброс seekValue при обновлении seek
+    React.useEffect(() => {
+      if (!isSeeking) setSeekValue(seek);
+    }, [seek, isSeeking]);
+
+    const handleSeekStart = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
+      setIsSeeking(true);
+      handleSeekMove(e);
+      window.addEventListener("mousemove", handleSeekMoveWin as EventListener);
+      window.addEventListener("mouseup", handleSeekEndWin as EventListener);
+      window.addEventListener("touchmove", handleSeekMoveWin as EventListener);
+      window.addEventListener("touchend", handleSeekEndWin as EventListener);
     };
 
-    const progressRef = useRef<HTMLDivElement>(null);
+    // Для window-событий нужны отдельные функции, чтобы типы совпадали
+    const handleSeekMoveWin = (e: Event) => {
+      if (e instanceof MouseEvent || e instanceof TouchEvent) {
+        handleSeekMove(e);
+      }
+    };
+    const handleSeekEndWin = (e: Event) => {
+      if (e instanceof MouseEvent || e instanceof TouchEvent) {
+        handleSeekEnd(e);
+      }
+    };
+
+    const handleSeekMove = (
+      e: MouseEvent | TouchEvent | React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>
+    ) => {
+      let clientX: number | undefined;
+      if ("touches" in e) {
+        clientX = e.touches[0].clientX;
+      } else if ("clientX" in e) {
+        clientX = e.clientX;
+      }
+      if (!progressRef.current || typeof clientX !== "number") return;
+      const rect = progressRef.current.getBoundingClientRect();
+      const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
+      const newSeek = (x / rect.width) * duration;
+      setSeekValue(newSeek);
+    };
+
+    const handleSeekEnd = (e: MouseEvent | TouchEvent) => {
+      setIsSeeking(false);
+      let clientX: number | undefined;
+      if ("changedTouches" in e) {
+        clientX = e.changedTouches[0].clientX;
+      } else if ("clientX" in e) {
+        clientX = e.clientX;
+      }
+      let finalSeek = seekValue;
+      if (progressRef.current && typeof clientX === "number") {
+        const rect = progressRef.current.getBoundingClientRect();
+        const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
+        finalSeek = (x / rect.width) * duration;
+        setSeekValue(finalSeek);
+      }
+      window.removeEventListener("mousemove", handleSeekMoveWin as EventListener);
+      window.removeEventListener("mouseup", handleSeekEndWin as EventListener);
+      window.removeEventListener("touchmove", handleSeekMoveWin as EventListener);
+      window.removeEventListener("touchend", handleSeekEndWin as EventListener);
+      onSeek(finalSeek);
+    };
 
   return (
     <div className={styles.playerControls}>
@@ -113,7 +181,7 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
           </button>
 
           <div className={styles.playerInfo}>
-            <Image
+            <ImageLightbox
               src={currentTrack.cover}
               alt={currentTrack.title}
               width={40}
@@ -166,38 +234,52 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-
-          <QueueDrawer
-            isDrawerOpen={isDrawerOpen}
-            setIsDrawerOpen={setIsDrawerOpen}
-            tracks={tracks}
-            currentTrack={currentTrack}
-            onTrackSelect={onTrackSelect}
-            playlist={playlistIsPlaying}
-          />
+      <LyricsDrawer
+        isDrawerOpen={isLyricsDrawerOpen}
+        setIsDrawerOpen={setIsLyricsDrawerOpen}
+        currentTrack={currentTrack}
+        duration={duration}
+        seek={seek}
+        onSeek={onSeek}
+        togglePlay={togglePlay}
+      />
+      <QueueDrawer
+        isDrawerOpen={isQueueDrawerOpen}
+        setIsDrawerOpen={setIsQueueDrawerOpen}
+        tracks={tracks}
+        currentTrack={currentTrack}
+        onTrackSelect={onTrackSelect}
+        playlist={playlistIsPlaying}
+      />
           </div>
 
 
 
 
           <div className={styles.progressBlock}>
-<span className={styles.currentTime}>{formatTime(seek)}</span>
-          <div
-            className={styles.playerProgress}
-            onClick={handleSeek}
-            ref={progressRef}
-          >
-            
-            <div className={styles.progressBarContainer}>
-              <div
-                className={`${styles.progressBar} ${isDragging ? styles.dragging : ''}`}
-                style={{ width: `${duration > 0 ? (seek / duration) * 100 : 0}%` }}
-              />
+            <span className={styles.currentTime}>{formatTime(isSeeking ? seekValue : seek)}</span>
+            <div
+              className={styles.playerProgress}
+              onMouseDown={handleSeekStart}
+              onTouchStart={handleSeekStart}
+              ref={progressRef}
+              style={{ cursor: "pointer" }}
+            >
+              <div className={styles.progressBarContainer}>
+                <div
+                  className={`${styles.progressBar} ${isDragging ? styles.dragging : ''}`}
+                  style={{ width: `${duration > 0 ? ((isSeeking ? seekValue : seek) / duration) * 100 : 0}%` }}
+                />
+                <div
+                  className={styles.progressThumb}
+                  style={{
+                    left: `${duration > 0 ? ((isSeeking ? seekValue : seek) / duration) * 100 : 0}%`,
+                    transition: isSeeking ? "none" : undefined,
+                  }}
+                />
+              </div>
             </div>
-            
-          </div>
-          
-          <span className={styles.duration}>{formatTime(duration)}</span>
+            <span className={styles.duration}>{formatTime(duration)}</span>
           </div>
         </>
       )}

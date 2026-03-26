@@ -18,6 +18,8 @@ import styles from './page.module.css'
 import LogoIcon from '@/public/icons/LogoIcon.svg'
 import LogoText from '@/public/icons/LogoText.svg'
 import InstallPWA from '@/components/pwa/Install';
+import { format } from 'date-fns';
+import Image from 'next/image';
 
 export const metadata: Metadata = {
 	title: 'О нас',
@@ -77,17 +79,51 @@ Mingle поддерживает PWA, позволяя устанавливать
 </h2>
 <p className={styles.text}>
 Mingle реализован как Progressive Web App (PWA). Это дает следующие преимущества:
-
+</p>
+<ul className={styles.ul}>
+<li>
 Офлайн-доступ: Благодаря использованию Service Workers и кэшированию, плеер может функционировать частично даже при отсутствии интернет-соединения.
-
+</li> 
+ <li>
 Установка на главный экран: Пользователь может добавить Mingle на главный экран своего устройства, как обычное нативное приложение.
-
+</li>
+<li>
 Push-уведомления: В данном проекте функционал push-уведомлений не реализован, но PWA предоставляет такую возможность.
-
+</li>
+<li>
 Быстрая загрузка: PWA оптимизированы для быстрой загрузки и плавной работы, что улучшает пользовательский опыт.
+</li>
+</ul>
+
+<p className={styles.text}>
+  Попробуйте установить Mingle как PWA:
+</p>
+<InstallPWA/>
+<br/><br/>
+<h2 className={styles.subTitle}>
+  Итог всего вышесказанного
+</h2>
+<p className={styles.text}>
+Конечно, Mingle еще есть куда расти. В проекте присутствуют некоторые недоработки, которые предстоит устранить в будущем.
+<br/>
+ Однако важно помнить, что целью разработчика не было создание полноценного, коммерческого музыкального плеера. Mingle — это прежде всего демонстрация возможностей, эксперимент, призванный показать,  как можно реализовать ключевые функции плеера с красивой и удобной визуальной оболочкой.
+</p>
+<h2 className={styles.subTitle}>
+Больше от автора
+</h2>
+<p className={styles.text}>
+Этот плеер — лишь один из проектов в портфолио mondotim, разработчика tiweb. Если вас заинтересовал наш подход, загляните в другие работы, почитайте статью в блоге о некоторых тонкостях создания Mingle или сразу напишите на <a className={styles.a} href='mailto:mondotim@ti-web.ru'>mondotim@ti-web.ru</a> — будем создавать крутые проекты вместе!
 </p>
 
-<InstallPWA/>
+<footer className={styles.footer}>
+  <div>
+Mingle © 2024 - {format(new Date(), 'yyyy')}. Все права защищены.
+</div>
+<a href='https://ti-web.ru'>
+<Image src='/logoti.png' alt={'tiweb logo'} width={50} height={50}/>
+</a>
+</footer>
+
 </div>
   );
 };

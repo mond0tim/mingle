@@ -33,7 +33,7 @@ position: relative;
 	backdrop-filter: blur(30px);
 	width: 100%;
   transition: 0.2s;
-  padding-left: 40px;
+  padding-left: 45px;
 }
 
 .searchInput.isTyping {

@@ -1,349 +1,292 @@
-'use client';
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-  useMemo,
-} from 'react';
-import ReactHowler from 'react-howler';
-import { Track, Playlist } from '@/types';
-import { initialTracks, initialPlaylists } from '@/data/data';
+"use client"
+
+import React, { createContext, useContext, useState, useRef, useEffect, useCallback, useMemo } from "react"
+import type ReactHowler from "react-howler"
+import type { Track, Playlist } from "@/types"
 
 interface PlayerContextProps {
-  currentTrack: Track | null;
-  playing: boolean;
-  duration: number;
-  seek: number;
-  howlerState: string; // Добавлено
-  isQueueDrawerOpen: boolean;
-  playlistIsPlaying: Playlist | null;
-  howlerRef: React.RefObject<ReactHowler>;
-  audioContext: React.RefObject<AudioContext | null>;
-  audioNode: React.RefObject<MediaElementAudioSourceNode | null>;
-  tracks: Track[];
-  initialPlaylists: Playlist[];
-  playTrack: (track: Track, playlist?: Playlist) => void;
-  playPlaylist: (playlist: Playlist) => void;
-  togglePlay: () => void;
-  handleSeek: (seek: number) => void;
-  handleNextTrack: () => void;
-  handlePrevTrack: () => void;
-  handleOnEnd: () => void;
-  setIsQueueDrawerOpen: (isOpen: boolean) => void;
-  setCurrentTrack: (track: Track | null) => void;
-  setPlaying: (playing: boolean) => void;
-  setDuration: (duration: number) => void;
-  setSeek: (seek: number) => void;
-  setTracks: (tracks: Track[]) => void;
-  setHowlerState: (state: string) => void; // Добавлено
-  isMuted: boolean;
-  toggleMute: () => void;
-  sendNotification: (track: Track) => void;
+  currentTrack: Track | null
+  nextTrack: Track | null
+  prevTrack: Track | null
+  playing: boolean
+  duration: number
+  seek: number
+  howlerState: string
+  isQueueDrawerOpen: boolean
+  setIsQueueDrawerOpen: (isOpen: boolean) => void
+  isLyricsDrawerOpen: boolean
+  setIsLyricsDrawerOpen: (isOpen: boolean) => void
+  playlistIsPlaying: Playlist | null
+  howlerRef: React.RefObject<ReactHowler>
+  audioContext: React.RefObject<AudioContext | null>
+  audioNode: React.RefObject<MediaElementAudioSourceNode | null>
+  tracks: Track[]
+  playTrack: (track: Track, playlist?: Playlist, autoplay?: boolean) => Promise<void>
+  playPlaylist: (playlist: Playlist, track?: Track) => Promise<void>
+  togglePlay: () => void
+  handleSeek: (seek: number) => void
+  handleNextTrack: () => void
+  handlePrevTrack: () => void
+  handleOnEnd: () => void
+  setCurrentTrack: (track: Track | null) => void
+  setPlaying: (playing: boolean) => void
+  setDuration: (duration: number) => void
+  setSeek: (seek: number) => void
+  setTracks: (tracks: Track[]) => void
+  setHowlerState: (state: string) => void
+  isMuted: boolean
+  toggleMute: () => void
 }
 
-const PlayerContext = createContext<PlayerContextProps | undefined>(undefined);
+const PlayerContext = createContext<PlayerContextProps | undefined>(undefined)
 
 export const usePlayer = () => {
-  const context = useContext(PlayerContext);
+  const context = useContext(PlayerContext)
   if (!context) {
-    throw new Error('usePlayer must be used within a PlayerProvider');
+    throw new Error("usePlayer must be used within a PlayerProvider")
   }
-  return context;
-};
-
-interface PlayerProviderProps {
-  children: React.ReactNode;
-  initialTracks: Track[];
-  initialPlaylists: Playlist[];
+  return context
 }
 
-export const PlayerProvider: React.FC<PlayerProviderProps> = ({
-  children,
-}) => {
-  const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
-  const [playing, setPlaying] = useState(false);
-  const howlerRef = useRef<ReactHowler>(null);
-  const [duration, setDuration] = useState(0);
-  const [seek, setSeek] = useState(0);
-  const [howlerState, setHowlerState] = useState<string>("unloaded"); // Добавлено
-  const [isQueueDrawerOpen, setIsQueueDrawerOpen] = useState(false);
-  const [currentPlaylist, setCurrentPlaylist] = useState<Playlist | null>(null);
-  const [tracks, setTracks] = useState<Track[]>(initialTracks);
-  const [isMuted, setIsMuted] = useState(false);
+interface PlayerProviderProps {
+  children: React.ReactNode
+}
+
+export const PlayerProvider: React.FC<PlayerProviderProps> = ({ children }) => {
+  const [currentTrack, setCurrentTrack] = useState<Track | null>(null)
+  const [playing, setPlaying] = useState(false)
+  const howlerRef = useRef<ReactHowler>(null)
+  const [duration, setDuration] = useState(0)
+  const [seek, setSeek] = useState(0)
+  const [howlerState, setHowlerState] = useState<string>("unloaded")
+  const [isQueueDrawerOpen, setIsQueueDrawerOpen] = useState(false)
+  const [isLyricsDrawerOpen, setIsLyricsDrawerOpen] = useState(false)
+  const [currentPlaylist, setCurrentPlaylist] = useState<Playlist | null>(null)
+  const [tracks, setTracks] = useState<Track[]>([])
+  const [isMuted, setIsMuted] = useState(false)
 
   const toggleMute = useCallback(() => {
-    setIsMuted((prevIsMuted) => !prevIsMuted);
-  }, []);
-  const audioContext = useRef<AudioContext | null>(null);
-  const audioNode = useRef<MediaElementAudioSourceNode | null>(null);
+    setIsMuted((prev) => {
+      console.log(`toggleMute: Переключение mute на ${!prev}`)
+      return !prev
+    })
+  }, [])
+
+  const audioContext = useRef<AudioContext | null>(null)
+  const audioNode = useRef<MediaElementAudioSourceNode | null>(null)
 
   useEffect(() => {
-    if (!audioContext.current) {
-      audioContext.current = new AudioContext();
+    if (typeof window !== "undefined" && !audioContext.current) {
+      audioContext.current = new AudioContext()
+      console.log("AudioContext создан")
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
     if (howlerRef.current && howlerRef.current.howler && audioContext.current) {
-      const sound = howlerRef.current.howler;
-      
+      const sound = howlerRef.current.howler
       if (!audioNode.current) {
-        audioNode.current = audioContext.current.createMediaElementSource(sound._sounds[0]?._node);
-        audioNode.current.connect(audioContext.current.destination);
+        console.log("Создание audioNode для Howler")
+        audioNode.current = audioContext.current.createMediaElementSource(sound._sounds[0]?._node)
+        audioNode.current.connect(audioContext.current.destination)
+        console.log("audioNode успешно подключен")
       }
     }
-
-    // Очистка audioNode при размонтировании или смене трека
     return () => {
       if (audioNode.current) {
-        audioNode.current.disconnect();
-        audioNode.current = null;
+        console.log("Отключение audioNode")
+        audioNode.current.disconnect()
+        audioNode.current = null
       }
-    };
-}, [howlerRef, audioContext]);
-  // Обновляем useEffect, чтобы использовать isMuted
+    }
+  }, [howlerRef, audioContext])
+
   useEffect(() => {
     if (howlerRef.current && howlerRef.current.howler) {
-      howlerRef.current.howler.mute(isMuted); // Используем .mute() вместо .volume()
+      console.log(`Применение mute: ${isMuted}`)
+      howlerRef.current.howler.mute(isMuted)
     }
-  }, [isMuted, howlerRef]);
+  }, [isMuted, howlerRef])
 
   useEffect(() => {
-    if (initialPlaylists.length > 0) {
-      playPlaylist(initialPlaylists[0]);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (audioContext.current) return;
-    audioContext.current = new AudioContext();
-  }, [])
-  
-  useEffect(() => {
-    let intervalId: NodeJS.Timeout;
-
+    let intervalId: NodeJS.Timeout
     if (playing && howlerRef.current) {
+      console.log("Начало интервала обновления seek")
       intervalId = setInterval(() => {
         if (howlerRef.current) {
-          const currentSeek = howlerRef.current.seek() as number;
+          const currentSeek = howlerRef.current.seek() as number
           if (!isNaN(currentSeek)) {
-            setSeek(currentSeek);
+            setSeek(currentSeek)
           }
         }
-      }, 100);
+      }, 100)
     }
+    return () => {
+      if (intervalId) {
+        console.log("Очистка интервала обновления seek")
+        clearInterval(intervalId)
+      }
+    }
+  }, [playing, howlerRef])
 
-    return () => clearInterval(intervalId);
-  }, [playing, howlerRef]);
-
-  // Добавляем useEffect для отслеживания состояния howler
   useEffect(() => {
     const handleHowlerStateChange = () => {
       if (howlerRef.current && howlerRef.current.howler) {
-        setHowlerState(howlerRef.current.howler.state());
+        const state = howlerRef.current.howler.state()
+        console.log(`Состояние Howler изменилось: ${state}`)
+        setHowlerState(state)
       }
-    };
-
-    const currentHowlerRef = howlerRef.current;
-
-    if (currentHowlerRef && currentHowlerRef.howler) {
-      // Подписываемся на события изменения состояния
-      currentHowlerRef.howler.on('load', handleHowlerStateChange);
-      currentHowlerRef.howler.on('play', handleHowlerStateChange);
-      currentHowlerRef.howler.on('pause', handleHowlerStateChange);
-      currentHowlerRef.howler.on('stop', handleHowlerStateChange);
-      currentHowlerRef.howler.on('end', handleHowlerStateChange);
-
-      // Вызываем обработчик для установки начального состояния
-      handleHowlerStateChange();
     }
 
-    // Очистка при размонтировании или смене трека
+    const currentHowlerRef = howlerRef.current
+    if (currentHowlerRef && currentHowlerRef.howler) {
+      console.log("Подписка на события Howler (load, play, pause, stop, end)")
+      currentHowlerRef.howler.on("load", handleHowlerStateChange)
+      currentHowlerRef.howler.on("play", handleHowlerStateChange)
+      currentHowlerRef.howler.on("pause", handleHowlerStateChange)
+      currentHowlerRef.howler.on("stop", handleHowlerStateChange)
+      currentHowlerRef.howler.on("end", handleHowlerStateChange)
+      handleHowlerStateChange()
+    }
     return () => {
       if (currentHowlerRef && currentHowlerRef.howler) {
-        currentHowlerRef.howler.off('load', handleHowlerStateChange);
-        currentHowlerRef.howler.off('play', handleHowlerStateChange);
-        currentHowlerRef.howler.off('pause', handleHowlerStateChange);
-        currentHowlerRef.howler.off('stop', handleHowlerStateChange);
-        currentHowlerRef.howler.off('end', handleHowlerStateChange);
+        console.log("Отписка от событий Howler")
+        currentHowlerRef.howler.off("load", handleHowlerStateChange)
+        currentHowlerRef.howler.off("play", handleHowlerStateChange)
+        currentHowlerRef.howler.off("pause", handleHowlerStateChange)
+        currentHowlerRef.howler.off("stop", handleHowlerStateChange)
+        currentHowlerRef.howler.off("end", handleHowlerStateChange)
       }
-    };
-  }, [howlerRef, currentTrack]);
-
-  const sendNotification = useCallback((track: Track) => {
-    if ('serviceWorker' in navigator && 'Notification' in window) {
-      navigator.serviceWorker.ready.then((registration) => {
-        if (registration.active) {
-          registration.active.postMessage({
-            type: 'TRACK_CHANGE',
-            track: {
-              title: track.title,
-              artist: track.artist,
-              cover: track.cover,
-            },
-            actions: [ // Добавляем actions
-              // Иконки для кнопок
-              { action: 'pause', title: '', icon: '/icons/PlayPlaylistIcon.svg' },
-              { action: 'next', title: '', icon: '/icons/next.svg' },
-              { action: 'prev', title: '', icon: '/icons/previous.svg' }, 
-            ],
-            tag: 'music-player-notification', // Add a tag
-          });
-        }
-      });
     }
-  }, []);
+  }, [howlerRef])
 
   const playTrack = useCallback(
-    async (track: Track, playlist?: Playlist) => {
+    async (track: Track, playlist?: Playlist, autoplay = true) => {
+      console.log(`playTrack: Выбран трек "${track.title}"`)
       if (howlerRef.current) {
-        howlerRef.current.stop();
+        console.log("playTrack: Остановка текущего трека")
+        howlerRef.current.stop()
       }
-
-      await setCurrentTrack(track);
+      setCurrentTrack(track)
       if (playlist) {
-        await setCurrentPlaylist(playlist);
-        await setTracks(playlist.tracks);
+        console.log("playTrack: Установка плейлиста")
+        setCurrentPlaylist(playlist)
+        setTracks(playlist.tracks)
       }
-      setPlaying(true);
-
-      // Отправляем уведомление
-      sendNotification(track);
+      console.log(`playTrack: Установка состояния playing: ${autoplay}`)
+      setPlaying(autoplay)
     },
-    [
-      setCurrentTrack,
-      setPlaying,
-      setCurrentPlaylist,
-      setTracks,
-      sendNotification
-    ],
-  );
+    [howlerRef],
+  )
 
-    const handleOnEnd = useCallback(() => {
-    if (currentTrack && tracks) {
-      const currentTrackIndex = tracks.findIndex(
-        (track) => track.id === currentTrack.id
-      );
-      if (currentTrackIndex < tracks.length - 1) {
-        // Если есть следующий трек, воспроизводим его
-        playTrack(tracks[currentTrackIndex + 1], currentPlaylist ?? undefined);
+  const playPlaylist = useCallback(
+    async (playlist: Playlist, track?: Track) => {
+      console.log("playPlaylist: Установка плейлиста")
+      setCurrentPlaylist(playlist)
+      setTracks(playlist.tracks)
+      if (playlist.tracks.length > 0) {
+        const trackToPlay = track ? track : playlist.tracks[0]
+        console.log(`playPlaylist: Воспроизведение трека "${trackToPlay.title}"`)
+        await playTrack(trackToPlay, playlist, true)
       } else {
-        // Если это последний трек в плейлисте, переходим к первому треку
-        if (currentPlaylist) {
-            const firstTrack = currentPlaylist.tracks[0];
-            playTrack(firstTrack, currentPlaylist);
-        } else {
-          setPlaying(false);
-        }
+        console.log("playPlaylist: Плейлист пуст, остановка воспроизведения")
+        setPlaying(false)
       }
-    } else {
-      // Если нет текущего плейлиста, просто останавливаем воспроизведение
-      setPlaying(false);
-    }
-    }, [currentTrack, tracks, playTrack, currentPlaylist, setPlaying]);
-
-const playPlaylist = useCallback(
-    async (playlist: Playlist) => {
-    await setCurrentPlaylist(playlist);
-    await setTracks(playlist.tracks);
-    if (playlist.tracks.length > 0) {
-        // Запускаем первый трек в плейлисте
-        await playTrack(playlist.tracks[0], playlist);
-        setPlaying(true); // Добавлено: Убедимся, что состояние playing установлено в true
-    }
     },
-    [playTrack, setCurrentPlaylist, setTracks],
-);
+    [playTrack],
+  )
 
   const togglePlay = useCallback(() => {
-    setPlaying(!playing);
-  }, [setPlaying, playing]);
+    console.log(`togglePlay: Переключение состояния playing на ${!playing}`)
+    setPlaying((prev) => !prev)
+  }, [playing])
 
   const handleSeek = useCallback(
     (newSeek: number) => {
+      console.log(`handleSeek: Перемотка на ${newSeek} секунд`)
       if (howlerRef.current) {
-        howlerRef.current.seek(newSeek);
-        setSeek(newSeek);
+        howlerRef.current.seek(newSeek)
+        setSeek(newSeek)
       }
     },
-    [howlerRef, setSeek],
-  );
+    [howlerRef],
+  )
 
   const handleNextTrack = useCallback(() => {
-    if (currentTrack && tracks) {
-      const currentTrackIndex = tracks.findIndex((track) => track.id === currentTrack.id);
-      const nextTrackIndex = (currentTrackIndex + 1) % tracks.length;
-      playTrack(tracks[nextTrackIndex], currentPlaylist ?? undefined);
+    if (currentTrack && tracks.length) {
+      const currentTrackIndex = tracks.findIndex((track) => track.id === currentTrack.id)
+      const nextTrackIndex = (currentTrackIndex + 1) % tracks.length
+      console.log(`handleNextTrack: Переход от трека ${currentTrackIndex} к ${nextTrackIndex}`)
+      playTrack(tracks[nextTrackIndex], currentPlaylist ?? undefined)
     }
-  }, [currentTrack, tracks, playTrack, currentPlaylist]);
+  }, [currentTrack, tracks, playTrack, currentPlaylist])
 
   const handlePrevTrack = useCallback(() => {
-    if (currentTrack && tracks) {
-      const currentTrackIndex = tracks.findIndex((track) => track.id === currentTrack.id);
-      const prevTrackIndex = currentTrackIndex === 0 ? tracks.length - 1 : currentTrackIndex - 1;
-      playTrack(tracks[prevTrackIndex], currentPlaylist ?? undefined);
+    if (currentTrack && tracks.length) {
+      const currentTrackIndex = tracks.findIndex((track) => track.id === currentTrack.id)
+      const prevTrackIndex = currentTrackIndex === 0 ? tracks.length - 1 : currentTrackIndex - 1
+      console.log(`handlePrevTrack: Переход от трека ${currentTrackIndex} к ${prevTrackIndex}`)
+      playTrack(tracks[prevTrackIndex], currentPlaylist ?? undefined)
     }
-  }, [currentTrack, tracks, playTrack, currentPlaylist]);
+  }, [currentTrack, tracks, playTrack, currentPlaylist])
 
-  useEffect(() => {
-    // Добавляем обработчик сообщений от service worker
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.addEventListener('message', (event) => {
-            if (event.data && event.data.type === 'NOTIFICATION_ACTION') {
-                const { action } = event.data;
-                switch (action) {
-                case 'prev':
-                    handlePrevTrack();
-                    break;
-                case 'pause':
-                    togglePlay();
-                    break;
-                case 'next':
-                    handleNextTrack();
-                    break;
-                }
-            }
-            });
+  const handleOnEnd = useCallback(() => {
+    console.log("handleOnEnd: Текущий трек завершён")
+    if (currentTrack && tracks.length) {
+      const currentTrackIndex = tracks.findIndex((track) => track.id === currentTrack.id)
+      if (currentTrackIndex < tracks.length - 1) {
+        console.log(`handleOnEnd: Переход к следующему треку: ${currentTrackIndex + 1}`)
+        playTrack(tracks[currentTrackIndex + 1], currentPlaylist ?? undefined)
+      } else {
+        if (currentPlaylist) {
+          console.log("handleOnEnd: Воспроизведение с начала плейлиста")
+          playTrack(currentPlaylist.tracks[0], currentPlaylist)
+        } else {
+          console.log("handleOnEnd: Нет следующего трека, остановка воспроизведения")
+          setPlaying(false)
         }
-
-    return () => {
-        // Удаляем обработчик при размонтировании
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.removeEventListener('message', () => {});
-        }
-        };
-    }, [handlePrevTrack, handleNextTrack, togglePlay]);
-
-  // Добавлено: получаем продолжительность трека, когда он загружен
-  useEffect(() => {
-    const currentHowler = howlerRef.current?.howler;
-    if (currentHowler) {
-      const handleLoad = () => {
-        const newDuration = currentHowler.duration();
-        if (newDuration && !isNaN(newDuration)) {
-          setDuration(newDuration);
-        }
-      };
-
-      currentHowler.on("load", handleLoad);
-
-      return () => {
-        currentHowler.off("load", handleLoad);
-      };
+      }
+    } else {
+      console.log("handleOnEnd: Нет трека, остановка воспроизведения")
+      setPlaying(false)
     }
-  }, [howlerRef, currentTrack]);
+  }, [currentTrack, tracks, playTrack, currentPlaylist])
+
+  // Логика для определения следующего и предыдущего треков
+  const getNextAndPrevTracks = useCallback(() => {
+    if (!currentTrack || tracks.length <= 1) {
+      return { nextTrack: null, prevTrack: null }
+    }
+
+    const currentIndex = tracks.findIndex((track) => track.id === currentTrack.id)
+    if (currentIndex === -1) {
+      return { nextTrack: null, prevTrack: null }
+    }
+
+    const nextIndex = (currentIndex + 1) % tracks.length
+    const prevIndex = currentIndex === 0 ? tracks.length - 1 : currentIndex - 1
+
+    return {
+      nextTrack: tracks[nextIndex],
+      prevTrack: tracks[prevIndex],
+    }
+  }, [currentTrack, tracks])
+
+  const { nextTrack, prevTrack } = useMemo(() => getNextAndPrevTracks(), [getNextAndPrevTracks])
+
   const value = useMemo(
     () => ({
       currentTrack,
+      nextTrack,
+      prevTrack,
       playing,
       duration,
       seek,
-      howlerState, // Добавлено
+      howlerState,
       isQueueDrawerOpen,
+      setIsQueueDrawerOpen,
+      isLyricsDrawerOpen,
+      setIsLyricsDrawerOpen,
       playlistIsPlaying: currentPlaylist,
       howlerRef,
       audioContext,
@@ -356,24 +299,25 @@ const playPlaylist = useCallback(
       handleNextTrack,
       handlePrevTrack,
       handleOnEnd,
-      setIsQueueDrawerOpen,
       setCurrentTrack,
       setPlaying,
       setDuration,
       setSeek,
       setTracks,
-      initialPlaylists,
-      setHowlerState, // Добавлено
+      setHowlerState,
       isMuted,
       toggleMute,
     }),
     [
       currentTrack,
+      nextTrack,
+      prevTrack,
       playing,
       duration,
       seek,
-      howlerState, // Добавлено
+      howlerState,
       isQueueDrawerOpen,
+      isLyricsDrawerOpen,
       currentPlaylist,
       howlerRef,
       audioContext,
@@ -386,22 +330,10 @@ const playPlaylist = useCallback(
       handleNextTrack,
       handlePrevTrack,
       handleOnEnd,
-      setIsQueueDrawerOpen,
-      setCurrentTrack,
-      setPlaying,
-      setDuration,
-      setSeek,
-      setTracks,
-      setHowlerState, // Добавлено
       isMuted,
       toggleMute,
     ],
-  );
-  
+  )
 
-  return (
-    <PlayerContext.Provider value={value}>
-      {children}
-    </PlayerContext.Provider>
-  );
-};
+  return <PlayerContext.Provider value={value}>{children}</PlayerContext.Provider>
+}

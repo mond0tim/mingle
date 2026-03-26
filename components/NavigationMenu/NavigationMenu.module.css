@@ -4,7 +4,7 @@
     max-width: 100vw;
     position: fixed;
     bottom: 0px;
-    z-index: 4;
+    z-index: 2;
     animation: controlsIn 0.4s ease-in forwards;
 }
 
@@ -107,20 +107,20 @@ gap: 5px;
     padding: 1rem;
     position: fixed;
     gap: 10px;
-    z-index: 20;
+    z-index: 1;
     /* width: 100%; */
     /* backdrop-filter: unset; */
-    filter: drop-shadow(2px 4px 6px var(--mg-background));
+    filter: drop-shadow(0px 0px 10px var(--mg-background));
   }
 .activeIconButton {
-    background: var(--dominant-color) !important;
-    color: rgb(224, 208, 244) !important;
-    filter: hue-rotate(16deg);
+    background: lch(from var(--dominant-color) calc((49.44 - l) * infinity) 0 0) !important;
+    color: var(--dominant-color) !important;
+    /* filter: hue-rotate(16deg); */
 }
 
-.activeIconButton svg {
+/* .activeIconButton svg {
     mix-blend-mode: color-dodge;
-}
+} */
 
 
   @media (min-width: 640px) {
@@ -139,7 +139,7 @@ gap: 5px;
         position: fixed;
         top:0px;
         height: fit-content;
-        z-index: 20;
+        z-index: 2;
         max-width: none;
     }
     

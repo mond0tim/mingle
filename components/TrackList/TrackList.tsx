@@ -1,7 +1,7 @@
 import React from 'react';
 import TrackItem from '../TrackItem/TrackItem';
 import { Track } from '@/types';
-import styles from './TrackList.module.css'; // Импортируем стили
+import styles from './TrackList.module.css';
 
 interface TrackListProps {
   tracks: Track[];
@@ -9,6 +9,8 @@ interface TrackListProps {
   currentTrack: Track | null;
   trackItemMaxWidth?: string;
   trackItemSpanWidth?: string;
+  numbered?: boolean;
+  pinned?:boolean;
 }
 
 const TrackList: React.FC<TrackListProps> = ({
@@ -17,10 +19,12 @@ const TrackList: React.FC<TrackListProps> = ({
   currentTrack,
   trackItemMaxWidth,
   trackItemSpanWidth,
+  numbered = false,
+  pinned = false,
 }) => {
   return (
     <div className={styles.trackList}>
-      {tracks.map((track) => (
+      {tracks.map((track, index) => (
         <TrackItem
           key={track.id}
           track={track}
@@ -28,6 +32,9 @@ const TrackList: React.FC<TrackListProps> = ({
           isPlaying={currentTrack?.id === track.id}
           maxWidth={trackItemMaxWidth || '8rem'}
           spanWidth={trackItemSpanWidth || 'var(--trackItemMaxWidth)'}
+          // Передаём номер трека, только если numbered === true
+          trackNumber={numbered ? index + 1 : undefined}
+          pinned={pinned}
         />
       ))}
     </div>

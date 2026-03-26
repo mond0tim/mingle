@@ -1,6 +1,5 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
-import { initialTracks, initialPlaylists } from '@/data/data';
 import SearchResults from '@/components/SearchResults/SearchResults';
 import { Track, Playlist } from '@/types';
 import styles from './SearchPage.module.css';
@@ -35,12 +34,13 @@ type SortType = 'all' | 'tracks' | 'playlists';
 const SearchPage = ({ searchParams }: SearchPageProps) => {
   const query = searchParams.q || '';
   const [sortType, setSortType] = useState<SortType>('all');
-  const [filteredResults, setFilteredResults] = useState<(Track | Playlist)[]>(
-    [],
-  );
+  const [filteredResults, setFilteredResults] = useState<(Track | Playlist)[]>([]);
+  const [tracks, setTracks] = useState<Track[]>([]);
+  const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const activeTabElementRef = useRef<HTMLButtonElement>(null);
   const isMobile = useMediaQuery({ query: '(max-width: 639px)' });
+  
 
   useEffect(() => {
     const container = containerRef.current;
@@ -60,10 +60,25 @@ const SearchPage = ({ searchParams }: SearchPageProps) => {
     }
   }, [sortType, activeTabElementRef, containerRef]);
 
+  // Загрузка данных с API
   useEffect(() => {
-    const tracks = initialTracks;
-    const playlists = initialPlaylists;
+    // Получаем треки
+    fetch('/api/songs')
+      .then(res => res.json())
+      .then(data => setTracks(data))
+      .catch(() => setTracks([]));
 
+    // Получаем плейлисты из двух источников и объединяем
+    Promise.all([
+      fetch('/api/playlists').then(res => res.json()).catch(() => []),
+      fetch('/api/vibe').then(res => res.json()).catch(() => []),
+    ]).then(([playlists1, playlists2]) => {
+      setPlaylists([...playlists1, ...playlists2]);
+    });
+  }, []);
+
+  useEffect(() => {
+    // Используем загруженные данные
     const filteredTracks = filterTracks(tracks, query);
     const filteredPlaylists = filterPlaylists(playlists, query);
 
@@ -77,82 +92,36 @@ const SearchPage = ({ searchParams }: SearchPageProps) => {
     }
 
     setFilteredResults(results);
-  }, [query, sortType]);
+  }, [query, sortType, tracks, playlists]);
 
   const TABS = [
     {
       name: 'all',
       icon: (
-        <svg
-          aria-hidden='true'
-          width='16'
-          height='16'
-          viewBox='0 0 16 16'
-          fill='none'
-          xmlns='http://www.w3.org/2000/svg'
-        >
-          <path
-            fillRule='evenodd'
-            clipRule='evenodd'
-            fill='currentColor'
-            d='M3 0h10a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V1a1 1 0 0 1 1-1zm0 6h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1zm6 0h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1zm-6 6h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1zm6 0h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1z'
-          />
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-library-big-icon lucide-library-big"><rect width="8" height="18" x="3" y="3" rx="1"/><path d="M7 3v18"/><path d="M20.4 18.9c.2.5-.1 1.1-.6 1.3l-1.9.7c-.5.2-1.1-.1-1.3-.6L11.1 5.1c-.2-.5.1-1.1.6-1.3l1.9-.7c.5-.2 1.1.1 1.3.6Z"/></svg>
       ),
     },
     {
       name: 'tracks',
       icon: (
-        <svg
-          aria-hidden='true'
-          width='16'
-          height='16'
-          viewBox='0 0 16 16'
-          fill='none'
-          xmlns='http://www.w3.org/2000/svg'
-        >
-          <path
-            fill='currentColor'
-            d='M1 2a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 1 2Zm0 8a.75.75 0 0 1 .75-.75h5a.75.75 0 0 1 0 1.5h-5A.75.75 0 0 1 1 10Zm2.25-4.75a.75.75 0 0 0 0 1.5h7.5a.75.75 0 0 0 0-1.5h-7.5ZM2.5 14a.75.75 0 0 1 .75-.75h4a.75.75 0 0 1 0 1.5h-4A.75.75 0 0 1 2.5 14Z'
-          />
-          <path
-            fillRule='evenodd'
-            clipRule='evenodd'
-            fill='currentColor'
-            d='M16 11.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-1.5 0a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z'
-          />
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-disc3-icon lucide-disc-3"><circle cx="12" cy="12" r="10"/><path d="M6 12c0-1.7.7-3.2 1.8-4.2"/><circle cx="12" cy="12" r="2"/><path d="M18 12c0 1.7-.7 3.2-1.8 4.2"/></svg>
       ),
     },
     {
       name: 'playlists',
       icon: (
-        <svg
-          aria-hidden='true'
-          width='16'
-          height='16'
-          viewBox='0 0 16 16'
-          fill='none'
-          xmlns='http://www.w3.org/2000/svg'
-        >
-          <path
-            fillRule='evenodd'
-            clipRule='evenodd'
-            fill='currentColor'
-            d='M2.5 14.4h11a.4.4 0 0 0 .4-.4 3.4 3.4 0 0 0-3.4-3.4h-5A3.4 3.4 0 0 0 2.1 14c0 .22.18.4.4.4Zm0 1.6h11a2 2 0 0 0 2-2 5 5 0 0 0-5-5h-5a5 5 0 0 0-5 5 2 2 0 0 0 2 2ZM8 6.4a2.4 2.4 0 1 0 0-4.8 2.4 2.4 0 0 0 0 4.8ZM8 8a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z'
-          />
-        </svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-list-music-icon lucide-list-music"><path d="M21 15V6"/><path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/><path d="M12 12H3"/><path d="M16 6H3"/><path d="M12 18H3"/></svg>
       ),
     },
   ];
 
   return (
     <div className='md:ps-52 md:pr-4'>
-      {isMobile && (
-        <div className='mb-6 mx-auto'>
+      
+        <div className='block sm:hidden mb-6 mx-auto'>
           <SearchForm/>
         </div>
-      )}
+      
       {!isMobile && query && (
         <h1 className='text-center p-2 font-bold'>Search Results for: {query}</h1>
       )}

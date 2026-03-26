@@ -9,8 +9,18 @@
   text-align: left;
   grid-template-columns: 4rem 1fr 3rem;
   transition: 0.2s;
-  }
+  overflow: hidden;
   
+  }
+
+  .trackItem.numbered {
+
+
+    grid-template-columns: 2.1rem 4rem 1fr 3rem;
+  }
+  .trackItem.numbered .trackNumberspan {
+  font-family: var(--font-geist-mono);
+}
   .trackItem.playing {
 	background-color: #8e3ef0cc;
   backdrop-filter: blur(10px);
@@ -136,4 +146,12 @@
   
   .trackInfoWrapper {
 	  flex-grow: 1;
+  }
+
+  .pinned {
+    background-color: #8e3ef0 !important;
+    position: sticky !important;
+    top: 0rem;
+    bottom: 0rem;
+    z-index: 1; 
   }

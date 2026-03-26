@@ -16,6 +16,7 @@ import { ColorThiefOutput, getColorFromURL, getContrastingColor } from '@/lib/co
 import PlayPlaylistIcon from '@/public/icons/PlayPlaylistIcon.svg';
 import PausePlaylistIcon from '@/public/icons/PausePlaylistIcon.svg';
 import Image from 'next/image';
+import { BProgress } from '@bprogress/core';
 
 interface PlaylistCardProps {
   playlist: Playlist;
@@ -76,18 +77,30 @@ const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlist }) => {
     fetchColors();
   }, [playlist.cover, playlist.colors]); // Добавляем цвета плейлиста в зависимости
 
-  const handlePlayClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handlePlayClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     e.preventDefault();
-    if (playlistIsPlaying?.id === playlist.id) {
-      togglePlay();
-    } else {
-      playPlaylist(playlist);
-      if (playlist.tracks.length > 0) {
-        playTrack(playlist.tracks[0], playlist);
-      }
+    
+     // Если уже играет тот же плейлист — просто переключаем паузу/плей
+  if (playlistIsPlaying?.id === playlist.id) {
+    togglePlay();
+    return;
+  }
+
+  try {
+    // Запускаем загрузку плейлиста (progress стартует внутри библиотеки)
+    await playPlaylist(playlist);
+
+    // Если есть хотя бы один трек — запускаем первый с автозапуском
+    if (playlist.tracks.length > 0) {
+      await playTrack(playlist.tracks[0], playlist, true);
     }
+  } finally {
+    // В любом случае завершаем прогресс
+    BProgress.done();
+  }
   };
+  
 
   return (
     <Link href={`/playlists/${playlist.id}`}>
@@ -95,10 +108,10 @@ const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlist }) => {
         className={styles.card_blur}
         style={{
           '--card-blur-background': `url(${playlist.cover})`,
-          '--card-button-background': playlist.colors?.button || colors?.button || '#C7D3FF',
-          '--card-button-background-hover': `${playlist.colors?.button || colors?.button || '#DED6FF'}AA`,
-          '--card-title-color': playlist.colors?.text || colors?.title || '#C7D3FF',
-          '--card-button-color': playlist.colors?.icon || colors?.buttonColor || '#000',
+          '--card-button-background': playlist.colors?.button || colors?.button || '#000000',
+          '--card-button-background-hover': `${playlist.colors?.button || colors?.button || '#000000'}AA`,
+          '--card-title-color': playlist.colors?.text || colors?.title || '#000000',
+          '--card-button-color': playlist.colors?.icon || colors?.buttonColor || '#FFFFFF',
         } as React.CSSProperties}
       >
         <Image
@@ -146,9 +159,9 @@ export const PlaylistsCarousel: React.FC<PlaylistsCarouselProps> = ({
   playlists,
 }) => {
   return (
-	<div className='w-full relative px-[3.5rem]'>
+	<div className='w-full relative md:px-[3.5rem]'>
     <Carousel className='w-full'>
-      <CarouselContent>
+      <CarouselContent className='pr-16 md:pr-0 pl-4 md:pl-0'>
         {playlists.map((playlist) => (
           <CarouselItem key={playlist.id} className='md:basis-1/2 lg:basis-1/4'>
             <div className='p-1'>
@@ -157,8 +170,8 @@ export const PlaylistsCarousel: React.FC<PlaylistsCarouselProps> = ({
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+      <CarouselPrevious className='hidden md:inline-flex'/>
+      <CarouselNext  className='hidden md:inline-flex'/>
     </Carousel>
 	
 	</div>

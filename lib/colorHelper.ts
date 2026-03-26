@@ -1,5 +1,3 @@
-
-
 import ColorThief from 'colorthief';
 
 export interface ColorThiefOutput {
@@ -12,6 +10,25 @@ export interface ColorThiefOutput {
 export const getColorFromURL = async (
   imageUrl: string
 ): Promise<ColorThiefOutput | null> => {
+  const storageKey = 'playlistColorsCacheArr';
+
+  type PlaylistColorCache = { url: string; colors: ColorThiefOutput };
+
+  let cacheArr: PlaylistColorCache[] = [];
+
+  if (typeof window !== 'undefined') {
+    const raw = localStorage.getItem(storageKey);
+    if (raw) {
+      try {
+        cacheArr = JSON.parse(raw);
+        const found = cacheArr.find((item) => item.url === imageUrl);
+        if (found) {
+          return found.colors;
+        }
+      } catch {}
+    }
+  }
+
   const colorThief = new ColorThief();
   const img = new Image();
   img.crossOrigin = 'Anonymous';
@@ -20,13 +37,21 @@ export const getColorFromURL = async (
   return new Promise((resolve) => {
     img.onload = () => {
       const dominantColor = colorThief.getColor(img);
-      const palette = colorThief.getPalette(img, 3); // Получаем 3 цвета
+      const palette = colorThief.getPalette(img, 3);
 
       const background = rgbToHex(dominantColor);
       const title = rgbToHex(palette[1]);
       const button = rgbToHex(palette[2]);
 
-      resolve({ background, title, button });
+      const result = { background, title, button };
+      // Сохраняем в массив
+      if (typeof window !== 'undefined') {
+        try {
+          cacheArr.push({ url: imageUrl, colors: result });
+          localStorage.setItem(storageKey, JSON.stringify(cacheArr));
+        } catch {}
+      }
+      resolve(result);
     };
     img.onerror = () => {
       console.error('Error loading image for color thief:', imageUrl);

@@ -18,7 +18,7 @@
         font-family: var(--font-raydis);
         font-size: 20px;
         grid-area: title;
-        mix-blend-mode: color-dodge;
+        mix-blend-mode: hard-light;
         color: lavenderblush;
         text-align: center;
     }

@@ -2,10 +2,11 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { PlayerProvider } from '@/context/PlayerContext';
 import PlayerWrapper from '@/components/PlayerWrapper';
-import { initialTracks, initialPlaylists } from '@/data/data';
 import localFont from "next/font/local";
 import NavigationMenu from '@/components/NavigationMenu/NavigationMenu';
 import Preloader from '@/components/Preloader/Preloader';
+import Providers from './providers';
+
 
 export const viewport: Viewport = {
   themeColor: '#0c0312',
@@ -35,13 +36,18 @@ const Raydis = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'Mingle',
+  title: 'mingle',
   description: 'Ваш музыкальный плеер',
   generator: "Next.js",
   manifest: "/manifest.json",
   openGraph: {
-    images: '/preview.png',
-    title: 'Mingle',
+    images: 'https://mingle.ti-web.ru/preview.png',
+    title: 'mingle',
+  },
+  twitter: {
+    images: 'https://mingle.ti-web.ru/preview.png',
+    title:'mingle',
+    card: "summary_large_image"
   }
 };
 
@@ -55,8 +61,8 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${Oddval.variable} ${Raydis.variable} ${OddvalItalic.variable} ${geistMono.variable} antialiased`}>
       <NavigationMenu />
         <Preloader/>
-        <PlayerProvider initialTracks={initialTracks} initialPlaylists={initialPlaylists}>
-          <PlayerWrapper>{children}</PlayerWrapper>
+        <PlayerProvider>
+          <Providers><PlayerWrapper>  {children}</PlayerWrapper></Providers>
         </PlayerProvider>
       </body>
     </html>

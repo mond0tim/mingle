@@ -35,7 +35,7 @@ const QueueDrawer: React.FC<QueueDrawerProps> = ({
     >
 		
 	{isDesktopOrLaptop && (
-		<Drawer.Trigger className={styles.QueueDrawerButton} >
+		<Drawer.Trigger className={styles.QueueDrawerButton}  asChild>
        <Button view='ghost' className={styles.queueDrawerTrigger}>
         <QueueIcon/>
         </Button>
@@ -66,7 +66,7 @@ const QueueDrawer: React.FC<QueueDrawerProps> = ({
               </Drawer.Title>
             </div>
             <div className={styles.tracklistDrawer}>
-              <TrackList tracks={tracks} onTrackSelect={onTrackSelect} currentTrack={currentTrack} trackItemSpanWidth='auto'/>
+              <TrackList tracks={tracks} onTrackSelect={onTrackSelect} currentTrack={currentTrack} trackItemSpanWidth='auto' pinned={true}/>
             </div>
           </div>
         </Drawer.Content>

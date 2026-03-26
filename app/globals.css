@@ -125,6 +125,7 @@ body[data-scroll-locked] {
 
 }
 
+
 h1, h2, h3, h4, h5 {
   font-family: var(--font-oddval);
 }

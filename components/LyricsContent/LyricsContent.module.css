@@ -1,0 +1,44 @@
+.scrollContainer {
+	scrollbar-width: thin;
+	mask-image: linear-gradient(to bottom, transparent, #000 15%, #000000 80%, transparent 100%);
+	scrollbar-color:  lch(from var(--dominant-color) calc((49.44 - l) * infinity) 0 0) color-mix(in srgb, var(--dominant-color), black 20%);
+	border-radius: 30px;
+	@media (max-width: 768px) {
+		border-radius: 0px;
+		
+	}
+	overflow: hidden;
+	overflow-y: auto;
+}
+
+.textColor {
+	color: lch(from var(--dominant-color) calc((49.44 - l) * infinity) 0 0);
+	font-family: var(--font-oddval),var(--font-geist-sans);
+	font-weight: 900;
+	@media (max-width: 768px) {
+		font-size: 3.5vh;
+		
+	}
+}
+
+.сolor {
+	color: lch(from var(--dominant-color) calc((49.44 - l) * infinity) 0 0);
+}
+
+.invertBackgroundButton {
+
+	border-width: 1px;
+	color:lch(from var(--dominant-color) calc((49.44 - l) * infinity) 0 0);
+	border-color: lch(from var(--dominant-color) calc((49.44 - l) * infinity) 0 0/ 0.45);
+	transition: all 0.2s;
+}
+
+.invertBackgroundButton:hover {
+	
+	border-color: transparent;
+	background-color: lch(from var(--dominant-color) calc((49.44 - l) * infinity) 0 0/ 0.35);
+}
+
+.skeleton {
+	background-color: var(--dominant-color);
+}

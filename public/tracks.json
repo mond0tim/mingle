@@ -1,0 +1,945 @@
+[
+	{
+	  "id": 0,
+	  "title": "Mingle",
+	  "artist": "mondotim",
+	  "src": "/audio/mingle.mp3",
+	  "cover": "/covers/mingle.png",
+	  "fullSrc": "/audio/mingle.mp3",
+	  "type": "track"
+	},
+	{
+	  "id": 1,
+	  "title": "The Line (from the series Arcane League of Legends)",
+	  "artist": "Twenty One Pilots, Arcane, Legue of Legends",
+	  "src": "/audio/track1.mp3",
+	  "cover": "/covers/cover1.jpg",
+	  "fullSrc": "/audio/track1.mp3",
+	  "type": "track"
+	},
+	{
+	  "id": 2,
+	  "title": "Imagine Dragons",
+	  "artist": "Ragged Insomnia",
+	  "src": "/audio/track2.mp3",
+	  "cover": "/covers/cover2.jpg",
+	  "fullSrc": "/audio/track2.mp3",
+	  "type": "track"
+	},
+	{
+	  "id": 3,
+	  "title": "Тантум Верде Форте",
+	  "artist": "Тимати",
+	  "src": "/audio/track3.mp3",
+	  "cover": "/covers/cover3.jpg",
+	  "fullSrc": "/audio/track3.mp3",
+	  "type": "track"
+	},
+	{
+	  "id": 4,
+	  "title": "Sunflower - Spider-\"Man\": Into the Spider-Verce",
+	  "artist": "Post Malone, Swae Lee",
+	  "src": "/audio/track4.mp3",
+	  "cover": "/covers/cover4.jpg",
+	  "fullSrc": "/audio/track4.mp3",
+	  "color": "#000000",
+	  "type": "track"
+	},
+	{
+	  "id": 5,
+	  "title": "Faint",
+	  "artist": "Linkin Park",
+	  "src": "/audio/track5.mp3",
+	  "cover": "/covers/cover5.jpg",
+	  "fullSrc": "/audio/track5.mp3",
+	  "type": "track"
+	},
+	{
+	  "id": 6,
+	  "title": "Sound 07380",
+	  "artist": "unkown",
+	  "src": "/audio/7380 (1).mp3",
+	  "fullSrc": "/audio/7380 (1).mp3",
+	  "cover": "/covers/sound-icon.png",
+	  "type": "track"
+	},
+	{
+	  "id": 7,
+	  "title": "Astronaut In The Ocean",
+	  "artist": "Masked Wolf",
+	  "src": "/audio/Astronaut In The Ocean.mp3",
+	  "fullSrc": "/audio/Astronaut In The Ocean.mp3",
+	  "cover": "/covers/Astronaut In The Ocean.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 8,
+	  "title": "Come Play (from the series Arcane League of Legends)",
+	  "artist": "Stray Kids, Arcane, Legaue of Legends",
+	  "src": "/audio/Come_play.mp3",
+	  "fullSrc": "/audio/Come_play.mp3",
+	  "cover": "/covers/cover1.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 9,
+	  "title": "Bang Bang - New Version",
+	  "artist": "K'naan",
+	  "src": "/audio/bang bang.mp3",
+	  "fullSrc": "/audio/bang bang.mp3",
+	  "cover": "/covers/bang bang.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 10,
+	  "title": "bad guy",
+	  "artist": "Billie Eilish",
+	  "src": "/audio/bad guy.mp3",
+	  "fullSrc": "/audio/bad guy.mp3",
+	  "cover": "/covers/bad guy.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 11,
+	  "title": "Blinding Lights",
+	  "artist": "The Weeknd",
+	  "src": "/audio/Blinding Lights.mp3",
+	  "fullSrc": "/audio/Blinding Lights.mp3",
+	  "cover": "/covers/Blinding Lights.png",
+	  "type": "track"
+	},
+	{
+	  "id": 12,
+	  "title": "Broken Neon Love",
+	  "artist": "unkown",
+	  "src": "/audio/Broken Neon Love.mp3",
+	  "fullSrc": "/audio/Broken Neon Love.mp3",
+	  "cover": "/covers/Broken Neon Love.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 13,
+	  "title": "Eyes Closed",
+	  "artist": "Imagine Dragons",
+	  "src": "/audio/Eyes Closed - Imagine Dragons.m4a",
+	  "fullSrc": "/audio/Eyes Closed - Imagine Dragons.m4a",
+	  "cover": "/covers/Eyes Closed - Imagine Dragons.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 14,
+	  "title": "Heavydirtysoul",
+	  "artist": "Twenty One Pilots",
+	  "src": "/audio/Heavydirtysoul.mp3",
+	  "fullSrc": "/audio/Heavydirtysoul.mp3",
+	  "cover": "/covers/Heavydirtysoul.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 15,
+	  "title": "What's Up Danger",
+	  "artist": "Blackway, Black Caviar",
+	  "src": "/audio/Blackway, Black Caviar - What's Up Danger.mp3",
+	  "fullSrc": "/audio/Blackway, Black Caviar - What's Up Danger.mp3",
+	  "cover": "/covers/cover4.jpg",
+	  "color": "#000000",
+	  "type": "track"
+	},
+	{
+	  "id": 16,
+	  "title": "LALALALA (Rock Ver.)",
+	  "artist": "Stray Kids",
+	  "src": "/audio/LALALALA (Rock Ver.).mp3",
+	  "fullSrc": "/audio/LALALALA (Rock Ver.).mp3",
+	  "cover": "/covers/LALALALA (Rock Ver.).jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 17,
+	  "title": "Nice to Meet You",
+	  "artist": "Imagine Dragons",
+	  "src": "/audio/Nice to Meet You.mp3",
+	  "fullSrc": "/audio/Nice to Meet You.mp3",
+	  "cover": "/covers/Nice to Meet You.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 18,
+	  "title": "Natural",
+	  "artist": "Imagine Dragons",
+	  "src": "/audio/Natural.mp3",
+	  "fullSrc": "/audio/Natural.mp3",
+	  "cover": "/covers/Natural.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 19,
+	  "title": "Overcompensate",
+	  "artist": "Twenty One Pilots",
+	  "src": "/audio/Overcompensate.mp3",
+	  "fullSrc": "/audio/Overcompensate.mp3",
+	  "cover": "/covers/Overcompensate.jpg",
+	  "type": "track",
+	  "color": "#4C0000"
+	},
+	{
+	  "id": 20,
+	  "title": "Smells Like Teen Spirit",
+	  "artist": "Nirvana",
+	  "src": "/audio/Smells Like Teen Spirit.mp3",
+	  "fullSrc": "/audio/Smells Like Teen Spirit.mp3",
+	  "cover": "/covers/Smells Like Teen Spirit.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 21,
+	  "title": "Way Up",
+	  "artist": "Jaden Smith",
+	  "src": "/audio/Way_Up.m4a",
+	  "fullSrc": "/audio/Way_Up.m4a",
+	  "cover": "/covers/cover4.jpg",
+	  "color": "#000000",
+	  "type": "track"
+	},
+	{
+	  "id": 22,
+	  "title": "Sugar",
+	  "artist": "Maroon 5",
+	  "src": "/audio/Sugar.mp3",
+	  "fullSrc": "/audio/Sugar.mp3",
+	  "cover": "/covers/Sugar.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 23,
+	  "title": "Navigating",
+	  "artist": "Twenty One Pilots",
+	  "src": "/audio/Twenty One Pilots - Navigating.mp3",
+	  "fullSrc": "/audio/Twenty One Pilots - Navigating.mp3",
+	  "cover": "/covers/Twenty One Pilots - Navigating.jpg",
+	  "type": "track",
+	  "color": "#4C0000"
+	},
+	{
+	  "id": 24,
+	  "title": "Голуби счастья",
+	  "artist": "общество",
+	  "src": "/audio/Голуби счастья (1).mp3",
+	  "fullSrc": "/audio/Голуби счастья (1).mp3",
+	  "cover": "/covers/Голуби счастья (1).jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 25,
+	  "title": "Горы Казахстана",
+	  "artist": "анонимное горное сообщество",
+	  "src": "/audio/Горы Казахстана.mp3",
+	  "fullSrc": "/audio/Горы Казахстана.mp3",
+	  "cover": "/covers/Горы Казахстана.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 26,
+	  "title": "Tokyo Drifting",
+	  "artist": "Glass Animals",
+	  "src": "/audio/Tokyo Drifting - Glass Animals.m4a",
+	  "fullSrc": "/audio/Tokyo Drifting - Glass Animals.m4a",
+	  "cover": "/covers/Tokyo Drifting.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 27,
+	  "title": "Сладкая жизнь Маша и Медведь",
+	  "artist": "СВУДИ",
+	  "src": "/audio/Сладкая_жизнь_СВУДИ Маша_и_Медведь.mp3",
+	  "fullSrc": "/audio/Сладкая_жизнь_СВУДИ Маша_и_Медведь.mp3",
+	  "cover": "/covers/Сладкая_жизнь_СВУДИ Маша_и_Медведь.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 28,
+	  "title": "Big Dawgs",
+	  "artist": "Hanumankind, Kalmi",
+	  "src": "/audio/Big Dawgs - Hanumankind   Kalmi.m4a",
+	  "fullSrc": "/audio/Big Dawgs - Hanumankind   Kalmi.m4a",
+	  "cover": "/covers/Big_Dawgs _-_Hanumankind_Kalmi.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 29,
+	  "title": "Lane Boy",
+	  "artist": "Twenty One Pilots",
+	  "src": "/audio/Lane_Boy.mp3",
+	  "fullSrc": "/audio/Lane_Boy.mp3",
+	  "cover": "/covers/Heavydirtysoul.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 30,
+	  "title": "Jerk it out",
+	  "artist": "Caesars Palace",
+	  "src": "/audio/caesars_palace_-_jerk_it_out.mp3",
+	  "fullSrc": "/audio/caesars_palace_-_jerk_it_out.mp3",
+	  "cover": "/covers/caesars_palace_-_jerk_it_out.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 31,
+	  "title": "Heat Waves",
+	  "artist": "Glass Animals",
+	  "src": "/audio/Glass_Animals_-_Heat_Waves.mp3",
+	  "fullSrc": "/audio/Glass_Animals_-_Heat_Waves.mp3",
+	  "cover": "/covers/Glass_Animals_-_Heat_Waves.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 32,
+	  "title": "Next Semester",
+	  "artist": "Twenty One Pilots",
+	  "src": "/audio/Next Semester - twenty one pilots.m4a",
+	  "fullSrc": "/audio/Next Semester - twenty one pilots.m4a",
+	  "cover": "/covers/Twenty One Pilots - Navigating.jpg",
+	  "type": "track",
+	  "color": "#4C0000"
+	},
+	{
+	  "id": 33,
+	  "title": "Backslide",
+	  "artist": "Twenty One Pilots",
+	  "src": "/audio/Backslide.mp3",
+	  "fullSrc": "/audio/Backslide.mp3",
+	  "cover": "/covers/Twenty One Pilots - Navigating.jpg",
+	  "type": "track",
+	  "color": "#4C0000"
+	},
+	{
+	  "id": 34,
+	  "title": "Midwest Indigo",
+	  "artist": "Twenty One Pilots",
+	  "src": "/audio/Midvest_Indigo.mp3",
+	  "fullSrc": "/audio/Midvest_Indigo.mp3",
+	  "cover": "/covers/Twenty One Pilots - Navigating.jpg",
+	  "type": "track",
+	  "color": "#4C0000"
+	},
+	{
+	  "id": 35,
+	  "title": "Routines in the Night",
+	  "artist": "Twenty One Pilots",
+	  "src": "/audio/Routines in the Night.mp3",
+	  "fullSrc": "/audio/Routines in the Night.mp3",
+	  "cover": "/covers/Twenty One Pilots - Navigating.jpg",
+	  "type": "track",
+	  "color": "#4C0000"
+	},
+	{
+	  "id": 36,
+	  "title": "Vignette",
+	  "artist": "Twenty One Pilots",
+	  "src": "/audio/Vignette.mp3",
+	  "fullSrc": "/audio/Vignette.mp3",
+	  "cover": "/covers/Twenty One Pilots - Navigating.jpg",
+	  "type": "track",
+	  "color": "#4C0000"
+	},
+	{
+	  "id": 37,
+	  "title": "The Craving (Jenna's Version)",
+	  "artist": "Twenty One Pilots",
+	  "src": "/audio/The Craving (Jenna's Version).mp3",
+	  "fullSrc": "/audio/The Craving (Jenna's Version).mp3",
+	  "cover": "/covers/Twenty One Pilots - Navigating.jpg",
+	  "type": "track",
+	  "color": "#4C0000"
+	},
+	{
+	  "id": 38,
+	  "title": "Lavish",
+	  "artist": "Twenty One Pilots",
+	  "src": "/audio/Lavish.mp3",
+	  "fullSrc": "/audio/Lavish.mp3",
+	  "cover": "/covers/Twenty One Pilots - Navigating.jpg",
+	  "type": "track",
+	  "color": "#4C0000"
+	},
+	{
+	  "id": 39,
+	  "title": "Snap Back",
+	  "artist": "Twenty One Pilots",
+	  "src": "/audio/Snap Back.mp3",
+	  "fullSrc": "/audio/Snap Back.mp3",
+	  "cover": "/covers/Twenty One Pilots - Navigating.jpg",
+	  "type": "track",
+	  "color": "#4C0000"
+	},
+	{
+	  "id": 40,
+	  "title": "Oldies Station",
+	  "artist": "Twenty One Pilots",
+	  "src": "/audio/Oldies Station.mp3",
+	  "fullSrc": "/audio/Oldies Station.mp3",
+	  "cover": "/covers/Twenty One Pilots - Navigating.jpg",
+	  "type": "track",
+	  "color": "#4C0000"
+	},
+	{
+	  "id": 41,
+	  "title": "At the Risk of Feeling Dumb",
+	  "artist": "Twenty One Pilots",
+	  "src": "/audio/At the Risk of Feeling Dumb.mp3",
+	  "fullSrc": "/audio/At the Risk of Feeling Dumb.mp3",
+	  "cover": "/covers/Twenty One Pilots - Navigating.jpg",
+	  "type": "track",
+	  "color": "#4C0000"
+	},
+	{
+	  "id": 42,
+	  "title": "Paladin Strait",
+	  "artist": "Twenty One Pilots",
+	  "src": "/audio/Paladin Strait.mp3",
+	  "fullSrc": "/audio/Paladin Strait.mp3",
+	  "cover": "/covers/Twenty One Pilots - Navigating.jpg",
+	  "type": "track",
+	  "color": "#4C0000"
+	},
+	{
+	  "id": 43,
+	  "title": "MOUNTAINS",
+	  "artist": "Stray Kids",
+	  "src": "/audio/MOUNTAINS - Stray Kids.mp3",
+	  "fullSrc": "/audio/MOUNTAINS - Stray Kids.mp3",
+	  "cover": "/covers/ATE.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 44,
+	  "title": "Chk Chk Boom",
+	  "artist": "Stray Kids",
+	  "src": "/audio/Stray Kids - Chk Chk Boom.mp3",
+	  "fullSrc": "/audio/Stray Kids - Chk Chk Boom.mp3",
+	  "cover": "/covers/ATE.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 45,
+	  "title": "JJAM",
+	  "artist": "Stray Kids",
+	  "src": "/audio/Stray Kids - JJAM.mp3",
+	  "fullSrc": "/audio/Stray Kids - JJAM.mp3",
+	  "cover": "/covers/ATE.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 46,
+	  "title": "I Like It",
+	  "artist": "Stray Kids",
+	  "src": "/audio/I Like It_y_Oz7v7TP_-3k.mp3",
+	  "fullSrc": "/audio/I Like It_y_Oz7v7TP_-3k.mp3",
+	  "cover": "/covers/ATE.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 47,
+	  "title": "Runners",
+	  "artist": "Stray Kids",
+	  "src": "/audio/Runners.mp3",
+	  "fullSrc": "/audio/Runners.mp3",
+	  "cover": "/covers/ATE.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 48,
+	  "title": "twilight",
+	  "artist": "Stray Kids",
+	  "src": "/audio/twilight.m4a",
+	  "fullSrc": "/audio/twilight.m4a",
+	  "cover": "/covers/ATE.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 49,
+	  "title": "Stray Kids",
+	  "artist": "Stray Kids",
+	  "src": "/audio/Stray Kids - Stray Kids.mp3",
+	  "fullSrc": "/audio/Stray Kids - Stray Kids.mp3",
+	  "cover": "/covers/ATE.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 50,
+	  "title": "Chk Chk Boom (Festival Ver.)",
+	  "artist": "Stray Kids",
+	  "src": "/audio/Chk_Chk_Boom_Festival_Ver.m4a",
+	  "fullSrc": "/audio/Chk_Chk_Boom_Festival_Ver.m4a",
+	  "cover": "/covers/ATE.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 51,
+	  "title": "Lose My Breath (Feat. Charlie Puth)",
+	  "artist": "Stray Kids, Charlie Puth",
+	  "src": "/audio/2_5327769766612453052.mp3",
+	  "fullSrc": "/audio/2_5327769766612453052.mp3",
+	  "cover": "/covers/Lose_My_Breath.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 52,
+	  "title": "Skinny Loser",
+	  "artist": "Sub Urban",
+	  "src": "/audio/Skinny Loser - Sub Urban.m4a",
+	  "fullSrc": "/audio/Skinny Loser - Sub Urban.m4a",
+	  "cover": "/covers/Skinny Loser - Sub Urban.png",
+	  "type": "track"
+	},
+	{
+	  "id": 53,
+	  "title": "Can't Stop",
+	  "artist": "Red Hot Chili Peppers",
+	  "src": "/audio/Red_Hot_Chili_Peppers_-_Cant_Stop_47829176.mp3",
+	  "fullSrc": "/audio/Red_Hot_Chili_Peppers_-_Cant_Stop_47829176.mp3",
+	  "cover": "/covers/Cant Stop.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 54,
+	  "title": "PARANOIA",
+	  "artist": "HEARTSTEEL, BAEKHYUN, tobi lou, ZI & Cal Scruby",
+	  "src": "/audio/HEARTSTEEL,_League_of_Legends,_BAEKHYUN,_tobi_lou,_ØZI,_Cal_Scru.mp3",
+	  "fullSrc": "/audio/HEARTSTEEL,_League_of_Legends,_BAEKHYUN,_tobi_lou,_ØZI,_Cal_Scru.mp3",
+	  "cover": "/covers/HEARTSTEEL.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 55,
+	  "title": "SPOT!",
+	  "artist": "ZICO (feat. JENNIE)",
+	  "src": "/audio/ZICO_feat_JENNIE_-_SPOT_77830308.mp3",
+	  "fullSrc": "/audio/ZICO_feat_JENNIE_-_SPOT_77830308.mp3",
+	  "cover": "/covers/SPOT.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 56,
+	  "title": "Wake Up",
+	  "artist": "Imagine Dragons",
+	  "src": "/audio/Wake Up.mp3",
+	  "fullSrc": "/audio/Wake Up.mp3",
+	  "cover": "/covers/Eyes Closed - Imagine Dragons.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 57,
+	  "title": "Brainstorm",
+	  "artist": "Artic Monkeys",
+	  "src": "/audio/brainstorm.mp3",
+	  "fullSrc": "/audio/brainstorm.mp3",
+	  "cover": "/covers/brainstorm.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 58,
+	  "title": "Teddy Picker",
+	  "artist": "Arctic Monkeys",
+	  "src": "/audio/Teddy Picker.mp3",
+	  "fullSrc": "/audio/Teddy Picker.mp3",
+	  "cover": "/covers/brainstorm.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 59,
+	  "title": "D is for Dangerous",
+	  "artist": "Arctic Monkeys",
+	  "src": "/audio/Arctic_Monkeys_-_D_is_for_Dangerous_59891375.mp3",
+	  "fullSrc": "/audio/Arctic_Monkeys_-_D_is_for_Dangerous_59891375.mp3",
+	  "cover": "/covers/Arctic_Monkeys_-_D_is_for_Dangerous_59891375.jpeg",
+	  "type": "track"
+	},
+	{
+	  "id": 60,
+	  "title": "505",
+	  "artist": "Arctic Monkeys",
+	  "src": "/audio/Arctic_Monkeys_-_505_75941075.mp3",
+	  "fullSrc": "/audio/Arctic_Monkeys_-_505_75941075.mp3",
+	  "cover": "/covers/Arctic_Monkeys_-_505_75941075.jpeg",
+	  "type": "track"
+	},
+	{
+	  "id": 61,
+	  "title": "Balaclava",
+	  "artist": "Arctic Monkeys",
+	  "src": "/audio/Arctic_Monkeys_-_Balaclava_59891377.mp3",
+	  "fullSrc": "/audio/Arctic_Monkeys_-_Balaclava_59891377.mp3",
+	  "cover": "/covers/Arctic_Monkeys_-_Balaclava_59891377.jpeg",
+	  "type": "track"
+	},
+	{
+	  "id": 62,
+	  "title": "Do Me a Favour",
+	  "artist": "Arctic Monkeys",
+	  "src": "/audio/Arctic_Monkeys_-_Do_Me_a_Favour_59891380.mp3",
+	  "fullSrc": "/audio/Arctic_Monkeys_-_Do_Me_a_Favour_59891380.mp3",
+	  "cover": "/covers/Arctic_Monkeys_-_Do_Me_a_Favour_59891380.jpeg",
+	  "type": "track"
+	},
+	{
+	  "id": 63,
+	  "title": "Fluorescent Adolescent",
+	  "artist": "Arctic Monkeys",
+	  "src": "/audio/Arctic_Monkeys_-_Fluorescent_Adolescent_59891378.mp3",
+	  "fullSrc": "/audio/Arctic_Monkeys_-_Fluorescent_Adolescent_59891378.mp3",
+	  "cover": "/covers/Arctic_Monkeys_-_Fluorescent_Adolescent_59891378.jpeg",
+	  "type": "track"
+	},
+	{
+	  "id": 64,
+	  "title": "If You Were There, Beware",
+	  "artist": "Arctic Monkeys",
+	  "src": "/audio/Arctic_Monkeys_-_If_You_Were_There_Beware_59891384.mp3",
+	  "fullSrc": "/audio/Arctic_Monkeys_-_If_You_Were_There_Beware_59891384.mp3",
+	  "cover": "/covers/Arctic_Monkeys_-_If_You_Were_There_Beware_59891384.jpeg",
+	  "type": "track"
+	},
+	{
+	  "id": 65,
+	  "title": "I Bet You Look Good On The Dancefloor",
+	  "artist": "Arctic Monkeys",
+	  "src": "/audio/Arctic_Monkeys_-_I_Bet_You_Look_Good_On_The_Dancefloor_59891390.mp3",
+	  "fullSrc": "/audio/Arctic_Monkeys_-_I_Bet_You_Look_Good_On_The_Dancefloor_59891390.mp3",
+	  "cover": "/covers/Arctic_Monkeys_-_I_Bet_You_Look_Good_On_The_Dancefloor_59891390.jpeg",
+	  "type": "track"
+	},
+	{
+	  "id": 66,
+	  "title": "Old Yellow Bricks",
+	  "artist": "Arctic Monkeys",
+	  "src": "/audio/Arctic_Monkeys_-_Old_Yellow_Bricks_59891386.mp3",
+	  "fullSrc": "/audio/Arctic_Monkeys_-_Old_Yellow_Bricks_59891386.mp3",
+	  "cover": "/covers/Arctic_Monkeys_-_Old_Yellow_Bricks_59891386.jpeg",
+	  "type": "track"
+	},
+	{
+	  "id": 67,
+	  "title": "Only Ones Who Know",
+	  "artist": "Arctic Monkeys",
+	  "src": "/audio/Arctic_Monkeys_-_Only_Ones_Who_Know_59891379.mp3",
+	  "fullSrc": "/audio/Arctic_Monkeys_-_Only_Ones_Who_Know_59891379.mp3",
+	  "cover": "/covers/Arctic_Monkeys_-_Only_Ones_Who_Know_59891379.jpeg",
+	  "type": "track"
+	},
+	{
+	  "id": 68,
+	  "title": "The Bad Thing",
+	  "artist": "Arctic Monkeys",
+	  "src": "/audio/Arctic_Monkeys_-_The_Bad_Thing_59891385.mp3",
+	  "fullSrc": "/audio/Arctic_Monkeys_-_The_Bad_Thing_59891385.mp3",
+	  "cover": "/covers/Arctic_Monkeys_-_The_Bad_Thing_59891385.jpeg",
+	  "type": "track"
+	},
+	{
+	  "id": 69,
+	  "title": "This House is a Circus",
+	  "artist": "Arctic Monkeys",
+	  "src": "/audio/Arctic_Monkeys_-_This_House_is_a_Circus_59891383.mp3",
+	  "fullSrc": "/audio/Arctic_Monkeys_-_This_House_is_a_Circus_59891383.mp3",
+	  "cover": "/covers/Arctic_Monkeys_-_This_House_is_a_Circus_59891383.jpeg",
+	  "type": "track"
+	},
+	{
+	  "id": 70,
+	  "title": "Grace Kelly",
+	  "artist": "Mika",
+	  "src": "/audio/Mika_-_Grace_Kelly_47997867.mp3",
+	  "fullSrc": "/audio/Mika_-_Grace_Kelly_47997867.mp3",
+	  "cover": "/covers/Mika_-_Grace_Kelly_47997867.jpeg",
+	  "type": "track"
+	},
+	{
+	  "id": 71,
+	  "title": "Dont Forget Me",
+	  "artist": "Imagine Dragons",
+	  "src": "/audio/Imagine_Dragons_-_Dont_Forget_Me_2024_78247870.mp3",
+	  "fullSrc": "/audio/Imagine_Dragons_-_Dont_Forget_Me_2024_78247870.mp3",
+	  "cover": "/covers/playlists/loom.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 72,
+	  "title": "Fire In These Hills",
+	  "artist": "Imagine Dragons",
+	  "src": "/audio/Imagine_Dragons_-_Fire_In_These_Hills_78053168.mp3",
+	  "fullSrc": "/audio/Imagine_Dragons_-_Fire_In_These_Hills_78053168.mp3",
+	  "cover": "/covers/playlists/loom.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 73,
+	  "title": "Gods Dont Pray",
+	  "artist": "Imagine Dragons",
+	  "src": "/audio/Imagine_Dragons_-_Gods_Dont_Pray_78053183.mp3",
+	  "fullSrc": "/audio/Imagine_Dragons_-_Gods_Dont_Pray_78053183.mp3",
+	  "cover": "/covers/playlists/loom.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 74,
+	  "title": "In Your Corner",
+	  "artist": "Imagine Dragons",
+	  "src": "/audio/Imagine_Dragons_-_In_Your_Corner_78053144.mp3",
+	  "fullSrc": "/audio/Imagine_Dragons_-_In_Your_Corner_78053144.mp3",
+	  "cover": "/covers/playlists/loom.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 75,
+	  "title": "Kid",
+	  "artist": "Imagine Dragons",
+	  "src": "/audio/Imagine_Dragons_-_Kid_78053158.mp3",
+	  "fullSrc": "/audio/Imagine_Dragons_-_Kid_78053158.mp3",
+	  "cover": "/covers/playlists/loom.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 76,
+	  "title": "Take Me To The Beach",
+	  "artist": "Imagine Dragons",
+	  "src": "/audio/Imagine_Dragons_-_Take_Me_To_The_Beach_78072581.mp3",
+	  "fullSrc": "/audio/Imagine_Dragons_-_Take_Me_To_The_Beach_78072581.mp3",
+	  "cover": "/covers/playlists/loom.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 77,
+	  "title": "Eyes Closed",
+	  "artist": "Imagine Dragons feat. J Balvin",
+	  "src": "/audio/Imagine_Dragons_feat_J_Balvin_-_Eyes_Closed_77825006.mp3",
+	  "fullSrc": "/audio/Imagine_Dragons_feat_J_Balvin_-_Eyes_Closed_77825006.mp3",
+	  "cover": "/covers/playlists/loom.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 78,
+	  "title": "Nice to Meet You",
+	  "artist": "Imagine Dragons",
+	  "src": "/audio/Nice to Meet You.mp3",
+	  "fullSrc": "/audio/Nice to Meet You.mp3",
+	  "cover": "/covers/playlists/loom.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 79,
+	  "title": "Были танцы",
+	  "artist": "Бьянка",
+	  "src": "/audio/Byanka_-_Byli_tancy_72332693.mp3",
+	  "fullSrc": "/audio/Byanka_-_Byli_tancy_72332693.mp3",
+	  "cover": "/covers/Byanka_-_Byli_tancy_72332693.jpeg",
+	  "type": "track"
+	},
+	{
+	  "id": 80,
+	  "title": "140",
+	  "artist": "IOWA",
+	  "src": "/audio/IOWA - 140.mp3",
+	  "fullSrc": "/audio/IOWA - 140.mp3",
+	  "cover": "/covers/IOWA - 140.png",
+	  "type": "track"
+	},
+	{
+	  "id": 81,
+	  "title": "Плохо танцевать",
+	  "artist": "IOWA",
+	  "src": "/audio/IOWA - Плохо танцевать.mp3",
+	  "fullSrc": "/audio/IOWA - Плохо танцевать.mp3",
+	  "cover": "/covers/IOWA - Плохо танцевать.png",
+	  "type": "track"
+	},
+	{
+	  "id": 82,
+	  "title": "Яблоко",
+	  "artist": "IOWA, Ёлка",
+	  "src": "/audio/IOWA_JOlka_-_YAbloko_73061728.mp3",
+	  "fullSrc": "/audio/IOWA_JOlka_-_YAbloko_73061728.mp3",
+	  "cover": "/covers/IOWA_JOlka_-_YAbloko_73061728.jpeg",
+	  "type": "track"
+	},
+	{
+	  "id": 83,
+	  "title": "Do Luny (feat. Roma Bestseller)",
+	  "artist": "Jah Khalib, Roma Bestseller",
+	  "src": "/audio/Jah Khalib, Roma Bestseller - Do Luny feat Roma Be.mp3",
+	  "fullSrc": "/audio/Jah Khalib, Roma Bestseller - Do Luny feat Roma Be.mp3",
+	  "cover": "/covers/Jah Khalib, Roma Bestseller - Do Luny feat Roma Be.png",
+	  "type": "track"
+	},
+	{
+	  "id": 84,
+	  "title": "Applause",
+	  "artist": "Lady Gaga",
+	  "src": "/audio/Lady Gaga - Applause.mp3",
+	  "fullSrc": "/audio/Lady Gaga - Applause.mp3",
+	  "cover": "/covers/Lady Gaga - Applause.png",
+	  "type": "track"
+   },
+	{
+	  "id": 85,
+	  "title": "Judas",
+	  "artist": "Lady Gaga",
+	  "src": "/audio/Lady Gaga - Judas.mp3",
+	  "fullSrc": "/audio/Lady Gaga - Judas.mp3",
+	  "cover": "/covers/Lady Gaga - Judas.png",
+	  "type": "track"
+	},
+	{
+	  "id": 86,
+	  "title": "A Lot Of Money",
+	  "artist": "Little Big",
+	  "src": "/audio/Little Big - A Lot Of Money.mp3",
+	  "fullSrc": "/audio/Little Big - A Lot Of Money.mp3",
+	  "cover": "/covers/Little Big - A Lot Of Money.png",
+	  "type": "track"
+	},
+	{
+	  "id": 87,
+	  "title": "Uptown Funk",
+	  "artist": "Mark Ronson, Bruno Mars",
+	  "src": "/audio/Mark Ronson, Bruno Mars - Uptown Funk.mp3",
+	  "fullSrc": "/audio/Mark Ronson, Bruno Mars - Uptown Funk.mp3",
+	  "cover": "/covers/Mark Ronson, Bruno Mars - Uptown Funk.png",
+	  "type": "track"
+	},
+	{
+	  "id": 88,
+	  "title": "Beggin' [muzmo.ru]",
+	  "artist": "[muzmo.ru] Måneskin",
+	  "src": "/audio/Mneskin_-_Beggin_52795146.mp3",
+	  "fullSrc": "/audio/Mneskin_-_Beggin_52795146.mp3",
+	  "cover": "/covers/Mneskin_-_Beggin_52795146.png",
+	  "type": "track"
+	},
+	{
+	  "id": 89,
+	  "title": "Миллионы голосов",
+	  "artist": "Полина Гагарина",
+	  "src": "/audio/Polina_Gagarina_-_Milliony_golosov_63172450.mp3",
+	  "fullSrc": "/audio/Polina_Gagarina_-_Milliony_golosov_63172450.mp3",
+	  "cover": "/covers/Polina_Gagarina_-_Milliony_golosov_63172450.png",
+	  "type": "track"
+	},
+	{
+	  "id": 90,
+	  "title": "Матушка",
+	  "artist": "Татьяна Куртукова",
+	  "src": "/audio/Tatyana_Kurtukova_-_Matushka_77620461.mp3",
+	  "fullSrc": "/audio/Tatyana_Kurtukova_-_Matushka_77620461.mp3",
+	  "cover": "/covers/Tatyana_Kurtukova_-_Matushka_77620461.jpeg",
+	  "type": "track"
+	},
+	{
+	  "id": 91,
+	  "title": "Dvigaj",
+	  "artist": "The Hatters",
+	  "src": "/audio/The Hatters - Dvigaj.mp3",
+	  "fullSrc": "/audio/The Hatters - Dvigaj.mp3",
+	  "cover": "/covers/The Hatters - Dvigaj.png",
+	  "type": "track"
+	},
+	{
+	  "id": 92,
+	  "title": "Танцы",
+	  "artist": "The Hatters",
+	  "src": "/audio/The Hatters - Танцы.mp3",
+	  "fullSrc": "/audio/The Hatters - Танцы.mp3",
+	  "cover": "/covers/The Hatters - Танцы.png",
+	  "type": "track"
+	},
+	{
+	  "id": 93,
+	  "title": "Можно всё",
+	  "artist": "Zivert",
+	  "src": "/audio/Zivert - Можно вс.mp3",
+	  "fullSrc": "/audio/Zivert - Можно вс.mp3",
+	  "cover": "/covers/Zivert - Можно вс.png",
+	  "type": "track"
+	},
+	{
+	  "id": 94,
+	  "title": "Коламбия Пикчерз не представляет",
+	  "artist": "БАНД'ЭРОС",
+	  "src": "/audio/БАНД_ЭРОС_Коламбия_Пикчерз_не_представляет.mp3",
+	  "fullSrc": "/audio/БАНД_ЭРОС_Коламбия_Пикчерз_не_представляет.mp3",
+	  "cover": "/covers/БАНД_ЭРОС_Коламбия_Пикчерз_не_представляет.jpeg",
+	  "type": "track"
+	},
+	{
+	  "id": 95,
+	  "title": "Граница",
+	  "artist": "Леонид Агутин & Отпетые Мошенники",
+	  "src": "/audio/Леонид_Агутин_Отпетые_Мошенники_Граница.mp3",
+	  "fullSrc": "/audio/Леонид_Агутин_Отпетые_Мошенники_Граница.mp3",
+	  "cover": "/covers/no-cover.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 96,
+	  "title": "Колыбельная Наташи",
+	  "artist": "Наадя",
+	  "src": "/audio/Наадя - Колыбельная Наташи.mp3",
+	  "fullSrc": "/audio/Наадя - Колыбельная Наташи.mp3",
+	  "cover": "/covers/Наадя - Колыбельная Наташи.jpeg",
+	  "type": "track"
+	},
+	{
+	  "id": 97,
+	  "title": "Непохожие",
+	  "artist": "Quest Pistols Show, Палагин Влад, Захарин Максим, Дудулад Даниил, Клименко Иван, Семенченко Вячеслав",
+	  "src": "/audio/непохожи.mp3",
+	  "fullSrc": "/audio/непохожи.mp3",
+	  "cover": "/covers/непохожи.png",
+	  "type": "track"
+	},
+	{
+	  "id": 98,
+	  "title": "Чайковский «Щелкунчик»",
+	  "artist": "unknown",
+	  "src": "/audio/Чайковский «Щелкунчик».m4a",
+	  "fullSrc": "/audio/Чайковский «Щелкунчик».m4a",
+	  "cover": "/covers/no-cover.jpg",
+	  "type": "track"
+	},
+	{
+	  "id": 99,
+	  "title": "Billie Jean",
+	  "artist": "Michael Jackson",
+	  "src": "/audio/Michael Jackson - Billie Jean.mp3",
+	  "fullSrc": "/audio/Michael Jackson - Billie Jean.mp3",
+	  "cover": "/covers/Michael Jackson - Billie Jean.png",
+	  "type": "track"
+	},
+	{
+	  "id": 100,
+	  "title": "Smooth Criminal (2012 Remaster)",
+	  "artist": "Michael Jackson",
+	  "src": "/audio/Michael Jackson - Smooth Criminal 2012 Remaster.mp3",
+	  "fullSrc": "/audio/Michael Jackson - Smooth Criminal 2012 Remaster.mp3",
+	  "cover": "/covers/Michael Jackson - Smooth Criminal 2012 Remaster.png",
+	  "type": "track"
+	},
+	{
+	  "id": 101,
+	  "title": "Thriller",
+	  "artist": "Michael Jackson",
+	  "src": "/audio/Michael Jackson - Thriller.mp3",
+	  "fullSrc": "/audio/Michael Jackson - Thriller.mp3",
+	  "cover": "/covers/Michael Jackson - Thriller.png",
+	  "type": "track"
+	},
+	{
+	  "id": 102,
+	  "title": "Feeling Good",
+	  "artist": "Michael Bublé",
+	  "src": "/audio/Michael Bubl - Feeling Good.mp3",
+	  "fullSrc": "/audio/Michael Bubl - Feeling Good.mp3",
+	  "cover": "/covers/Michael Bubl - Feeling Good.png",
+	  "type": "track"
+	}
+  ]

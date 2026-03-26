@@ -7,7 +7,7 @@ const Probe: React.FC = () => {
 
   return (
     <div>
-     
+     здесь я сделаю админку.
     </div>
   );
 };

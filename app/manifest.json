@@ -1,9 +1,9 @@
 {
-  "name": "Mingle",
-  "short_name": "Mingle",
+  "name": "mingle",
+  "short_name": "mingle",
   "description": "A Progressive Web App for playing music",
-  "theme_color": "#211f22",
-  "background_color": "#211f22",
+  "theme_color": "#030712",
+  "background_color": "#030712",
   "display": "standalone",
   "scope": "/",
   "start_url": "/",

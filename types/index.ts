@@ -17,11 +17,23 @@ export interface Track {
 	cover: string;
 	tracks: Track[];
 	isPlaying: boolean;
-	category: string | 'other' | 'single' | 'album' | 'vibe' | 'playlist';
+	category: 'other' | 'single' | 'album' | 'vibe' | 'playlist' | 'mix';
 	type: 'playlist';
+	author?: string;
 	colors?: {
 		button?: string; // Добавляем опциональные поля для цветов
 		text?: string;
 		icon?: string;
 	  };
+	updatedAt?: string; // Дата последнего обновления
+  }
+
+
+  export interface LyricsApiResponse {
+	plainLyrics?: string
+	syncedLyrics?: string
+	message?: string
+	error?: string
+	code?: number
+	name?: string
   }
