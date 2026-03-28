@@ -1,0 +1,71 @@
+.volumeContainer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 140px;
+  padding: 0 16px;
+  position: relative;
+}
+
+.volumeIcon {
+  color: var(--mg-foreground);
+  opacity: 0.7;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.volumeIcon:hover {
+  opacity: 1;
+}
+
+.sliderContainer {
+  flex-grow: 1;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+}
+
+.sliderTrack {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+
+.sliderProgress {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: var(--mg-accent-color, #8e3ef0);
+  border-radius: 2px;
+  transition: width 0.1s ease;
+}
+
+.sliderThumb {
+  position: absolute;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: left 0.1s ease, scale 0.1s ease;
+  pointer-events: none;
+  border: 2px solid var(--mg-accent-color, #8e3ef0);
+}
+
+.sliderContainer:hover .sliderThumb {
+  scale: 1.2;
+}
+
+.sliderContainer:hover .sliderTrack {
+  background: rgba(255, 255, 255, 0.15);
+}

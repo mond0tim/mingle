@@ -5,12 +5,30 @@
     "cover": "/covers/playlists/vibe.png",
     "tracks": [
       {
-        "id": 58,
-        "title": "Teddy Picker",
-        "artist": "Arctic Monkeys",
-        "src": "/audio/Teddy Picker.mp3",
-        "fullSrc": "/audio/Teddy Picker.mp3",
-        "cover": "/covers/brainstorm.jpg",
+        "id": 220,
+        "title": "Самолеты",
+        "artist": "Женя Трофимов",
+        "src": "/audio/Женя_Трофимов,_Женя_Трофимов_Самолеты.mp3",
+        "fullSrc": "/audio/Женя_Трофимов,_Женя_Трофимов_Самолеты.mp3",
+        "cover": "/covers/Женя_Трофимов,_Женя_Трофимов_Самолеты.jpg",
+        "type": "track"
+      },
+      {
+        "id": 310,
+        "title": "DON'T STOP",
+        "artist": "CURSEDEVIL, Zackow",
+        "src": "/audio/CURSEDEVIL_Zackow_-_DONT_STOP_74705051.mp3",
+        "fullSrc": "/audio/CURSEDEVIL_Zackow_-_DONT_STOP_74705051.mp3",
+        "cover": "/covers/CURSEDEVIL Zackow - DONT STOP 74705051.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 166,
+        "title": "Daddy Cool",
+        "artist": "Boney M.",
+        "src": "/audio/Boney M - Daddy Cool.mp3",
+        "fullSrc": "/audio/Boney M - Daddy Cool.mp3",
+        "cover": "/covers/Boney M - Daddy Cool.png",
         "type": "track"
       },
       {
@@ -20,319 +38,6 @@
         "src": "/audio/Michael_Jackson_Steve_Porcaro_Maxi_Anderson_Jesse_Corti_Annette_Sanders_Geoff_Grace_-_Stranger_in_Moscow_48273711.mp3",
         "fullSrc": "/audio/Michael_Jackson_Steve_Porcaro_Maxi_Anderson_Jesse_Corti_Annette_Sanders_Geoff_Grace_-_Stranger_in_Moscow_48273711.mp3",
         "cover": "/covers/Michael Jackson Steve Porcaro Maxi Anderson Jesse Corti Annette Sanders Geoff Grace - Stranger in Moscow 48273711.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 329,
-        "title": "O.M.S.K. Phonk",
-        "artist": "Смешарики",
-        "src": "/audio/Smeshariki_-_OMSK_Phonk_75371957.mp3",
-        "fullSrc": "/audio/Smeshariki_-_OMSK_Phonk_75371957.mp3",
-        "cover": "/covers/Smeshariki - OMSK Phonk 75371957.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 97,
-        "title": "Непохожие",
-        "artist": "Quest Pistols Show, Палагин Влад, Захарин Максим, Дудулад Даниил, Клименко Иван, Семенченко Вячеслав",
-        "src": "/audio/непохожи.mp3",
-        "fullSrc": "/audio/непохожи.mp3",
-        "cover": "/covers/непохожи.png",
-        "type": "track"
-      },
-      {
-        "id": 323,
-        "title": "Индийский чай",
-        "artist": "Смешарики",
-        "src": "/audio/Smeshariki_-_Indijjskijj_chajj_74725116.mp3",
-        "fullSrc": "/audio/Smeshariki_-_Indijjskijj_chajj_74725116.mp3",
-        "cover": "/covers/Smeshariki - Indijjskijj chajj 74725116.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 162,
-        "title": "Sleeping in My Car",
-        "artist": "Roxette",
-        "src": "/audio/Roxette - Sleeping in My Car.mp3",
-        "fullSrc": "/audio/Roxette - Sleeping in My Car.mp3",
-        "cover": "/covers/Roxette - Sleeping in My Car.png",
-        "type": "track"
-      },
-      {
-        "id": 260,
-        "title": "Cradles",
-        "artist": "Sub Urban",
-        "src": "/audio/Sub_Urban_-_Cradles_61741925.mp3",
-        "fullSrc": "/audio/Sub_Urban_-_Cradles_61741925.mp3",
-        "cover": "/covers/Sub Urban - Cradles 61741925.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 316,
-        "title": "FIGHT!",
-        "artist": "Moondeity",
-        "src": "/audio/Moondeity_-_FIGHT_74660136.mp3",
-        "fullSrc": "/audio/Moondeity_-_FIGHT_74660136.mp3",
-        "cover": "/covers/Moondeity - FIGHT 74660136.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 113,
-        "title": "Do I Wanna Know?",
-        "artist": "Arctic Monkeys",
-        "src": "/audio/Arctic Monkeys - Do I Wanna Know.mp3",
-        "fullSrc": "/audio/Arctic Monkeys - Do I Wanna Know.mp3",
-        "cover": "/covers/Arctic Monkeys - Do I Wanna Know.png",
-        "type": "track"
-      },
-      {
-        "id": 22,
-        "title": "Sugar",
-        "artist": "Maroon 5",
-        "src": "/audio/Sugar.mp3",
-        "fullSrc": "/audio/Sugar.mp3",
-        "cover": "/covers/Sugar.jpg",
-        "type": "track"
-      }
-    ],
-    "isPlaying": false,
-    "category": "vibe",
-    "type": "playlist",
-    "updatedAt": "2025-10-23T18:37:28.115Z"
-  },
-  {
-    "id": 240,
-    "title": "вайб дня",
-    "cover": "/covers/playlists/vibe-day.jpg",
-    "tracks": [
-      {
-        "id": 151,
-        "title": "The Rhythm of the Night",
-        "artist": "Corona",
-        "src": "/audio/Corona - The Rhythm of the Night.mp3",
-        "fullSrc": "/audio/Corona - The Rhythm of the Night.mp3",
-        "cover": "/covers/Corona - The Rhythm of the Night.png",
-        "type": "track"
-      },
-      {
-        "id": 264,
-        "title": "Silver Spoon",
-        "artist": "BTS",
-        "src": "/audio/BTS_-_Silver_Spoon_56088084.mp3",
-        "fullSrc": "/audio/BTS_-_Silver_Spoon_56088084.mp3",
-        "cover": "/covers/BTS - Silver Spoon 56088084.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 139,
-        "title": "Ту-лу-ла",
-        "artist": "Чичерина",
-        "src": "/audio/CHicherina_-_Tu-lu-la_48073087.mp3",
-        "fullSrc": "/audio/CHicherina_-_Tu-lu-la_48073087.mp3",
-        "cover": "/covers/CHicherina_-_Tu-lu-la_48073087.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 33,
-        "title": "Backslide",
-        "artist": "twenty one pilots",
-        "src": "/audio/Backslide.mp3",
-        "fullSrc": "/audio/Backslide.mp3",
-        "cover": "/covers/Twenty One Pilots - Navigating.jpg",
-        "type": "track",
-        "color": "#4C0000"
-      },
-      {
-        "id": 67,
-        "title": "Only Ones Who Know",
-        "artist": "Arctic Monkeys",
-        "src": "/audio/Arctic_Monkeys_-_Only_Ones_Who_Know_59891379.mp3",
-        "fullSrc": "/audio/Arctic_Monkeys_-_Only_Ones_Who_Know_59891379.mp3",
-        "cover": "/covers/Arctic_Monkeys_-_Only_Ones_Who_Know_59891379.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 286,
-        "title": "Monster",
-        "artist": "Imagine Dragons",
-        "src": "/audio/Imagine_Dragons_-_Monster_47829307.mp3",
-        "fullSrc": "/audio/Imagine_Dragons_-_Monster_47829307.mp3",
-        "cover": "/covers/Imagine Dragons - Monster 47829307.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 339,
-        "title": "BAIXO",
-        "artist": "xxanteria",
-        "src": "/audio/xxanteria_-_BAIXO_77657574.mp3",
-        "fullSrc": "/audio/xxanteria_-_BAIXO_77657574.mp3",
-        "cover": "/covers/xxanteria - BAIXO 77657574.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 41,
-        "title": "At the Risk of Feeling Dumb",
-        "artist": "twenty one pilots",
-        "src": "/audio/At the Risk of Feeling Dumb.mp3",
-        "fullSrc": "/audio/At the Risk of Feeling Dumb.mp3",
-        "cover": "/covers/Twenty One Pilots - Navigating.jpg",
-        "type": "track",
-        "color": "#4C0000"
-      },
-      {
-        "id": 129,
-        "title": "LoveGame",
-        "artist": "Lady Gaga",
-        "src": "/audio/Lady Gaga - LoveGame.mp3",
-        "fullSrc": "/audio/Lady Gaga - LoveGame.mp3",
-        "cover": "/covers/Lady Gaga - LoveGame.png",
-        "type": "track"
-      },
-      {
-        "id": 198,
-        "title": "Love Runs Out",
-        "artist": "OneRepublic",
-        "src": "/audio/OneRepublic - Love Runs Out.mp3",
-        "fullSrc": "/audio/OneRepublic - Love Runs Out.mp3",
-        "cover": "/covers/OneRepublic - Love Runs Out.png",
-        "type": "track"
-      },
-      {
-        "id": 268,
-        "title": "Born For This",
-        "artist": "The Score",
-        "src": "/audio/The_Score_-_Born_For_This_61821289.mp3",
-        "fullSrc": "/audio/The_Score_-_Born_For_This_61821289.mp3",
-        "cover": "/covers/The Score - Born For This 61821289.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 61,
-        "title": "Balaclava",
-        "artist": "Arctic Monkeys",
-        "src": "/audio/Arctic_Monkeys_-_Balaclava_59891377.mp3",
-        "fullSrc": "/audio/Arctic_Monkeys_-_Balaclava_59891377.mp3",
-        "cover": "/covers/Arctic_Monkeys_-_Balaclava_59891377.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 271,
-        "title": "Legend",
-        "artist": "The Score",
-        "src": "/audio/The_Score_-_Legend_49519310.mp3",
-        "fullSrc": "/audio/The_Score_-_Legend_49519310.mp3",
-        "cover": "/covers/The Score - Legend 49519310.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 3,
-        "title": "Тантум Верде Форте",
-        "artist": "Тимати",
-        "src": "/audio/track3.mp3",
-        "cover": "/covers/cover3.jpg",
-        "fullSrc": "/audio/track3.mp3",
-        "type": "track"
-      },
-      {
-        "id": 252,
-        "title": "Rhinestone Eyes",
-        "artist": "Gorillaz, Jamie Hewlett, Damon Albarn",
-        "src": "/audio/Gorillaz_Jamie_Hewlett_Damon_Albarn_-_Rhinestone_Eyes_48212743.mp3",
-        "fullSrc": "/audio/Gorillaz_Jamie_Hewlett_Damon_Albarn_-_Rhinestone_Eyes_48212743.mp3",
-        "cover": "/covers/Gorillaz Jamie Hewlett Damon Albarn - Rhinestone Eyes 48212743.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 291,
-        "title": "Warriors",
-        "artist": "Imagine Dragons",
-        "src": "/audio/Imagine_Dragons_-_Warriors_47829305.mp3",
-        "fullSrc": "/audio/Imagine_Dragons_-_Warriors_47829305.mp3",
-        "cover": "/covers/Imagine Dragons - Warriors 47829305.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 76,
-        "title": "Take Me To The Beach",
-        "artist": "Imagine Dragons",
-        "src": "/audio/Imagine_Dragons_-_Take_Me_To_The_Beach_78072581.mp3",
-        "fullSrc": "/audio/Imagine_Dragons_-_Take_Me_To_The_Beach_78072581.mp3",
-        "cover": "/covers/playlists/loom.jpg",
-        "type": "track"
-      },
-      {
-        "id": 335,
-        "title": "METAMORPHOSIS",
-        "artist": "INTERWORLD",
-        "src": "/audio/INTERWORLD_-_METAMORPHOSIS_73761657.mp3",
-        "fullSrc": "/audio/INTERWORLD_-_METAMORPHOSIS_73761657.mp3",
-        "cover": "/covers/INTERWORLD - METAMORPHOSIS 73761657.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 15,
-        "title": "What's Up Danger",
-        "artist": "Blackway, Black Caviar",
-        "src": "/audio/Blackway, Black Caviar - What's Up Danger.mp3",
-        "fullSrc": "/audio/Blackway, Black Caviar - What's Up Danger.mp3",
-        "cover": "/covers/cover4.jpg",
-        "color": "#000000",
-        "type": "track"
-      },
-      {
-        "id": 206,
-        "title": "Ты не верь слезам",
-        "artist": "Шура",
-        "src": "/audio/SHura_-_Ty_ne_ver_slezam_58001132.mp3",
-        "fullSrc": "/audio/SHura_-_Ty_ne_ver_slezam_58001132.mp3",
-        "cover": "/covers/SHura_-_Ty_ne_ver_slezam_58001132.jpg",
-        "type": "track"
-      }
-    ],
-    "isPlaying": false,
-    "category": "vibe",
-    "type": "playlist",
-    "updatedAt": "2025-10-23T18:37:28.115Z"
-  },
-  {
-    "id": 700,
-    "title": "вайб недели",
-    "cover": "/covers/playlists/vibe-week.jpg",
-    "tracks": [
-      {
-        "id": 195,
-        "title": "All The Right Moves",
-        "artist": "OneRepublic",
-        "src": "/audio/OneRepublic - All The Right Moves.mp3",
-        "fullSrc": "/audio/OneRepublic - All The Right Moves.mp3",
-        "cover": "/covers/OneRepublic - All The Right Moves.png",
-        "type": "track"
-      },
-      {
-        "id": 165,
-        "title": "Everybody (Backstreet's Back) (Extended Version)",
-        "artist": "Backstreet Boys",
-        "src": "/audio/Backstreet_Boys_Everybody_Backstreets_Back_Extended_Version.mp3",
-        "fullSrc": "/audio/Backstreet_Boys_Everybody_Backstreets_Back_Extended_Version.mp3",
-        "cover": "/covers/Backstreet_Boys_Everybody_Backstreets_Back_Extended_Version.png",
-        "type": "track"
-      },
-      {
-        "id": 327,
-        "title": "Неприятности",
-        "artist": "Смешарики",
-        "src": "/audio/Smeshariki_-_Nepriyatnosti_78004572.mp3",
-        "fullSrc": "/audio/Smeshariki_-_Nepriyatnosti_78004572.mp3",
-        "cover": "/covers/Smeshariki - Nepriyatnosti 78004572.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 276,
-        "title": "Bones",
-        "artist": "Imagine Dragons",
-        "src": "/audio/Imagine_Dragons_-_Bones_75940783.mp3",
-        "fullSrc": "/audio/Imagine_Dragons_-_Bones_75940783.mp3",
-        "cover": "/covers/Imagine Dragons - Bones 75940783.jpeg",
         "type": "track"
       },
       {
@@ -346,539 +51,39 @@
         "color": "#4C0000"
       },
       {
-        "id": 144,
-        "title": "Lady (Hear Me Tonight)",
-        "artist": "Modjo Band, Bernard Edwards Nile Rodgers Romain Tranchart Yann Destagnol, Romain Tranchart Yann Destagnol",
-        "src": "/audio/Modjo Band, Bernard Edwards Nile Rodgers Romain Tr.m4a",
-        "fullSrc": "/audio/Modjo Band, Bernard Edwards Nile Rodgers Romain Tr.m4a",
-        "cover": "/covers/no-cover.jpg",
-        "type": "track"
-      },
-      {
-        "id": 123,
-        "title": "Deja Vu",
-        "artist": "INNA",
-        "src": "/audio/INNA - Deja Vu.mp3",
-        "fullSrc": "/audio/INNA - Deja Vu.mp3",
-        "cover": "/covers/INNA - Deja Vu.png",
-        "type": "track"
-      },
-      {
-        "id": 126,
-        "title": "I Never Felt so Right (Radio Mix)",
-        "artist": "Ben Delay",
-        "src": "/audio/Ben Delay - I Never Felt so Right Radio Mix.mp3",
-        "fullSrc": "/audio/Ben Delay - I Never Felt so Right Radio Mix.mp3",
-        "cover": "/covers/Ben Delay - I Never Felt so Right Radio Mix.png",
-        "type": "track"
-      },
-      {
-        "id": 340,
-        "title": "Happy",
-        "artist": "Pharrell Williams",
-        "src": "/audio/Pharrell_Williams_-_Happy_47923895.mp3",
-        "fullSrc": "/audio/Pharrell_Williams_-_Happy_47923895.mp3",
-        "cover": "/covers/Pharrell Williams - Happy 47923895.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 99,
-        "title": "Billie Jean",
-        "artist": "Michael Jackson",
-        "src": "/audio/Michael Jackson - Billie Jean.mp3",
-        "fullSrc": "/audio/Michael Jackson - Billie Jean.mp3",
-        "cover": "/covers/Michael Jackson - Billie Jean.png",
-        "type": "track"
-      },
-      {
-        "id": 71,
-        "title": "Dont Forget Me",
+        "id": 73,
+        "title": "Gods Dont Pray",
         "artist": "Imagine Dragons",
-        "src": "/audio/Imagine_Dragons_-_Dont_Forget_Me_2024_78247870.mp3",
-        "fullSrc": "/audio/Imagine_Dragons_-_Dont_Forget_Me_2024_78247870.mp3",
+        "src": "/audio/Imagine_Dragons_-_Gods_Dont_Pray_78053183.mp3",
+        "fullSrc": "/audio/Imagine_Dragons_-_Gods_Dont_Pray_78053183.mp3",
         "cover": "/covers/playlists/loom.jpg",
         "type": "track"
       },
       {
-        "id": 44,
-        "title": "Chk Chk Boom",
-        "artist": "Stray Kids",
-        "src": "/audio/Stray Kids - Chk Chk Boom.mp3",
-        "fullSrc": "/audio/Stray Kids - Chk Chk Boom.mp3",
-        "cover": "/covers/ATE.jpg",
+        "id": 132,
+        "title": "Ghost Town",
+        "artist": "Adam Lambert",
+        "src": "/audio/Adam Lambert - Ghost Town.mp3",
+        "fullSrc": "/audio/Adam Lambert - Ghost Town.mp3",
+        "cover": "/covers/Adam Lambert - Ghost Town.png",
         "type": "track"
       },
       {
-        "id": 193,
-        "title": "In The End",
-        "artist": "Linkin Park",
-        "src": "/audio/Linkin_Park_-_In_The_End_47828874.mp3",
-        "fullSrc": "/audio/Linkin_Park_-_In_The_End_47828874.mp3",
-        "cover": "/covers/Linkin Park - In The End 47828874.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 201,
-        "title": "Романс",
-        "artist": "PIZZA, Приказчиков С.",
-        "src": "/audio/PIZZA,_Приказчиков_С,_Приказчиков_С_Романс.mp3",
-        "fullSrc": "/audio/PIZZA,_Приказчиков_С,_Приказчиков_С_Романс.mp3",
-        "cover": "/covers/PIZZA,_Приказчиков_С,_Приказчиков_С_Романс.jpg",
-        "type": "track"
-      },
-      {
-        "id": 170,
-        "title": "Boogie Wonderland",
-        "artist": "Earth， Wind & Fire, The Emotions",
-        "src": "/audio/Earth Wind  Fire, The Emotions - Boogie Wonderland.mp3",
-        "fullSrc": "/audio/Earth Wind  Fire, The Emotions - Boogie Wonderland.mp3",
-        "cover": "/covers/Earth Wind  Fire, The Emotions - Boogie Wonderland.png",
-        "type": "track"
-      },
-      {
-        "id": 177,
-        "title": "S & M",
-        "artist": "Rihanna",
-        "src": "/audio/Rihanna - S  M.mp3",
-        "fullSrc": "/audio/Rihanna - S  M.mp3",
-        "cover": "/covers/Rihanna - S  M.png",
-        "type": "track"
-      },
-      {
-        "id": 125,
-        "title": "Get A Way",
-        "artist": "Maxx",
-        "src": "/audio/Maxx - Get A Way.mp3",
-        "fullSrc": "/audio/Maxx - Get A Way.mp3",
-        "cover": "/covers/Maxx - Get A Way.png",
-        "type": "track"
-      },
-      {
-        "id": 33,
-        "title": "Backslide",
-        "artist": "twenty one pilots",
-        "src": "/audio/Backslide.mp3",
-        "fullSrc": "/audio/Backslide.mp3",
-        "cover": "/covers/Twenty One Pilots - Navigating.jpg",
-        "type": "track",
-        "color": "#4C0000"
-      },
-      {
-        "id": 161,
-        "title": "Be My Lover",
-        "artist": "La Bouche",
-        "src": "/audio/La Bouche - Be My Lover.mp3",
-        "fullSrc": "/audio/La Bouche - Be My Lover.mp3",
-        "cover": "/covers/La Bouche - Be My Lover.png",
-        "type": "track"
-      },
-      {
-        "id": 174,
-        "title": "Abracadabra",
-        "artist": "Lady Gaga",
-        "src": "/audio/Lady Gaga - Abracadabra.m4a",
-        "fullSrc": "/audio/Lady Gaga - Abracadabra.m4a",
+        "id": 148,
+        "title": "Lola's Theme (Radio Edit)",
+        "artist": "The Shapeshifters",
+        "src": "/audio/The Shapeshifters - Lolas Theme Radio Edit.m4a",
+        "fullSrc": "/audio/The Shapeshifters - Lolas Theme Radio Edit.m4a",
         "cover": "/covers/no-cover.jpg",
         "type": "track"
       },
       {
-        "id": 315,
-        "title": "Phonk Web",
-        "artist": "Dxrk ダーク",
-        "src": "/audio/Dxrk_-_Phonk_Web_73377729.mp3",
-        "fullSrc": "/audio/Dxrk_-_Phonk_Web_73377729.mp3",
-        "cover": "/covers/Dxrk - Phonk Web 73377729.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 139,
-        "title": "Ту-лу-ла",
-        "artist": "Чичерина",
-        "src": "/audio/CHicherina_-_Tu-lu-la_48073087.mp3",
-        "fullSrc": "/audio/CHicherina_-_Tu-lu-la_48073087.mp3",
-        "cover": "/covers/CHicherina_-_Tu-lu-la_48073087.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 48,
-        "title": "twilight",
-        "artist": "Stray Kids",
-        "src": "/audio/twilight.m4a",
-        "fullSrc": "/audio/twilight.m4a",
-        "cover": "/covers/ATE.jpg",
-        "type": "track"
-      },
-      {
-        "id": 82,
-        "title": "Яблоко",
-        "artist": "IOWA, Ёлка",
-        "src": "/audio/IOWA_JOlka_-_YAbloko_73061728.mp3",
-        "fullSrc": "/audio/IOWA_JOlka_-_YAbloko_73061728.mp3",
-        "cover": "/covers/IOWA_JOlka_-_YAbloko_73061728.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 305,
-        "title": "Змея",
-        "artist": "Сухарев Дмитрий",
-        "src": "/audio/Змея - Сухарев Дмитрий.mp3",
-        "fullSrc": "/audio/Змея - Сухарев Дмитрий.mp3",
-        "cover": "/covers/Сухарев Дмитрий.jpg",
-        "type": "track"
-      },
-      {
-        "id": 168,
-        "title": "Hot Stuff",
-        "artist": "Donna Summer",
-        "src": "/audio/Donna Summer - Hot Stuff.mp3",
-        "fullSrc": "/audio/Donna Summer - Hot Stuff.mp3",
-        "cover": "/covers/Donna Summer - Hot Stuff.png",
-        "type": "track"
-      },
-      {
-        "id": 7,
-        "title": "Astronaut In The Ocean",
-        "artist": "Masked Wolf",
-        "src": "/audio/Astronaut In The Ocean.mp3",
-        "fullSrc": "/audio/Astronaut In The Ocean.mp3",
-        "cover": "/covers/Astronaut In The Ocean.jpg",
-        "type": "track"
-      },
-      {
-        "id": 293,
-        "title": "Revolution",
-        "artist": "The Score",
-        "src": "/audio/The_Score_-_Revolution_49519337.mp3",
-        "fullSrc": "/audio/The_Score_-_Revolution_49519337.mp3",
-        "cover": "/covers/The Score - Revolution 49519337.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 306,
-        "title": "На вершине мира",
-        "artist": "Сухарев Дмитрий",
-        "src": "/audio/На вершине мира - Сухарев Дмитрий.mp3",
-        "fullSrc": "/audio/На вершине мира - Сухарев Дмитрий.mp3",
-        "cover": "/covers/Сухарев Дмитрий.jpg",
-        "type": "track"
-      },
-      {
-        "id": 221,
-        "title": "Поезда",
-        "artist": "Женя Трофимов & Комната культуры",
-        "src": "/audio/Женя_Трофимов_Комната_культуры_Поезда.mp3",
-        "fullSrc": "/audio/Женя_Трофимов_Комната_культуры_Поезда.mp3",
-        "cover": "/covers/no-cover.jpg",
-        "type": "track"
-      },
-      {
-        "id": 149,
-        "title": "Mankhetten",
-        "artist": "БФНД'ЭРОС",
-        "src": "/audio/BandEros - Mankhetten.mp3",
-        "fullSrc": "/audio/BandEros - Mankhetten.mp3",
-        "cover": "/covers/BandEros - Mankhetten.png",
-        "type": "track"
-      },
-      {
-        "id": 81,
-        "title": "Плохо танцевать",
-        "artist": "IOWA",
-        "src": "/audio/IOWA - Плохо танцевать.mp3",
-        "fullSrc": "/audio/IOWA - Плохо танцевать.mp3",
-        "cover": "/covers/IOWA - Плохо танцевать.png",
-        "type": "track"
-      },
-      {
-        "id": 11,
-        "title": "Blinding Lights",
-        "artist": "The Weeknd",
-        "src": "/audio/Blinding Lights.mp3",
-        "fullSrc": "/audio/Blinding Lights.mp3",
-        "cover": "/covers/Blinding Lights.png",
-        "type": "track"
-      },
-      {
-        "id": 56,
-        "title": "Wake Up",
-        "artist": "Imagine Dragons",
-        "src": "/audio/Wake Up.mp3",
-        "fullSrc": "/audio/Wake Up.mp3",
-        "cover": "/covers/Eyes Closed - Imagine Dragons.jpg",
-        "type": "track"
-      },
-      {
-        "id": 301,
-        "title": "Believer",
-        "artist": "Imagine Dragons",
-        "src": "/audio/Imagine_Dragons_-_Believer_74640917.mp3",
-        "fullSrc": "/audio/Imagine_Dragons_-_Believer_74640917.mp3",
-        "cover": "/covers/Imagine Dragons - Believer 74640917.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 326,
-        "title": "Мы не смеемся",
+        "id": 324,
+        "title": "Индийский чай",
         "artist": "Смешарики",
-        "src": "/audio/Smeshariki_-_My_ne_smeemsya_74649561.mp3",
-        "fullSrc": "/audio/Smeshariki_-_My_ne_smeemsya_74649561.mp3",
-        "cover": "/covers/Smeshariki - My ne smeemsya 74649561.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 294,
-        "title": "Choker",
-        "artist": "twenty one pilots",
-        "src": "/audio/twenty_one_pilots_-_Choker_72934755.mp3",
-        "fullSrc": "/audio/twenty_one_pilots_-_Choker_72934755.mp3",
-        "cover": "/covers/twenty one pilots - Choker 72934755.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 206,
-        "title": "Ты не верь слезам",
-        "artist": "Шура",
-        "src": "/audio/SHura_-_Ty_ne_ver_slezam_58001132.mp3",
-        "fullSrc": "/audio/SHura_-_Ty_ne_ver_slezam_58001132.mp3",
-        "cover": "/covers/SHura_-_Ty_ne_ver_slezam_58001132.jpg",
-        "type": "track"
-      },
-      {
-        "id": 213,
-        "title": "Люди",
-        "artist": "Дайте танк (!)",
-        "src": "/audio/Дайте_танк_,_Дмитрий_Мозжухин,_Дмитрий_Мозжухин_.mp3",
-        "fullSrc": "/audio/Дайте_танк_,_Дмитрий_Мозжухин,_Дмитрий_Мозжухин_.mp3",
-        "cover": "/covers/Дайте_танк_,_Дмитрий_Мозжухин,_Дмитрий_Мозжухин_.jpg",
-        "type": "track"
-      },
-      {
-        "id": 278,
-        "title": "Cutthroat",
-        "artist": "Imagine Dragons",
-        "src": "/audio/Imagine_Dragons_-_Cutthroat_72848542.mp3",
-        "fullSrc": "/audio/Imagine_Dragons_-_Cutthroat_72848542.mp3",
-        "cover": "/covers/Imagine Dragons - Cutthroat 72848542.jpeg",
-        "type": "track"
-      }
-    ],
-    "isPlaying": false,
-    "category": "vibe",
-    "type": "playlist",
-    "updatedAt": "2025-10-23T18:37:28.115Z"
-  },
-  {
-    "id": 300,
-    "title": "вайб месяца",
-    "cover": "/covers/playlists/vibe-month.jpg",
-    "tracks": [
-      {
-        "id": 314,
-        "title": "My Toy",
-        "artist": "DVRST",
-        "src": "/audio/DVRST_-_My_Toy_74650660.mp3",
-        "fullSrc": "/audio/DVRST_-_My_Toy_74650660.mp3",
-        "cover": "/covers/DVRST - My Toy 74650660.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 283,
-        "title": "I Don’t Know Why",
-        "artist": "Imagine Dragons",
-        "src": "/audio/Imagine_Dragons_-_I_Dont_Know_Why_47828246.mp3",
-        "fullSrc": "/audio/Imagine_Dragons_-_I_Dont_Know_Why_47828246.mp3",
-        "cover": "/covers/Imagine Dragons - I Dont Know Why 47828246.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 294,
-        "title": "Choker",
-        "artist": "twenty one pilots",
-        "src": "/audio/twenty_one_pilots_-_Choker_72934755.mp3",
-        "fullSrc": "/audio/twenty_one_pilots_-_Choker_72934755.mp3",
-        "cover": "/covers/twenty one pilots - Choker 72934755.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 186,
-        "title": "Around the World (La La La La La) (Radio Version)",
-        "artist": "A Touch Of Class",
-        "src": "/audio/A Touch Of Class - Around the World La La La La La.mp3",
-        "fullSrc": "/audio/A Touch Of Class - Around the World La La La La La.mp3",
-        "cover": "/covers/A Touch Of Class - Around the World La La La La La.png",
-        "type": "track"
-      },
-      {
-        "id": 122,
-        "title": "Amazing",
-        "artist": "INNA",
-        "src": "/audio/INNA - Amazing.mp3",
-        "fullSrc": "/audio/INNA - Amazing.mp3",
-        "cover": "/covers/INNA - Amazing.png",
-        "type": "track"
-      },
-      {
-        "id": 223,
-        "title": "На большом воздушном шаре,",
-        "artist": "Ёлка",
-        "src": "/audio/лка - На большом воздушном шаре.mp3",
-        "fullSrc": "/audio/лка - На большом воздушном шаре.mp3",
-        "cover": "/covers/лка - На большом воздушном шаре.jpg",
-        "type": "track"
-      },
-      {
-        "id": 66,
-        "title": "Old Yellow Bricks",
-        "artist": "Arctic Monkeys",
-        "src": "/audio/Arctic_Monkeys_-_Old_Yellow_Bricks_59891386.mp3",
-        "fullSrc": "/audio/Arctic_Monkeys_-_Old_Yellow_Bricks_59891386.mp3",
-        "cover": "/covers/Arctic_Monkeys_-_Old_Yellow_Bricks_59891386.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 200,
-        "title": "Улыбайся",
-        "artist": "IOWA",
-        "src": "/audio/IOWA - Улыбайся.mp3",
-        "fullSrc": "/audio/IOWA - Улыбайся.mp3",
-        "cover": "/covers/IOWA - Улыбайся.jpg",
-        "type": "track"
-      },
-      {
-        "id": 8,
-        "title": "Come Play (from the series Arcane League of Legends)",
-        "artist": "Stray Kids, Arcane, Legaue of Legends",
-        "src": "/audio/Come_play.mp3",
-        "fullSrc": "/audio/Come_play.mp3",
-        "cover": "/covers/cover1.jpg",
-        "type": "track"
-      },
-      {
-        "id": 264,
-        "title": "Silver Spoon",
-        "artist": "BTS",
-        "src": "/audio/BTS_-_Silver_Spoon_56088084.mp3",
-        "fullSrc": "/audio/BTS_-_Silver_Spoon_56088084.mp3",
-        "cover": "/covers/BTS - Silver Spoon 56088084.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 262,
-        "title": "dimple",
-        "artist": "BTS",
-        "src": "/audio/BTS_-_dimple_48701166.mp3",
-        "fullSrc": "/audio/BTS_-_dimple_48701166.mp3",
-        "cover": "/covers/BTS - dimple 48701166.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 218,
-        "title": "Самая самая",
-        "artist": "Егор Крид, Е. В. Глеб, М. Решетняк, Е. Н. Булаткин",
-        "src": "/audio/Егор_Крид,_Е_В_Глеб,_М_Решетняк,_Е_Н_Булаткин_Са.mp3",
-        "fullSrc": "/audio/Егор_Крид,_Е_В_Глеб,_М_Решетняк,_Е_Н_Булаткин_Са.mp3",
-        "cover": "/covers/Егор_Крид,_Е_В_Глеб,_М_Решетняк,_Е_Н_Булаткин_Са.jpg",
-        "type": "track"
-      },
-      {
-        "id": 254,
-        "title": "Die With A Smile",
-        "artist": "Lady Gaga",
-        "src": "/audio/Lady_Gaga_-_Die_With_A_Smile_79149305.mp3",
-        "fullSrc": "/audio/Lady_Gaga_-_Die_With_A_Smile_79149305.mp3",
-        "cover": "/covers/Lady Gaga - Die With A Smile 79149305.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 178,
-        "title": "Listen To Your Heart",
-        "artist": "Roxette",
-        "src": "/audio/Roxette - Listen To Your Heart.mp3",
-        "fullSrc": "/audio/Roxette - Listen To Your Heart.mp3",
-        "cover": "/covers/no-cover.jpg",
-        "type": "track"
-      },
-      {
-        "id": 331,
-        "title": "От Винта!",
-        "artist": "Смешарики",
-        "src": "/audio/Smeshariki_-_Ot_Vinta_73000062.mp3",
-        "fullSrc": "/audio/Smeshariki_-_Ot_Vinta_73000062.mp3",
-        "cover": "/covers/Smeshariki - Ot Vinta 73000062.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 258,
-        "title": "Stranger in Moscow",
-        "artist": "Michael Jackson, Steve Porcaro, Maxi Anderson, Jesse Corti, Annette Sanders, Geoff Grace",
-        "src": "/audio/Michael_Jackson_Steve_Porcaro_Maxi_Anderson_Jesse_Corti_Annette_Sanders_Geoff_Grace_-_Stranger_in_Moscow_48273711.mp3",
-        "fullSrc": "/audio/Michael_Jackson_Steve_Porcaro_Maxi_Anderson_Jesse_Corti_Annette_Sanders_Geoff_Grace_-_Stranger_in_Moscow_48273711.mp3",
-        "cover": "/covers/Michael Jackson Steve Porcaro Maxi Anderson Jesse Corti Annette Sanders Geoff Grace - Stranger in Moscow 48273711.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 38,
-        "title": "Lavish",
-        "artist": "twenty one pilots",
-        "src": "/audio/Lavish.mp3",
-        "fullSrc": "/audio/Lavish.mp3",
-        "cover": "/covers/Twenty One Pilots - Navigating.jpg",
-        "type": "track",
-        "color": "#4C0000"
-      },
-      {
-        "id": 188,
-        "title": "Why'd You Only Call Me When You're High?",
-        "artist": "Arctic Monkeys",
-        "src": "/audio/Arctic Monkeys - Whyd You Only Call Me When Youre High.mp3",
-        "fullSrc": "/audio/Arctic Monkeys - Whyd You Only Call Me When Youre High.mp3",
-        "cover": "/covers/Arctic Monkeys - Whyd You Only Call Me When Youre High.png",
-        "type": "track"
-      },
-      {
-        "id": 104,
-        "title": "Freak On a Leash",
-        "artist": "Korn",
-        "src": "/audio/Korn - Freak On a Leash.mp3",
-        "fullSrc": "/audio/Korn - Freak On a Leash.mp3",
-        "cover": "/covers/Korn - Freak On a Leash.png",
-        "type": "track"
-      },
-      {
-        "id": 110,
-        "title": "Nookie",
-        "artist": "Limp Bizkit",
-        "src": "/audio/Limp Bizkit - Nookie.mp3",
-        "fullSrc": "/audio/Limp Bizkit - Nookie.mp3",
-        "cover": "/covers/Limp Bizkit - Nookie.png",
-        "type": "track"
-      },
-      {
-        "id": 338,
-        "title": "VISION",
-        "artist": "UdieNnx, HXVSAGE",
-        "src": "/audio/UdieNnx_HXVSAGE_-_VISION_79123722.mp3",
-        "fullSrc": "/audio/UdieNnx_HXVSAGE_-_VISION_79123722.mp3",
-        "cover": "/covers/UdieNnx HXVSAGE - VISION 79123722.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 23,
-        "title": "Navigating",
-        "artist": "twenty one pilots",
-        "src": "/audio/Twenty One Pilots - Navigating.mp3",
-        "fullSrc": "/audio/Twenty One Pilots - Navigating.mp3",
-        "cover": "/covers/Twenty One Pilots - Navigating.jpg",
-        "type": "track",
-        "color": "#4C0000"
-      },
-      {
-        "id": 247,
-        "title": "Crazy",
-        "artist": "Gnarls Barkley",
-        "src": "/audio/Gnarls_Barkley_-_Crazy_48029930.mp3",
-        "fullSrc": "/audio/Gnarls_Barkley_-_Crazy_48029930.mp3",
-        "cover": "/covers/Gnarls Barkley - Crazy 48029930.jpeg",
+        "src": "/audio/Smeshariki_-_Indijjskijj_chajj_77848442.mp3",
+        "fullSrc": "/audio/Smeshariki_-_Indijjskijj_chajj_77848442.mp3",
+        "cover": "/covers/Smeshariki - Indijjskijj chajj 77848442.jpeg",
         "type": "track"
       },
       {
@@ -891,84 +96,369 @@
         "type": "track"
       },
       {
-        "id": 268,
-        "title": "Born For This",
-        "artist": "The Score",
-        "src": "/audio/The_Score_-_Born_For_This_61821289.mp3",
-        "fullSrc": "/audio/The_Score_-_Born_For_This_61821289.mp3",
-        "cover": "/covers/The Score - Born For This 61821289.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 198,
-        "title": "Love Runs Out",
-        "artist": "OneRepublic",
-        "src": "/audio/OneRepublic - Love Runs Out.mp3",
-        "fullSrc": "/audio/OneRepublic - Love Runs Out.mp3",
-        "cover": "/covers/OneRepublic - Love Runs Out.png",
-        "type": "track"
-      },
-      {
-        "id": 288,
-        "title": "Sharks",
+        "id": 285,
+        "title": "Machine",
         "artist": "Imagine Dragons",
-        "src": "/audio/Imagine_Dragons_-_Sharks_75941262.mp3",
-        "fullSrc": "/audio/Imagine_Dragons_-_Sharks_75941262.mp3",
-        "cover": "/covers/Imagine Dragons - Sharks 75941262.jpeg",
+        "src": "/audio/Imagine_Dragons_-_Machine_60079045.mp3",
+        "fullSrc": "/audio/Imagine_Dragons_-_Machine_60079045.mp3",
+        "cover": "/covers/Imagine Dragons - Machine 60079045.jpeg",
         "type": "track"
       },
       {
-        "id": 215,
-        "title": "Веселиться",
+        "id": 293,
+        "title": "Revolution",
+        "artist": "The Score",
+        "src": "/audio/The_Score_-_Revolution_49519337.mp3",
+        "fullSrc": "/audio/The_Score_-_Revolution_49519337.mp3",
+        "cover": "/covers/The Score - Revolution 49519337.jpeg",
+        "type": "track"
+      }
+    ],
+    "isPlaying": false,
+    "category": "vibe",
+    "type": "playlist",
+    "updatedAt": "2026-03-28T14:08:42.306Z"
+  },
+  {
+    "id": 240,
+    "title": "вайб дня",
+    "cover": "/covers/playlists/vibe-day.jpg",
+    "tracks": [
+      {
+        "id": 27,
+        "title": "Сладкая жизнь Маша и Медведь",
+        "artist": "СВУДИ",
+        "src": "/audio/Сладкая_жизнь_СВУДИ Маша_и_Медведь.mp3",
+        "fullSrc": "/audio/Сладкая_жизнь_СВУДИ Маша_и_Медведь.mp3",
+        "cover": "/covers/Сладкая_жизнь_СВУДИ Маша_и_Медведь.jpg",
+        "type": "track"
+      },
+      {
+        "id": 57,
+        "title": "Brainstorm",
+        "artist": "Artic Monkeys",
+        "src": "/audio/brainstorm.mp3",
+        "fullSrc": "/audio/brainstorm.mp3",
+        "cover": "/covers/brainstorm.jpg",
+        "type": "track"
+      },
+      {
+        "id": 59,
+        "title": "D is for Dangerous",
+        "artist": "Arctic Monkeys",
+        "src": "/audio/Arctic_Monkeys_-_D_is_for_Dangerous_59891375.mp3",
+        "fullSrc": "/audio/Arctic_Monkeys_-_D_is_for_Dangerous_59891375.mp3",
+        "cover": "/covers/Arctic_Monkeys_-_D_is_for_Dangerous_59891375.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 118,
+        "title": "I Wanna Be Yours",
+        "artist": "Arctic Monkeys",
+        "src": "/audio/Arctic_Monkeys_-_I_Wanna_Be_Yours_47842917.mp3",
+        "fullSrc": "/audio/Arctic_Monkeys_-_I_Wanna_Be_Yours_47842917.mp3",
+        "cover": "/covers/Arctic_Monkeys_-_I_Wanna_Be_Yours_47842917.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 148,
+        "title": "Lola's Theme (Radio Edit)",
+        "artist": "The Shapeshifters",
+        "src": "/audio/The Shapeshifters - Lolas Theme Radio Edit.m4a",
+        "fullSrc": "/audio/The Shapeshifters - Lolas Theme Radio Edit.m4a",
+        "cover": "/covers/no-cover.jpg",
+        "type": "track"
+      },
+      {
+        "id": 37,
+        "title": "The Craving (Jenna's Version)",
+        "artist": "twenty one pilots",
+        "src": "/audio/The Craving (Jenna's Version).mp3",
+        "fullSrc": "/audio/The Craving (Jenna's Version).mp3",
+        "cover": "/covers/Twenty One Pilots - Navigating.jpg",
+        "type": "track",
+        "color": "#4C0000"
+      },
+      {
+        "id": 137,
+        "title": "the boy is mine",
+        "artist": "Ariana Grande",
+        "src": "/audio/Ariana Grande - the boy is mine.mp3",
+        "fullSrc": "/audio/Ariana Grande - the boy is mine.mp3",
+        "cover": "/covers/no-cover.jpg",
+        "type": "track"
+      },
+      {
+        "id": 15,
+        "title": "What's Up Danger",
+        "artist": "Blackway, Black Caviar",
+        "src": "/audio/Blackway, Black Caviar - What's Up Danger.mp3",
+        "fullSrc": "/audio/Blackway, Black Caviar - What's Up Danger.mp3",
+        "cover": "/covers/cover4.jpg",
+        "color": "#000000",
+        "type": "track"
+      },
+      {
+        "id": 149,
+        "title": "Mankhetten",
+        "artist": "БФНД'ЭРОС",
+        "src": "/audio/BandEros - Mankhetten.mp3",
+        "fullSrc": "/audio/BandEros - Mankhetten.mp3",
+        "cover": "/covers/BandEros - Mankhetten.png",
+        "type": "track"
+      },
+      {
+        "id": 309,
+        "title": "Город Омск",
+        "artist": "Смешарики, Александр Шпынев, Сергей Мардарь, Антон Виноградов, Марина Ланда",
+        "src": "/audio/Aleksandr_SHpynev_Sergejj_Mardar_Anton_Vinogradov_Marina_Landa_-_Gorod_Omsk_68991363.mp3",
+        "fullSrc": "/audio/Aleksandr_SHpynev_Sergejj_Mardar_Anton_Vinogradov_Marina_Landa_-_Gorod_Omsk_68991363.mp3",
+        "cover": "/covers/Aleksandr SHpynev Sergejj Mardar Anton Vinogradov Marina Landa - Gorod Omsk 68991363.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 5,
+        "title": "Faint",
+        "artist": "Linkin Park",
+        "src": "/audio/track5.mp3",
+        "cover": "/covers/cover5.jpg",
+        "fullSrc": "/audio/track5.mp3",
+        "type": "track"
+      },
+      {
+        "id": 216,
+        "title": "Чудо",
         "artist": "Дайте танк (!)",
-        "src": "/audio/Дайте_танк_,_Дмитрий_Мозжухин,_Дмитрий_Мозжухин_Веселиться.mp3",
-        "fullSrc": "/audio/Дайте_танк_,_Дмитрий_Мозжухин,_Дмитрий_Мозжухин_Веселиться.mp3",
-        "cover": "/covers/Дайте_танк_,_Дмитрий_Мозжухин,_Дмитрий_Мозжухин_Веселиться.jpg",
+        "src": "/audio/Дайте_танк_,_Дмитрий_Мозжухин,_Дмитрий_Мозжухин_Чудо.mp3",
+        "fullSrc": "/audio/Дайте_танк_,_Дмитрий_Мозжухин,_Дмитрий_Мозжухин_Чудо.mp3",
+        "cover": "/covers/Дайте_танк_,_Дмитрий_Мозжухин,_Дмитрий_Мозжухин_Чудо.jpg",
         "type": "track"
       },
       {
-        "id": 310,
-        "title": "DON'T STOP",
-        "artist": "CURSEDEVIL, Zackow",
-        "src": "/audio/CURSEDEVIL_Zackow_-_DONT_STOP_74705051.mp3",
-        "fullSrc": "/audio/CURSEDEVIL_Zackow_-_DONT_STOP_74705051.mp3",
-        "cover": "/covers/CURSEDEVIL Zackow - DONT STOP 74705051.jpeg",
+        "id": 28,
+        "title": "Big Dawgs",
+        "artist": "Hanumankind, Kalmi",
+        "src": "/audio/Big Dawgs - Hanumankind   Kalmi.m4a",
+        "fullSrc": "/audio/Big Dawgs - Hanumankind   Kalmi.m4a",
+        "cover": "/covers/Big_Dawgs _-_Hanumankind_Kalmi.jpg",
         "type": "track"
       },
       {
-        "id": 26,
-        "title": "Tokyo Drifting",
-        "artist": "Glass Animals",
-        "src": "/audio/Tokyo Drifting - Glass Animals.m4a",
-        "fullSrc": "/audio/Tokyo Drifting - Glass Animals.m4a",
-        "cover": "/covers/Tokyo Drifting.jpg",
+        "id": 60,
+        "title": "505",
+        "artist": "Arctic Monkeys",
+        "src": "/audio/Arctic_Monkeys_-_505_75941075.mp3",
+        "fullSrc": "/audio/Arctic_Monkeys_-_505_75941075.mp3",
+        "cover": "/covers/Arctic_Monkeys_-_505_75941075.jpeg",
         "type": "track"
       },
       {
-        "id": 53,
-        "title": "Can't Stop",
-        "artist": "Red Hot Chili Peppers",
-        "src": "/audio/Red_Hot_Chili_Peppers_-_Cant_Stop_47829176.mp3",
-        "fullSrc": "/audio/Red_Hot_Chili_Peppers_-_Cant_Stop_47829176.mp3",
-        "cover": "/covers/Cant Stop.jpg",
+        "id": 160,
+        "title": "Фотография 9x12",
+        "artist": "IOWA",
+        "src": "/audio/IOWA - Фотография 9x12.mp3",
+        "fullSrc": "/audio/IOWA - Фотография 9x12.mp3",
+        "cover": "/covers/no-cover.jpg",
         "type": "track"
       },
       {
-        "id": 326,
-        "title": "Мы не смеемся",
-        "artist": "Смешарики",
-        "src": "/audio/Smeshariki_-_My_ne_smeemsya_74649561.mp3",
-        "fullSrc": "/audio/Smeshariki_-_My_ne_smeemsya_74649561.mp3",
-        "cover": "/covers/Smeshariki - My ne smeemsya 74649561.jpeg",
+        "id": 136,
+        "title": "Sugar",
+        "artist": "Maroon 5",
+        "src": "/audio/Maroon 5 - Sugar.mp3",
+        "fullSrc": "/audio/Maroon 5 - Sugar.mp3",
+        "cover": "/covers/Maroon 5 - Sugar.png",
         "type": "track"
       },
       {
-        "id": 220,
-        "title": "Самолеты",
-        "artist": "Женя Трофимов",
-        "src": "/audio/Женя_Трофимов,_Женя_Трофимов_Самолеты.mp3",
-        "fullSrc": "/audio/Женя_Трофимов,_Женя_Трофимов_Самолеты.mp3",
-        "cover": "/covers/Женя_Трофимов,_Женя_Трофимов_Самолеты.jpg",
+        "id": 301,
+        "title": "Believer",
+        "artist": "Imagine Dragons",
+        "src": "/audio/Imagine_Dragons_-_Believer_74640917.mp3",
+        "fullSrc": "/audio/Imagine_Dragons_-_Believer_74640917.mp3",
+        "cover": "/covers/Imagine Dragons - Believer 74640917.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 44,
+        "title": "Chk Chk Boom",
+        "artist": "Stray Kids",
+        "src": "/audio/Stray Kids - Chk Chk Boom.mp3",
+        "fullSrc": "/audio/Stray Kids - Chk Chk Boom.mp3",
+        "cover": "/covers/ATE.jpg",
+        "type": "track"
+      },
+      {
+        "id": 142,
+        "title": "Fresh",
+        "artist": "Kool & The Gang",
+        "src": "/audio/Kool  The Gang - Fresh.mp3",
+        "fullSrc": "/audio/Kool  The Gang - Fresh.mp3",
+        "cover": "/covers/Kool  The Gang - Fresh.png",
+        "type": "track"
+      },
+      {
+        "id": 213,
+        "title": "Люди",
+        "artist": "Дайте танк (!)",
+        "src": "/audio/Дайте_танк_,_Дмитрий_Мозжухин,_Дмитрий_Мозжухин_.mp3",
+        "fullSrc": "/audio/Дайте_танк_,_Дмитрий_Мозжухин,_Дмитрий_Мозжухин_.mp3",
+        "cover": "/covers/Дайте_танк_,_Дмитрий_Мозжухин,_Дмитрий_Мозжухин_.jpg",
+        "type": "track"
+      }
+    ],
+    "isPlaying": false,
+    "category": "vibe",
+    "type": "playlist",
+    "updatedAt": "2026-03-28T11:40:35.247Z"
+  },
+  {
+    "id": 700,
+    "title": "вайб недели",
+    "cover": "/covers/playlists/vibe-week.jpg",
+    "tracks": [
+      {
+        "id": 84,
+        "title": "Applause",
+        "artist": "Lady Gaga",
+        "src": "/audio/Lady Gaga - Applause.mp3",
+        "fullSrc": "/audio/Lady Gaga - Applause.mp3",
+        "cover": "/covers/Lady Gaga - Applause.png",
+        "type": "track"
+      },
+      {
+        "id": 27,
+        "title": "Сладкая жизнь Маша и Медведь",
+        "artist": "СВУДИ",
+        "src": "/audio/Сладкая_жизнь_СВУДИ Маша_и_Медведь.mp3",
+        "fullSrc": "/audio/Сладкая_жизнь_СВУДИ Маша_и_Медведь.mp3",
+        "cover": "/covers/Сладкая_жизнь_СВУДИ Маша_и_Медведь.jpg",
+        "type": "track"
+      },
+      {
+        "id": 105,
+        "title": "Twisted Transistor",
+        "artist": "Korn",
+        "src": "/audio/Korn - Twisted Transistor.mp3",
+        "fullSrc": "/audio/Korn - Twisted Transistor.mp3",
+        "cover": "/covers/Korn - Twisted Transistor.png",
+        "type": "track"
+      },
+      {
+        "id": 163,
+        "title": "Red Crystal Castles",
+        "artist": "13Aurora, Crystal Castles, La Roux",
+        "src": "/audio/13Aurora, Crystal Castles, La Roux, Crystal Castle.mp3",
+        "fullSrc": "/audio/13Aurora, Crystal Castles, La Roux, Crystal Castle.mp3",
+        "cover": "/covers/no-cover.jpg",
+        "type": "track"
+      },
+      {
+        "id": 260,
+        "title": "Cradles",
+        "artist": "Sub Urban",
+        "src": "/audio/Sub_Urban_-_Cradles_61741925.mp3",
+        "fullSrc": "/audio/Sub_Urban_-_Cradles_61741925.mp3",
+        "cover": "/covers/Sub Urban - Cradles 61741925.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 152,
+        "title": "Song #1",
+        "artist": "SEREBRO",
+        "src": "/audio/SEREBRO - Song 1.mp3",
+        "fullSrc": "/audio/SEREBRO - Song 1.mp3",
+        "cover": "/covers/SEREBRO - Song 1.png",
+        "type": "track"
+      },
+      {
+        "id": 110,
+        "title": "Nookie",
+        "artist": "Limp Bizkit",
+        "src": "/audio/Limp Bizkit - Nookie.mp3",
+        "fullSrc": "/audio/Limp Bizkit - Nookie.mp3",
+        "cover": "/covers/Limp Bizkit - Nookie.png",
+        "type": "track"
+      },
+      {
+        "id": 284,
+        "title": "Lonely",
+        "artist": "Imagine Dragons",
+        "src": "/audio/Imagine_Dragons_-_Lonely_73145354.mp3",
+        "fullSrc": "/audio/Imagine_Dragons_-_Lonely_73145354.mp3",
+        "cover": "/covers/Imagine Dragons - Lonely 73145354.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 285,
+        "title": "Machine",
+        "artist": "Imagine Dragons",
+        "src": "/audio/Imagine_Dragons_-_Machine_60079045.mp3",
+        "fullSrc": "/audio/Imagine_Dragons_-_Machine_60079045.mp3",
+        "cover": "/covers/Imagine Dragons - Machine 60079045.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 311,
+        "title": "Autumn Wind",
+        "artist": "DVRST",
+        "src": "/audio/DVRST_-_Autumn_Wind_73427298.mp3",
+        "fullSrc": "/audio/DVRST_-_Autumn_Wind_73427298.mp3",
+        "cover": "/covers/DVRST - Autumn Wind 73427298.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 188,
+        "title": "Why'd You Only Call Me When You're High?",
+        "artist": "Arctic Monkeys",
+        "src": "/audio/Arctic Monkeys - Whyd You Only Call Me When Youre High.mp3",
+        "fullSrc": "/audio/Arctic Monkeys - Whyd You Only Call Me When Youre High.mp3",
+        "cover": "/covers/Arctic Monkeys - Whyd You Only Call Me When Youre High.png",
+        "type": "track"
+      },
+      {
+        "id": 263,
+        "title": "Run",
+        "artist": "BTS",
+        "src": "/audio/BTS_-_Run_56088079.mp3",
+        "fullSrc": "/audio/BTS_-_Run_56088079.mp3",
+        "cover": "/covers/BTS - Run 56088079.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 258,
+        "title": "Stranger in Moscow",
+        "artist": "Michael Jackson, Steve Porcaro, Maxi Anderson, Jesse Corti, Annette Sanders, Geoff Grace",
+        "src": "/audio/Michael_Jackson_Steve_Porcaro_Maxi_Anderson_Jesse_Corti_Annette_Sanders_Geoff_Grace_-_Stranger_in_Moscow_48273711.mp3",
+        "fullSrc": "/audio/Michael_Jackson_Steve_Porcaro_Maxi_Anderson_Jesse_Corti_Annette_Sanders_Geoff_Grace_-_Stranger_in_Moscow_48273711.mp3",
+        "cover": "/covers/Michael Jackson Steve Porcaro Maxi Anderson Jesse Corti Annette Sanders Geoff Grace - Stranger in Moscow 48273711.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 129,
+        "title": "LoveGame",
+        "artist": "Lady Gaga",
+        "src": "/audio/Lady Gaga - LoveGame.mp3",
+        "fullSrc": "/audio/Lady Gaga - LoveGame.mp3",
+        "cover": "/covers/Lady Gaga - LoveGame.png",
+        "type": "track"
+      },
+      {
+        "id": 181,
+        "title": "Message In A Bottle",
+        "artist": "The Police",
+        "src": "/audio/The Police - Message In A Bottle.mp3",
+        "fullSrc": "/audio/The Police - Message In A Bottle.mp3",
+        "cover": "/covers/The Police - Message In A Bottle.png",
+        "type": "track"
+      },
+      {
+        "id": 134,
+        "title": "Party Rock Anthem",
+        "artist": "LMFAO, Lauren Bennett, GoonRock",
+        "src": "/audio/LMFAO, Lauren Bennett, GoonRock - Party Rock Anthem.mp3",
+        "fullSrc": "/audio/LMFAO, Lauren Bennett, GoonRock - Party Rock Anthem.mp3",
+        "cover": "/covers/LMFAO, Lauren Bennett, GoonRock - Party Rock Anthem.png",
         "type": "track"
       },
       {
@@ -981,21 +471,75 @@
         "type": "track"
       },
       {
-        "id": 112,
-        "title": "Arabella",
-        "artist": "Arctic Monkeys",
-        "src": "/audio/Arctic Monkeys - Arabella.mp3",
-        "fullSrc": "/audio/Arctic Monkeys - Arabella.mp3",
-        "cover": "/covers/Arctic Monkeys - Arabella.png",
+        "id": 257,
+        "title": "Earth Song",
+        "artist": "Michael Jackson, Steve Porcaro, Maxi Anderson, Jesse Corti, Annette Sanders, Geoff Grace",
+        "src": "/audio/Michael_Jackson_Steve_Porcaro_Maxi_Anderson_Jesse_Corti_Annette_Sanders_Geoff_Grace_-_Earth_Song_48273714.mp3",
+        "fullSrc": "/audio/Michael_Jackson_Steve_Porcaro_Maxi_Anderson_Jesse_Corti_Annette_Sanders_Geoff_Grace_-_Earth_Song_48273714.mp3",
+        "cover": "/covers/Michael Jackson Steve Porcaro Maxi Anderson Jesse Corti Annette Sanders Geoff Grace - Earth Song 48273714.jpeg",
         "type": "track"
       },
       {
-        "id": 150,
-        "title": "two",
-        "artist": "bbno$",
-        "src": "/audio/bbno - two.m4a",
-        "fullSrc": "/audio/bbno - two.m4a",
-        "cover": "/covers/no-cover.jpg",
+        "id": 130,
+        "title": "Paparazzi",
+        "artist": "Lady Gaga",
+        "src": "/audio/Lady Gaga - Paparazzi.mp3",
+        "fullSrc": "/audio/Lady Gaga - Paparazzi.mp3",
+        "cover": "/covers/Lady Gaga - Paparazzi.png",
+        "type": "track"
+      },
+      {
+        "id": 194,
+        "title": "Harder To Breathe",
+        "artist": "Maroon 5",
+        "src": "/audio/Maroon 5 - Harder To Breathe.mp3",
+        "fullSrc": "/audio/Maroon 5 - Harder To Breathe.mp3",
+        "cover": "/covers/Maroon 5 - Harder To Breathe.png",
+        "type": "track"
+      },
+      {
+        "id": 325,
+        "title": "M.E.D. Phonk",
+        "artist": "Смешарики",
+        "src": "/audio/Smeshariki_-_MED_Phonk_75451193.mp3",
+        "fullSrc": "/audio/Smeshariki_-_MED_Phonk_75451193.mp3",
+        "cover": "/covers/Smeshariki - MED Phonk 75451193.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 179,
+        "title": "Shape Of My Heart",
+        "artist": "Sting",
+        "src": "/audio/Sting - Shape Of My Heart.mp3",
+        "fullSrc": "/audio/Sting - Shape Of My Heart.mp3",
+        "cover": "/covers/Sting - Shape Of My Heart.png",
+        "type": "track"
+      },
+      {
+        "id": 331,
+        "title": "От Винта!",
+        "artist": "Смешарики",
+        "src": "/audio/Smeshariki_-_Ot_Vinta_73000062.mp3",
+        "fullSrc": "/audio/Smeshariki_-_Ot_Vinta_73000062.mp3",
+        "cover": "/covers/Smeshariki - Ot Vinta 73000062.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 161,
+        "title": "Be My Lover",
+        "artist": "La Bouche",
+        "src": "/audio/La Bouche - Be My Lover.mp3",
+        "fullSrc": "/audio/La Bouche - Be My Lover.mp3",
+        "cover": "/covers/La Bouche - Be My Lover.png",
+        "type": "track"
+      },
+      {
+        "id": 292,
+        "title": "Enemy",
+        "artist": "Imagine Dragons, J.I.D, League of Legends",
+        "src": "/audio/Imagine_Dragons_JID_League_of_Legends_-_Enemy_73245791.mp3",
+        "fullSrc": "/audio/Imagine_Dragons_JID_League_of_Legends_-_Enemy_73245791.mp3",
+        "cover": "/covers/Imagine Dragons JID League of Legends - Enemy 73245791.jpeg",
         "type": "track"
       },
       {
@@ -1008,12 +552,95 @@
         "type": "track"
       },
       {
-        "id": 82,
-        "title": "Яблоко",
-        "artist": "IOWA, Ёлка",
-        "src": "/audio/IOWA_JOlka_-_YAbloko_73061728.mp3",
-        "fullSrc": "/audio/IOWA_JOlka_-_YAbloko_73061728.mp3",
-        "cover": "/covers/IOWA_JOlka_-_YAbloko_73061728.jpeg",
+        "id": 236,
+        "title": "Rollin' (Air Raid Vehicle)",
+        "artist": "Limp Bizkit",
+        "src": "/audio/Limp_Bizkit_-_Rollin_Air_Raid_Vehicle_47872518.mp3",
+        "fullSrc": "/audio/Limp_Bizkit_-_Rollin_Air_Raid_Vehicle_47872518.mp3",
+        "cover": "/covers/Limp Bizkit - Rollin Air Raid Vehicle 47872518.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 251,
+        "title": "Dirty Harry",
+        "artist": "Gorillaz, Jamie Hewlett, Damon Albarn",
+        "src": "/audio/Gorillaz_Jamie_Hewlett_Damon_Albarn_-_Dirty_Harry_47843228.mp3",
+        "fullSrc": "/audio/Gorillaz_Jamie_Hewlett_Damon_Albarn_-_Dirty_Harry_47843228.mp3",
+        "cover": "/covers/Gorillaz Jamie Hewlett Damon Albarn - Dirty Harry 47843228.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 184,
+        "title": "Stressed Out",
+        "artist": "twenty one pilots",
+        "src": "/audio/twenty one pilots - Stressed Out.mp3",
+        "fullSrc": "/audio/twenty one pilots - Stressed Out.mp3",
+        "cover": "/covers/twenty one pilots - Stressed Out.png",
+        "type": "track"
+      },
+      {
+        "id": 281,
+        "title": "Giants",
+        "artist": "Imagine Dragons",
+        "src": "/audio/Imagine_Dragons_-_Giants_73145358.mp3",
+        "fullSrc": "/audio/Imagine_Dragons_-_Giants_73145358.mp3",
+        "cover": "/covers/Imagine Dragons - Giants 73145358.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 25,
+        "title": "Горы Казахстана",
+        "artist": "анонимное горное сообщество",
+        "src": "/audio/Горы Казахстана.mp3",
+        "fullSrc": "/audio/Горы Казахстана.mp3",
+        "cover": "/covers/Горы Казахстана.jpg",
+        "type": "track"
+      },
+      {
+        "id": 69,
+        "title": "This House is a Circus",
+        "artist": "Arctic Monkeys",
+        "src": "/audio/Arctic_Monkeys_-_This_House_is_a_Circus_59891383.mp3",
+        "fullSrc": "/audio/Arctic_Monkeys_-_This_House_is_a_Circus_59891383.mp3",
+        "cover": "/covers/Arctic_Monkeys_-_This_House_is_a_Circus_59891383.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 131,
+        "title": "Castle In The Snow",
+        "artist": "The Avener, Kadebostany",
+        "src": "/audio/The Avener, Kadebostany - Castle In The Snow.mp3",
+        "fullSrc": "/audio/The Avener, Kadebostany - Castle In The Snow.mp3",
+        "cover": "/covers/The Avener, Kadebostany - Castle In The Snow.png",
+        "type": "track"
+      }
+    ],
+    "isPlaying": false,
+    "category": "vibe",
+    "type": "playlist",
+    "updatedAt": "2026-03-28T11:40:35.247Z"
+  },
+  {
+    "id": 300,
+    "title": "вайб месяца",
+    "cover": "/covers/playlists/vibe-month.jpg",
+    "tracks": [
+      {
+        "id": 277,
+        "title": "Bullet In A Gun",
+        "artist": "Imagine Dragons",
+        "src": "/audio/Imagine_Dragons_-_Bullet_In_A_Gun_60254032.mp3",
+        "fullSrc": "/audio/Imagine_Dragons_-_Bullet_In_A_Gun_60254032.mp3",
+        "cover": "/covers/Imagine Dragons - Bullet In A Gun 60254032.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 120,
+        "title": "Baby Baby",
+        "artist": "Corona",
+        "src": "/audio/Corona - Baby Baby.mp3",
+        "fullSrc": "/audio/Corona - Baby Baby.mp3",
+        "cover": "/covers/Corona - Baby Baby.png",
         "type": "track"
       },
       {
@@ -1026,30 +653,39 @@
         "type": "track"
       },
       {
-        "id": 256,
-        "title": "Beat It",
-        "artist": "Michael Jackson",
-        "src": "/audio/Michael_Jackson_-_Beat_It_47829974.mp3",
-        "fullSrc": "/audio/Michael_Jackson_-_Beat_It_47829974.mp3",
-        "cover": "/covers/no-cover.jpg",
-        "type": "track"
-      },
-      {
-        "id": 297,
-        "title": "Lane Boy",
-        "artist": "twenty one pilots",
-        "src": "/audio/Twenty_One_Pilots_-_Lane_Boy_47828703.mp3",
-        "fullSrc": "/audio/Twenty_One_Pilots_-_Lane_Boy_47828703.mp3",
-        "cover": "/covers/Twenty One Pilots - Lane Boy 47828703.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 77,
-        "title": "Eyes Closed",
-        "artist": "Imagine Dragons feat. J Balvin",
-        "src": "/audio/Imagine_Dragons_feat_J_Balvin_-_Eyes_Closed_77825006.mp3",
-        "fullSrc": "/audio/Imagine_Dragons_feat_J_Balvin_-_Eyes_Closed_77825006.mp3",
+        "id": 75,
+        "title": "Kid",
+        "artist": "Imagine Dragons",
+        "src": "/audio/Imagine_Dragons_-_Kid_78053158.mp3",
+        "fullSrc": "/audio/Imagine_Dragons_-_Kid_78053158.mp3",
         "cover": "/covers/playlists/loom.jpg",
+        "type": "track"
+      },
+      {
+        "id": 273,
+        "title": "Unstoppable",
+        "artist": "The Score",
+        "src": "/audio/The_Score_-_Unstoppable_49519316.mp3",
+        "fullSrc": "/audio/The_Score_-_Unstoppable_49519316.mp3",
+        "cover": "/covers/The Score - Unstoppable 49519316.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 284,
+        "title": "Lonely",
+        "artist": "Imagine Dragons",
+        "src": "/audio/Imagine_Dragons_-_Lonely_73145354.mp3",
+        "fullSrc": "/audio/Imagine_Dragons_-_Lonely_73145354.mp3",
+        "cover": "/covers/Imagine Dragons - Lonely 73145354.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 230,
+        "title": "Ты так красива",
+        "artist": "Quest Pistols, I. Chetha, I. Chetha",
+        "src": "/audio/Quest_Pistols,_I_Chetha,_I_Chetha_Ты_так_красива.mp3",
+        "fullSrc": "/audio/Quest_Pistols,_I_Chetha,_I_Chetha_Ты_так_красива.mp3",
+        "cover": "/covers/Quest_Pistols,_I_Chetha,_I_Chetha_Ты_так_красива.jpg",
         "type": "track"
       },
       {
@@ -1072,126 +708,454 @@
         "type": "track"
       },
       {
-        "id": 275,
-        "title": "Bones",
-        "artist": "Imagine Dragons",
-        "src": "/audio/Imagine_Dragons_-_Bones_73949726.mp3",
-        "fullSrc": "/audio/Imagine_Dragons_-_Bones_73949726.mp3",
-        "cover": "/covers/Imagine Dragons - Bones 73949726.jpeg",
+        "id": 200,
+        "title": "Улыбайся",
+        "artist": "IOWA",
+        "src": "/audio/IOWA - Улыбайся.mp3",
+        "fullSrc": "/audio/IOWA - Улыбайся.mp3",
+        "cover": "/covers/IOWA - Улыбайся.jpg",
         "type": "track"
       },
       {
-        "id": 328,
-        "title": "Огурец Phonk",
+        "id": 5,
+        "title": "Faint",
+        "artist": "Linkin Park",
+        "src": "/audio/track5.mp3",
+        "cover": "/covers/cover5.jpg",
+        "fullSrc": "/audio/track5.mp3",
+        "type": "track"
+      },
+      {
+        "id": 236,
+        "title": "Rollin' (Air Raid Vehicle)",
+        "artist": "Limp Bizkit",
+        "src": "/audio/Limp_Bizkit_-_Rollin_Air_Raid_Vehicle_47872518.mp3",
+        "fullSrc": "/audio/Limp_Bizkit_-_Rollin_Air_Raid_Vehicle_47872518.mp3",
+        "cover": "/covers/Limp Bizkit - Rollin Air Raid Vehicle 47872518.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 290,
+        "title": "Thunder",
+        "artist": "Imagine Dragons",
+        "src": "/audio/Imagine_Dragons_-_Thunder_47828258.mp3",
+        "fullSrc": "/audio/Imagine_Dragons_-_Thunder_47828258.mp3",
+        "cover": "/covers/Imagine Dragons - Thunder 47828258.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 54,
+        "title": "PARANOIA",
+        "artist": "HEARTSTEEL, BAEKHYUN, tobi lou, ZI & Cal Scruby",
+        "src": "/audio/HEARTSTEEL,_League_of_Legends,_BAEKHYUN,_tobi_lou,_ØZI,_Cal_Scru.mp3",
+        "fullSrc": "/audio/HEARTSTEEL,_League_of_Legends,_BAEKHYUN,_tobi_lou,_ØZI,_Cal_Scru.mp3",
+        "cover": "/covers/HEARTSTEEL.jpg",
+        "type": "track"
+      },
+      {
+        "id": 169,
+        "title": "It's My Life (Radio Edit)",
+        "artist": "Dr. Alban",
+        "src": "/audio/Dr Alban - Its My Life Radio Edit.mp3",
+        "fullSrc": "/audio/Dr Alban - Its My Life Radio Edit.mp3",
+        "cover": "/covers/Dr Alban - Its My Life Radio Edit.png",
+        "type": "track"
+      },
+      {
+        "id": 34,
+        "title": "Midwest Indigo",
+        "artist": "twenty one pilots",
+        "src": "/audio/Midvest_Indigo.mp3",
+        "fullSrc": "/audio/Midvest_Indigo.mp3",
+        "cover": "/covers/Twenty One Pilots - Navigating.jpg",
+        "type": "track",
+        "color": "#4C0000"
+      },
+      {
+        "id": 247,
+        "title": "Crazy",
+        "artist": "Gnarls Barkley",
+        "src": "/audio/Gnarls_Barkley_-_Crazy_48029930.mp3",
+        "fullSrc": "/audio/Gnarls_Barkley_-_Crazy_48029930.mp3",
+        "cover": "/covers/Gnarls Barkley - Crazy 48029930.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 186,
+        "title": "Around the World (La La La La La) (Radio Version)",
+        "artist": "A Touch Of Class",
+        "src": "/audio/A Touch Of Class - Around the World La La La La La.mp3",
+        "fullSrc": "/audio/A Touch Of Class - Around the World La La La La La.mp3",
+        "cover": "/covers/A Touch Of Class - Around the World La La La La La.png",
+        "type": "track"
+      },
+      {
+        "id": 116,
+        "title": "Riot Van",
+        "artist": "Arctic Monkeys",
+        "src": "/audio/Arctic Monkeys - Riot Van.mp3",
+        "fullSrc": "/audio/Arctic Monkeys - Riot Van.mp3",
+        "cover": "/covers/Arctic Monkeys - Riot Van.png",
+        "type": "track"
+      },
+      {
+        "id": 82,
+        "title": "Яблоко",
+        "artist": "IOWA, Ёлка",
+        "src": "/audio/IOWA_JOlka_-_YAbloko_73061728.mp3",
+        "fullSrc": "/audio/IOWA_JOlka_-_YAbloko_73061728.mp3",
+        "cover": "/covers/IOWA_JOlka_-_YAbloko_73061728.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 14,
+        "title": "Heavydirtysoul",
+        "artist": "twenty one pilots",
+        "src": "/audio/Heavydirtysoul.mp3",
+        "fullSrc": "/audio/Heavydirtysoul.mp3",
+        "cover": "/covers/Heavydirtysoul.jpg",
+        "type": "track"
+      },
+      {
+        "id": 17,
+        "title": "Nice to Meet You",
+        "artist": "Imagine Dragons",
+        "src": "/audio/Nice to Meet You.mp3",
+        "fullSrc": "/audio/Nice to Meet You.mp3",
+        "cover": "/covers/Nice to Meet You.jpg",
+        "type": "track"
+      },
+      {
+        "id": 325,
+        "title": "M.E.D. Phonk",
         "artist": "Смешарики",
-        "src": "/audio/Smeshariki_-_Ogurec_Phonk_77652171.mp3",
-        "fullSrc": "/audio/Smeshariki_-_Ogurec_Phonk_77652171.mp3",
-        "cover": "/covers/Smeshariki - Ogurec Phonk 77652171.jpeg",
+        "src": "/audio/Smeshariki_-_MED_Phonk_75451193.mp3",
+        "fullSrc": "/audio/Smeshariki_-_MED_Phonk_75451193.mp3",
+        "cover": "/covers/Smeshariki - MED Phonk 75451193.jpeg",
         "type": "track"
       },
       {
-        "id": 157,
-        "title": "No Limit",
-        "artist": "2 Unlimited",
-        "src": "/audio/2 Unlimited - No Limit.mp3",
-        "fullSrc": "/audio/2 Unlimited - No Limit.mp3",
-        "cover": "/covers/2 Unlimited - No Limit.png",
+        "id": 134,
+        "title": "Party Rock Anthem",
+        "artist": "LMFAO, Lauren Bennett, GoonRock",
+        "src": "/audio/LMFAO, Lauren Bennett, GoonRock - Party Rock Anthem.mp3",
+        "fullSrc": "/audio/LMFAO, Lauren Bennett, GoonRock - Party Rock Anthem.mp3",
+        "cover": "/covers/LMFAO, Lauren Bennett, GoonRock - Party Rock Anthem.png",
         "type": "track"
       },
       {
-        "id": 44,
-        "title": "Chk Chk Boom",
-        "artist": "Stray Kids",
-        "src": "/audio/Stray Kids - Chk Chk Boom.mp3",
-        "fullSrc": "/audio/Stray Kids - Chk Chk Boom.mp3",
-        "cover": "/covers/ATE.jpg",
-        "type": "track"
-      },
-      {
-        "id": 306,
-        "title": "На вершине мира",
-        "artist": "Сухарев Дмитрий",
-        "src": "/audio/На вершине мира - Сухарев Дмитрий.mp3",
-        "fullSrc": "/audio/На вершине мира - Сухарев Дмитрий.mp3",
-        "cover": "/covers/Сухарев Дмитрий.jpg",
-        "type": "track"
-      },
-      {
-        "id": 147,
-        "title": "Music Sounds Better With You (Radio Edit)",
-        "artist": "Stardust",
-        "src": "/audio/Stardust - Music Sounds Better With You Radio Edit.mp3",
-        "fullSrc": "/audio/Stardust - Music Sounds Better With You Radio Edit.mp3",
-        "cover": "/covers/Stardust - Music Sounds Better With You Radio Edit.png",
-        "type": "track"
-      },
-      {
-        "id": 280,
-        "title": "Follow You",
+        "id": 288,
+        "title": "Sharks",
         "artist": "Imagine Dragons",
-        "src": "/audio/Imagine_Dragons_-_Follow_You_72848541.mp3",
-        "fullSrc": "/audio/Imagine_Dragons_-_Follow_You_72848541.mp3",
-        "cover": "/covers/Imagine Dragons - Follow You 72848541.jpeg",
+        "src": "/audio/Imagine_Dragons_-_Sharks_75941262.mp3",
+        "fullSrc": "/audio/Imagine_Dragons_-_Sharks_75941262.mp3",
+        "cover": "/covers/Imagine Dragons - Sharks 75941262.jpeg",
         "type": "track"
       },
       {
-        "id": 51,
-        "title": "Lose My Breath (Feat. Charlie Puth)",
-        "artist": "Stray Kids, Charlie Puth",
-        "src": "/audio/2_5327769766612453052.mp3",
-        "fullSrc": "/audio/2_5327769766612453052.mp3",
-        "cover": "/covers/Lose_My_Breath.jpg",
+        "id": 332,
+        "title": "Вести-бу-би-лю-би-бу",
+        "artist": "Смешарики",
+        "src": "/audio/Smeshariki_-_Vesti-bu-bi-lyu-bi-bu_74649540.mp3",
+        "fullSrc": "/audio/Smeshariki_-_Vesti-bu-bi-lyu-bi-bu_74649540.mp3",
+        "cover": "/covers/Smeshariki - Vesti-bu-bi-lyu-bi-bu 74649540.jpeg",
         "type": "track"
       },
       {
-        "id": 128,
-        "title": "Right Round",
-        "artist": "Flo Rida",
-        "src": "/audio/Flo Rida - Right Round.mp3",
-        "fullSrc": "/audio/Flo Rida - Right Round.mp3",
-        "cover": "/covers/Flo Rida - Right Round.png",
+        "id": 175,
+        "title": "Tied Up",
+        "artist": "Little Ceremonies",
+        "src": "/audio/Little Ceremonies - Tied Up.mp3",
+        "fullSrc": "/audio/Little Ceremonies - Tied Up.mp3",
+        "cover": "/covers/no-cover.jpg",
         "type": "track"
       },
       {
-        "id": 119,
-        "title": "Stayin Alive",
-        "artist": "Bee Gees",
-        "src": "/audio/Bee Gees - Stayin Alive.mp3",
-        "fullSrc": "/audio/Bee Gees - Stayin Alive.mp3",
-        "cover": "/covers/Bee Gees - Stayin Alive.png",
+        "id": 21,
+        "title": "Way Up",
+        "artist": "Jaden Smith",
+        "src": "/audio/Way_Up.m4a",
+        "fullSrc": "/audio/Way_Up.m4a",
+        "cover": "/covers/cover4.jpg",
+        "color": "#000000",
         "type": "track"
       },
       {
-        "id": 136,
-        "title": "Sugar",
-        "artist": "Maroon 5",
-        "src": "/audio/Maroon 5 - Sugar.mp3",
-        "fullSrc": "/audio/Maroon 5 - Sugar.mp3",
-        "cover": "/covers/Maroon 5 - Sugar.png",
+        "id": 269,
+        "title": "Fighter",
+        "artist": "The Score",
+        "src": "/audio/The_Score_-_Fighter_73945312.mp3",
+        "fullSrc": "/audio/The_Score_-_Fighter_73945312.mp3",
+        "cover": "/covers/The Score - Fighter 73945312.jpeg",
         "type": "track"
       },
       {
-        "id": 43,
-        "title": "MOUNTAINS",
+        "id": 40,
+        "title": "Oldies Station",
+        "artist": "twenty one pilots",
+        "src": "/audio/Oldies Station.mp3",
+        "fullSrc": "/audio/Oldies Station.mp3",
+        "cover": "/covers/Twenty One Pilots - Navigating.jpg",
+        "type": "track",
+        "color": "#4C0000"
+      },
+      {
+        "id": 197,
+        "title": "Good Life",
+        "artist": "OneRepublic",
+        "src": "/audio/OneRepublic - Good Life.mp3",
+        "fullSrc": "/audio/OneRepublic - Good Life.mp3",
+        "cover": "/covers/OneRepublic - Good Life.png",
+        "type": "track"
+      },
+      {
+        "id": 187,
+        "title": "R U Mine?",
+        "artist": "Arctic Monkeys",
+        "src": "/audio/Arctic Monkeys - R U Mine.mp3",
+        "fullSrc": "/audio/Arctic Monkeys - R U Mine.mp3",
+        "cover": "/covers/Arctic Monkeys - R U Mine.png",
+        "type": "track"
+      },
+      {
+        "id": 144,
+        "title": "Lady (Hear Me Tonight)",
+        "artist": "Modjo Band, Bernard Edwards Nile Rodgers Romain Tranchart Yann Destagnol, Romain Tranchart Yann Destagnol",
+        "src": "/audio/Modjo Band, Bernard Edwards Nile Rodgers Romain Tr.m4a",
+        "fullSrc": "/audio/Modjo Band, Bernard Edwards Nile Rodgers Romain Tr.m4a",
+        "cover": "/covers/no-cover.jpg",
+        "type": "track"
+      },
+      {
+        "id": 340,
+        "title": "Happy",
+        "artist": "Pharrell Williams",
+        "src": "/audio/Pharrell_Williams_-_Happy_47923895.mp3",
+        "fullSrc": "/audio/Pharrell_Williams_-_Happy_47923895.mp3",
+        "cover": "/covers/Pharrell Williams - Happy 47923895.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 137,
+        "title": "the boy is mine",
+        "artist": "Ariana Grande",
+        "src": "/audio/Ariana Grande - the boy is mine.mp3",
+        "fullSrc": "/audio/Ariana Grande - the boy is mine.mp3",
+        "cover": "/covers/no-cover.jpg",
+        "type": "track"
+      },
+      {
+        "id": 207,
+        "title": "Apologize",
+        "artist": "Timbaland, OneRepublic",
+        "src": "/audio/Timbaland, OneRepublic - Apologize.mp3",
+        "fullSrc": "/audio/Timbaland, OneRepublic - Apologize.mp3",
+        "cover": "/covers/Timbaland, OneRepublic - Apologize.jpg",
+        "type": "track"
+      },
+      {
+        "id": 46,
+        "title": "I Like It",
         "artist": "Stray Kids",
-        "src": "/audio/MOUNTAINS - Stray Kids.mp3",
-        "fullSrc": "/audio/MOUNTAINS - Stray Kids.mp3",
+        "src": "/audio/I Like It_y_Oz7v7TP_-3k.mp3",
+        "fullSrc": "/audio/I Like It_y_Oz7v7TP_-3k.mp3",
         "cover": "/covers/ATE.jpg",
         "type": "track"
       },
       {
-        "id": 255,
-        "title": "Bad",
-        "artist": "Michael Jackson",
-        "src": "/audio/Michael_Jackson_-_Bad_47829982.mp3",
-        "fullSrc": "/audio/Michael_Jackson_-_Bad_47829982.mp3",
-        "cover": "/covers/Michael Jackson - Bad 47829982.jpeg",
+        "id": 172,
+        "title": "The Power Of Love",
+        "artist": "Huey Lewis & The News",
+        "src": "/audio/Huey Lewis  The News - The Power Of Love.mp3",
+        "fullSrc": "/audio/Huey Lewis  The News - The Power Of Love.mp3",
+        "cover": "/covers/no-cover.jpg",
+        "type": "track"
+      },
+      {
+        "id": 161,
+        "title": "Be My Lover",
+        "artist": "La Bouche",
+        "src": "/audio/La Bouche - Be My Lover.mp3",
+        "fullSrc": "/audio/La Bouche - Be My Lover.mp3",
+        "cover": "/covers/La Bouche - Be My Lover.png",
+        "type": "track"
+      },
+      {
+        "id": 336,
+        "title": "Scopin",
+        "artist": "Kordhell",
+        "src": "/audio/Kordhell_-_Scopin_74192307.mp3",
+        "fullSrc": "/audio/Kordhell_-_Scopin_74192307.mp3",
+        "cover": "/covers/Kordhell - Scopin 74192307.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 286,
+        "title": "Monster",
+        "artist": "Imagine Dragons",
+        "src": "/audio/Imagine_Dragons_-_Monster_47829307.mp3",
+        "fullSrc": "/audio/Imagine_Dragons_-_Monster_47829307.mp3",
+        "cover": "/covers/Imagine Dragons - Monster 47829307.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 130,
+        "title": "Paparazzi",
+        "artist": "Lady Gaga",
+        "src": "/audio/Lady Gaga - Paparazzi.mp3",
+        "fullSrc": "/audio/Lady Gaga - Paparazzi.mp3",
+        "cover": "/covers/Lady Gaga - Paparazzi.png",
+        "type": "track"
+      },
+      {
+        "id": 138,
+        "title": "Give It Away",
+        "artist": "Red Hot Chili Peppers",
+        "src": "/audio/Red Hot Chili Peppers - Give It Away.mp3",
+        "fullSrc": "/audio/Red Hot Chili Peppers - Give It Away.mp3",
+        "cover": "/covers/Red Hot Chili Peppers - Give It Away.png",
+        "type": "track"
+      },
+      {
+        "id": 171,
+        "title": "Lordly (feat. Alex Aiono)",
+        "artist": "Feder, Alex Aiono",
+        "src": "/audio/Feder, Alex Aiono - Lordly feat Alex Aiono.mp3",
+        "fullSrc": "/audio/Feder, Alex Aiono - Lordly feat Alex Aiono.mp3",
+        "cover": "/covers/no-cover.jpg",
+        "type": "track"
+      },
+      {
+        "id": 211,
+        "title": "Кустурица",
+        "artist": "Братья Гримм",
+        "src": "/audio/Братья Гримм - Кустурица.mp3",
+        "fullSrc": "/audio/Братья Гримм - Кустурица.mp3",
+        "cover": "/covers/Братья Гримм - Кустурица.jpg",
+        "type": "track"
+      },
+      {
+        "id": 145,
+        "title": "Don't Speak",
+        "artist": "No Doubt",
+        "src": "/audio/No Doubt - Dont Speak.mp3",
+        "fullSrc": "/audio/No Doubt - Dont Speak.mp3",
+        "cover": "/covers/No Doubt - Dont Speak.png",
+        "type": "track"
+      },
+      {
+        "id": 36,
+        "title": "Vignette",
+        "artist": "twenty one pilots",
+        "src": "/audio/Vignette.mp3",
+        "fullSrc": "/audio/Vignette.mp3",
+        "cover": "/covers/Twenty One Pilots - Navigating.jpg",
+        "type": "track",
+        "color": "#4C0000"
+      },
+      {
+        "id": 52,
+        "title": "Skinny Loser",
+        "artist": "Sub Urban",
+        "src": "/audio/Skinny Loser - Sub Urban.m4a",
+        "fullSrc": "/audio/Skinny Loser - Sub Urban.m4a",
+        "cover": "/covers/Skinny Loser - Sub Urban.png",
+        "type": "track"
+      },
+      {
+        "id": 31,
+        "title": "Heat Waves",
+        "artist": "Glass Animals",
+        "src": "/audio/Glass_Animals_-_Heat_Waves.mp3",
+        "fullSrc": "/audio/Glass_Animals_-_Heat_Waves.mp3",
+        "cover": "/covers/Glass_Animals_-_Heat_Waves.jpg",
+        "type": "track"
+      },
+      {
+        "id": 168,
+        "title": "Hot Stuff",
+        "artist": "Donna Summer",
+        "src": "/audio/Donna Summer - Hot Stuff.mp3",
+        "fullSrc": "/audio/Donna Summer - Hot Stuff.mp3",
+        "cover": "/covers/Donna Summer - Hot Stuff.png",
+        "type": "track"
+      },
+      {
+        "id": 198,
+        "title": "Love Runs Out",
+        "artist": "OneRepublic",
+        "src": "/audio/OneRepublic - Love Runs Out.mp3",
+        "fullSrc": "/audio/OneRepublic - Love Runs Out.mp3",
+        "cover": "/covers/OneRepublic - Love Runs Out.png",
+        "type": "track"
+      },
+      {
+        "id": 203,
+        "title": "Livin' la Vida Loca",
+        "artist": "Ricky Martin",
+        "src": "/audio/Ricky Martin - Livin la Vida Loca.mp3",
+        "fullSrc": "/audio/Ricky Martin - Livin la Vida Loca.mp3",
+        "cover": "/covers/Ricky Martin - Livin la Vida Loca.jpg",
+        "type": "track"
+      },
+      {
+        "id": 77,
+        "title": "Eyes Closed",
+        "artist": "Imagine Dragons feat. J Balvin",
+        "src": "/audio/Imagine_Dragons_feat_J_Balvin_-_Eyes_Closed_77825006.mp3",
+        "fullSrc": "/audio/Imagine_Dragons_feat_J_Balvin_-_Eyes_Closed_77825006.mp3",
+        "cover": "/covers/playlists/loom.jpg",
+        "type": "track"
+      },
+      {
+        "id": 316,
+        "title": "FIGHT!",
+        "artist": "Moondeity",
+        "src": "/audio/Moondeity_-_FIGHT_74660136.mp3",
+        "fullSrc": "/audio/Moondeity_-_FIGHT_74660136.mp3",
+        "cover": "/covers/Moondeity - FIGHT 74660136.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 326,
+        "title": "Мы не смеемся",
+        "artist": "Смешарики",
+        "src": "/audio/Smeshariki_-_My_ne_smeemsya_74649561.mp3",
+        "fullSrc": "/audio/Smeshariki_-_My_ne_smeemsya_74649561.mp3",
+        "cover": "/covers/Smeshariki - My ne smeemsya 74649561.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 164,
+        "title": "Take on Me",
+        "artist": "a-ha",
+        "src": "/audio/aha - Take on Me.mp3",
+        "fullSrc": "/audio/aha - Take on Me.mp3",
+        "cover": "/covers/aha - Take on Me.png",
+        "type": "track"
+      },
+      {
+        "id": 251,
+        "title": "Dirty Harry",
+        "artist": "Gorillaz, Jamie Hewlett, Damon Albarn",
+        "src": "/audio/Gorillaz_Jamie_Hewlett_Damon_Albarn_-_Dirty_Harry_47843228.mp3",
+        "fullSrc": "/audio/Gorillaz_Jamie_Hewlett_Damon_Albarn_-_Dirty_Harry_47843228.mp3",
+        "cover": "/covers/Gorillaz Jamie Hewlett Damon Albarn - Dirty Harry 47843228.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 50,
+        "title": "Chk Chk Boom (Festival Ver.)",
+        "artist": "Stray Kids",
+        "src": "/audio/Chk_Chk_Boom_Festival_Ver.m4a",
+        "fullSrc": "/audio/Chk_Chk_Boom_Festival_Ver.m4a",
+        "cover": "/covers/ATE.jpg",
         "type": "track"
       }
     ],
     "isPlaying": false,
     "category": "vibe",
     "type": "playlist",
-    "updatedAt": "2025-10-23T18:37:28.115Z"
+    "updatedAt": "2026-03-28T11:40:35.247Z"
   }
 ]

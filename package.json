@@ -64,7 +64,8 @@
     "three": "^0.172.0",
     "ts-node": "^10.9.2",
     "vaul": "^1.1.2",
-    "web-audio-beat-detector": "^8.2.20"
+    "web-audio-beat-detector": "^8.2.20",
+    "zustand": "^5.0.12"
   },
   "devDependencies": {
     "@types/node": "^20",

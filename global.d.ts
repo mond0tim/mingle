@@ -24,3 +24,19 @@ declare module 'colorthief' {
 
   export = ColorThief;
 }
+
+declare module 'material-web-components-react/ripple' {
+  const Ripple: any;
+  export default Ripple;
+}
+
+declare module 'material-web-components-react/focus-ring' {
+  const FocusRing: any;
+  export default FocusRing;
+}
+
+declare module "*.svg" {
+  import React = require("react");
+  const ReactComponent: React.FC<React.SVGProps<SVGSVGElement>>;
+  export default ReactComponent;
+}

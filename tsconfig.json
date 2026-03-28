@@ -18,11 +18,11 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/AudioVisualizer/audio-worklet-processor.js"],
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", "backups", "data/backups", "**/*.backup*"],
     "typeRoots": ["./node_modules/@types", "./types"]
   
 }
