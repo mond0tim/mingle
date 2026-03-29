@@ -2,8 +2,8 @@
 "use client"
 import type React from "react"
 import { useState, useRef, useEffect } from "react"
-import type { Playlist, Track } from "@/types"
-import styles from "./ExpandedControlsDrawer.module.css"
+// import type { Playlist, Track } from "@/types"
+import styles from "../Player.module.css"
 import { Drawer } from "vaul"
 import QueueDrawer from "../QueueDrawer"
 import LyricsDrawer from "../LyricsDrawer"
@@ -25,7 +25,7 @@ import { usePlayerStore } from "../../store/playerStore"
 
 const CurrentTime: React.FC<{ isSeeking: boolean; seekValue: number }> = ({ isSeeking, seekValue }) => {
   const seek = usePlayerStore((state) => state.seek);
-  
+
   const formatTime = (seconds: number) => (
     <NumberFlowGroup>
       <div
@@ -50,7 +50,7 @@ const CurrentTime: React.FC<{ isSeeking: boolean; seekValue: number }> = ({ isSe
 
 const DurationTime: React.FC = () => {
   const duration = usePlayerStore((state) => state.duration);
-  
+
   const formatTime = (seconds: number) => (
     <NumberFlowGroup>
       <div
@@ -73,14 +73,14 @@ const DurationTime: React.FC = () => {
   return <span className={styles.driverDuration}>{formatTime(duration)}</span>;
 };
 
-const ProgressBar: React.FC<{ 
-  isSeeking: boolean; 
+const ProgressBar: React.FC<{
+  isSeeking: boolean;
   seekValue: number;
   onSeekStart: (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => void;
 }> = ({ isSeeking, seekValue, onSeekStart }) => {
   const seek = usePlayerStore((state) => state.seek);
   const duration = usePlayerStore((state) => state.duration);
-  
+
   const currentPos = isSeeking ? seekValue : seek;
   const progress = duration > 0 ? (currentPos / duration) * 100 : 0;
 
@@ -287,12 +287,12 @@ const ExpandedControlsDrawer: React.FC<ExpandedControlsDrawerProps> = ({
           >
             <Drawer.Close asChild>
               <motion.button
-              initial={{ scale: 0, translateX: "-50%" }}
-              animate={{ scale: 1, translateX: "-50%" }}
-              whileHover={{ scale: 1.1, translateX: "-50%" }}
-              whileTap={{ scale: 0.9, translateX: "-50%"  }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              className={styles.DrawerCloseButton}>
+                initial={{ scale: 0, translateX: "-50%" }}
+                animate={{ scale: 1, translateX: "-50%" }}
+                whileHover={{ scale: 1.1, translateX: "-50%" }}
+                whileTap={{ scale: 0.9, translateX: "-50%" }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                className={styles.DrawerCloseButton}>
                 <ChevronDown size={16} strokeWidth={3} />
 
               </motion.button>

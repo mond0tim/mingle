@@ -131,7 +131,6 @@ const Home = () => {
       {wavePlaylist && playlistIsPlaying?.category === wavePlaylist.category && showVisualizer ? (
         <div className={styles.canvas_container}>
           <AudioMotionVisualizer
-            audioContext={audioContext}
             currentTrack={currentTrack}
             howlerRef={howlerRef}
           />
