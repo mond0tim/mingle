@@ -1,30 +1,22 @@
-// @ts-nocheck
-/* eslint-disable */
 'use client';
 import React, { useEffect, useRef } from 'react';
 import AudioMotionAnalyzer from 'audiomotion-analyzer';
-import { Track } from '@/types';
-import ReactHowler from 'react-howler';
+import { usePlayerStore } from '@/features/player/store/playerStore';
 import { Howler } from 'howler';
 
-interface AudioMotionVisualizerProps {
-  currentTrack: Track | null;
-  howlerRef: React.RefObject<ReactHowler>;
-}
-
-// СИНГЛТОН: Анализатор живет вне компонентов, чтобы не ломать аудио-граф при ререндерах
+// Синглтоны (защита от ререндеров и Strict Mode)
 let sharedAnalyzer: AudioMotionAnalyzer | null = null;
+let connectedAudioElement: HTMLMediaElement | null = null;
 
-const AudioMotionVisualizer: React.FC<AudioMotionVisualizerProps> = ({
-  currentTrack,
-  howlerRef,
-}) => {
+const AudioMotionVisualizer = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const currentTrack = usePlayerStore(state => state.currentTrack);
+  const howlerRef = usePlayerStore(state => state.howlerRef);
 
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // 1. Инициализируем анализатор один раз за всю жизнь приложения
+    // Инициализация Canvas (один раз на все приложение)
     if (!sharedAnalyzer) {
       sharedAnalyzer = new AudioMotionAnalyzer(containerRef.current, {
         alphaBars: false,
@@ -77,53 +69,61 @@ const AudioMotionVisualizer: React.FC<AudioMotionVisualizerProps> = ({
         trueLeds: false,
         weightingFilter: '',
         height: 400,
-        // Используем глобальный контекст Howler
         audioCtx: Howler.ctx
       });
     } else {
-      // Если компонент перерисовался, просто переносим холст в новый контейнер
       containerRef.current.appendChild(sharedAnalyzer.canvas);
     }
+
+    // Игнорируем playerKey, так как мы больше не делаем жестких перезагрузок аудио
   }, []);
 
   useEffect(() => {
-    if (!sharedAnalyzer || !currentTrack) return;
-
-    // Функция для безопасного подключения
+    // Подключение к тегу аудио
     const connectToHowler = () => {
-      const sound = howlerRef.current?.howler._sounds[0];
-      if (!sound || !sound._node) return;
+      if (!sharedAnalyzer) return;
 
-      const audioEl = sound._node; // В режиме html5=true это <audio>
+      const howler = howlerRef.current?.howler;
+      const node = (howler as any)?._sounds?.[0]?._node;
 
-      if (audioEl instanceof HTMLMediaElement) {
-        // КРИТИЧНО ДЛЯ ВИЗУАЛИЗАЦИИ: CORS
-        if (audioEl.crossOrigin !== 'anonymous') {
-          audioEl.crossOrigin = 'anonymous';
+      if (node && node instanceof HTMLMediaElement) {
+        // ЕСЛИ ЭТО ТОТ ЖЕ САМЫЙ ТЕГ, К КОТОРОМУ МЫ УЖЕ ПОДКЛЮЧЕНЫ - ВЫХОДИМ!
+        // Это полностью устраняет фатальную ошибку InvalidStateError.
+        if (connectedAudioElement === node) {
+          return;
+        }
+
+        // Выставляем CORS перед подключением
+        if (node.crossOrigin !== 'anonymous') {
+          node.crossOrigin = 'anonymous';
         }
 
         try {
-          // Проверяем, не подключен ли этот элемент уже (чтобы не было ошибки)
-          if (audioEl.__connectedToMotion) return;
+          // Отключаем старый элемент, подключаем новый
+          sharedAnalyzer.disconnectInput();
+          sharedAnalyzer.connectInput(node);
 
-          sharedAnalyzer.connectInput(audioEl);
-          audioEl.__connectedToMotion = true;
-          console.log('✅ Визуализатор подключен к HTML5 потоку');
+          // Сохраняем ссылку на элемент в синглтон
+          connectedAudioElement = node;
+          console.log('✅ Визуализатор успешно и безопасно подключен!');
         } catch (err) {
-          console.warn('Ошибка подключения AudioMotion:', err);
+          // Игнорируем ошибку InvalidStateError. Она возникает в React Strict Mode при HMR
+          // или если тег уже подключен, но ссылка на него потерялась.
+          connectedAudioElement = node;
         }
       }
     };
 
-    // Howler может создавать ноду с задержкой, даем ему время
-    const timer = setTimeout(connectToHowler, 500);
-    return () => clearTimeout(timer);
+    // Проверяем каждую полсекунды, появился ли новый HTML-тег после переключения трека
+    const interval = setInterval(connectToHowler, 500);
+    return () => clearInterval(interval);
   }, [currentTrack, howlerRef]);
 
   return (
     <div
-      className="pointer-events-none w-full pt-5 md:scale-150 blur-xl"
       ref={containerRef}
+      className="pointer-events-none w-full pt-5 md:scale-150 blur-xl"
+      id="container"
       style={{ filter: 'hue-rotate(241deg) blur(24px) brightness(130%)' }}
     />
   );

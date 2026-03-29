@@ -2,6 +2,7 @@
 import type React from "react"
 import { useState, useEffect, useRef } from "react"
 import ReactHowler from "react-howler"
+import { Howler } from "howler"
 import styles from "./Player.module.css"
 import { useMediaQuery } from "react-responsive"
 
@@ -10,10 +11,7 @@ import MobilePlayer from "../MobilePlayer"
 import PlayerLoader from "../PlayerLoader"
 
 import { usePlayerStore as usePlayer } from "@/features/player/store/playerStore"
-
-// 1. Импортируем наш новый независимый сервис
-import { initMediaSessionService } from "@/features/player/services/mediaSessionService"
-
+import { useMediaSession } from "@/features/player/hooks/useMediaSession"
 import { useTrackColor } from "@/features/player/hooks/useTrackColor"
 import { useSeekInterval } from "@/features/player/hooks/useSeekInterval"
 
@@ -43,21 +41,27 @@ const Player: React.FC<PlayerProps> = () => {
   const volume = usePlayer(state => state.volume);
   const isMuted = usePlayer(state => state.isMuted);
 
-  useSeekInterval() // Polls Howler every 100ms
-  const { dominantColor, rgb, accentColor } = useTrackColor(currentTrack)
+  // ИНИЦИАЛИЗАЦИЯ ХУКОВ
+  useMediaSession(); // Вызов переписанного и стабильного хука
+  useSeekInterval();
+  const { dominantColor, rgb, accentColor } = useTrackColor(currentTrack);
 
-  const isDesktopOrLaptop = useMediaQuery({ query: "(min-width: 640px)" })
-  const [isClient, setIsClient] = useState(false)
+  const isDesktopOrLaptop = useMediaQuery({ query: "(min-width: 640px)" });
+  const [isClient, setIsClient] = useState(false);
 
-  const imgRef = useRef<HTMLImageElement>(null)
+  const imgRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
-    setIsClient(true)
-    setPlaying(false) // Синхронизируем начальное состояние
+    setIsClient(true);
+    setPlaying(false);
 
-    // 2. Запускаем сервис медиа сессии один раз на клиенте
-    initMediaSessionService()
-  }, [setPlaying])
+    // Блокируем авто-сон движка для стабильной работы паузы в браузере
+    Howler.autoSuspend = false;
+
+    // Глобальные настройки самовосстановления Howler
+    Howler.autoUnlock = true;
+    Howler.html5PoolSize = 100; // Решает ошибку: HTML5 Audio pool exhausted
+  }, [setPlaying]);
 
   const currentTrackIndex = currentTrack ? tracks.findIndex(t => t.id === currentTrack.id) : -1;
   const nextTrack = currentTrackIndex !== -1 && tracks.length > 0 ? tracks[(currentTrackIndex + 1) % tracks.length] : null;
@@ -65,10 +69,11 @@ const Player: React.FC<PlayerProps> = () => {
 
   useEffect(() => {
     if (tracks.length > 0 && !currentTrack) {
-      setCurrentTrack(tracks[0])
+      setCurrentTrack(tracks[0]);
     }
-  }, [tracks, setCurrentTrack, currentTrack])
+  }, [tracks, setCurrentTrack, currentTrack]);
 
+  // Сохранение в LocalStorage
   useEffect(() => {
     if (currentTrack && playlistIsPlaying) {
       let cache: { playlistId: number; trackId: number }[] = [];
@@ -106,7 +111,7 @@ const Player: React.FC<PlayerProps> = () => {
           "--mg-accent-color": accentColor,
         } as React.CSSProperties}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
+        {/* eslint-disable-next-line @next/next/no-img-element*/}
         <img
           crossOrigin="anonymous"
           ref={imgRef}
@@ -115,7 +120,7 @@ const Player: React.FC<PlayerProps> = () => {
           style={{ display: "none" }}
         />
 
-        {/* 3. ReactHowler остается КАК ЕСТЬ. Никакого html5={true}. Аудио визуализация (Web Audio API) будет работать штатно */}
+        {/* Ключ (key) здесь спасает от багов, гарантируя, что старый трек полностью уничтожен при смене */}
         {currentTrack && (
           <ReactHowler
             src={currentTrack.src}
@@ -123,23 +128,32 @@ const Player: React.FC<PlayerProps> = () => {
             onEnd={handleOnEnd}
             ref={howlerRef}
             preload={true}
-            html5={true}
+            html5={true} // Обязательно для потоков и MediaSession
             volume={isMuted ? 0 : volume}
             onLoad={() => {
               if (howlerRef.current) {
                 const loadedDuration = howlerRef.current.duration();
                 if (!isNaN(loadedDuration) && loadedDuration > 0) {
                   setDuration(loadedDuration);
-                } else {
-                  console.warn("Howler reported invalid duration on load:", loadedDuration);
+
+                  // Синхронизируем базовую позицию 0:00 в ОС
+                  if ('mediaSession' in navigator && 'setPositionState' in navigator.mediaSession) {
+                    try {
+                      navigator.mediaSession.setPositionState({
+                        duration: loadedDuration,
+                        playbackRate: 1,
+                        position: 0
+                      });
+                    } catch (e) { }
+                  }
                 }
               }
             }}
             onLoadError={(id, error) => {
-              console.error("Howler load error:", id, error)
+              console.error("Howler load error:", id, error);
             }}
             onPlayError={(id, error) => {
-              console.error("Howler play error:", id, error)
+              console.error("Howler play error:", id, error);
             }}
           />
         )}
@@ -189,4 +203,4 @@ const Player: React.FC<PlayerProps> = () => {
   )
 }
 
-export default Player
+export default Player;

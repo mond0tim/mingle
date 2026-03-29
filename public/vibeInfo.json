@@ -5,156 +5,146 @@
     "cover": "/covers/playlists/vibe.png",
     "tracks": [
       {
-        "id": 34,
-        "title": "Midwest Indigo",
+        "id": 73,
+        "title": "Gods Dont Pray",
+        "artist": "Imagine Dragons",
+        "src": "/audio/Imagine_Dragons_-_Gods_Dont_Pray_78053183.mp3",
+        "fullSrc": "/audio/Imagine_Dragons_-_Gods_Dont_Pray_78053183.mp3",
+        "cover": "/covers/playlists/loom.jpg",
+        "type": "track"
+      },
+      {
+        "id": 76,
+        "title": "Take Me To The Beach",
+        "artist": "Imagine Dragons",
+        "src": "/audio/Imagine_Dragons_-_Take_Me_To_The_Beach_78072581.mp3",
+        "fullSrc": "/audio/Imagine_Dragons_-_Take_Me_To_The_Beach_78072581.mp3",
+        "cover": "/covers/playlists/loom.jpg",
+        "type": "track"
+      },
+      {
+        "id": 276,
+        "title": "Bones",
+        "artist": "Imagine Dragons",
+        "src": "/audio/Imagine_Dragons_-_Bones_75940783.mp3",
+        "fullSrc": "/audio/Imagine_Dragons_-_Bones_75940783.mp3",
+        "cover": "/covers/Imagine Dragons - Bones 75940783.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 67,
+        "title": "Only Ones Who Know",
+        "artist": "Arctic Monkeys",
+        "src": "/audio/Arctic_Monkeys_-_Only_Ones_Who_Know_59891379.mp3",
+        "fullSrc": "/audio/Arctic_Monkeys_-_Only_Ones_Who_Know_59891379.mp3",
+        "cover": "/covers/Arctic_Monkeys_-_Only_Ones_Who_Know_59891379.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 293,
+        "title": "Revolution",
+        "artist": "The Score",
+        "src": "/audio/The_Score_-_Revolution_49519337.mp3",
+        "fullSrc": "/audio/The_Score_-_Revolution_49519337.mp3",
+        "cover": "/covers/The Score - Revolution 49519337.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 58,
+        "title": "Teddy Picker",
+        "artist": "Arctic Monkeys",
+        "src": "/audio/Teddy Picker.mp3",
+        "fullSrc": "/audio/Teddy Picker.mp3",
+        "cover": "/covers/brainstorm.jpg",
+        "type": "track"
+      },
+      {
+        "id": 28,
+        "title": "Big Dawgs",
+        "artist": "Hanumankind, Kalmi",
+        "src": "/audio/Big Dawgs - Hanumankind   Kalmi.m4a",
+        "fullSrc": "/audio/Big Dawgs - Hanumankind   Kalmi.m4a",
+        "cover": "/covers/Big_Dawgs _-_Hanumankind_Kalmi.jpg",
+        "type": "track"
+      },
+      {
+        "id": 185,
+        "title": "Heads Will Roll",
+        "artist": "Yeah Yeah Yeahs",
+        "src": "/audio/Yeah Yeah Yeahs - Heads Will Roll.mp3",
+        "fullSrc": "/audio/Yeah Yeah Yeahs - Heads Will Roll.mp3",
+        "cover": "/covers/Yeah Yeah Yeahs - Heads Will Roll.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 162,
+        "title": "Sleeping in My Car",
+        "artist": "Roxette",
+        "src": "/audio/Roxette - Sleeping in My Car.mp3",
+        "fullSrc": "/audio/Roxette - Sleeping in My Car.mp3",
+        "cover": "/covers/Roxette - Sleeping in My Car.png",
+        "type": "track"
+      },
+      {
+        "id": 308,
+        "title": "Tokyo 東京",
+        "artist": "7vvch, MVDNES",
+        "src": "/audio/7vvch_MVDNES_-_Tokyo__74705048.mp3",
+        "fullSrc": "/audio/7vvch_MVDNES_-_Tokyo__74705048.mp3",
+        "cover": "/covers/7vvch MVDNES - Tokyo  74705048.png",
+        "type": "track"
+      },
+      {
+        "id": 17,
+        "title": "Nice to Meet You",
+        "artist": "Imagine Dragons",
+        "src": "/audio/Nice to Meet You.mp3",
+        "fullSrc": "/audio/Nice to Meet You.mp3",
+        "cover": "/covers/Nice to Meet You.jpg",
+        "type": "track"
+      },
+      {
+        "id": 144,
+        "title": "Lady (Hear Me Tonight)",
+        "artist": "Modjo Band, Bernard Edwards Nile Rodgers Romain Tranchart Yann Destagnol, Romain Tranchart Yann Destagnol",
+        "src": "/audio/Modjo Band, Bernard Edwards Nile Rodgers Romain Tr.m4a",
+        "fullSrc": "/audio/Modjo Band, Bernard Edwards Nile Rodgers Romain Tr.m4a",
+        "cover": "/covers/no-cover.jpg",
+        "type": "track"
+      },
+      {
+        "id": 138,
+        "title": "Give It Away",
+        "artist": "Red Hot Chili Peppers",
+        "src": "/audio/Red Hot Chili Peppers - Give It Away.mp3",
+        "fullSrc": "/audio/Red Hot Chili Peppers - Give It Away.mp3",
+        "cover": "/covers/Red Hot Chili Peppers - Give It Away.png",
+        "type": "track"
+      },
+      {
+        "id": 196,
+        "title": "Counting Stars",
+        "artist": "OneRepublic",
+        "src": "/audio/OneRepublic - Counting Stars.mp3",
+        "fullSrc": "/audio/OneRepublic - Counting Stars.mp3",
+        "cover": "/covers/OneRepublic - Counting Stars.png",
+        "type": "track"
+      },
+      {
+        "id": 42,
+        "title": "Paladin Strait",
         "artist": "twenty one pilots",
-        "src": "/audio/Midvest_Indigo.mp3",
-        "fullSrc": "/audio/Midvest_Indigo.mp3",
+        "src": "/audio/Paladin Strait.mp3",
+        "fullSrc": "/audio/Paladin Strait.mp3",
         "cover": "/covers/Twenty One Pilots - Navigating.jpg",
         "type": "track",
         "color": "#4C0000"
-      },
-      {
-        "id": 205,
-        "title": "Мама Люба",
-        "artist": "SEREBRO",
-        "src": "/audio/SEREBRO - Мама Люба.mp3",
-        "fullSrc": "/audio/SEREBRO - Мама Люба.mp3",
-        "cover": "/covers/SEREBRO - Мама Люба.jpg",
-        "type": "track"
-      },
-      {
-        "id": 114,
-        "title": "I Wanna Be Yours",
-        "artist": "Arctic Monkeys",
-        "src": "/audio/Arctic Monkeys - I Wanna Be Yours.mp3",
-        "fullSrc": "/audio/Arctic Monkeys - I Wanna Be Yours.mp3",
-        "cover": "/covers/Arctic Monkeys - I Wanna Be Yours.png",
-        "type": "track"
-      },
-      {
-        "id": 100,
-        "title": "Smooth Criminal (2012 Remaster)",
-        "artist": "Michael Jackson",
-        "src": "/audio/Michael Jackson - Smooth Criminal 2012 Remaster.mp3",
-        "fullSrc": "/audio/Michael Jackson - Smooth Criminal 2012 Remaster.mp3",
-        "cover": "/covers/Michael Jackson - Smooth Criminal 2012 Remaster.png",
-        "type": "track"
-      },
-      {
-        "id": 195,
-        "title": "All The Right Moves",
-        "artist": "OneRepublic",
-        "src": "/audio/OneRepublic - All The Right Moves.mp3",
-        "fullSrc": "/audio/OneRepublic - All The Right Moves.mp3",
-        "cover": "/covers/OneRepublic - All The Right Moves.png",
-        "type": "track"
-      },
-      {
-        "id": 59,
-        "title": "D is for Dangerous",
-        "artist": "Arctic Monkeys",
-        "src": "/audio/Arctic_Monkeys_-_D_is_for_Dangerous_59891375.mp3",
-        "fullSrc": "/audio/Arctic_Monkeys_-_D_is_for_Dangerous_59891375.mp3",
-        "cover": "/covers/Arctic_Monkeys_-_D_is_for_Dangerous_59891375.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 175,
-        "title": "Tied Up",
-        "artist": "Little Ceremonies",
-        "src": "/audio/Little Ceremonies - Tied Up.mp3",
-        "fullSrc": "/audio/Little Ceremonies - Tied Up.mp3",
-        "cover": "/covers/no-cover.jpg",
-        "type": "track"
-      },
-      {
-        "id": 19,
-        "title": "Overcompensate",
-        "artist": "twenty one pilots",
-        "src": "/audio/Overcompensate.mp3",
-        "fullSrc": "/audio/Overcompensate.mp3",
-        "cover": "/covers/Overcompensate.jpg",
-        "type": "track",
-        "color": "#4C0000"
-      },
-      {
-        "id": 147,
-        "title": "Music Sounds Better With You (Radio Edit)",
-        "artist": "Stardust",
-        "src": "/audio/Stardust - Music Sounds Better With You Radio Edit.mp3",
-        "fullSrc": "/audio/Stardust - Music Sounds Better With You Radio Edit.mp3",
-        "cover": "/covers/Stardust - Music Sounds Better With You Radio Edit.png",
-        "type": "track"
-      },
-      {
-        "id": 217,
-        "title": "Шанс",
-        "artist": "Дайте танк (!)",
-        "src": "/audio/Дайте_танк_,_Дмитрий_Мозжухин,_Дмитрий_Мозжухин_Шанс.mp3",
-        "fullSrc": "/audio/Дайте_танк_,_Дмитрий_Мозжухин,_Дмитрий_Мозжухин_Шанс.mp3",
-        "cover": "/covers/Дайте_танк_,_Дмитрий_Мозжухин,_Дмитрий_Мозжухин_Шанс.jpg",
-        "type": "track"
-      },
-      {
-        "id": 270,
-        "title": "Head Up",
-        "artist": "The Score",
-        "src": "/audio/The_Score_-_Head_Up_73172695.mp3",
-        "fullSrc": "/audio/The_Score_-_Head_Up_73172695.mp3",
-        "cover": "/covers/The Score - Head Up 73172695.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 206,
-        "title": "Ты не верь слезам",
-        "artist": "Шура",
-        "src": "/audio/SHura_-_Ty_ne_ver_slezam_58001132.mp3",
-        "fullSrc": "/audio/SHura_-_Ty_ne_ver_slezam_58001132.mp3",
-        "cover": "/covers/SHura_-_Ty_ne_ver_slezam_58001132.jpg",
-        "type": "track"
-      },
-      {
-        "id": 306,
-        "title": "На вершине мира",
-        "artist": "Сухарев Дмитрий",
-        "src": "/audio/На вершине мира - Сухарев Дмитрий.mp3",
-        "fullSrc": "/audio/На вершине мира - Сухарев Дмитрий.mp3",
-        "cover": "/covers/Сухарев Дмитрий.jpg",
-        "type": "track"
-      },
-      {
-        "id": 269,
-        "title": "Fighter",
-        "artist": "The Score",
-        "src": "/audio/The_Score_-_Fighter_73945312.mp3",
-        "fullSrc": "/audio/The_Score_-_Fighter_73945312.mp3",
-        "cover": "/covers/The Score - Fighter 73945312.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 181,
-        "title": "Message In A Bottle",
-        "artist": "The Police",
-        "src": "/audio/The Police - Message In A Bottle.mp3",
-        "fullSrc": "/audio/The Police - Message In A Bottle.mp3",
-        "cover": "/covers/The Police - Message In A Bottle.png",
-        "type": "track"
-      },
-      {
-        "id": 208,
-        "title": "Пожары",
-        "artist": "XOLIDAYBOY",
-        "src": "/audio/XOLIDAYBOY - Пожары.mp3",
-        "fullSrc": "/audio/XOLIDAYBOY - Пожары.mp3",
-        "cover": "/covers/no-cover.jpg",
-        "type": "track"
       }
     ],
     "isPlaying": false,
     "category": "vibe",
     "type": "playlist",
-    "updatedAt": "2026-03-29T14:55:09.441Z"
+    "updatedAt": "2026-03-29T18:12:49.890Z"
   },
   {
     "id": 240,

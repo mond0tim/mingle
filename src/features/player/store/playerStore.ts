@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import type ReactHowler from 'react-howler';
 import type { Track, Playlist } from '@/types';
 import React from 'react';
+import { Howler } from 'howler';
 
 interface PlayerState {
   currentTrack: Track | null;
@@ -16,6 +17,7 @@ interface PlayerState {
   isMuted: boolean;
   volume: number;
   initialPlaylists: Playlist[];
+  isGlobalSeeking: boolean;
 
   // Actions
   playTrack: (track: Track, playlist?: Playlist, autoplay?: boolean) => void;
@@ -36,6 +38,7 @@ interface PlayerState {
   toggleMute: () => void;
   setVolume: (volume: number) => void;
   setInitialPlaylists: (playlists: Playlist[]) => void;
+  setIsGlobalSeeking: (isSeeking: boolean) => void;
 
   // Refs for audio player control
   howlerRef: React.RefObject<ReactHowler>;
@@ -59,6 +62,7 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   isMuted: false,
   volume: 1.0,
   initialPlaylists: [],
+  isGlobalSeeking: false,
   howlerRef: React.createRef<ReactHowler>(),
   audioContext: React.createRef<AudioContext>(),
   audioNode: React.createRef<MediaElementAudioSourceNode>(),
@@ -77,12 +81,18 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   setIsQueueDrawerOpen: (isOpen) => set({ isQueueDrawerOpen: isOpen }),
   setIsLyricsDrawerOpen: (isOpen) => set({ isLyricsDrawerOpen: isOpen }),
   setVolume: (volume) => set({ volume }),
+  setIsGlobalSeeking: (isGlobalSeeking) => set({ isGlobalSeeking }),
   toggleMute: () => set((state) => ({ isMuted: !state.isMuted })),
 
   playTrack: (track, playlist, autoplay = true) => {
     const { howlerRef } = get();
     console.log(`playTrack: Выбран трек "${track.title}"`);
     
+    // САМОВОССТАНОВЛЕНИЕ КОНТЕКСТА: Разблокируем Web Audio API при первом же клике
+    if (typeof Howler !== 'undefined' && Howler.ctx && Howler.ctx.state === 'suspended') {
+        try { Howler.ctx.resume(); } catch (e) {}
+    }
+
     if (howlerRef?.current) {
       console.log('playTrack: Остановка текущего трека');
       howlerRef.current.stop();
@@ -115,6 +125,11 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   togglePlay: () => {
     set((state) => {
       console.log(`togglePlay: Переключение состояния playing на ${!state.playing}`);
+      
+      if (!state.playing && typeof Howler !== 'undefined' && Howler.ctx && Howler.ctx.state === 'suspended') {
+          try { Howler.ctx.resume(); } catch (e) {}
+      }
+
       return { playing: !state.playing };
     });
   },
@@ -140,11 +155,22 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   },
 
   handleSeek: (time: number) => {
-    const { howlerRef } = get();
+    const { howlerRef, duration } = get();
     if (howlerRef?.current) {
       howlerRef.current.seek(time);
     }
     set({ seek: time });
+
+    // Синхронизируем интерфейс ОС (Media Session) со встроенным плеером
+    if (typeof navigator !== 'undefined' && 'mediaSession' in navigator && 'setPositionState' in navigator.mediaSession && duration > 0) {
+      try {
+        navigator.mediaSession.setPositionState({
+          duration: duration,
+          playbackRate: 1,
+          position: Math.max(0, Math.min(time, duration)),
+        });
+      } catch (e) {}
+    }
   },
 
   handleOnEnd: () => {
