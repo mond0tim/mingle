@@ -4,11 +4,16 @@ import { useState, useEffect, useRef } from "react"
 import ReactHowler from "react-howler"
 import styles from "./Player.module.css"
 import { useMediaQuery } from "react-responsive"
+
 import PlayerControls from "../PlayerControls"
 import MobilePlayer from "../MobilePlayer"
 import PlayerLoader from "../PlayerLoader"
+
 import { usePlayerStore as usePlayer } from "@/features/player/store/playerStore"
-import { useMediaSession } from "@/features/player/hooks/useMediaSession"
+
+// 1. Импортируем наш новый независимый сервис
+import { initMediaSessionService } from "@/features/player/services/mediaSessionService"
+
 import { useTrackColor } from "@/features/player/hooks/useTrackColor"
 import { useSeekInterval } from "@/features/player/hooks/useSeekInterval"
 
@@ -38,9 +43,7 @@ const Player: React.FC<PlayerProps> = () => {
   const volume = usePlayer(state => state.volume);
   const isMuted = usePlayer(state => state.isMuted);
 
-  // Инициализируем отдельные хуки для Media Session и извлечения цветов
-  useMediaSession()
-  useSeekInterval() // Polls Howler every 100ms to update seek + duration in store
+  useSeekInterval() // Polls Howler every 100ms
   const { dominantColor, rgb, accentColor } = useTrackColor(currentTrack)
 
   const isDesktopOrLaptop = useMediaQuery({ query: "(min-width: 640px)" })
@@ -50,21 +53,22 @@ const Player: React.FC<PlayerProps> = () => {
 
   useEffect(() => {
     setIsClient(true)
-    setPlaying(false) // Синхронизируем начальное состояние воспроизведения
+    setPlaying(false) // Синхронизируем начальное состояние
+
+    // 2. Запускаем сервис медиа сессии один раз на клиенте
+    initMediaSessionService()
   }, [setPlaying])
 
   const currentTrackIndex = currentTrack ? tracks.findIndex(t => t.id === currentTrack.id) : -1;
   const nextTrack = currentTrackIndex !== -1 && tracks.length > 0 ? tracks[(currentTrackIndex + 1) % tracks.length] : null;
   const prevTrack = currentTrackIndex !== -1 && tracks.length > 0 ? tracks[currentTrackIndex === 0 ? tracks.length - 1 : currentTrackIndex - 1] : null;
 
-  // Если трек ещё не выбран, выбираем первый из списка
   useEffect(() => {
     if (tracks.length > 0 && !currentTrack) {
       setCurrentTrack(tracks[0])
     }
   }, [tracks, setCurrentTrack, currentTrack])
 
-  // Сохраняем в localStorage при смене трека или плейлиста
   useEffect(() => {
     if (currentTrack && playlistIsPlaying) {
       let cache: { playlistId: number; trackId: number }[] = [];
@@ -72,7 +76,6 @@ const Player: React.FC<PlayerProps> = () => {
         const cacheStr = localStorage.getItem(CACHE_KEY);
         if (cacheStr) cache = JSON.parse(cacheStr);
       } catch { }
-      // Удаляем дубликаты
       cache = cache.filter(item => item.playlistId !== playlistIsPlaying.id);
       cache.unshift({ playlistId: playlistIsPlaying.id, trackId: currentTrack.id });
       localStorage.setItem(CACHE_KEY, JSON.stringify(cache.slice(0, 10)));
@@ -103,9 +106,7 @@ const Player: React.FC<PlayerProps> = () => {
           "--mg-accent-color": accentColor,
         } as React.CSSProperties}
       >
-        {/* <div className={styles.player_background}></div>
-        Скрытое изображение для ColorThief */}
-        { /* eslint-disable-next-line @next/next/no-img-element*/}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           crossOrigin="anonymous"
           ref={imgRef}
@@ -113,34 +114,24 @@ const Player: React.FC<PlayerProps> = () => {
           alt=""
           style={{ display: "none" }}
         />
-        {/* ReactHowler для воспроизведения аудио */}
+
+        {/* 3. ReactHowler остается КАК ЕСТЬ. Никакого html5={true}. Аудио визуализация (Web Audio API) будет работать штатно */}
         {currentTrack && (
           <ReactHowler
             src={currentTrack.src}
             playing={playing}
             onEnd={handleOnEnd}
             ref={howlerRef}
-
             preload={true}
+            html5={true}
             volume={isMuted ? 0 : volume}
             onLoad={() => {
               if (howlerRef.current) {
-                const loadedDuration = howlerRef.current.duration()
+                const loadedDuration = howlerRef.current.duration();
                 if (!isNaN(loadedDuration) && loadedDuration > 0) {
-                  setDuration(loadedDuration)
-                  if ("mediaSession" in navigator && navigator.mediaSession.metadata) {
-                    try {
-                      navigator.mediaSession.setPositionState({
-                        duration: loadedDuration,
-                        playbackRate: 1.0,
-                        position: 0,
-                      })
-                    } catch (error) {
-                      console.error("MediaSession: Error setting initial position state on load", error)
-                    }
-                  }
+                  setDuration(loadedDuration);
                 } else {
-                  console.warn("Howler reported invalid duration on load:", loadedDuration)
+                  console.warn("Howler reported invalid duration on load:", loadedDuration);
                 }
               }
             }}
@@ -153,8 +144,8 @@ const Player: React.FC<PlayerProps> = () => {
           />
         )}
 
-        {/* Отображение лоадера и контролов */}
         {!isClient && <PlayerLoader />}
+
         {isClient && isDesktopOrLaptop && (
           <PlayerControls
             currentTrack={currentTrack}

@@ -6,11 +6,11 @@ import ImageLightbox from '@/components/imageLightbox/ImageLightbox';
 import cn from 'classnames';
 import { PrevIcon, NextIcon, MoreIcon } from '@/shared/ui/icons';
 import NumberFlow, { NumberFlowGroup } from '@number-flow/react';
-import { 
-  DropdownMenu, 
-  DropdownMenuTrigger, 
-  DropdownMenuContent, 
-  DropdownMenuItem 
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem
 } from '@/components/ui/dropdown-menu';
 import { DownloadIcon } from '@/shared/ui/icons';
 import LyricsDrawer from '../LyricsDrawer';

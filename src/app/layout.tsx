@@ -22,7 +22,7 @@ const geistMono = localFont({
   weight: "100 900",
 });
 const Oddval = localFont({
-  src: "./fonts/Oddval-SemiBold.woff",
+  src: "./fonts/FliegeMonoVF.woff2",
   variable: "--font-oddval",
 });
 const OddvalItalic = localFont({
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     images: 'https://mingle.ti-web.ru/preview.png',
-    title:'mingle',
+    title: 'mingle',
     card: "summary_large_image"
   }
 };
@@ -58,8 +58,8 @@ export default function RootLayout({
   return (
     <html lang="ru" >
       <body className={`${geistSans.variable} ${Oddval.variable} ${Raydis.variable} ${OddvalItalic.variable} ${geistMono.variable} antialiased`}>
-      <NavigationMenu />
-        <Preloader/>
+        <NavigationMenu />
+        <Preloader />
         <Providers><PlayerWrapper>  {children}</PlayerWrapper></Providers>
       </body>
     </html>

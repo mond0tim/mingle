@@ -197,3 +197,24 @@ body *::-moz-selection {
 	opacity: 0;
   }
   
+
+
+/* В вашем CSS файле */
+
+/* 1. Добавляем 3D контекст всей ленте */
+number-flow-react::part(number) {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+/* 2. Стилизуем каждую цифру */
+number-flow-react::part(digit) {
+  /* Эффект затухания и уменьшения при удалении от центра */
+  transition: transform 0.3s, opacity 0.3s, filter 0.3s;
+}
+
+/* 3. Магия: используем встроенный в библиотеку блюр через переменную */
+number-flow-react {
+  --number-flow-blur-radius: 4px; /* Включает блюр при смене числа */
+}
+
