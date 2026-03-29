@@ -1,81 +1,133 @@
-// import { useEffect } from 'react';
-// import { usePlayerStore } from '../store/playerStore';
+import { useEffect } from 'react';
+import { usePlayerStore } from '../store/playerStore';
 
-// export const useMediaSession = () => {
-//   const currentTrack = usePlayerStore((state) => state.currentTrack);
-//   const playlistIsPlaying = usePlayerStore((state) => state.playlistIsPlaying);
-//   const playing = usePlayerStore((state) => state.playing);
-//   const duration = usePlayerStore((state) => state.duration);
-//   const seek = usePlayerStore((state) => state.seek);
+export const useMediaSession = () => {
+  const currentTrack = usePlayerStore((state) => state.currentTrack);
+  const playing = usePlayerStore((state) => state.playing);
+  const duration = usePlayerStore((state) => state.duration);
+  const playlistIsPlaying = usePlayerStore((state) => state.playlistIsPlaying);
 
-//   // (Удален хак с фоновым аудио по примеру из стабильного кода)
-//   // MediaSession API требует только единоразового применения метаданных на смену трека
-//   // и установки playbackState при паузе. Постоянные обновления positionState ломают фокус.
+  // 1. ПРИВЯЗКА КНОПОК И ПОЛЗУНКА (ВЫПОЛНЯЕТСЯ СТРОГО 1 РАЗ)
+  useEffect(() => {
+    if (typeof window === 'undefined' || !('mediaSession' in navigator)) return;
 
-//   // 1. Setup MediaSession API (Metadata + Action Handlers)
-//   // В точности как в рабочем примере: обновляем только при смене трека,
-//   // привязываем все экшены внутри одного эффекта, чтобы избежать пересечений стейта.
-//   useEffect(() => {
-//     if (!currentTrack || typeof window === 'undefined' || !('mediaSession' in navigator)) {
-//       return;
-//     }
+    let seekTimeout: NodeJS.Timeout | null = null;
+    let pendingSeekTime: number | null = null;
 
-//     try {
-//       // Установка метаданных
-//       navigator.mediaSession.metadata = new MediaMetadata({
-//         title: currentTrack.title || 'Неизвестный трек',
-//         artist: currentTrack.artist || 'Неизвестный исполнитель',
-//         album: playlistIsPlaying?.title || '',
-//         artwork: [
-//           {
-//             src: currentTrack.cover || '/placeholder.svg',
-//             sizes: '512x512',
-//             type: 'image/png',
-//           },
-//         ],
-//       });
+    // Используем getState(), чтобы всегда получать актуальные данные без ререндеров
+    navigator.mediaSession.setActionHandler('play', () => {
+      usePlayerStore.getState().setPlaying(true);
+    });
 
-//       // Перехват кнопок
-//       navigator.mediaSession.setActionHandler('play', () => {
-//         usePlayerStore.getState().setPlaying(true);
-//       });
-//       navigator.mediaSession.setActionHandler('pause', () => {
-//         usePlayerStore.getState().setPlaying(false);
-//       });
-//       navigator.mediaSession.setActionHandler('previoustrack', () => {
-//         usePlayerStore.getState().handlePrevTrack();
-//       });
-//       navigator.mediaSession.setActionHandler('nexttrack', () => {
-//         usePlayerStore.getState().handleNextTrack();
-//       });
-//       navigator.mediaSession.setActionHandler('seekto', (details) => {
-//         const { howlerRef, setSeek } = usePlayerStore.getState();
-//         if (details.seekTime !== undefined && details.seekTime !== null && howlerRef?.current) {
-//           howlerRef.current.seek(details.seekTime);
-//           setSeek(details.seekTime);
-//         }
-//       });
-//     } catch (error) {
-//       console.error('MediaSession: Error applying handlers', error);
-//     }
+    navigator.mediaSession.setActionHandler('pause', () => {
+      usePlayerStore.getState().setPlaying(false);
+    });
 
-//     return () => {
-//       if ('mediaSession' in navigator) {
-//         try {
-//           navigator.mediaSession.setActionHandler('play', null);
-//           navigator.mediaSession.setActionHandler('pause', null);
-//           navigator.mediaSession.setActionHandler('previoustrack', null);
-//           navigator.mediaSession.setActionHandler('nexttrack', null);
-//           navigator.mediaSession.setActionHandler('seekto', null);
-//         } catch (e) { }
-//       }
-//     };
-//   }, [currentTrack, playlistIsPlaying]);
+    navigator.mediaSession.setActionHandler('previoustrack', () => {
+      usePlayerStore.getState().handlePrevTrack();
+    });
 
-//   // 2. Установка состояния проигрывания строго при изменении playing
-//   useEffect(() => {
-//     if ('mediaSession' in navigator) {
-//       navigator.mediaSession.playbackState = playing ? 'playing' : 'paused';
-//     }
-//   }, [playing]);
-// };
+    navigator.mediaSession.setActionHandler('nexttrack', () => {
+      usePlayerStore.getState().handleNextTrack();
+    });
+
+    const handleDebouncedSeek = (newTime: number, state: any) => {
+      pendingSeekTime = newTime;
+      
+      if (!state.isGlobalSeeking) {
+         state.setIsGlobalSeeking(true);
+      }
+
+      if (seekTimeout) clearTimeout(seekTimeout);
+
+      if ('setPositionState' in navigator.mediaSession && state.duration > 0) {
+        try {
+          navigator.mediaSession.setPositionState({
+            duration: state.duration,
+            playbackRate: 1,
+            position: Math.max(0, Math.min(pendingSeekTime, state.duration)),
+          });
+        } catch (e) { }
+      }
+
+      state.setSeek(pendingSeekTime);
+
+      seekTimeout = setTimeout(() => {
+        if (pendingSeekTime !== null) {
+          usePlayerStore.getState().handleSeek(pendingSeekTime);
+          usePlayerStore.getState().setIsGlobalSeeking(false);
+          pendingSeekTime = null;
+        }
+      }, 300); // 300мс дебаунс (надежнее для защиты от множественных экземпляров)
+    };
+
+    // Обработка "перетягивания" ползунка в ОС
+    navigator.mediaSession.setActionHandler('seekto', (details) => {
+      const state = usePlayerStore.getState();
+      if (details.seekTime !== undefined && details.seekTime !== null) {
+        handleDebouncedSeek(details.seekTime, state);
+      }
+    });
+
+    navigator.mediaSession.setActionHandler('seekforward', (details) => {
+      const state = usePlayerStore.getState();
+      const skipTime = details.seekOffset || 10;
+      // Если мы уже мотаем (естьpendingSeekTime), берем его, чтобы не "проскакивать"
+      const currentSeek = pendingSeekTime ?? ((state.howlerRef.current?.seek() as number) || 0);
+      const newTime = Math.min(currentSeek + skipTime, state.duration);
+      handleDebouncedSeek(newTime, state);
+    });
+
+    navigator.mediaSession.setActionHandler('seekbackward', (details) => {
+      const state = usePlayerStore.getState();
+      const skipTime = details.seekOffset || 10;
+      const currentSeek = pendingSeekTime ?? ((state.howlerRef.current?.seek() as number) || 0);
+      const newTime = Math.max(currentSeek - skipTime, 0);
+      handleDebouncedSeek(newTime, state);
+    });
+
+    return () => {
+      // Очистка при полном размонтировании приложения
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.setActionHandler('play', null);
+        navigator.mediaSession.setActionHandler('pause', null);
+        navigator.mediaSession.setActionHandler('previoustrack', null);
+        navigator.mediaSession.setActionHandler('nexttrack', null);
+        navigator.mediaSession.setActionHandler('seekto', null);
+        navigator.mediaSession.setActionHandler('seekforward', null);
+        navigator.mediaSession.setActionHandler('seekbackward', null);
+      }
+    };
+  }, []); // <-- ПУСТОЙ МАССИВ! Защищает от краша при перетягивании ползунка!
+
+  // 2. ОБНОВЛЕНИЕ МЕТАДАННЫХ (ТОЛЬКО ПРИ СМЕНЕ ПЕСНИ)
+  useEffect(() => {
+    if (!currentTrack || !('mediaSession' in navigator)) return;
+
+    const getAbsoluteUrl = (path: string) => {
+      if (!path) return '';
+      if (path.startsWith('http')) return path;
+      return `${window.location.origin}${path}`;
+    };
+
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: currentTrack.title || 'Неизвестный трек',
+      artist: currentTrack.artist || 'Неизвестный исполнитель',
+      album: playlistIsPlaying?.title || '',
+      artwork: [
+        {
+          src: getAbsoluteUrl(currentTrack.cover || '/placeholder.svg'),
+          sizes: '512x512',
+          type: 'image/png',
+        },
+      ],
+    });
+  }, [currentTrack?.id]); // Зависит только от ID, а не от всего объекта
+
+  // 3. СИНХРОНИЗАЦИЯ СТАТУСА ПАУЗЫ (ДЕРЖИТ УВЕДОМЛЕНИЕ ОТКРЫТЫМ)
+  useEffect(() => {
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.playbackState = playing ? 'playing' : 'paused';
+    }
+  }, [playing]);
+};

@@ -7,45 +7,70 @@ export const initMediaSessionService = () => {
 	if (typeof window === 'undefined' || !('mediaSession' in navigator) || isInitialized) return;
 	isInitialized = true;
 
-	// 1. Статичные обработчики (никогда не меняются)
-	const store = usePlayerStore.getState();
+	const getHowler = () => usePlayerStore.getState().howlerRef.current?.howler;
 
-	navigator.mediaSession.setActionHandler('play', () => usePlayerStore.getState().setPlaying(true));
-	navigator.mediaSession.setActionHandler('pause', () => usePlayerStore.getState().setPlaying(false));
-	navigator.mediaSession.setActionHandler('previoustrack', () => usePlayerStore.getState().handlePrevTrack());
-	navigator.mediaSession.setActionHandler('nexttrack', () => usePlayerStore.getState().handleNextTrack());
-	navigator.mediaSession.setActionHandler('seekto', (details) => {
-		if (details.seekTime !== undefined) usePlayerStore.getState().handleSeek(details.seekTime);
+	// ОБРАБОТЧИКИ ЭКШЕНОВ ОС
+	navigator.mediaSession.setActionHandler('play', () => {
+		const howler = getHowler();
+		if (howler) {
+			howler.play();
+			usePlayerStore.getState().setPlaying(true);
+		}
 	});
 
-	// 2. Следим за изменениями в Store
-	usePlayerStore.subscribe((state, prevState) => {
-		// Обновляем метаданные при смене трека
-		if (state.currentTrack?.id !== prevState.currentTrack?.id) {
-			if (state.currentTrack) {
-				navigator.mediaSession.metadata = new MediaMetadata({
-					title: state.currentTrack.title,
-					artist: state.currentTrack.artist,
-					album: state.playlistIsPlaying?.title || '',
-					artwork: [{ src: state.currentTrack.cover || '', sizes: '512x512', type: 'image/png' }]
+	navigator.mediaSession.setActionHandler('pause', () => {
+		const howler = getHowler();
+		if (howler) {
+			howler.pause();
+			usePlayerStore.getState().setPlaying(false);
+		}
+	});
+
+	navigator.mediaSession.setActionHandler('previoustrack', () => {
+		usePlayerStore.getState().handlePrevTrack();
+	});
+
+	navigator.mediaSession.setActionHandler('nexttrack', () => {
+		usePlayerStore.getState().handleNextTrack();
+	});
+
+	navigator.mediaSession.setActionHandler('seekto', (details) => {
+		const howler = getHowler();
+		if (howler && details.seekTime !== undefined) {
+			howler.seek(details.seekTime);
+			usePlayerStore.getState().setSeek(details.seekTime);
+			// Обновляем позицию в ОС немедленно после перемотки
+			if ('setPositionState' in navigator.mediaSession) {
+				navigator.mediaSession.setPositionState({
+					duration: howler.duration(),
+					playbackRate: 1,
+					position: details.seekTime
 				});
 			}
 		}
+	});
 
-		// Обновляем состояние проигрывания
-		if (state.playing !== prevState.playing) {
-			navigator.mediaSession.playbackState = state.playing ? 'playing' : 'paused';
+	// ПОДПИСКА НА ИЗМЕНЕНИЯ STORE
+	usePlayerStore.subscribe((state, prevState) => {
+		if (!('mediaSession' in navigator)) return;
+
+		// 1. Обновление метаданных только при реальной смене трека
+		if (state.currentTrack?.id !== prevState.currentTrack?.id && state.currentTrack) {
+			navigator.mediaSession.metadata = new MediaMetadata({
+				title: state.currentTrack.title,
+				artist: state.currentTrack.artist,
+				album: state.playlistIsPlaying?.title || '',
+				artwork: [{
+					src: state.currentTrack.cover || '/placeholder.svg',
+					sizes: '512x512',
+					type: 'image/png'
+				}]
+			});
 		}
 
-		// Обновляем ползунок времени (важно для того, чтобы ОС не считала плеер "зависшим")
-		if (state.duration > 0 && (Math.abs(state.seek - prevState.seek) > 1 || state.duration !== prevState.duration)) {
-			try {
-				navigator.mediaSession.setPositionState({
-					duration: state.duration,
-					playbackRate: 1,
-					position: Math.min(state.seek, state.duration)
-				});
-			} catch (e) { }
+		// 2. Синхронизация статуса (Playing/Paused)
+		if (state.playing !== prevState.playing) {
+			navigator.mediaSession.playbackState = state.playing ? 'playing' : 'paused';
 		}
 	});
 };

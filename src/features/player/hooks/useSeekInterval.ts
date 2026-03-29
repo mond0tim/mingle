@@ -16,15 +16,16 @@ export const useSeekInterval = () => {
     if (!playing) return;
 
     const intervalId = setInterval(() => {
-      if (!howlerRef?.current) return;
+      const state = usePlayerStore.getState();
+      if (!state.howlerRef?.current || state.isGlobalSeeking) return;
 
-      const currentSeek = howlerRef.current.seek() as number;
+      const currentSeek = state.howlerRef.current.seek() as number;
       if (!isNaN(currentSeek)) {
         setSeek(currentSeek);
       }
 
       // Also keep duration fresh (it can change on load)
-      const currentDuration = howlerRef.current.duration();
+      const currentDuration = state.howlerRef.current.duration();
       if (!isNaN(currentDuration) && currentDuration > 0) {
         setDuration(currentDuration);
       }
