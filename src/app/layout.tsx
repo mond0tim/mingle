@@ -5,7 +5,10 @@ import localFont from "next/font/local";
 import NavigationMenu from '@/components/NavigationMenu/NavigationMenu';
 import Preloader from '@/components/Preloader/Preloader';
 import Providers from './providers';
+import { Geist } from "next/font/google";
+import { cn } from "@/lib/utils";
 
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 export const viewport: Viewport = {
   themeColor: '#0c0312',
@@ -56,7 +59,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" >
+    <html lang="ru" className={cn("font-sans", geist.variable)} >
       <body className={`${geistSans.variable} ${Oddval.variable} ${Raydis.variable} ${OddvalItalic.variable} ${geistMono.variable} antialiased`}>
         <NavigationMenu />
         <Preloader />
