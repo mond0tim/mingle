@@ -7,7 +7,7 @@ export const initMediaSessionService = () => {
 	if (typeof window === 'undefined' || !('mediaSession' in navigator) || isInitialized) return;
 	isInitialized = true;
 
-	const getHowler = () => usePlayerStore.getState().howlerRef.current?.howler;
+	const getHowler = () => usePlayerStore.getState().howlerInstance;
 
 	// ОБРАБОТЧИКИ ЭКШЕНОВ ОС
 	navigator.mediaSession.setActionHandler('play', () => {

@@ -64,16 +64,16 @@ const PlaylistPageClient = ({ playlist }: Props) => {
   return (
 
     <div className="p-5 md:ps-52 pr-4">
-    <style>
-    {`:root {--playlist-dominant-color: ${dominantColor}}`}
-    </style>
+      <style>
+        {`:root {--playlist-dominant-color: ${dominantColor}}`}
+      </style>
       {playlist && <AnimatedHeader playlist={playlist} visible={showHeader} />}
 
       <div
         className={styles.playlist_gradient}
         style={{ "--playlist-dominant-color": dominantColor } as React.CSSProperties}
       ></div>
-      <Button view="outline" className={styles.back} onClick={() => router.back()}>
+      <Button view="outline-solid" className={styles.back} onClick={() => router.back()}>
         <BackIcon />
       </Button>
       <div className={styles.playlist} ref={playlistRef}>

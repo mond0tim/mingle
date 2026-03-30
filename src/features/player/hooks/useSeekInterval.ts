@@ -8,7 +8,7 @@ import { usePlayerStore } from '../store/playerStore';
  */
 export const useSeekInterval = () => {
   const playing = usePlayerStore((state) => state.playing);
-  const howlerRef = usePlayerStore((state) => state.howlerRef);
+  const howlerInstance = usePlayerStore((state) => state.howlerInstance);
   const setSeek = usePlayerStore((state) => state.setSeek);
   const setDuration = usePlayerStore((state) => state.setDuration);
 
@@ -17,20 +17,21 @@ export const useSeekInterval = () => {
 
     const intervalId = setInterval(() => {
       const state = usePlayerStore.getState();
-      if (!state.howlerRef?.current || state.isGlobalSeeking) return;
+      const inst = state.howlerInstance;
+      if (!inst || state.isGlobalSeeking) return;
 
-      const currentSeek = state.howlerRef.current.seek() as number;
+      const currentSeek = inst.seek() as number;
       if (!isNaN(currentSeek)) {
         setSeek(currentSeek);
       }
 
       // Also keep duration fresh (it can change on load)
-      const currentDuration = state.howlerRef.current.duration();
+      const currentDuration = inst.duration();
       if (!isNaN(currentDuration) && currentDuration > 0) {
         setDuration(currentDuration);
       }
     }, 100);
 
     return () => clearInterval(intervalId);
-  }, [playing, howlerRef, setSeek, setDuration]);
+  }, [playing, howlerInstance, setSeek, setDuration]);
 };

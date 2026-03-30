@@ -1,7 +1,6 @@
 "use client"
 import type React from "react"
 import { useState, useEffect, useRef } from "react"
-import ReactHowler from "react-howler"
 import { Howler } from "howler"
 import styles from "./Player.module.css"
 import { useMediaQuery } from "react-responsive"
@@ -26,23 +25,18 @@ const Player: React.FC<PlayerProps> = () => {
   const setIsQueueDrawerOpen = usePlayer(state => state.setIsQueueDrawerOpen);
   const isLyricsDrawerOpen = usePlayer(state => state.isLyricsDrawerOpen);
   const setIsLyricsDrawerOpen = usePlayer(state => state.setIsLyricsDrawerOpen);
-  const howlerRef = usePlayer(state => state.howlerRef);
   const tracks = usePlayer(state => state.tracks);
   const playTrack = usePlayer(state => state.playTrack);
   const togglePlay = usePlayer(state => state.togglePlay);
   const handleSeek = usePlayer(state => state.handleSeek);
   const handleNextTrack = usePlayer(state => state.handleNextTrack);
   const handlePrevTrack = usePlayer(state => state.handlePrevTrack);
-  const handleOnEnd = usePlayer(state => state.handleOnEnd);
   const setCurrentTrack = usePlayer(state => state.setCurrentTrack);
   const setPlaying = usePlayer(state => state.setPlaying);
-  const setDuration = usePlayer(state => state.setDuration);
   const playlistIsPlaying = usePlayer(state => state.playlistIsPlaying);
-  const volume = usePlayer(state => state.volume);
-  const isMuted = usePlayer(state => state.isMuted);
 
   // ИНИЦИАЛИЗАЦИЯ ХУКОВ
-  useMediaSession(); // Вызов переписанного и стабильного хука
+  useMediaSession();
   useSeekInterval();
   const { dominantColor, rgb, accentColor } = useTrackColor(currentTrack);
 
@@ -53,15 +47,14 @@ const Player: React.FC<PlayerProps> = () => {
 
   useEffect(() => {
     setIsClient(true);
+    // Убеждаемся, что плеер стартует на паузе
     setPlaying(false);
 
-    // Блокируем авто-сон движка для стабильной работы паузы в браузере
+    // Запрещаем Howler автоматически засыпать (стабильность паузы)
     Howler.autoSuspend = false;
-
-    // Глобальные настройки самовосстановления Howler
     Howler.autoUnlock = true;
-    Howler.html5PoolSize = 100; // Решает ошибку: HTML5 Audio pool exhausted
-  }, [setPlaying]);
+    Howler.html5PoolSize = 100;
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const currentTrackIndex = currentTrack ? tracks.findIndex(t => t.id === currentTrack.id) : -1;
   const nextTrack = currentTrackIndex !== -1 && tracks.length > 0 ? tracks[(currentTrackIndex + 1) % tracks.length] : null;
@@ -120,44 +113,6 @@ const Player: React.FC<PlayerProps> = () => {
           style={{ display: "none" }}
         />
 
-        {/* Ключ (key) здесь спасает от багов, гарантируя, что старый трек полностью уничтожен при смене */}
-        {currentTrack && (
-          <ReactHowler
-            src={currentTrack.src}
-            playing={playing}
-            onEnd={handleOnEnd}
-            ref={howlerRef}
-            preload={true}
-            html5={true} // Обязательно для потоков и MediaSession
-            volume={isMuted ? 0 : volume}
-            onLoad={() => {
-              if (howlerRef.current) {
-                const loadedDuration = howlerRef.current.duration();
-                if (!isNaN(loadedDuration) && loadedDuration > 0) {
-                  setDuration(loadedDuration);
-
-                  // Синхронизируем базовую позицию 0:00 в ОС
-                  if ('mediaSession' in navigator && 'setPositionState' in navigator.mediaSession) {
-                    try {
-                      navigator.mediaSession.setPositionState({
-                        duration: loadedDuration,
-                        playbackRate: 1,
-                        position: 0
-                      });
-                    } catch (e) { }
-                  }
-                }
-              }
-            }}
-            onLoadError={(id, error) => {
-              console.error("Howler load error:", id, error);
-            }}
-            onPlayError={(id, error) => {
-              console.error("Howler play error:", id, error);
-            }}
-          />
-        )}
-
         {!isClient && <PlayerLoader />}
 
         {isClient && isDesktopOrLaptop && (
@@ -194,7 +149,6 @@ const Player: React.FC<PlayerProps> = () => {
             onPrevTrack={handlePrevTrack}
             tracks={tracks}
             onTrackSelect={playTrack}
-            howlerRef={howlerRef}
             playlistIsPlaying={playlistIsPlaying}
           />
         )}

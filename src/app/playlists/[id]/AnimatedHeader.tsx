@@ -76,6 +76,7 @@ const AnimatedHeader = ({ playlist, visible }: AnimatedHeaderProps) => {
               }
             }}
             className={styles.headerPlayButton}
+            view="outline-solid"
           >
             <span className="material-symbols-outlined">
               {playlistIsPlaying?.id === playlist.id && playing ? <PlayPlaylistIcon /> : <PausePlaylistIcon />}
