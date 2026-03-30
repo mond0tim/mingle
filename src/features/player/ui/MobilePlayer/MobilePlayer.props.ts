@@ -13,6 +13,6 @@ export interface MobilePlayerProps {
   onPrevTrack: () => void
   tracks: Track[]
   onTrackSelect: (track: Track) => void
-  howlerRef: RefObject<ReactHowler>
+  howlerRef: RefObject<ReactHowler | null>
   playlistIsPlaying: Playlist | null
 }

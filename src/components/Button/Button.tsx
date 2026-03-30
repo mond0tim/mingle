@@ -3,7 +3,7 @@
 import styles from './Button.module.css';
 import { ButtonProps } from './Button.props';
 import cn from 'classnames';
-import React from 'react';
+import React, { type JSX } from 'react';
 import Ripple from "material-web-components-react/ripple";
 import FocusRing from "material-web-components-react/focus-ring";
 import { Jost, Pixelify_Sans,  } from 'next/font/google';

@@ -2,7 +2,7 @@
 
 import styles from './FocusRing.module.css';
 import { FocusRingProps } from './FocusRing.props';
-import React from 'react';
+import React, { type JSX } from 'react';
 import FocusRing from "material-web-components-react/focus-ring";
 import cn from 'classnames'
 

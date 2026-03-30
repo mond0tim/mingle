@@ -72,7 +72,7 @@ const PlayerProgressBar: React.FC<{
   isSeeking: boolean;
   seekValue: number;
   onSeekStart: (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => void;
-  progressRef: React.RefObject<HTMLDivElement>;
+  progressRef: React.RefObject<HTMLDivElement | null>;
   isDragging: boolean;
 }> = ({ isSeeking, seekValue, onSeekStart, progressRef, isDragging }) => {
   const seek = usePlayerStore((state) => state.seek);
