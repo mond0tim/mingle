@@ -159,7 +159,7 @@ export const PlaylistsCarousel: React.FC<PlaylistsCarouselProps> = ({
   playlists,
 }) => {
   return (
-	<div className='w-full relative md:px-[3.5rem]'>
+	<div className='w-full relative md:px-14'>
     <Carousel className='w-full'>
       <CarouselContent className='pr-16 md:pr-0 pl-4 md:pl-0'>
         {playlists.map((playlist) => (

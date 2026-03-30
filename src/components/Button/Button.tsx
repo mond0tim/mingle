@@ -19,7 +19,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 				ref={ref}
 				className={cn(styles.btn, className, {
 					[styles.primary]: view == 'primary',
-					[styles.outline]: view == 'outline',
+					[styles.outline]: view == 'outline-solid',
 					[styles.ghost]: view == 'ghost',
 					[styles.geistSans]: fontFamily == 'Geist',
 					[styles.geistMono]: fontFamily == 'GeistMono',

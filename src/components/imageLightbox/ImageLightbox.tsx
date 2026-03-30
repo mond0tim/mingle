@@ -88,10 +88,10 @@ export default function ImageLightbox({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
              transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4"
             onClick={handleBackdropClick}
           >
-            <div className="relative max-w-[100vw] max-h-[100vh]">
+            <div className="relative max-w-[100vw] max-h-screen">
               <motion.img
                 layoutId="main-lightbox-image"
                 src={typeof src === "string" ? src : ""}
