@@ -1,5 +1,5 @@
 'use client';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, use } from 'react';
 import SearchResults from '@/components/SearchResults/SearchResults';
 import { Track, Playlist } from '@/types';
 import styles from './SearchPage.module.css';
@@ -8,9 +8,9 @@ import { useMediaQuery } from 'react-responsive';
 import SearchForm from '@/components/SearchForm/SearchForm';
 
 interface SearchPageProps {
-  searchParams: {
+  searchParams: Promise<{
     q: string;
-  };
+  }>;
 }
 
 const filterTracks = (tracks: Track[], query: string): Track[] => {
@@ -31,7 +31,8 @@ const filterPlaylists = (playlists: Playlist[], query: string): Playlist[] => {
 
 type SortType = 'all' | 'tracks' | 'playlists';
 
-const SearchPage = ({ searchParams }: SearchPageProps) => {
+const SearchPage = (props: SearchPageProps) => {
+  const searchParams = use(props.searchParams);
   const query = searchParams.q || '';
   const [sortType, setSortType] = useState<SortType>('all');
   const [filteredResults, setFilteredResults] = useState<(Track | Playlist)[]>([]);
@@ -40,7 +41,7 @@ const SearchPage = ({ searchParams }: SearchPageProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const activeTabElementRef = useRef<HTMLButtonElement>(null);
   const isMobile = useMediaQuery({ query: '(max-width: 639px)' });
-  
+
 
   useEffect(() => {
     const container = containerRef.current;

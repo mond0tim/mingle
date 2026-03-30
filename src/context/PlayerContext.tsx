@@ -17,7 +17,7 @@ interface PlayerContextProps {
   isLyricsDrawerOpen: boolean
   setIsLyricsDrawerOpen: (isOpen: boolean) => void
   playlistIsPlaying: Playlist | null
-  howlerRef: React.RefObject<ReactHowler>
+  howlerRef: React.RefObject<ReactHowler | null>
   audioContext: React.RefObject<AudioContext | null>
   audioNode: React.RefObject<MediaElementAudioSourceNode | null>
   tracks: Track[]

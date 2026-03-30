@@ -6,7 +6,7 @@ import { useState } from "react"
 import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, Download } from "lucide-react"
-import style from "./ImageLightbox.module.css"
+import style from "./imageLightbox.module.css"
 
 // Extend the ImageProps from next/image
 interface ImageLightboxProps extends React.ComponentProps<typeof Image> {

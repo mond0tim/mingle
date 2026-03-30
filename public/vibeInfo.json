@@ -5,48 +5,93 @@
     "cover": "/covers/playlists/vibe.png",
     "tracks": [
       {
-        "id": 73,
-        "title": "Gods Dont Pray",
-        "artist": "Imagine Dragons",
-        "src": "/audio/Imagine_Dragons_-_Gods_Dont_Pray_78053183.mp3",
-        "fullSrc": "/audio/Imagine_Dragons_-_Gods_Dont_Pray_78053183.mp3",
-        "cover": "/covers/playlists/loom.jpg",
+        "id": 316,
+        "title": "FIGHT!",
+        "artist": "Moondeity",
+        "src": "/audio/Moondeity_-_FIGHT_74660136.mp3",
+        "fullSrc": "/audio/Moondeity_-_FIGHT_74660136.mp3",
+        "cover": "/covers/Moondeity - FIGHT 74660136.jpeg",
         "type": "track"
       },
       {
-        "id": 76,
-        "title": "Take Me To The Beach",
-        "artist": "Imagine Dragons",
-        "src": "/audio/Imagine_Dragons_-_Take_Me_To_The_Beach_78072581.mp3",
-        "fullSrc": "/audio/Imagine_Dragons_-_Take_Me_To_The_Beach_78072581.mp3",
-        "cover": "/covers/playlists/loom.jpg",
+        "id": 81,
+        "title": "Плохо танцевать",
+        "artist": "IOWA",
+        "src": "/audio/IOWA - Плохо танцевать.mp3",
+        "fullSrc": "/audio/IOWA - Плохо танцевать.mp3",
+        "cover": "/covers/IOWA - Плохо танцевать.png",
         "type": "track"
       },
       {
-        "id": 276,
-        "title": "Bones",
-        "artist": "Imagine Dragons",
-        "src": "/audio/Imagine_Dragons_-_Bones_75940783.mp3",
-        "fullSrc": "/audio/Imagine_Dragons_-_Bones_75940783.mp3",
-        "cover": "/covers/Imagine Dragons - Bones 75940783.jpeg",
+        "id": 299,
+        "title": "Polarize",
+        "artist": "twenty one pilots",
+        "src": "/audio/Twenty_One_Pilots_-_Polarize_47828706.mp3",
+        "fullSrc": "/audio/Twenty_One_Pilots_-_Polarize_47828706.mp3",
+        "cover": "/covers/Twenty One Pilots - Polarize 47828706.jpeg",
         "type": "track"
       },
       {
-        "id": 67,
-        "title": "Only Ones Who Know",
+        "id": 13,
+        "title": "Eyes Closed",
+        "artist": "Imagine Dragons",
+        "src": "/audio/Eyes Closed - Imagine Dragons.m4a",
+        "fullSrc": "/audio/Eyes Closed - Imagine Dragons.m4a",
+        "cover": "/covers/Eyes Closed - Imagine Dragons.jpg",
+        "type": "track"
+      },
+      {
+        "id": 169,
+        "title": "It's My Life (Radio Edit)",
+        "artist": "Dr. Alban",
+        "src": "/audio/Dr Alban - Its My Life Radio Edit.mp3",
+        "fullSrc": "/audio/Dr Alban - Its My Life Radio Edit.mp3",
+        "cover": "/covers/Dr Alban - Its My Life Radio Edit.png",
+        "type": "track"
+      },
+      {
+        "id": 193,
+        "title": "In The End",
+        "artist": "Linkin Park",
+        "src": "/audio/Linkin_Park_-_In_The_End_47828874.mp3",
+        "fullSrc": "/audio/Linkin_Park_-_In_The_End_47828874.mp3",
+        "cover": "/covers/Linkin Park - In The End 47828874.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 218,
+        "title": "Самая самая",
+        "artist": "Егор Крид, Е. В. Глеб, М. Решетняк, Е. Н. Булаткин",
+        "src": "/audio/Егор_Крид,_Е_В_Глеб,_М_Решетняк,_Е_Н_Булаткин_Са.mp3",
+        "fullSrc": "/audio/Егор_Крид,_Е_В_Глеб,_М_Решетняк,_Е_Н_Булаткин_Са.mp3",
+        "cover": "/covers/Егор_Крид,_Е_В_Глеб,_М_Решетняк,_Е_Н_Булаткин_Са.jpg",
+        "type": "track"
+      },
+      {
+        "id": 336,
+        "title": "Scopin",
+        "artist": "Kordhell",
+        "src": "/audio/Kordhell_-_Scopin_74192307.mp3",
+        "fullSrc": "/audio/Kordhell_-_Scopin_74192307.mp3",
+        "cover": "/covers/Kordhell - Scopin 74192307.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 187,
+        "title": "R U Mine?",
         "artist": "Arctic Monkeys",
-        "src": "/audio/Arctic_Monkeys_-_Only_Ones_Who_Know_59891379.mp3",
-        "fullSrc": "/audio/Arctic_Monkeys_-_Only_Ones_Who_Know_59891379.mp3",
-        "cover": "/covers/Arctic_Monkeys_-_Only_Ones_Who_Know_59891379.jpeg",
+        "src": "/audio/Arctic Monkeys - R U Mine.mp3",
+        "fullSrc": "/audio/Arctic Monkeys - R U Mine.mp3",
+        "cover": "/covers/Arctic Monkeys - R U Mine.png",
         "type": "track"
       },
       {
-        "id": 293,
-        "title": "Revolution",
-        "artist": "The Score",
-        "src": "/audio/The_Score_-_Revolution_49519337.mp3",
-        "fullSrc": "/audio/The_Score_-_Revolution_49519337.mp3",
-        "cover": "/covers/The Score - Revolution 49519337.jpeg",
+        "id": 265,
+        "title": "UGH!",
+        "artist": "BTS",
+        "src": "/audio/BTS_-_UGH_68489608.mp3",
+        "fullSrc": "/audio/BTS_-_UGH_68489608.mp3",
+        "cover": "/covers/BTS - UGH 68489608.jpeg",
         "type": "track"
       },
       {
@@ -59,75 +104,59 @@
         "type": "track"
       },
       {
-        "id": 28,
-        "title": "Big Dawgs",
-        "artist": "Hanumankind, Kalmi",
-        "src": "/audio/Big Dawgs - Hanumankind   Kalmi.m4a",
-        "fullSrc": "/audio/Big Dawgs - Hanumankind   Kalmi.m4a",
-        "cover": "/covers/Big_Dawgs _-_Hanumankind_Kalmi.jpg",
+        "id": 164,
+        "title": "Take on Me",
+        "artist": "a-ha",
+        "src": "/audio/aha - Take on Me.mp3",
+        "fullSrc": "/audio/aha - Take on Me.mp3",
+        "cover": "/covers/aha - Take on Me.png",
+        "type": "track"
+      }
+    ],
+    "isPlaying": false,
+    "category": "vibe",
+    "type": "playlist",
+    "updatedAt": "2026-03-30T14:18:09.786Z"
+  },
+  {
+    "id": 240,
+    "title": "вайб дня",
+    "cover": "/covers/playlists/vibe-day.jpg",
+    "tracks": [
+      {
+        "id": 184,
+        "title": "Stressed Out",
+        "artist": "twenty one pilots",
+        "src": "/audio/twenty one pilots - Stressed Out.mp3",
+        "fullSrc": "/audio/twenty one pilots - Stressed Out.mp3",
+        "cover": "/covers/twenty one pilots - Stressed Out.png",
         "type": "track"
       },
       {
-        "id": 185,
-        "title": "Heads Will Roll",
-        "artist": "Yeah Yeah Yeahs",
-        "src": "/audio/Yeah Yeah Yeahs - Heads Will Roll.mp3",
-        "fullSrc": "/audio/Yeah Yeah Yeahs - Heads Will Roll.mp3",
-        "cover": "/covers/Yeah Yeah Yeahs - Heads Will Roll.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 162,
-        "title": "Sleeping in My Car",
-        "artist": "Roxette",
-        "src": "/audio/Roxette - Sleeping in My Car.mp3",
-        "fullSrc": "/audio/Roxette - Sleeping in My Car.mp3",
-        "cover": "/covers/Roxette - Sleeping in My Car.png",
-        "type": "track"
-      },
-      {
-        "id": 308,
-        "title": "Tokyo 東京",
-        "artist": "7vvch, MVDNES",
-        "src": "/audio/7vvch_MVDNES_-_Tokyo__74705048.mp3",
-        "fullSrc": "/audio/7vvch_MVDNES_-_Tokyo__74705048.mp3",
-        "cover": "/covers/7vvch MVDNES - Tokyo  74705048.png",
-        "type": "track"
-      },
-      {
-        "id": 17,
-        "title": "Nice to Meet You",
+        "id": 73,
+        "title": "Gods Dont Pray",
         "artist": "Imagine Dragons",
-        "src": "/audio/Nice to Meet You.mp3",
-        "fullSrc": "/audio/Nice to Meet You.mp3",
-        "cover": "/covers/Nice to Meet You.jpg",
+        "src": "/audio/Imagine_Dragons_-_Gods_Dont_Pray_78053183.mp3",
+        "fullSrc": "/audio/Imagine_Dragons_-_Gods_Dont_Pray_78053183.mp3",
+        "cover": "/covers/playlists/loom.jpg",
         "type": "track"
       },
       {
-        "id": 144,
-        "title": "Lady (Hear Me Tonight)",
-        "artist": "Modjo Band, Bernard Edwards Nile Rodgers Romain Tranchart Yann Destagnol, Romain Tranchart Yann Destagnol",
-        "src": "/audio/Modjo Band, Bernard Edwards Nile Rodgers Romain Tr.m4a",
-        "fullSrc": "/audio/Modjo Band, Bernard Edwards Nile Rodgers Romain Tr.m4a",
+        "id": 7,
+        "title": "Astronaut In The Ocean",
+        "artist": "Masked Wolf",
+        "src": "/audio/Astronaut In The Ocean.mp3",
+        "fullSrc": "/audio/Astronaut In The Ocean.mp3",
+        "cover": "/covers/Astronaut In The Ocean.jpg",
+        "type": "track"
+      },
+      {
+        "id": 248,
+        "title": "Clint Eastwood",
+        "artist": "Gorillaz",
+        "src": "/audio/Gorillaz_-_Clint_Eastwood_48146959.mp3",
+        "fullSrc": "/audio/Gorillaz_-_Clint_Eastwood_48146959.mp3",
         "cover": "/covers/no-cover.jpg",
-        "type": "track"
-      },
-      {
-        "id": 138,
-        "title": "Give It Away",
-        "artist": "Red Hot Chili Peppers",
-        "src": "/audio/Red Hot Chili Peppers - Give It Away.mp3",
-        "fullSrc": "/audio/Red Hot Chili Peppers - Give It Away.mp3",
-        "cover": "/covers/Red Hot Chili Peppers - Give It Away.png",
-        "type": "track"
-      },
-      {
-        "id": 196,
-        "title": "Counting Stars",
-        "artist": "OneRepublic",
-        "src": "/audio/OneRepublic - Counting Stars.mp3",
-        "fullSrc": "/audio/OneRepublic - Counting Stars.mp3",
-        "cover": "/covers/OneRepublic - Counting Stars.png",
         "type": "track"
       },
       {
@@ -139,79 +168,23 @@
         "cover": "/covers/Twenty One Pilots - Navigating.jpg",
         "type": "track",
         "color": "#4C0000"
-      }
-    ],
-    "isPlaying": false,
-    "category": "vibe",
-    "type": "playlist",
-    "updatedAt": "2026-03-29T18:12:49.890Z"
-  },
-  {
-    "id": 240,
-    "title": "вайб дня",
-    "cover": "/covers/playlists/vibe-day.jpg",
-    "tracks": [
+      },
       {
-        "id": 121,
-        "title": "Think About the Way",
-        "artist": "Ice MC",
-        "src": "/audio/Ice MC - Think About the Way.mp3",
-        "fullSrc": "/audio/Ice MC - Think About the Way.mp3",
-        "cover": "/covers/Ice MC - Think About the Way.png",
+        "id": 193,
+        "title": "In The End",
+        "artist": "Linkin Park",
+        "src": "/audio/Linkin_Park_-_In_The_End_47828874.mp3",
+        "fullSrc": "/audio/Linkin_Park_-_In_The_End_47828874.mp3",
+        "cover": "/covers/Linkin Park - In The End 47828874.jpeg",
         "type": "track"
       },
       {
-        "id": 128,
-        "title": "Right Round",
-        "artist": "Flo Rida",
-        "src": "/audio/Flo Rida - Right Round.mp3",
-        "fullSrc": "/audio/Flo Rida - Right Round.mp3",
-        "cover": "/covers/Flo Rida - Right Round.png",
-        "type": "track"
-      },
-      {
-        "id": 219,
-        "title": "Невеста",
-        "artist": "Егор Крид, М. Решетняк, Е. Булаткин",
-        "src": "/audio/Егор_Крид,_М_Решетняк,_Е_Булаткин,_М_Решетняк,_Е_Булаткин_Невеста.mp3",
-        "fullSrc": "/audio/Егор_Крид,_М_Решетняк,_Е_Булаткин,_М_Решетняк,_Е_Булаткин_Невеста.mp3",
-        "cover": "/covers/Егор_Крид,_М_Решетняк,_Е_Булаткин,_М_Решетняк,_Е_Булаткин_Невеста.jpg",
-        "type": "track"
-      },
-      {
-        "id": 302,
-        "title": "Выпускной (Медлячок)",
-        "artist": "Баста",
-        "src": "/audio/Баста - Выпускной Медлячок.mp3",
-        "fullSrc": "/audio/Баста - Выпускной Медлячок.mp3",
-        "cover": "/covers/Баста - Выпускной Медлячок.jpg",
-        "type": "track"
-      },
-      {
-        "id": 262,
-        "title": "dimple",
-        "artist": "BTS",
-        "src": "/audio/BTS_-_dimple_48701166.mp3",
-        "fullSrc": "/audio/BTS_-_dimple_48701166.mp3",
-        "cover": "/covers/BTS - dimple 48701166.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 278,
-        "title": "Cutthroat",
-        "artist": "Imagine Dragons",
-        "src": "/audio/Imagine_Dragons_-_Cutthroat_72848542.mp3",
-        "fullSrc": "/audio/Imagine_Dragons_-_Cutthroat_72848542.mp3",
-        "cover": "/covers/Imagine Dragons - Cutthroat 72848542.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 60,
-        "title": "505",
-        "artist": "Arctic Monkeys",
-        "src": "/audio/Arctic_Monkeys_-_505_75941075.mp3",
-        "fullSrc": "/audio/Arctic_Monkeys_-_505_75941075.mp3",
-        "cover": "/covers/Arctic_Monkeys_-_505_75941075.jpeg",
+        "id": 272,
+        "title": "Stronger",
+        "artist": "The Score",
+        "src": "/audio/The_Score_-_Stronger_58879747.mp3",
+        "fullSrc": "/audio/The_Score_-_Stronger_58879747.mp3",
+        "cover": "/covers/The Score - Stronger 58879747.jpeg",
         "type": "track"
       },
       {
@@ -224,21 +197,49 @@
         "type": "track"
       },
       {
-        "id": 332,
-        "title": "Вести-бу-би-лю-би-бу",
-        "artist": "Смешарики",
-        "src": "/audio/Smeshariki_-_Vesti-bu-bi-lyu-bi-bu_74649540.mp3",
-        "fullSrc": "/audio/Smeshariki_-_Vesti-bu-bi-lyu-bi-bu_74649540.mp3",
-        "cover": "/covers/Smeshariki - Vesti-bu-bi-lyu-bi-bu 74649540.jpeg",
+        "id": 54,
+        "title": "PARANOIA",
+        "artist": "HEARTSTEEL, BAEKHYUN, tobi lou, ZI & Cal Scruby",
+        "src": "/audio/HEARTSTEEL,_League_of_Legends,_BAEKHYUN,_tobi_lou,_ØZI,_Cal_Scru.mp3",
+        "fullSrc": "/audio/HEARTSTEEL,_League_of_Legends,_BAEKHYUN,_tobi_lou,_ØZI,_Cal_Scru.mp3",
+        "cover": "/covers/HEARTSTEEL.jpg",
         "type": "track"
       },
       {
-        "id": 18,
-        "title": "Natural",
-        "artist": "Imagine Dragons",
-        "src": "/audio/Natural.mp3",
-        "fullSrc": "/audio/Natural.mp3",
-        "cover": "/covers/Natural.jpg",
+        "id": 309,
+        "title": "Город Омск",
+        "artist": "Смешарики, Александр Шпынев, Сергей Мардарь, Антон Виноградов, Марина Ланда",
+        "src": "/audio/Aleksandr_SHpynev_Sergejj_Mardar_Anton_Vinogradov_Marina_Landa_-_Gorod_Omsk_68991363.mp3",
+        "fullSrc": "/audio/Aleksandr_SHpynev_Sergejj_Mardar_Anton_Vinogradov_Marina_Landa_-_Gorod_Omsk_68991363.mp3",
+        "cover": "/covers/Aleksandr SHpynev Sergejj Mardar Anton Vinogradov Marina Landa - Gorod Omsk 68991363.jpeg",
+        "type": "track"
+      },
+      {
+        "id": 205,
+        "title": "Мама Люба",
+        "artist": "SEREBRO",
+        "src": "/audio/SEREBRO - Мама Люба.mp3",
+        "fullSrc": "/audio/SEREBRO - Мама Люба.mp3",
+        "cover": "/covers/SEREBRO - Мама Люба.jpg",
+        "type": "track"
+      },
+      {
+        "id": 21,
+        "title": "Way Up",
+        "artist": "Jaden Smith",
+        "src": "/audio/Way_Up.m4a",
+        "fullSrc": "/audio/Way_Up.m4a",
+        "cover": "/covers/cover4.jpg",
+        "color": "#000000",
+        "type": "track"
+      },
+      {
+        "id": 308,
+        "title": "Tokyo 東京",
+        "artist": "7vvch, MVDNES",
+        "src": "/audio/7vvch_MVDNES_-_Tokyo__74705048.mp3",
+        "fullSrc": "/audio/7vvch_MVDNES_-_Tokyo__74705048.mp3",
+        "cover": "/covers/7vvch MVDNES - Tokyo  74705048.png",
         "type": "track"
       },
       {
@@ -251,91 +252,65 @@
         "type": "track"
       },
       {
-        "id": 70,
-        "title": "Grace Kelly",
-        "artist": "Mika",
-        "src": "/audio/Mika_-_Grace_Kelly_47997867.mp3",
-        "fullSrc": "/audio/Mika_-_Grace_Kelly_47997867.mp3",
-        "cover": "/covers/Mika_-_Grace_Kelly_47997867.jpeg",
+        "id": 288,
+        "title": "Sharks",
+        "artist": "Imagine Dragons",
+        "src": "/audio/Imagine_Dragons_-_Sharks_75941262.mp3",
+        "fullSrc": "/audio/Imagine_Dragons_-_Sharks_75941262.mp3",
+        "cover": "/covers/Imagine Dragons - Sharks 75941262.jpeg",
         "type": "track"
       },
       {
-        "id": 263,
-        "title": "Run",
-        "artist": "BTS",
-        "src": "/audio/BTS_-_Run_56088079.mp3",
-        "fullSrc": "/audio/BTS_-_Run_56088079.mp3",
-        "cover": "/covers/BTS - Run 56088079.jpeg",
+        "id": 249,
+        "title": "Feel Good Inc.",
+        "artist": "Gorillaz",
+        "src": "/audio/Gorillaz_-_Feel_Good_Inc_75950068.mp3",
+        "fullSrc": "/audio/Gorillaz_-_Feel_Good_Inc_75950068.mp3",
+        "cover": "/covers/Gorillaz - Feel Good Inc 75950068.jpeg",
         "type": "track"
       },
       {
-        "id": 1,
-        "title": "The Line (from the series Arcane League of Legends)",
-        "artist": "twenty one pilots, Arcane, Legue of Legends",
-        "src": "/audio/track1.mp3",
-        "cover": "/covers/cover1.jpg",
-        "fullSrc": "/audio/track1.mp3",
+        "id": 121,
+        "title": "Think About the Way",
+        "artist": "Ice MC",
+        "src": "/audio/Ice MC - Think About the Way.mp3",
+        "fullSrc": "/audio/Ice MC - Think About the Way.mp3",
+        "cover": "/covers/Ice MC - Think About the Way.png",
         "type": "track"
       },
       {
-        "id": 28,
-        "title": "Big Dawgs",
-        "artist": "Hanumankind, Kalmi",
-        "src": "/audio/Big Dawgs - Hanumankind   Kalmi.m4a",
-        "fullSrc": "/audio/Big Dawgs - Hanumankind   Kalmi.m4a",
-        "cover": "/covers/Big_Dawgs _-_Hanumankind_Kalmi.jpg",
+        "id": 68,
+        "title": "The Bad Thing",
+        "artist": "Arctic Monkeys",
+        "src": "/audio/Arctic_Monkeys_-_The_Bad_Thing_59891385.mp3",
+        "fullSrc": "/audio/Arctic_Monkeys_-_The_Bad_Thing_59891385.mp3",
+        "cover": "/covers/Arctic_Monkeys_-_The_Bad_Thing_59891385.jpeg",
         "type": "track"
       },
       {
-        "id": 229,
-        "title": "Революция",
-        "artist": "Quest Pistols",
-        "src": "/audio/Quest Pistols - Революция.mp3",
-        "fullSrc": "/audio/Quest Pistols - Революция.mp3",
-        "cover": "/covers/Quest Pistols - Революция-1745684476171.png",
+        "id": 329,
+        "title": "O.M.S.K. Phonk",
+        "artist": "Смешарики",
+        "src": "/audio/Smeshariki_-_OMSK_Phonk_75371957.mp3",
+        "fullSrc": "/audio/Smeshariki_-_OMSK_Phonk_75371957.mp3",
+        "cover": "/covers/Smeshariki - OMSK Phonk 75371957.jpeg",
         "type": "track"
       },
       {
-        "id": 25,
-        "title": "Горы Казахстана",
-        "artist": "анонимное горное сообщество",
-        "src": "/audio/Горы Казахстана.mp3",
-        "fullSrc": "/audio/Горы Казахстана.mp3",
-        "cover": "/covers/Горы Казахстана.jpg",
-        "type": "track"
-      },
-      {
-        "id": 226,
-        "title": "Лето, плавки, рок-н-ролл",
-        "artist": "Нервы, Евгений Мильковский",
-        "src": "/audio/Нервы,_Евгений_Мильковский_Лето,_плавки,_рокнрол.mp3",
-        "fullSrc": "/audio/Нервы,_Евгений_Мильковский_Лето,_плавки,_рокнрол.mp3",
-        "cover": "/covers/Нервы,_Евгений_Мильковский_Лето,_плавки,_рокнрол.jpg",
-        "type": "track"
-      },
-      {
-        "id": 253,
-        "title": "Twist",
-        "artist": "Korn",
-        "src": "/audio/Korn_-_Twist_47872787.mp3",
-        "fullSrc": "/audio/Korn_-_Twist_47872787.mp3",
-        "cover": "/covers/Korn - Twist 47872787.jpeg",
-        "type": "track"
-      },
-      {
-        "id": 147,
-        "title": "Music Sounds Better With You (Radio Edit)",
-        "artist": "Stardust",
-        "src": "/audio/Stardust - Music Sounds Better With You Radio Edit.mp3",
-        "fullSrc": "/audio/Stardust - Music Sounds Better With You Radio Edit.mp3",
-        "cover": "/covers/Stardust - Music Sounds Better With You Radio Edit.png",
-        "type": "track"
+        "id": 41,
+        "title": "At the Risk of Feeling Dumb",
+        "artist": "twenty one pilots",
+        "src": "/audio/At the Risk of Feeling Dumb.mp3",
+        "fullSrc": "/audio/At the Risk of Feeling Dumb.mp3",
+        "cover": "/covers/Twenty One Pilots - Navigating.jpg",
+        "type": "track",
+        "color": "#4C0000"
       }
     ],
     "isPlaying": false,
     "category": "vibe",
     "type": "playlist",
-    "updatedAt": "2026-03-29T12:36:46.962Z"
+    "updatedAt": "2026-03-30T14:18:09.788Z"
   },
   {
     "id": 700,

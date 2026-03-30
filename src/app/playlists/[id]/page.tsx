@@ -5,8 +5,8 @@ import { Metadata } from 'next';
 import { Playlist } from '@/types';
 
 type Props = {
-  params: { id: string };
-  searchParams: { [key: string]: string | string[] | undefined };
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
 async function getPlaylistById(id: number): Promise<Playlist | null> {
@@ -23,9 +23,8 @@ async function getPlaylistById(id: number): Promise<Playlist | null> {
   return allPlaylists.find((p) => p.id === id) || null;
 }
 
-export async function generateMetadata(
-  { params }: Props,
-): Promise<Metadata> {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const params = await props.params;
   const playlistId = parseInt(params.id, 10);
   const playlist = await getPlaylistById(playlistId);
 
@@ -42,7 +41,9 @@ export async function generateMetadata(
   };
 }
 
-const PlaylistPage = async ({ params, searchParams }: Props) => {
+const PlaylistPage = async (props: Props) => {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   const playlistId = parseInt(params.id, 10);
   const playlist = await getPlaylistById(playlistId);
 

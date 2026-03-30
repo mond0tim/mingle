@@ -41,12 +41,12 @@ interface PlayerState {
   setIsGlobalSeeking: (isSeeking: boolean) => void;
 
   // Refs for audio player control
-  howlerRef: React.RefObject<ReactHowler>;
-  setHowlerRef: (ref: React.RefObject<ReactHowler>) => void;
-  audioContext: React.RefObject<AudioContext>;
-  setAudioContext: (ref: React.RefObject<AudioContext>) => void;
-  audioNode: React.RefObject<MediaElementAudioSourceNode>;
-  setAudioNode: (ref: React.RefObject<MediaElementAudioSourceNode>) => void;
+  howlerRef: React.RefObject<ReactHowler | null>;
+  setHowlerRef: (ref: React.RefObject<ReactHowler | null>) => void;
+  audioContext: React.RefObject<AudioContext | null>;
+  setAudioContext: (ref: React.RefObject<AudioContext | null>) => void;
+  audioNode: React.RefObject<MediaElementAudioSourceNode | null>;
+  setAudioNode: (ref: React.RefObject<MediaElementAudioSourceNode | null>) => void;
 }
 
 export const usePlayerStore = create<PlayerState>((set, get) => ({

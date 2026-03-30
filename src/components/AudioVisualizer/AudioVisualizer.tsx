@@ -3,7 +3,7 @@ import React, { useRef, useEffect, useCallback } from 'react';
 import AudioMotionAnalyzer, { Options, CanvasDrawInfo } from 'audiomotion-analyzer';
 
 interface AudioVisualizerProps {
-  audioRef: React.RefObject<HTMLAudioElement>;
+  audioRef: React.RefObject<HTMLAudioElement | null>;
   analyzerOptions: Options | undefined;
   playing: boolean;
 }
