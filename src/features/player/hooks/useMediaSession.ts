@@ -16,11 +16,13 @@ export const useMediaSession = () => {
 
     // Используем getState(), чтобы всегда получать актуальные данные без ререндеров
     navigator.mediaSession.setActionHandler('play', () => {
-      usePlayerStore.getState().setPlaying(true);
+      const state = usePlayerStore.getState();
+      if (!state.playing) state.togglePlay();
     });
 
     navigator.mediaSession.setActionHandler('pause', () => {
-      usePlayerStore.getState().setPlaying(false);
+      const state = usePlayerStore.getState();
+      if (state.playing) state.togglePlay();
     });
 
     navigator.mediaSession.setActionHandler('previoustrack', () => {
@@ -73,7 +75,7 @@ export const useMediaSession = () => {
       const state = usePlayerStore.getState();
       const skipTime = details.seekOffset || 10;
       // Если мы уже мотаем (естьpendingSeekTime), берем его, чтобы не "проскакивать"
-      const currentSeek = pendingSeekTime ?? ((state.howlerRef.current?.seek() as number) || 0);
+      const currentSeek = pendingSeekTime ?? ((state.howlerInstance?.seek() as number) || 0);
       const newTime = Math.min(currentSeek + skipTime, state.duration);
       handleDebouncedSeek(newTime, state);
     });
@@ -81,7 +83,7 @@ export const useMediaSession = () => {
     navigator.mediaSession.setActionHandler('seekbackward', (details) => {
       const state = usePlayerStore.getState();
       const skipTime = details.seekOffset || 10;
-      const currentSeek = pendingSeekTime ?? ((state.howlerRef.current?.seek() as number) || 0);
+      const currentSeek = pendingSeekTime ?? ((state.howlerInstance?.seek() as number) || 0);
       const newTime = Math.max(currentSeek - skipTime, 0);
       handleDebouncedSeek(newTime, state);
     });

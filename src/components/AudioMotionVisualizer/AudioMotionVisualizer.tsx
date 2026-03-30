@@ -11,7 +11,7 @@ let connectedAudioElement: HTMLMediaElement | null = null;
 const AudioMotionVisualizer = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const currentTrack = usePlayerStore(state => state.currentTrack);
-  const howlerRef = usePlayerStore(state => state.howlerRef);
+  const howlerInstance = usePlayerStore(state => state.howlerInstance);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -83,7 +83,7 @@ const AudioMotionVisualizer = () => {
     const connectToHowler = () => {
       if (!sharedAnalyzer) return;
 
-      const howler = howlerRef.current?.howler;
+      const howler = howlerInstance;
       const node = (howler as any)?._sounds?.[0]?._node;
 
       if (node && node instanceof HTMLMediaElement) {
@@ -117,7 +117,7 @@ const AudioMotionVisualizer = () => {
     // Проверяем каждую полсекунды, появился ли новый HTML-тег после переключения трека
     const interval = setInterval(connectToHowler, 500);
     return () => clearInterval(interval);
-  }, [currentTrack, howlerRef]);
+  }, [currentTrack, howlerInstance]);
 
   return (
     <div

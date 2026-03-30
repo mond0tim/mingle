@@ -26,28 +26,14 @@ const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlist }) => {
 
   
 
-  const { playPlaylist, togglePlay, playing, playlistIsPlaying, playTrack } =
+  const { playPlaylist, togglePlay, playlistIsPlaying } =
     usePlayer();
+  const playing = usePlayer(state => state.playing);
+  const isThisPlaying = playlistIsPlaying?.id === playlist.id && playing;
   const [colors, setColors] = useState<ColorThiefOutput | null>(null);
   const imageRef = useRef<HTMLImageElement>(null);
-  useEffect(() => {
-    // Проверяем, была ли уже пауза
-    const hasPaused = localStorage.getItem('hasPausedOnInitialLoad');
 
-    if (!hasPaused) { // Если паузы еще не было
-      const timeoutId = setTimeout(() => {
-        if (playing) {
-          togglePlay();
-        }
-        // Устанавливаем флаг, что пауза была применена
-        localStorage.setItem('hasPausedOnInitialLoad', 'true');
-      }, 100);
 
-      return () => clearTimeout(timeoutId);
-    }
-  }, [playing, togglePlay]);
-
-  
   useEffect(() => {
     const fetchColors = async () => {
       // Если есть кастомные цвета в плейлисте - используем их
@@ -81,24 +67,18 @@ const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlist }) => {
     e.stopPropagation();
     e.preventDefault();
     
-     // Если уже играет тот же плейлист — просто переключаем паузу/плей
-  if (playlistIsPlaying?.id === playlist.id) {
-    togglePlay();
-    return;
-  }
-
-  try {
-    // Запускаем загрузку плейлиста (progress стартует внутри библиотеки)
-    await playPlaylist(playlist);
-
-    // Если есть хотя бы один трек — запускаем первый с автозапуском
-    if (playlist.tracks.length > 0) {
-      await playTrack(playlist.tracks[0], playlist, true);
+    // Если уже играет тот же плейлист — просто переключаем паузу/плей
+    if (playlistIsPlaying?.id === playlist.id) {
+      togglePlay();
+      return;
     }
-  } finally {
-    // В любом случае завершаем прогресс
-    BProgress.done();
-  }
+
+    try {
+      // Запускаем плейлист с autoplay=true (первый трек)
+      await playPlaylist(playlist, undefined, true);
+    } finally {
+      BProgress.done();
+    }
   };
   
 
@@ -139,7 +119,7 @@ const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlist }) => {
             className={cn(styles.button, styles.card_button)}
             onClick={handlePlayClick}
           >
-            {playlistIsPlaying?.id === playlist.id && playing ? (
+            {playlistIsPlaying?.id === playlist.id && isThisPlaying ? (
               <PlayPlaylistIcon width={30} height={30} fill='currentColor' />
             ) : (
               <PausePlaylistIcon width={30} height={30} fill='currentColor' />

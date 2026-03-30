@@ -1,8 +1,8 @@
 import { create } from 'zustand';
-import type ReactHowler from 'react-howler';
+
 import type { Track, Playlist } from '@/types';
 import React from 'react';
-import { Howler } from 'howler';
+import { Howl, Howler } from 'howler';
 
 interface PlayerState {
   currentTrack: Track | null;
@@ -21,7 +21,7 @@ interface PlayerState {
 
   // Actions
   playTrack: (track: Track, playlist?: Playlist, autoplay?: boolean) => void;
-  playPlaylist: (playlist: Playlist, track?: Track) => void;
+  playPlaylist: (playlist: Playlist, track?: Track, autoplay?: boolean) => void;
   togglePlay: () => void;
   handleNextTrack: () => void;
   handlePrevTrack: () => void;
@@ -41,8 +41,8 @@ interface PlayerState {
   setIsGlobalSeeking: (isSeeking: boolean) => void;
 
   // Refs for audio player control
-  howlerRef: React.RefObject<ReactHowler | null>;
-  setHowlerRef: (ref: React.RefObject<ReactHowler | null>) => void;
+  howlerInstance: Howl | null;
+  setHowlerInstance: (instance: Howl | null) => void;
   audioContext: React.RefObject<AudioContext | null>;
   setAudioContext: (ref: React.RefObject<AudioContext | null>) => void;
   audioNode: React.RefObject<MediaElementAudioSourceNode | null>;
@@ -63,11 +63,11 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   volume: 1.0,
   initialPlaylists: [],
   isGlobalSeeking: false,
-  howlerRef: React.createRef<ReactHowler>(),
+  howlerInstance: null,
   audioContext: React.createRef<AudioContext>(),
   audioNode: React.createRef<MediaElementAudioSourceNode>(),
 
-  setHowlerRef: (ref) => set({ howlerRef: ref }),
+  setHowlerInstance: (instance) => set({ howlerInstance: instance }),
   setAudioContext: (ref) => set({ audioContext: ref }),
   setAudioNode: (ref) => set({ audioNode: ref }),
   setInitialPlaylists: (playlists) => set({ initialPlaylists: playlists }),
@@ -80,12 +80,21 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   setHowlerState: (state) => set({ howlerState: state }),
   setIsQueueDrawerOpen: (isOpen) => set({ isQueueDrawerOpen: isOpen }),
   setIsLyricsDrawerOpen: (isOpen) => set({ isLyricsDrawerOpen: isOpen }),
-  setVolume: (volume) => set({ volume }),
+  setVolume: (volume) => {
+    const { howlerInstance } = get();
+    if (howlerInstance) howlerInstance.volume(volume);
+    set({ volume });
+  },
   setIsGlobalSeeking: (isGlobalSeeking) => set({ isGlobalSeeking }),
-  toggleMute: () => set((state) => ({ isMuted: !state.isMuted })),
+  toggleMute: () => {
+    const { howlerInstance, isMuted, volume } = get();
+    const nextMuted = !isMuted;
+    if (howlerInstance) howlerInstance.volume(nextMuted ? 0 : volume);
+    set({ isMuted: nextMuted });
+  },
 
   playTrack: (track, playlist, autoplay = true) => {
-    const { howlerRef } = get();
+    const { howlerInstance, setDuration, volume } = get();
     console.log(`playTrack: Выбран трек "${track.title}"`);
     
     // САМОВОССТАНОВЛЕНИЕ КОНТЕКСТА: Разблокируем Web Audio API при первом же клике
@@ -93,25 +102,52 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
         try { Howler.ctx.resume(); } catch (e) {}
     }
 
-    if (howlerRef?.current) {
+    if (howlerInstance) {
       console.log('playTrack: Остановка текущего трека');
-      howlerRef.current.stop();
+      howlerInstance.stop();
+      howlerInstance.unload();
     }
     
+    const newHowler = new Howl({
+      src: [track.src],
+      html5: true,
+      preload: true,
+      volume: volume,
+      onend: () => get().handleOnEnd(),
+      onload: () => {
+        const dur = newHowler.duration();
+        if (!isNaN(dur) && dur > 0) {
+          setDuration(dur);
+          if (typeof navigator !== 'undefined' && 'mediaSession' in navigator && 'setPositionState' in navigator.mediaSession) {
+            try {
+              navigator.mediaSession.setPositionState({ duration: dur, playbackRate: 1, position: 0 });
+            } catch (e) {}
+          }
+        }
+      },
+      onloaderror: (id, err) => console.error("Howler load error:", id, err),
+      onplayerror: (id, err) => console.error("Howler play error:", id, err),
+    });
+
     set((state) => ({
+      howlerInstance: newHowler,
       currentTrack: track,
       playlistIsPlaying: playlist || state.playlistIsPlaying,
       tracks: playlist ? playlist.tracks : state.tracks,
       playing: autoplay,
     }));
+
+    if (autoplay) {
+      newHowler.play();
+    }
   },
 
-  playPlaylist: (playlist, track) => {
+  playPlaylist: (playlist, track, autoplay = true) => {
     console.log('playPlaylist: Установка плейлиста');
     if (playlist.tracks.length > 0) {
       const trackToPlay = track ? track : playlist.tracks[0];
       console.log(`playPlaylist: Воспроизведение трека "${trackToPlay.title}"`);
-      get().playTrack(trackToPlay, playlist, true);
+      get().playTrack(trackToPlay, playlist, autoplay);
     } else {
       console.log('playPlaylist: Плейлист пуст, остановка воспроизведения');
       set({ 
@@ -123,15 +159,22 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   },
 
   togglePlay: () => {
-    set((state) => {
-      console.log(`togglePlay: Переключение состояния playing на ${!state.playing}`);
-      
-      if (!state.playing && typeof Howler !== 'undefined' && Howler.ctx && Howler.ctx.state === 'suspended') {
-          try { Howler.ctx.resume(); } catch (e) {}
-      }
+    const { howlerInstance, playing } = get();
+    console.log(`togglePlay: Переключение состояния playing на ${!playing}`);
+    
+    if (!playing && typeof Howler !== 'undefined' && Howler.ctx && Howler.ctx.state === 'suspended') {
+        try { Howler.ctx.resume(); } catch (e) {}
+    }
 
-      return { playing: !state.playing };
-    });
+    if (howlerInstance) {
+      if (playing) {
+        howlerInstance.pause();
+      } else {
+        howlerInstance.play();
+      }
+    }
+
+    set({ playing: !playing });
   },
 
   handleNextTrack: () => {
@@ -155,9 +198,9 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   },
 
   handleSeek: (time: number) => {
-    const { howlerRef, duration } = get();
-    if (howlerRef?.current) {
-      howlerRef.current.seek(time);
+    const { howlerInstance, duration } = get();
+    if (howlerInstance) {
+      howlerInstance.seek(time);
     }
     set({ seek: time });
 

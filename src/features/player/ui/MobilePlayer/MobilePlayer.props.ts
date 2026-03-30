@@ -1,6 +1,4 @@
 import type { Playlist, Track } from "@/types"
-import type ReactHowler from "react-howler"
-import { RefObject } from "react"
 
 export interface MobilePlayerProps {
   currentTrack: Track | null
@@ -13,6 +11,5 @@ export interface MobilePlayerProps {
   onPrevTrack: () => void
   tracks: Track[]
   onTrackSelect: (track: Track) => void
-  howlerRef: RefObject<ReactHowler | null>
   playlistIsPlaying: Playlist | null
 }

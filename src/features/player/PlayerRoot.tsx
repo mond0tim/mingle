@@ -58,7 +58,8 @@ const PlayerWrapper: React.FC<PlayerWrapperProps> = ({ children }) => {
       }
 
       if (playlistToPlay) {
-        await playPlaylist(playlistToPlay);
+        // autoplay=false: плейлист загружается на паузе, ждём нажатия кнопки
+        await playPlaylist(playlistToPlay, undefined, false);
         if (trackToPlay) {
           await playTrack(trackToPlay, playlistToPlay, false);
         }

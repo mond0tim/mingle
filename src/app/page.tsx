@@ -26,8 +26,6 @@ const Home = () => {
   const {
     currentTrack,
     playing,
-    howlerRef,
-    audioContext,
     playPlaylist,
     playlistIsPlaying,
     togglePlay,
@@ -103,7 +101,7 @@ const Home = () => {
             ) : wavePlaylist && (
               <Button
                 ButtonRadius="lg"
-                view="outline"
+                view="outline-solid"
                 fontFamily='Oddval'
                 fontWeight='bold'
                 className={styles.vibe_button}
