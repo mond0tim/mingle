@@ -1,39 +1,32 @@
-
-
 export interface Track {
-	id: number;
+	id: string | number;
 	title: string;
 	artist: string;
 	src: string;
 	cover: string;
-	color?: string; // не обязательный
-	fullSrc: string | 'none';
-	type: 'track';
-  }
-  
-  export interface Playlist {
-	id: number;
+	color?: string;
+	fullSrc?: string | null;
+	type: string;
+}
+
+export interface Playlist {
+	id: string | number;
 	title: string;
-	cover: string;
+	cover: string | null;
 	tracks: Track[];
 	isPlaying: boolean;
-	category: 'other' | 'single' | 'album' | 'vibe' | 'playlist' | 'mix';
-	type: 'playlist';
-	author?: string;
-	colors?: {
-		button?: string; // Добавляем опциональные поля для цветов
-		text?: string;
-		icon?: string;
-	  };
-	updatedAt?: string; // Дата последнего обновления
-  }
+	category: string;
+	type: string;
+	author?: string | null;
+	colors?: any;
+	updatedAt?: string;
+}
 
-
-  export interface LyricsApiResponse {
+export interface LyricsApiResponse {
 	plainLyrics?: string
 	syncedLyrics?: string
 	message?: string
 	error?: string
 	code?: number
 	name?: string
-  }
+}

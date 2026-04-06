@@ -3,6 +3,7 @@ import {
   generateAllVibePlaylists,
   saveVibePlaylistsToFile,
   loadVibePlaylistsFromFile,
+  VibeType
 } from '@/utils/vibePlaylists';
 import { Playlist } from '@/types';
 
@@ -11,21 +12,21 @@ export async function GET() {
   let changed = false;
 
   if (!playlists || playlists.length === 0) {
-    playlists = generateAllVibePlaylists();
+    playlists = await generateAllVibePlaylists();
     changed = true;
   } else {
-    const allFresh = generateAllVibePlaylists();
+    const allFresh = await generateAllVibePlaylists();
     playlists = playlists
       .map((pl: Playlist) => {
-        let type: 'hour' | 'day' | 'week' | 'month' | undefined;
-        if (pl.id === 600) type = 'hour';
-        else if (pl.id === 240) type = 'day';
-        else if (pl.id === 700) type = 'week';
-        else if (pl.id === 300) type = 'month';
+        let type: VibeType | undefined;
+        if (pl.id === "vibe_hour") type = 'hour';
+        else if (pl.id === "vibe_day") type = 'day';
+        else if (pl.id === "vibe_week") type = 'week';
+        else if (pl.id === "vibe_month") type = 'month';
 
+        // Мы всё равно проверяем время обновления, но из БД
         if (type && (!pl.updatedAt || needUpdate(type, pl.updatedAt))) {
           changed = true;
-          // Берём новый с актуальным updatedAt и треками
           return allFresh.find(a => a.id === pl.id);
         }
         return pl;
@@ -40,22 +41,20 @@ export async function GET() {
   return NextResponse.json(playlists);
 }
 
-// POST — пересоздать вайб-плейлисты и сохранить их
 export async function POST() {
-  const playlists = generateAllVibePlaylists();
+  const playlists = await generateAllVibePlaylists();
   saveVibePlaylistsToFile(playlists);
   return NextResponse.json(playlists);
 }
 
-// Вспомогательная функция для проверки времени обновления
-function needUpdate(type: 'hour' | 'day' | 'week' | 'month', updatedAt: string): boolean {
+function needUpdate(type: VibeType, updatedAt: string): boolean {
   const now = Date.now();
   const updated = new Date(updatedAt).getTime();
   switch (type) {
-    case 'hour': return now - updated > 60 * 60 * 1000; // 1 час
-    case 'day': return now - updated > 24 * 60 * 60 * 1000; // 1 день
-    case 'week': return now - updated > 7 * 24 * 60 * 60 * 1000; // 1 неделя
-    case 'month': return now - updated > 30 * 24 * 60 * 60 * 1000; // 1 месяц
+    case 'hour': return now - updated > 60 * 60 * 1000;
+    case 'day': return now - updated > 24 * 60 * 60 * 1000;
+    case 'week': return now - updated > 7 * 24 * 60 * 60 * 1000;
+    case 'month': return now - updated > 30 * 24 * 60 * 60 * 1000;
     default: return true;
   }
 }

@@ -2,6 +2,64 @@
 
 В этом файле записываются все реализованные изменения в проекте.
 
+## [2026-04-06]
+
+### Глобальное обновление инфраструктуры и Admin-интерфейса
+
+- **Полная миграция на shadcn/ui и animate-ui:**
+  - *Решение:* Полный отказ от HeroUI из-за ошибок гидратации и несовместимости с новыми стандартами доступности.
+  - **DataTable**: Мощный компонент на `TanStack Table v8`. Пагинация (настраиваемая: 10/25/50/100), сложная сортировка и фильтрация.
+  - **AdminShell & Layout**: Полнофункциональная админка с проверкой ролей (Better Auth `admin` plugin). Замена всех Dropdowns/Avatars на shadcn/ui.
+  - **Admin Pages (Tracks, Playlists, Users)**: Обработка метаданных, управление доступом, бан/разбан, управление категориями. Все модальные окна перенесены на `animate-ui Dialog`.
+
+- **Потоковая передача и работа с медиа:**
+  - **Streaming API**: Реализован `/api/stream/[id]` с поддержкой HTTP Range Requests (206 Partial Content), что решило проблему медленного буферирования.
+  - **ID3 Metadata**: Интегрирована библиотека `node-id3` для прямого редактирования тегов в MP3-файлах через Admin UI (title, artist, cover).
+  - **Подготовка к HLS/DASH**: Архитектурно заложен фундамент для сегментированного вещания, для дальнейшего ускорения работы на мобильных устройствах.
+
+- **Аутентификация и безопасность:**
+  - Интеграция **Better Auth** с Prisma-адаптером.
+  - Ролевая модель доступа: `ADMIN` / `USER`.
+  - Мониторинг входов (`lastLoginAt`), управление сессиями и защита данных.
+
+- **Инфраструктура БД (MySQL & Prisma):**
+  - Переезд с локального `data.ts` на удалённый MySQL через **Prisma v6** (Rust-движок).
+  - Сгенерированы миграции для 10+ таблиц, включая сложные связи плейлистов и пользовательских избранных.
+  - Успешный перенос **320+ треков** и **25+ системных плейлистов** через `migrateData.ts`.
+
+### Миграция на удалённую базу данных MySQL (Prisma ORM)
+
+- **Интеграция Prisma ORM v6:**
+  - *Решение:* Prisma v7 оказалась нестабильной на связке Windows + Node.js 24 + удалённый MySQL (shared-хостинг). WASM-движок Driver Adapters (`@prisma/adapter-mariadb`) систематически терял TCP-соединение и маршрутизировал запросы на `::1:3306` (localhost) вместо реального IP хостинга. Было принято решение использовать **Prisma v6** со стандартным генератором `prisma-client-js` (Rust-движок), который обеспечивает надёжное нативное TCP-подключение.
+  - *Конфигурация:* Файл `prisma.config.ts` используется исключительно для CLI команд (`migrate`, `generate`), где `datasource.url` передаётся через `env('DATABASE_URL')`. В `schema.prisma` URL остаётся в `datasource db` для обратной совместимости с Prisma v6.
+  - *Пакеты*: `prisma@^6.4.0` (devDependency), `@prisma/client@^6.4.0` (dependency).
+
+- **Схема базы данных (`prisma/schema.prisma`):**
+  - Модели Better Auth: `User`, `Session`, `Account`, `Verification` (с `@@map` для совместимости с конвенцией better-auth).
+  - Модели контента: `Track`, `Playlist` (с enum `PlaylistCategory`), `PlaylistTrack` (стыковочная таблица с `order`).
+  - Модели медиатеки: `FavoriteTrack`, `FavoritePlaylist`, `FavoriteArtist`.
+  - Расширенная модель `User`: `role`, `canMakePlaylistsPublic`, `isReadOnly`, `banned`, `loginCount`, `lastLoginAt`, `lastPlayedTrackId`, `lastPlayedPlaylistId`.
+
+- **Миграция данных из `data.ts` в MySQL:**
+  - Скрипт `src/scripts/migrateData.ts` успешно перенёс **320 треков** и **25 плейлистов** (включая связи `PlaylistTrack`) в удалённую БД.
+  - Inline-треки из плейлиста "stud." (id 79-97) были автоматически созданы в таблице `Track` при миграции плейлистов.
+  - Для оптимизации скорости на remote-хостинге применён `createMany` с `skipDuplicates` вместо поштучных INSERT.
+
+- **Аутентификация Better Auth:**
+  - Настроен сервер `src/lib/auth.ts` с `prismaAdapter`, плагином `admin()` и хуком отслеживания входов (`loginCount`, `lastLoginAt`).
+  - Настроен клиент `src/lib/auth-client.ts` с `adminClient()` плагином.
+  - Route handler: `src/app/api/auth/[...all]/route.ts`.
+
+- **Audio Streaming API:**
+  - Создан Route Handler `src/app/api/stream/[id]/route.ts` с полной поддержкой HTTP Range Requests (206 Partial Content).
+  - Трек ищется в БД по ID, затем стримится с диска через `fs.createReadStream`.
+
+- **ID3 Metadata:**
+  - Утилита `src/lib/id3.ts` для чтения и записи метаданных (title, artist, album, cover) напрямую в MP3-файлы через `node-id3`.
+
+### Известные проблемы (IDE)
+- Ошибка линтера `Module '"@prisma/client"' has no exported member 'PrismaClient'` — **ложноположительная**. Возникает из-за наличия `prisma.config.ts` (от Prisma v7), который конфликтует с кэшем TypeScript Language Server. Функционально всё работает корректно (generate, migrate, runtime). Решение: перезапуск TypeScript сервера в IDE.
+
 ## [2026-03-30]
 
 ### Глобальная переработка аудио-движка (Отказ от react-howler)

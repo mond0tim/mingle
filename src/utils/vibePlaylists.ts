@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { Track, Playlist } from '@/types';
-import { initialTracks } from '@/data/data';
+import { prisma } from '@/lib/db';
+import { Playlist } from '@/types';
 
 export type VibeType = 'hour' | 'day' | 'week' | 'month';
 
@@ -12,11 +12,11 @@ const vibeCovers: Record<VibeType, string> = {
   month: '/covers/playlists/vibe-month.jpg',
 };
 
-const vibeIds: Record<VibeType, number> = {
-  hour: 600,
-  day: 240,
-  week: 700,
-  month: 300,
+const vibeIds: Record<VibeType, string> = {
+  hour: "vibe_hour",
+  day: "vibe_day",
+  week: "vibe_week",
+  month: "vibe_month",
 };
 
 const vibeTitles: Record<VibeType, string> = {
@@ -51,14 +51,20 @@ function getTrackCount(type: VibeType): number {
   }
 }
 
-function generateVibePlaylist(type: VibeType, allTracks: Track[]): Playlist & { updatedAt: string } {
+async function generateVibePlaylist(type: VibeType): Promise<Playlist & { updatedAt: string }> {
+  const allTracks = await prisma.track.findMany();
   const count = getTrackCount(type);
-  const shuffled = shuffleArray(allTracks);
+  const shuffled = shuffleArray(allTracks as any[]);
+  
   return {
     id: vibeIds[type],
     title: vibeTitles[type],
     cover: vibeCovers[type],
-    tracks: shuffled.slice(0, count),
+    tracks: shuffled.slice(0, count).map((t: any) => ({
+      ...t,
+      // Убеждаемся что типы соответствуют фронтенду
+      type: t.type || 'track'
+    })),
     isPlaying: false,
     category: 'vibe',
     type: 'playlist',
@@ -66,13 +72,14 @@ function generateVibePlaylist(type: VibeType, allTracks: Track[]): Playlist & { 
   };
 }
 
-export function generateAllVibePlaylists(): (Playlist & { updatedAt: string })[] {
-  return (['hour', 'day', 'week', 'month'] as VibeType[]).map(type =>
-    generateVibePlaylist(type, initialTracks)
-  );
+export async function generateAllVibePlaylists(): Promise<(Playlist & { updatedAt: string })[]> {
+  const types: VibeType[] = ['hour', 'day', 'week', 'month'];
+  const results = await Promise.all(types.map(type => generateVibePlaylist(type)));
+  return results;
 }
 
 export function saveVibePlaylistsToFile(playlists: Playlist[]) {
+  // Мы всё ещё сохраняем кеш в файл для скорости, но теперь данные из БД
   fs.writeFileSync(vibeInfoPath, JSON.stringify(playlists, null, 2), 'utf-8');
 }
 
