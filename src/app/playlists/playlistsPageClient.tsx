@@ -25,8 +25,9 @@ const categoryOrder: (string | 'other' | 'single' | 'album' | 'vibe' | 'playlist
 
 const PlaylistsPageClient = ({ playlists, vibePlaylists }: PlaylistsPageClientProps) => {
   const playlistsByCategory = playlists.reduce((acc, playlist) => {
-    const category = categoryOrder.includes(playlist.category)
-      ? playlist.category
+    const cat = playlist.category?.toLowerCase() || 'other';
+    const category = categoryOrder.includes(cat as any)
+      ? cat
       : 'other';
     if (!acc[category]) acc[category] = [];
     acc[category].push(playlist);

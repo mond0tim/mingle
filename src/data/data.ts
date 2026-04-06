@@ -1,4 +1,12 @@
-"use server only"
+/**
+ * DEPRECATED: This file is no longer used for live data.
+ * All application data (tracks, playlists, users) is now fetched directly
+ * from the MySQL database via Prisma and API routes.
+ * 
+ * Please do not add new data here. Use the Admin Dashboard or 
+ * database seed scripts instead.
+ */
+
 import { Track, Playlist } from "../types";
 
 
@@ -2912,7 +2920,7 @@ export const initialPlaylists: Playlist[] = [
     id: 0,
     title: 'все треки',
     cover: '/covers/playlists/allTracks.png',
-    tracks: initialTracks, 
+    tracks: initialTracks,
     isPlaying: false,
     category: 'other',
     type: 'playlist',
@@ -2920,21 +2928,21 @@ export const initialPlaylists: Playlist[] = [
   {
     id: 1,
     title: 'LOOM',
-    cover: '/covers/playlists/loom.jpg', 
-    tracks: [initialTracks[56],initialTracks[78], initialTracks[13], ...initialTracks.slice(71, 78)], 
+    cover: '/covers/playlists/loom.jpg',
+    tracks: [initialTracks[56], initialTracks[78], initialTracks[13], ...initialTracks.slice(71, 78)],
     isPlaying: false,
     category: 'album',
     type: 'playlist',
     colors: {
-        text: "#ded0ac",
-        button: "#c56b57",
+      text: "#ded0ac",
+      button: "#c56b57",
     }
   },
   {
     id: 2,
     title: 'Микс!',
     cover: '/covers/playlists/high_mix.jpg',
-    tracks: initialTracks.filter(track => 
+    tracks: initialTracks.filter(track =>
       track.id === 5 ||  // Faint - Linkin Park
       track.id === 16 || // LALALALA (Rock Ver.) - Stray Kids
       track.id === 19 || // Overcompensate - Twenty One Pilots
@@ -2955,13 +2963,13 @@ export const initialPlaylists: Playlist[] = [
     isPlaying: false,
     category: 'playlist',
     type: 'playlist',
-    
+
   },
   {
     id: 3,
     title: 'Ретро Микс',
     cover: '/covers/playlists/retro_mix.jpg',
-    tracks: initialTracks.filter(track => 
+    tracks: initialTracks.filter(track =>
       track.id === 99 ||  // Billie Jean - Michael Jackson
       track.id === 100 || // Smooth Criminal - Michael Jackson
       track.id === 101 || // Thriller - Michael Jackson
@@ -2988,16 +2996,16 @@ export const initialPlaylists: Playlist[] = [
     isPlaying: false,
     category: 'playlist',
     type: 'playlist',
-    
+
   },
   {
     id: 4,
     title: 'Favourite Worst Nightmare',
-    cover: '/covers/playlists/Favourite_Worst_Nightmare.jpg', 
-    tracks: [ ...initialTracks.slice(57, 65),  ...initialTracks.slice(66, 70)], 
+    cover: '/covers/playlists/Favourite_Worst_Nightmare.jpg',
+    tracks: [...initialTracks.slice(57, 65), ...initialTracks.slice(66, 70)],
     isPlaying: false,
     category: 'album',
-    type: 'playlist', 
+    type: 'playlist',
     // colors: {
     //   button: '#252640',
     //   icon: '#D9BFFE',
@@ -3007,8 +3015,8 @@ export const initialPlaylists: Playlist[] = [
   {
     id: 5,
     title: 'Clancy',
-    cover: '/covers/Overcompensate.jpg', 
-    tracks: [initialTracks[19], initialTracks[23], ...initialTracks.slice(32, 43)], 
+    cover: '/covers/Overcompensate.jpg',
+    tracks: [initialTracks[19], initialTracks[23], ...initialTracks.slice(32, 43)],
     isPlaying: false,
     category: 'album',
     type: 'playlist',
@@ -3021,8 +3029,8 @@ export const initialPlaylists: Playlist[] = [
   {
     id: 6,
     title: 'Big Dawgs',
-    cover: '/covers/playlists/Big_Dawgs.jpg', 
-    tracks: [initialTracks[28]], 
+    cover: '/covers/playlists/Big_Dawgs.jpg',
+    tracks: [initialTracks[28]],
     isPlaying: false,
     category: 'single',
     type: 'playlist',
@@ -3030,8 +3038,8 @@ export const initialPlaylists: Playlist[] = [
   {
     id: 7,
     title: 'ATE',
-    cover: '/covers/ATE.jpg', 
-    tracks: [ ...initialTracks.slice(43, 51)], 
+    cover: '/covers/ATE.jpg',
+    tracks: [...initialTracks.slice(43, 51)],
     isPlaying: false,
     category: 'album',
     type: 'playlist',
@@ -3039,8 +3047,8 @@ export const initialPlaylists: Playlist[] = [
   {
     id: 9,
     title: 'Lose My Breath (Feat. Charlie Puth)',
-    cover: '/covers/Lose_My_Breath.jpg', 
-    tracks: [initialTracks[51]], 
+    cover: '/covers/Lose_My_Breath.jpg',
+    tracks: [initialTracks[51]],
     isPlaying: false,
     category: 'single',
     type: 'playlist',
@@ -3053,8 +3061,8 @@ export const initialPlaylists: Playlist[] = [
   {
     id: 10,
     title: 'Mingle',
-    cover: '/covers/mingle.png', 
-    tracks: [initialTracks[0]], 
+    cover: '/covers/mingle.png',
+    tracks: [initialTracks[0]],
     isPlaying: false,
     category: 'single',
     type: 'playlist',
@@ -3067,8 +3075,8 @@ export const initialPlaylists: Playlist[] = [
   {
     id: 11,
     title: 'Skinny Loser',
-    cover: '/covers/playlists/Skinny_Loser.png', 
-    tracks: [initialTracks[52]], 
+    cover: '/covers/playlists/Skinny_Loser.png',
+    tracks: [initialTracks[52]],
     isPlaying: false,
     category: 'single',
     type: 'playlist',
@@ -3081,7 +3089,7 @@ export const initialPlaylists: Playlist[] = [
   {
     id: 12,
     title: 'stud.',
-    cover: '/covers/playlists/stud.png', 
+    cover: '/covers/playlists/stud.png',
     tracks: [
       {
         id: 79,
@@ -3254,7 +3262,7 @@ export const initialPlaylists: Playlist[] = [
         cover: "/covers/no-cover.jpg",
         type: "track"
       }
-    ], 
+    ],
     isPlaying: false,
     category: 'playlist',
     type: 'playlist',
@@ -3267,8 +3275,8 @@ export const initialPlaylists: Playlist[] = [
   {
     id: 13,
     title: 'rock.',
-    cover: '/covers/playlists/rock.jpg', 
-    tracks: initialTracks.filter(track => 
+    cover: '/covers/playlists/rock.jpg',
+    tracks: initialTracks.filter(track =>
       track.artist.includes('Linkin Park') ||
       track.artist.includes('Red Hot Chili Peppers') ||
       track.artist.includes('Nirvana') ||
@@ -3286,24 +3294,24 @@ export const initialPlaylists: Playlist[] = [
     // }
   },
   {
-  id: 14,
-  title: 'PARANOIA (feat. BAEKHYUN, tobi lou, ZI & Cal Scruby)',
-  cover: '/covers/HEARTSTEEL.jpg', 
-  tracks: [initialTracks[54]], 
-  isPlaying: false,
-  category: 'single',
-  type: 'playlist',
-  // colors: {
-  //   button: '#9EA68F',
-  //   icon: '#141512',
-  //   text: '#dce2d9',
-  // }
+    id: 14,
+    title: 'PARANOIA (feat. BAEKHYUN, tobi lou, ZI & Cal Scruby)',
+    cover: '/covers/HEARTSTEEL.jpg',
+    tracks: [initialTracks[54]],
+    isPlaying: false,
+    category: 'single',
+    type: 'playlist',
+    // colors: {
+    //   button: '#9EA68F',
+    //   icon: '#141512',
+    //   text: '#dce2d9',
+    // }
   },
   {
     id: 15,
     title: 'SPOT!',
-    cover: '/covers/SPOT.jpg', 
-    tracks: [initialTracks[55]], 
+    cover: '/covers/SPOT.jpg',
+    tracks: [initialTracks[55]],
     isPlaying: false,
     category: 'single',
     type: 'playlist',
@@ -3313,189 +3321,189 @@ export const initialPlaylists: Playlist[] = [
       text: '#D9BBB0',
     }
   },
-    // Twenty One Pilots Collection
-    {
-      id: 16,
-      title: 'Twenty One Pilots Essentials',
-      cover: '/covers/playlists/twop_hits.jpg',
-      tracks: initialTracks.filter(track => 
-        track.artist.includes('Twenty One Pilots') || 
-        track.artist.includes('twenty one pilots')
-      ),
-      isPlaying: false,
-      category: 'playlist',
-      type: 'playlist'
+  // Twenty One Pilots Collection
+  {
+    id: 16,
+    title: 'Twenty One Pilots Essentials',
+    cover: '/covers/playlists/twop_hits.jpg',
+    tracks: initialTracks.filter(track =>
+      track.artist.includes('Twenty One Pilots') ||
+      track.artist.includes('twenty one pilots')
+    ),
+    isPlaying: false,
+    category: 'playlist',
+    type: 'playlist'
+  },
+
+  // Imagine Dragons Collection
+  {
+    id: 17,
+    title: 'Imagine Dragons Greatest Hits',
+    cover: '/covers/playlists/Imagine_Dragons_hits.jpg',
+    tracks: initialTracks.filter(track =>
+      track.artist.includes('Imagine Dragons')
+    ),
+    isPlaying: false,
+    category: 'playlist',
+    type: 'playlist'
+  },
+
+  // Треки с ID от 99 до 230
+  {
+    id: 18,
+    title: 'dadudu',
+    cover: '/covers/playlists/id_range.jpg',
+    tracks: initialTracks.filter(track =>
+      track.id >= 99 && track.id <= 230
+    ),
+    isPlaying: false,
+    category: 'playlist',
+    type: 'playlist'
+  },
+
+  // Pop Essentials
+  {
+    id: 20,
+    title: 'Pop Hits 2000s-2020s',
+    cover: '/covers/playlists/pop_hits.jpg',
+    tracks: initialTracks.filter(track =>
+      track.artist.includes('Lady Gaga') ||
+      track.artist.includes('Maroon 5') ||
+      track.artist.includes('The Weeknd') ||
+      track.artist.includes('Billie Eilish') ||
+      track.artist.includes('OneRepublic') ||
+      track.artist.includes('Post Malone')
+    ),
+    isPlaying: false,
+    category: 'playlist',
+    type: 'playlist'
+  },
+
+  // Russian Hits
+  {
+    id: 21,
+    title: 'Русские Хиты',
+    cover: '/covers/playlists/russian_hits.jpg',
+    tracks: initialTracks.filter(track =>
+      track.artist.includes('IOWA') ||
+      track.artist.includes('SEREBRO') ||
+      track.artist.includes('Тимати') ||
+      track.artist.includes('Quest Pistols') ||
+      track.artist.includes('Дайте танк') ||
+      track.artist.includes('Бьянка')
+    ),
+    isPlaying: false,
+    category: 'playlist',
+    type: 'playlist'
+  },
+
+  // Electronic/Dance
+  {
+    id: 22,
+    title: 'Electronic Dance Mix',
+    cover: '/covers/playlists/electronic_dance.jpg',
+    tracks: initialTracks.filter(track =>
+      track.artist.includes('Technotronic') ||
+      track.artist.includes('2 Unlimited') ||
+      track.artist.includes('La Bouche') ||
+      track.artist.includes('Corona') ||
+      track.artist.includes('Ice MC') ||
+      track.artist.includes('INNA')
+    ),
+    isPlaying: false,
+    category: 'playlist',
+    type: 'playlist'
+  },
+
+  // 80s-90s Classics
+  {
+    id: 23,
+    title: '80s & 90s Classics',
+    cover: '/covers/playlists/80s_90s.jpg',
+    tracks: initialTracks.filter(track =>
+      track.artist.includes('Michael Jackson') ||
+      track.artist.includes('Rick Astley') ||
+      track.artist.includes('a-ha') ||
+      track.artist.includes('Boney M.') ||
+      track.artist.includes('Donna Summer') ||
+      track.artist.includes('Bee Gees')
+    ),
+    isPlaying: false,
+    category: 'playlist',
+    type: 'playlist'
+  },
+
+  // Альбом "Ангел хранитель" Сухарева Дмитрия
+  {
+    id: 24,
+    title: 'Ангел хранитель',
+    cover: '/covers/playlists/angel.jpg',
+    tracks: initialTracks.filter(track =>
+      track.artist.includes('Сухарев Дмитрий')
+    ),
+    isPlaying: false,
+    category: 'album',
+    type: 'playlist'
+  },
+  {
+    id: 25,
+    title: 'Смешарики',
+    cover: '/covers/playlists/smeshariki_best.jpg',
+    tracks: initialTracks.filter(track =>
+      track.id === 309 || // Город Омск
+      track.id === 320 || // Марафонец
+      track.id === 322 || // А мы валяем дурака
+      track.id === 323 || // Индийский чай
+      track.id === 324 || // Индийский чай (альтернативная версия)
+      track.id === 326 || // Мы не смеемся
+      track.id === 327 || // Неприятности
+      track.id === 330 || // От винта!
+      track.id === 331 || // От Винта! (альтернативная версия)
+      track.id === 332 || // Вести-бу-би-лю-би-бу
+      track.id === 325 ||  // M.E.D. Phonk - Смешарики
+      track.id === 328 ||  // Огурец Phonk - Смешарики
+      track.id === 329 ||  // O.M.S.K. Phonk - Смешарики
+      track.id === 333  // Ягода малинка - Смешарики, DVRST
+    ),
+    isPlaying: false,
+    colors: {
+      text: "#43586b"
     },
-  
-    // Imagine Dragons Collection
-    {
-      id: 17,
-      title: 'Imagine Dragons Greatest Hits',
-      cover: '/covers/playlists/Imagine_Dragons_hits.jpg',
-      tracks: initialTracks.filter(track => 
-        track.artist.includes('Imagine Dragons')
-      ),
-      isPlaying: false,
-      category: 'playlist',
-      type: 'playlist'
-    },
-  
-    // Треки с ID от 99 до 230
-    {
-      id: 18,
-      title: 'dadudu',
-      cover: '/covers/playlists/id_range.jpg',
-      tracks: initialTracks.filter(track => 
-        track.id >= 99 && track.id <= 230
-      ),
-      isPlaying: false,
-      category: 'playlist',
-      type: 'playlist'
-    },
-  
-    // Pop Essentials
-    {
-      id: 20,
-      title: 'Pop Hits 2000s-2020s',
-      cover: '/covers/playlists/pop_hits.jpg',
-      tracks: initialTracks.filter(track => 
-        track.artist.includes('Lady Gaga') ||
-        track.artist.includes('Maroon 5') ||
-        track.artist.includes('The Weeknd') ||
-        track.artist.includes('Billie Eilish') ||
-        track.artist.includes('OneRepublic') ||
-        track.artist.includes('Post Malone')
-      ),
-      isPlaying: false,
-      category: 'playlist',
-      type: 'playlist'
-    },
-  
-    // Russian Hits
-    {
-      id: 21,
-      title: 'Русские Хиты',
-      cover: '/covers/playlists/russian_hits.jpg',
-      tracks: initialTracks.filter(track => 
-        track.artist.includes('IOWA') ||
-        track.artist.includes('SEREBRO') ||
-        track.artist.includes('Тимати') ||
-        track.artist.includes('Quest Pistols') ||
-        track.artist.includes('Дайте танк') ||
-        track.artist.includes('Бьянка')
-      ),
-      isPlaying: false,
-      category: 'playlist',
-      type: 'playlist'
-    },
-  
-    // Electronic/Dance
-    {
-      id: 22,
-      title: 'Electronic Dance Mix',
-      cover: '/covers/playlists/electronic_dance.jpg',
-      tracks: initialTracks.filter(track => 
-        track.artist.includes('Technotronic') ||
-        track.artist.includes('2 Unlimited') ||
-        track.artist.includes('La Bouche') ||
-        track.artist.includes('Corona') ||
-        track.artist.includes('Ice MC') ||
-        track.artist.includes('INNA')
-      ),
-      isPlaying: false,
-      category: 'playlist',
-      type: 'playlist'
-    },
-  
-    // 80s-90s Classics
-    {
-      id: 23,
-      title: '80s & 90s Classics',
-      cover: '/covers/playlists/80s_90s.jpg',
-      tracks: initialTracks.filter(track => 
-        track.artist.includes('Michael Jackson') ||
-        track.artist.includes('Rick Astley') ||
-        track.artist.includes('a-ha') ||
-        track.artist.includes('Boney M.') ||
-        track.artist.includes('Donna Summer') ||
-        track.artist.includes('Bee Gees')
-      ),
-      isPlaying: false,
-      category: 'playlist',
-      type: 'playlist'
-    },
-  
-    // Альбом "Ангел хранитель" Сухарева Дмитрия
-    {
-      id: 24,
-      title: 'Ангел хранитель',
-      cover: '/covers/playlists/angel.jpg',
-      tracks: initialTracks.filter(track => 
-        track.artist.includes('Сухарев Дмитрий')
-      ),
-      isPlaying: false,
-      category: 'album',
-      type: 'playlist'
-    },
-    {
-      id: 25,
-      title: 'Смешарики',
-      cover: '/covers/playlists/smeshariki_best.jpg',
-      tracks: initialTracks.filter(track => 
-        track.id === 309 || // Город Омск
-        track.id === 320 || // Марафонец
-        track.id === 322 || // А мы валяем дурака
-        track.id === 323 || // Индийский чай
-        track.id === 324 || // Индийский чай (альтернативная версия)
-        track.id === 326 || // Мы не смеемся
-        track.id === 327 || // Неприятности
-        track.id === 330 || // От винта!
-        track.id === 331 || // От Винта! (альтернативная версия)
-        track.id === 332 || // Вести-бу-би-лю-би-бу
-        track.id === 325 ||  // M.E.D. Phonk - Смешарики
-        track.id === 328 ||  // Огурец Phonk - Смешарики
-        track.id === 329 ||  // O.M.S.K. Phonk - Смешарики
-        track.id === 333  // Ягода малинка - Смешарики, DVRST
-      ),
-      isPlaying: false,
-      colors: {
-          text: "#43586b"
-      },
-      category: 'other',
-      type: 'playlist',
-    },
-    {
-      id: 26,
-      title: 'Фонк',
-      cover: '/covers/playlists/phonk.jpg',
-      tracks: initialTracks.filter(track => 
-        track.id === 308 ||  // Tokyo 東京 - 7vvch, MVDNES
-        track.id === 310 ||  // DON'T STOP - CURSEDEVIL, Zackow
-        track.id === 311 ||  // Autumn Wind - DVRST
-        track.id === 312 ||  // Close Eyes - DVRST
-        track.id === 313 ||  // Dream Space (Sped Up) - DVRST
-        track.id === 314 ||  // My Toy - DVRST
-        track.id === 315 ||  // Phonk Web - Dxrk ダーク
-        track.id === 316 ||  // FIGHT! - Moondeity
-        track.id === 317 ||  // CURSED - Moondeity, Dxrk
-        track.id === 318 ||  // Vanished - Narvent
-        track.id === 319 ||  // RAID - NOAIR CREW, VOLT VISION
-        track.id === 321 ||  // KNIGHT - SHADXWBXRN
-        track.id === 325 ||  // M.E.D. Phonk - Смешарики
-        track.id === 328 ||  // Огурец Phonk - Смешарики
-        track.id === 329 ||  // O.M.S.K. Phonk - Смешарики
-        track.id === 333 ||  // Ягода малинка - Смешарики, DVRST
-        track.id === 334 ||  // |BONKERS| - Staplegun
-        track.id === 335 ||  // METAMORPHOSIS - INTERWORLD
-        track.id === 336 ||  // Scopin - Kordhell
-        track.id === 337 ||  // 9mm - Memphis Cult, Groove Dealers, SPLYXER
-        track.id === 338 ||  // VISION - UdieNnx, HXVSAGE
-        track.id === 339     // BAIXO - xxanteria
-      ),
-      isPlaying: false,
-      category: 'other',
-      type: 'playlist',
-    }
+    category: 'other',
+    type: 'playlist',
+  },
+  {
+    id: 26,
+    title: 'Фонк',
+    cover: '/covers/playlists/phonk.jpg',
+    tracks: initialTracks.filter(track =>
+      track.id === 308 ||  // Tokyo 東京 - 7vvch, MVDNES
+      track.id === 310 ||  // DON'T STOP - CURSEDEVIL, Zackow
+      track.id === 311 ||  // Autumn Wind - DVRST
+      track.id === 312 ||  // Close Eyes - DVRST
+      track.id === 313 ||  // Dream Space (Sped Up) - DVRST
+      track.id === 314 ||  // My Toy - DVRST
+      track.id === 315 ||  // Phonk Web - Dxrk ダーク
+      track.id === 316 ||  // FIGHT! - Moondeity
+      track.id === 317 ||  // CURSED - Moondeity, Dxrk
+      track.id === 318 ||  // Vanished - Narvent
+      track.id === 319 ||  // RAID - NOAIR CREW, VOLT VISION
+      track.id === 321 ||  // KNIGHT - SHADXWBXRN
+      track.id === 325 ||  // M.E.D. Phonk - Смешарики
+      track.id === 328 ||  // Огурец Phonk - Смешарики
+      track.id === 329 ||  // O.M.S.K. Phonk - Смешарики
+      track.id === 333 ||  // Ягода малинка - Смешарики, DVRST
+      track.id === 334 ||  // |BONKERS| - Staplegun
+      track.id === 335 ||  // METAMORPHOSIS - INTERWORLD
+      track.id === 336 ||  // Scopin - Kordhell
+      track.id === 337 ||  // 9mm - Memphis Cult, Groove Dealers, SPLYXER
+      track.id === 338 ||  // VISION - UdieNnx, HXVSAGE
+      track.id === 339     // BAIXO - xxanteria
+    ),
+    isPlaying: false,
+    category: 'other',
+    type: 'playlist',
+  }
 ];
 
 

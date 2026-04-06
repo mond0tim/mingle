@@ -9,7 +9,7 @@ type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-async function getPlaylistById(id: number): Promise<Playlist | null> {
+async function getPlaylistById(id: string): Promise<Playlist | null> {
   // Получаем обычные плейлисты
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/playlists`, { cache: 'no-store' });
   const playlists: Playlist[] = await res.json();
@@ -20,12 +20,12 @@ async function getPlaylistById(id: number): Promise<Playlist | null> {
 
   // Ищем плейлист по id среди всех
   const allPlaylists = [...playlists, ...vibePlaylists];
-  return allPlaylists.find((p) => p.id === id) || null;
+  return allPlaylists.find((p) => String(p.id) === id) || null;
 }
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const params = await props.params;
-  const playlistId = parseInt(params.id, 10);
+  const playlistId = params.id;
   const playlist = await getPlaylistById(playlistId);
 
   if (!playlist) {
@@ -44,7 +44,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 const PlaylistPage = async (props: Props) => {
   const searchParams = await props.searchParams;
   const params = await props.params;
-  const playlistId = parseInt(params.id, 10);
+  const playlistId = params.id;
   const playlist = await getPlaylistById(playlistId);
 
   return <PlaylistPageClient playlist={playlist} params={params} searchParams={searchParams} />;
