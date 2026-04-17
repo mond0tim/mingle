@@ -9,11 +9,11 @@ import { PrismaMariaDb } from '@prisma/adapter-mariadb';
  */
 
 const dbConfig = {
-  host: process.env.DB_HOST || '108.165.32.191',
+  host: process.env.DB_HOST,
   port: parseInt(process.env.DB_PORT || '3306'),
-  user: process.env.DB_USER || 'j82717825_mingle',
-  password: process.env.DB_PASSWORD || 'asmcs~Gr3Mqp',
-  database: process.env.DB_NAME || 'j82717825_mngl',
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
   connectionLimit: 15,     // Увеличиваем пул для параллельных запросов (стриминг, очередь, история)
   connectTimeout: 60000,   // 60 секунд на установку TCP соединения
   acquireTimeout: 60000,   // 60 секунд на получение соединения из пула
