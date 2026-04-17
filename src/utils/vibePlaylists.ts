@@ -12,7 +12,7 @@ const vibeCovers: Record<VibeType, string> = {
   month: '/covers/playlists/vibe-month.jpg',
 };
 
-const vibeIds: Record<VibeType, string> = {
+export const vibeIds: Record<VibeType, string> = {
   hour: "vibe_hour",
   day: "vibe_day",
   week: "vibe_week",
@@ -51,18 +51,50 @@ function getTrackCount(type: VibeType): number {
   }
 }
 
-async function generateVibePlaylist(type: VibeType): Promise<Playlist & { updatedAt: string }> {
+export async function generateVibePlaylist(type: VibeType): Promise<Playlist & { updatedAt: string }> {
   const allTracks = await prisma.track.findMany();
   const count = getTrackCount(type);
   const shuffled = shuffleArray(allTracks as any[]);
+  const selectedTracks = shuffled.slice(0, count);
+  const playlistId = vibeIds[type];
   
+  // Upsert playlist completely in DB to allow relationships (FavoritePlaylist, etc.)
+  await prisma.playlist.upsert({
+    where: { id: playlistId },
+    update: { updatedAt: new Date(), cover: vibeCovers[type], title: vibeTitles[type] },
+    create: {
+      id: playlistId,
+      title: vibeTitles[type],
+      category: 'VIBE',
+      type: 'system',
+      cover: vibeCovers[type],
+    }
+  });
+
+  // Re-link tracks using robust sequential ops instead of strict transaction
+  // which can timeout across concurrent Next.js serverless workers
+  try {
+    await prisma.playlistTrack.deleteMany({ where: { playlistId } });
+    if (selectedTracks.length > 0) {
+      await prisma.playlistTrack.createMany({
+        data: selectedTracks.map((t, index) => ({
+          playlistId,
+          trackId: t.id,
+          order: index
+        })),
+        skipDuplicates: true // Prevent unique constraint violations from overlapping workers
+      });
+    }
+  } catch (err) {
+    console.error("Vibe playlist generation race condition caught (ignoring):", err)
+  }
+
   return {
     id: vibeIds[type],
     title: vibeTitles[type],
     cover: vibeCovers[type],
-    tracks: shuffled.slice(0, count).map((t: any) => ({
+    tracks: selectedTracks.map((t: any) => ({
       ...t,
-      // Убеждаемся что типы соответствуют фронтенду
       type: t.type || 'track'
     })),
     isPlaying: false,
@@ -72,10 +104,28 @@ async function generateVibePlaylist(type: VibeType): Promise<Playlist & { update
   };
 }
 
+let generatePromise: Promise<any> | null = null;
+
 export async function generateAllVibePlaylists(): Promise<(Playlist & { updatedAt: string })[]> {
-  const types: VibeType[] = ['hour', 'day', 'week', 'month'];
-  const results = await Promise.all(types.map(type => generateVibePlaylist(type)));
-  return results;
+  if (generatePromise) {
+    return generatePromise;
+  }
+
+  generatePromise = (async () => {
+    const types: VibeType[] = ['hour', 'day', 'week', 'month'];
+    // Запускаем последовательно, чтобы снизить нагрузку на БД
+    const results = [];
+    for (const type of types) {
+      results.push(await generateVibePlaylist(type));
+    }
+    return results;
+  })();
+
+  try {
+    return await generatePromise;
+  } finally {
+    generatePromise = null;
+  }
 }
 
 export function saveVibePlaylistsToFile(playlists: Playlist[]) {

@@ -221,6 +221,7 @@ export type PlaylistWhereInput = {
   author?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   tracks?: Prisma.PlaylistTrackListRelationFilter
   favoritedBy?: Prisma.FavoritePlaylistListRelationFilter
+  history?: Prisma.PlaylistHistoryListRelationFilter
 }
 
 export type PlaylistOrderByWithRelationInput = {
@@ -237,6 +238,7 @@ export type PlaylistOrderByWithRelationInput = {
   author?: Prisma.UserOrderByWithRelationInput
   tracks?: Prisma.PlaylistTrackOrderByRelationAggregateInput
   favoritedBy?: Prisma.FavoritePlaylistOrderByRelationAggregateInput
+  history?: Prisma.PlaylistHistoryOrderByRelationAggregateInput
   _relevance?: Prisma.PlaylistOrderByRelevanceInput
 }
 
@@ -257,6 +259,7 @@ export type PlaylistWhereUniqueInput = Prisma.AtLeast<{
   author?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   tracks?: Prisma.PlaylistTrackListRelationFilter
   favoritedBy?: Prisma.FavoritePlaylistListRelationFilter
+  history?: Prisma.PlaylistHistoryListRelationFilter
 }, "id">
 
 export type PlaylistOrderByWithAggregationInput = {
@@ -304,6 +307,7 @@ export type PlaylistCreateInput = {
   author?: Prisma.UserCreateNestedOneWithoutPlaylistsInput
   tracks?: Prisma.PlaylistTrackCreateNestedManyWithoutPlaylistInput
   favoritedBy?: Prisma.FavoritePlaylistCreateNestedManyWithoutPlaylistInput
+  history?: Prisma.PlaylistHistoryCreateNestedManyWithoutPlaylistInput
 }
 
 export type PlaylistUncheckedCreateInput = {
@@ -319,6 +323,7 @@ export type PlaylistUncheckedCreateInput = {
   updatedAt?: Date | string
   tracks?: Prisma.PlaylistTrackUncheckedCreateNestedManyWithoutPlaylistInput
   favoritedBy?: Prisma.FavoritePlaylistUncheckedCreateNestedManyWithoutPlaylistInput
+  history?: Prisma.PlaylistHistoryUncheckedCreateNestedManyWithoutPlaylistInput
 }
 
 export type PlaylistUpdateInput = {
@@ -334,6 +339,7 @@ export type PlaylistUpdateInput = {
   author?: Prisma.UserUpdateOneWithoutPlaylistsNestedInput
   tracks?: Prisma.PlaylistTrackUpdateManyWithoutPlaylistNestedInput
   favoritedBy?: Prisma.FavoritePlaylistUpdateManyWithoutPlaylistNestedInput
+  history?: Prisma.PlaylistHistoryUpdateManyWithoutPlaylistNestedInput
 }
 
 export type PlaylistUncheckedUpdateInput = {
@@ -349,6 +355,7 @@ export type PlaylistUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tracks?: Prisma.PlaylistTrackUncheckedUpdateManyWithoutPlaylistNestedInput
   favoritedBy?: Prisma.FavoritePlaylistUncheckedUpdateManyWithoutPlaylistNestedInput
+  history?: Prisma.PlaylistHistoryUncheckedUpdateManyWithoutPlaylistNestedInput
 }
 
 export type PlaylistCreateManyInput = {
@@ -521,6 +528,20 @@ export type PlaylistUpdateOneRequiredWithoutFavoritedByNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.PlaylistUpdateToOneWithWhereWithoutFavoritedByInput, Prisma.PlaylistUpdateWithoutFavoritedByInput>, Prisma.PlaylistUncheckedUpdateWithoutFavoritedByInput>
 }
 
+export type PlaylistCreateNestedOneWithoutHistoryInput = {
+  create?: Prisma.XOR<Prisma.PlaylistCreateWithoutHistoryInput, Prisma.PlaylistUncheckedCreateWithoutHistoryInput>
+  connectOrCreate?: Prisma.PlaylistCreateOrConnectWithoutHistoryInput
+  connect?: Prisma.PlaylistWhereUniqueInput
+}
+
+export type PlaylistUpdateOneRequiredWithoutHistoryNestedInput = {
+  create?: Prisma.XOR<Prisma.PlaylistCreateWithoutHistoryInput, Prisma.PlaylistUncheckedCreateWithoutHistoryInput>
+  connectOrCreate?: Prisma.PlaylistCreateOrConnectWithoutHistoryInput
+  upsert?: Prisma.PlaylistUpsertWithoutHistoryInput
+  connect?: Prisma.PlaylistWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PlaylistUpdateToOneWithWhereWithoutHistoryInput, Prisma.PlaylistUpdateWithoutHistoryInput>, Prisma.PlaylistUncheckedUpdateWithoutHistoryInput>
+}
+
 export type PlaylistCreateWithoutAuthorInput = {
   id?: string
   title: string
@@ -533,6 +554,7 @@ export type PlaylistCreateWithoutAuthorInput = {
   updatedAt?: Date | string
   tracks?: Prisma.PlaylistTrackCreateNestedManyWithoutPlaylistInput
   favoritedBy?: Prisma.FavoritePlaylistCreateNestedManyWithoutPlaylistInput
+  history?: Prisma.PlaylistHistoryCreateNestedManyWithoutPlaylistInput
 }
 
 export type PlaylistUncheckedCreateWithoutAuthorInput = {
@@ -547,6 +569,7 @@ export type PlaylistUncheckedCreateWithoutAuthorInput = {
   updatedAt?: Date | string
   tracks?: Prisma.PlaylistTrackUncheckedCreateNestedManyWithoutPlaylistInput
   favoritedBy?: Prisma.FavoritePlaylistUncheckedCreateNestedManyWithoutPlaylistInput
+  history?: Prisma.PlaylistHistoryUncheckedCreateNestedManyWithoutPlaylistInput
 }
 
 export type PlaylistCreateOrConnectWithoutAuthorInput = {
@@ -603,6 +626,7 @@ export type PlaylistCreateWithoutTracksInput = {
   updatedAt?: Date | string
   author?: Prisma.UserCreateNestedOneWithoutPlaylistsInput
   favoritedBy?: Prisma.FavoritePlaylistCreateNestedManyWithoutPlaylistInput
+  history?: Prisma.PlaylistHistoryCreateNestedManyWithoutPlaylistInput
 }
 
 export type PlaylistUncheckedCreateWithoutTracksInput = {
@@ -617,6 +641,7 @@ export type PlaylistUncheckedCreateWithoutTracksInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   favoritedBy?: Prisma.FavoritePlaylistUncheckedCreateNestedManyWithoutPlaylistInput
+  history?: Prisma.PlaylistHistoryUncheckedCreateNestedManyWithoutPlaylistInput
 }
 
 export type PlaylistCreateOrConnectWithoutTracksInput = {
@@ -647,6 +672,7 @@ export type PlaylistUpdateWithoutTracksInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   author?: Prisma.UserUpdateOneWithoutPlaylistsNestedInput
   favoritedBy?: Prisma.FavoritePlaylistUpdateManyWithoutPlaylistNestedInput
+  history?: Prisma.PlaylistHistoryUpdateManyWithoutPlaylistNestedInput
 }
 
 export type PlaylistUncheckedUpdateWithoutTracksInput = {
@@ -661,6 +687,7 @@ export type PlaylistUncheckedUpdateWithoutTracksInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   favoritedBy?: Prisma.FavoritePlaylistUncheckedUpdateManyWithoutPlaylistNestedInput
+  history?: Prisma.PlaylistHistoryUncheckedUpdateManyWithoutPlaylistNestedInput
 }
 
 export type PlaylistCreateWithoutFavoritedByInput = {
@@ -675,6 +702,7 @@ export type PlaylistCreateWithoutFavoritedByInput = {
   updatedAt?: Date | string
   author?: Prisma.UserCreateNestedOneWithoutPlaylistsInput
   tracks?: Prisma.PlaylistTrackCreateNestedManyWithoutPlaylistInput
+  history?: Prisma.PlaylistHistoryCreateNestedManyWithoutPlaylistInput
 }
 
 export type PlaylistUncheckedCreateWithoutFavoritedByInput = {
@@ -689,6 +717,7 @@ export type PlaylistUncheckedCreateWithoutFavoritedByInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   tracks?: Prisma.PlaylistTrackUncheckedCreateNestedManyWithoutPlaylistInput
+  history?: Prisma.PlaylistHistoryUncheckedCreateNestedManyWithoutPlaylistInput
 }
 
 export type PlaylistCreateOrConnectWithoutFavoritedByInput = {
@@ -719,6 +748,7 @@ export type PlaylistUpdateWithoutFavoritedByInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   author?: Prisma.UserUpdateOneWithoutPlaylistsNestedInput
   tracks?: Prisma.PlaylistTrackUpdateManyWithoutPlaylistNestedInput
+  history?: Prisma.PlaylistHistoryUpdateManyWithoutPlaylistNestedInput
 }
 
 export type PlaylistUncheckedUpdateWithoutFavoritedByInput = {
@@ -733,6 +763,83 @@ export type PlaylistUncheckedUpdateWithoutFavoritedByInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tracks?: Prisma.PlaylistTrackUncheckedUpdateManyWithoutPlaylistNestedInput
+  history?: Prisma.PlaylistHistoryUncheckedUpdateManyWithoutPlaylistNestedInput
+}
+
+export type PlaylistCreateWithoutHistoryInput = {
+  id?: string
+  title: string
+  cover?: string | null
+  type?: string
+  category?: $Enums.PlaylistCategory
+  isPublic?: boolean
+  colors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  author?: Prisma.UserCreateNestedOneWithoutPlaylistsInput
+  tracks?: Prisma.PlaylistTrackCreateNestedManyWithoutPlaylistInput
+  favoritedBy?: Prisma.FavoritePlaylistCreateNestedManyWithoutPlaylistInput
+}
+
+export type PlaylistUncheckedCreateWithoutHistoryInput = {
+  id?: string
+  title: string
+  cover?: string | null
+  type?: string
+  category?: $Enums.PlaylistCategory
+  isPublic?: boolean
+  colors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  authorId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tracks?: Prisma.PlaylistTrackUncheckedCreateNestedManyWithoutPlaylistInput
+  favoritedBy?: Prisma.FavoritePlaylistUncheckedCreateNestedManyWithoutPlaylistInput
+}
+
+export type PlaylistCreateOrConnectWithoutHistoryInput = {
+  where: Prisma.PlaylistWhereUniqueInput
+  create: Prisma.XOR<Prisma.PlaylistCreateWithoutHistoryInput, Prisma.PlaylistUncheckedCreateWithoutHistoryInput>
+}
+
+export type PlaylistUpsertWithoutHistoryInput = {
+  update: Prisma.XOR<Prisma.PlaylistUpdateWithoutHistoryInput, Prisma.PlaylistUncheckedUpdateWithoutHistoryInput>
+  create: Prisma.XOR<Prisma.PlaylistCreateWithoutHistoryInput, Prisma.PlaylistUncheckedCreateWithoutHistoryInput>
+  where?: Prisma.PlaylistWhereInput
+}
+
+export type PlaylistUpdateToOneWithWhereWithoutHistoryInput = {
+  where?: Prisma.PlaylistWhereInput
+  data: Prisma.XOR<Prisma.PlaylistUpdateWithoutHistoryInput, Prisma.PlaylistUncheckedUpdateWithoutHistoryInput>
+}
+
+export type PlaylistUpdateWithoutHistoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  cover?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumPlaylistCategoryFieldUpdateOperationsInput | $Enums.PlaylistCategory
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  colors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  author?: Prisma.UserUpdateOneWithoutPlaylistsNestedInput
+  tracks?: Prisma.PlaylistTrackUpdateManyWithoutPlaylistNestedInput
+  favoritedBy?: Prisma.FavoritePlaylistUpdateManyWithoutPlaylistNestedInput
+}
+
+export type PlaylistUncheckedUpdateWithoutHistoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  cover?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumPlaylistCategoryFieldUpdateOperationsInput | $Enums.PlaylistCategory
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  colors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  authorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tracks?: Prisma.PlaylistTrackUncheckedUpdateManyWithoutPlaylistNestedInput
+  favoritedBy?: Prisma.FavoritePlaylistUncheckedUpdateManyWithoutPlaylistNestedInput
 }
 
 export type PlaylistCreateManyAuthorInput = {
@@ -759,6 +866,7 @@ export type PlaylistUpdateWithoutAuthorInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tracks?: Prisma.PlaylistTrackUpdateManyWithoutPlaylistNestedInput
   favoritedBy?: Prisma.FavoritePlaylistUpdateManyWithoutPlaylistNestedInput
+  history?: Prisma.PlaylistHistoryUpdateManyWithoutPlaylistNestedInput
 }
 
 export type PlaylistUncheckedUpdateWithoutAuthorInput = {
@@ -773,6 +881,7 @@ export type PlaylistUncheckedUpdateWithoutAuthorInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tracks?: Prisma.PlaylistTrackUncheckedUpdateManyWithoutPlaylistNestedInput
   favoritedBy?: Prisma.FavoritePlaylistUncheckedUpdateManyWithoutPlaylistNestedInput
+  history?: Prisma.PlaylistHistoryUncheckedUpdateManyWithoutPlaylistNestedInput
 }
 
 export type PlaylistUncheckedUpdateManyWithoutAuthorInput = {
@@ -795,11 +904,13 @@ export type PlaylistUncheckedUpdateManyWithoutAuthorInput = {
 export type PlaylistCountOutputType = {
   tracks: number
   favoritedBy: number
+  history: number
 }
 
 export type PlaylistCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tracks?: boolean | PlaylistCountOutputTypeCountTracksArgs
   favoritedBy?: boolean | PlaylistCountOutputTypeCountFavoritedByArgs
+  history?: boolean | PlaylistCountOutputTypeCountHistoryArgs
 }
 
 /**
@@ -826,6 +937,13 @@ export type PlaylistCountOutputTypeCountFavoritedByArgs<ExtArgs extends runtime.
   where?: Prisma.FavoritePlaylistWhereInput
 }
 
+/**
+ * PlaylistCountOutputType without action
+ */
+export type PlaylistCountOutputTypeCountHistoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PlaylistHistoryWhereInput
+}
+
 
 export type PlaylistSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -841,6 +959,7 @@ export type PlaylistSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   author?: boolean | Prisma.Playlist$authorArgs<ExtArgs>
   tracks?: boolean | Prisma.Playlist$tracksArgs<ExtArgs>
   favoritedBy?: boolean | Prisma.Playlist$favoritedByArgs<ExtArgs>
+  history?: boolean | Prisma.Playlist$historyArgs<ExtArgs>
   _count?: boolean | Prisma.PlaylistCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["playlist"]>
 
@@ -864,6 +983,7 @@ export type PlaylistInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   author?: boolean | Prisma.Playlist$authorArgs<ExtArgs>
   tracks?: boolean | Prisma.Playlist$tracksArgs<ExtArgs>
   favoritedBy?: boolean | Prisma.Playlist$favoritedByArgs<ExtArgs>
+  history?: boolean | Prisma.Playlist$historyArgs<ExtArgs>
   _count?: boolean | Prisma.PlaylistCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -873,6 +993,7 @@ export type $PlaylistPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     author: Prisma.$UserPayload<ExtArgs> | null
     tracks: Prisma.$PlaylistTrackPayload<ExtArgs>[]
     favoritedBy: Prisma.$FavoritePlaylistPayload<ExtArgs>[]
+    history: Prisma.$PlaylistHistoryPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1228,6 +1349,7 @@ export interface Prisma__PlaylistClient<T, Null = never, ExtArgs extends runtime
   author<T extends Prisma.Playlist$authorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Playlist$authorArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   tracks<T extends Prisma.Playlist$tracksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Playlist$tracksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PlaylistTrackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   favoritedBy<T extends Prisma.Playlist$favoritedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Playlist$favoritedByArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoritePlaylistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  history<T extends Prisma.Playlist$historyArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Playlist$historyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PlaylistHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1679,6 +1801,30 @@ export type Playlist$favoritedByArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.FavoritePlaylistScalarFieldEnum | Prisma.FavoritePlaylistScalarFieldEnum[]
+}
+
+/**
+ * Playlist.history
+ */
+export type Playlist$historyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PlaylistHistory
+   */
+  select?: Prisma.PlaylistHistorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PlaylistHistory
+   */
+  omit?: Prisma.PlaylistHistoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PlaylistHistoryInclude<ExtArgs> | null
+  where?: Prisma.PlaylistHistoryWhereInput
+  orderBy?: Prisma.PlaylistHistoryOrderByWithRelationInput | Prisma.PlaylistHistoryOrderByWithRelationInput[]
+  cursor?: Prisma.PlaylistHistoryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PlaylistHistoryScalarFieldEnum | Prisma.PlaylistHistoryScalarFieldEnum[]
 }
 
 /**

@@ -13,7 +13,7 @@ const jost = Jost({ subsets: ['latin', 'cyrillic' ]})
 
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-	({ view = 'primary', fontFamily = 'Geist', ButtonRadius = 'lg', fontWeight = 'regular', children, className, ...props }, ref): JSX.Element => {
+	({ view = 'primary', fontFamily = 'Geist', ButtonRadius = 'lg', fontWeight = 'regular', size = 'default', children, className, ...props }, ref): JSX.Element => {
 		return (
 			<button
 				ref={ref}
@@ -35,6 +35,10 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 					[styles.r_sm]: ButtonRadius == 'sm',
 					[styles.r_md]: ButtonRadius == 'md',
 					[styles.r_lg]: ButtonRadius == 'lg',
+					[styles.size_default]: size === 'default',
+					[styles.size_sm]: size === 'sm',
+					[styles.size_lg]: size === 'lg',
+					[styles.size_icon]: size === 'icon',
 				})}
 				{...props}
 			>

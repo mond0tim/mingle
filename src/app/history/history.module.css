@@ -1,0 +1,34 @@
+.page {
+  padding: 2rem;
+  min-height: 100vh;
+  background: var(--mg-background);
+  color: var(--foreground);
+}
+
+@media (min-width: 640px) {
+  .page {
+    padding-left: 14rem; /* Отступ под сайдбар (12rem + запас) */
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 3rem;
+  padding-top: 1rem;
+}
+
+.content {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: 1rem;
+  }
+  
+  .header {
+    margin-bottom: 2rem;
+  }
+}

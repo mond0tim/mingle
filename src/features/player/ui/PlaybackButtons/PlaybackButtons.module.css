@@ -1,0 +1,111 @@
+.playbackButtons {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    justify-content: center;
+}
+
+.mediaButton {
+    --play-button-background: color-mix(in srgb, var(--dominant-color, #0f0f23), white 30%);
+    --play-button-color: lch(from var(--play-button-background, var(--dominant-color, #0f0f23)) calc((49.44 - l) * infinity) 0 0);
+    background-color: var(--play-button-background);
+    border: none;
+    border-radius: 32px;
+    width: 88px;
+    height: 88px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.1s ease, background-color 0.2s;
+    -webkit-tap-highlight-color: transparent;
+    padding: 0;
+    outline: none;
+    /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); */
+}
+
+.mediaButton:active {
+    transform: scale(0.92);
+    background-color: var(--play-button-background);
+}
+
+.mediaButton svg {
+    width: 36px;
+    height: 36px;
+    fill: var(--play-button-color);
+    stroke: var(--play-button-color);
+    stroke-width: 5px; 
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    overflow: visible;
+    
+    /* Анимация вращения */
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Класс для состояния Play (когда музыка на паузе) */
+.paused svg {
+    transform: rotate(90deg);
+}
+
+.iconPath {
+    transition: d 0.3s ease-in-out;
+}
+
+/* Base style for Step buttons (Next/Prev) */
+.stepButton {
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    border-radius: 24px;
+    width: 64px;
+    height: 64px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(8px);
+    -webkit-tap-highlight-color: transparent;
+    padding: 0;
+    outline: none;
+    color: white;
+}
+
+.stepButton:active {
+    transform: scale(0.9);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.stepButton svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+    stroke: none;
+}
+
+/* Adjustments for smaller screens or denser UI */
+@media (max-width: 640px) {
+    .mediaButton {
+        width: 72px;
+        height: 72px;
+    }
+    .mediaButton svg {
+        width: 30px;
+        height: 30px;
+    }
+    .stepButton {
+        width: 54px;
+        height: 54px;
+    }
+}
+/* Mini player version */
+.mini.mediaButton {
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+}
+.mini.mediaButton svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 6px;
+}

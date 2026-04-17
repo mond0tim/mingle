@@ -5,6 +5,7 @@ import { Button } from '@/components/Button/Button';
 import ImageLightbox from '@/components/imageLightbox/ImageLightbox';
 import cn from 'classnames';
 import { PrevIcon, NextIcon, MoreIcon } from '@/shared/ui/icons';
+import { LikeButton } from '@/components/LikeButton/LikeButton';
 import NumberFlow, { NumberFlowGroup } from '@number-flow/react';
 import {
   DropdownMenu,
@@ -16,6 +17,7 @@ import { DownloadIcon } from '@/shared/ui/icons';
 import LyricsDrawer from '../LyricsDrawer';
 import QueueDrawer from '../QueueDrawer';
 import { PlayerControlsProps } from './PlayerControls.props';
+import { PlaybackButtons } from '../PlaybackButtons/PlaybackButtons';
 import styles from './PlayerControls.module.css'
 
 const CurrentTime: React.FC<{ isSeeking: boolean; seekValue: number }> = ({ isSeeking, seekValue }) => {
@@ -189,41 +191,37 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
     <div className={styles.playerControls}>
       {currentTrack && (
         <>
-          <button onClick={onPlayPause} className={cn(styles.play_button,
-            {
-              [styles.pauseIcon]: playing == true,
-              [styles.playIcon]: playing == false,
-
-            })} >
-            <span className="material-symbols-outlined"></span>
-          </button>
-
-          <button onClick={onPrevTrack} className={styles.prev_button}>
-            <span className="material-symbols-outlined"><PrevIcon /></span>
-          </button>
-
-          <button onClick={onNextTrack} className={styles.next_button}>
-            <span className="material-symbols-outlined"><NextIcon /></span>
-          </button>
+          <PlaybackButtons
+            isPlaying={playing}
+            onPlayPause={onPlayPause}
+            onPrev={onPrevTrack}
+            onNext={onNextTrack}
+            className={styles.playback_container}
+          />
 
           <div className={styles.playerInfo}>
             <ImageLightbox
-              src={currentTrack.cover}
-              alt={currentTrack.title}
+              src={currentTrack.cover || "/placeholder.png"}
+              alt={currentTrack.title || "Track Cover"}
               width={40}
               height={40}
               className="rounded-[8px]"
             />
             <div className={styles.trackInfo}>
-              <div className={cn(styles.trackTitle, styles.trackText)}>
-                <span>{currentTrack.title}</span>
-                <div className={styles.marquee} aria-hidden="true">
-                  <div className={styles.marquee__inner}>
-                    <span>{currentTrack.title}</span>
-                    <span>{currentTrack.title}</span>
-                    <span>{currentTrack.title}</span>
-                    <span>{currentTrack.title}</span>
+              <div className={styles.trackTitleContainer}>
+                <div className={cn(styles.trackTitle, styles.trackText)}>
+                  <span>{currentTrack.title}</span>
+                  <div className={styles.marquee} aria-hidden="true">
+                    <div className={styles.marquee__inner}>
+                      <span>{currentTrack.title}</span>
+                      <span>{currentTrack.title}</span>
+                      <span>{currentTrack.title}</span>
+                      <span>{currentTrack.title}</span>
+                    </div>
                   </div>
+                </div>
+                <div className="flex items-center gap-1">
+                  <LikeButton trackId={currentTrack.id} size={16} />
                 </div>
               </div>
               <div className={cn(styles.trackArtist, styles.trackText)}>
@@ -237,6 +235,7 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
                   </div>
                 </div>
               </div>
+
             </div>
           </div>
 
@@ -250,7 +249,7 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
               <DropdownMenuContent className="w-56 rounded-[25px] p-2 gap-2">
                 <DropdownMenuItem>
                   <a
-                    href={currentTrack.fullSrc}
+                    href={currentTrack.fullSrc || undefined}
                     download={currentTrack.title + '.mp3'}
                     className={styles.downloadButton}
                     onClick={(e) => e.stopPropagation()}

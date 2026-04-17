@@ -7,14 +7,48 @@ export const metadata: Metadata = {
   keywords: 'музыкальные плейлисты, создать плейлист, коллекция треков, управление плейлистами',
 };
 
+import { prisma } from '@/lib/db';
+import { Playlist } from '@/types';
+
+export const revalidate = 600; // SSG rebuild every 10 min
+
 async function getPlaylists() {
-  const res = await fetch(`${process.env.BASE_URL || ''}/api/playlists`, { cache: 'no-store' });
-  return res.json();
+  const dbPlaylists = await prisma.playlist.findMany({
+    include: {
+      tracks: {
+        include: { track: true },
+        orderBy: { order: 'asc' },
+      },
+    },
+  });
+
+  return dbPlaylists.map(playlist => ({
+    ...playlist,
+    tracks: playlist.tracks.map((pt) => ({ ...pt.track, type: pt.track.type || 'track' })),
+    category: playlist.category.toLowerCase() as any,
+    type: playlist.type,
+    isPlaying: false,
+  })) as unknown as Playlist[];
 }
 
 async function getVibePlaylists() {
-  const res = await fetch(`${process.env.BASE_URL || ''}/api/vibe`, { cache: 'no-store' });
-  return res.json();
+  const dbVibes = await prisma.playlist.findMany({
+    where: { category: 'VIBE' },
+    include: {
+      tracks: {
+        include: { track: true },
+        orderBy: { order: 'asc' },
+      },
+    },
+  });
+
+  return dbVibes.map(playlist => ({
+    ...playlist,
+    tracks: playlist.tracks.map((pt) => ({ ...pt.track, type: pt.track.type || 'track' })),
+    category: playlist.category.toLowerCase() as any,
+    type: playlist.type,
+    isPlaying: false,
+  })) as unknown as Playlist[];
 }
 
 const PlaylistsPage = async () => {

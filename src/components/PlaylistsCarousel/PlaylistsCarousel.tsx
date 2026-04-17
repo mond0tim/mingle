@@ -1,5 +1,6 @@
 'use client';
 import { usePlayerStore as usePlayer } from '@/features/player/store/playerStore';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
   Carousel,
@@ -15,6 +16,7 @@ import { useEffect, useState, useRef } from 'react';
 import { ColorThiefOutput, getColorFromURL, getContrastingColor } from '@/lib/colorHelper';
 import { PlayPlaylistIcon } from '@/shared/ui/icons';
 import { PausePlaylistIcon } from '@/shared/ui/icons';
+import { LikePlaylistButton } from '../LikePlaylistButton/LikePlaylistButton';
 import Image from 'next/image';
 import { BProgress } from '@bprogress/core';
 
@@ -24,7 +26,7 @@ interface PlaylistCardProps {
 
 const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlist }) => {
 
-  
+
 
   const { playPlaylist, togglePlay, playlistIsPlaying } =
     usePlayer();
@@ -32,6 +34,7 @@ const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlist }) => {
   const isThisPlaying = playlistIsPlaying?.id === playlist.id && playing;
   const [colors, setColors] = useState<ColorThiefOutput | null>(null);
   const imageRef = useRef<HTMLImageElement>(null);
+  const router = useRouter();
 
 
   useEffect(() => {
@@ -40,14 +43,14 @@ const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlist }) => {
       if (playlist.colors) {
         const buttonColor = playlist.colors.button || '#C7D3FF';
         const contrastingColor = getContrastingColor(buttonColor);
-        
+
         setColors({
           background: buttonColor,
           title: playlist.colors.text || '#C7D3FF',
           button: buttonColor,
           buttonColor: playlist.colors.icon || contrastingColor,
         });
-      } 
+      }
       // Если цветов нет - генерируем из обложки
       else if (playlist.cover) {
         const colorThiefResult = await getColorFromURL(playlist.cover);
@@ -66,24 +69,33 @@ const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlist }) => {
   const handlePlayClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     e.preventDefault();
-    
+
     // Если уже играет тот же плейлист — просто переключаем паузу/плей
     if (playlistIsPlaying?.id === playlist.id) {
       togglePlay();
       return;
     }
 
-    try {
-      // Запускаем плейлист с autoplay=true (первый трек)
-      await playPlaylist(playlist, undefined, true);
-    } finally {
-      BProgress.done();
+    // Для vibe-плейлистов: загрузить свежие данные перед запуском
+    if (playlist.category === 'vibe' || String(playlist.id).startsWith('vibe_')) {
+      try {
+        const res = await fetch('/api/vibe');
+        const freshVibes = await res.json();
+        const freshPlaylist = freshVibes.find((p: any) => String(p.id) === String(playlist.id));
+        if (freshPlaylist) {
+          await playPlaylist(freshPlaylist, undefined, true);
+          return;
+        }
+      } catch {}
     }
+
+    // Запускаем плейлист с autoplay=true (первый трек)
+    await playPlaylist(playlist, undefined, true);
   };
-  
+
 
   return (
-    <Link href={`/playlists/${playlist.id}`}>
+    <Link href={`/playlists/${playlist.id}`} style={{ cursor: 'pointer', display: 'block' }}>
       <div
         className={styles.card_blur}
         style={{
@@ -96,7 +108,7 @@ const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlist }) => {
       >
         <Image
           ref={imageRef}
-          src={playlist.cover}
+          src={playlist.cover || "/placeholder.png"}
           alt={playlist.title}
           width={300}
           height={300}
@@ -120,9 +132,9 @@ const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlist }) => {
             onClick={handlePlayClick}
           >
             {playlistIsPlaying?.id === playlist.id && isThisPlaying ? (
-              <PlayPlaylistIcon width={30} height={30} fill='currentColor' />
-            ) : (
               <PausePlaylistIcon width={30} height={30} fill='currentColor' />
+            ) : (
+              <PlayPlaylistIcon width={30} height={30} fill='currentColor' />
             )}
           </button>
         </div>
@@ -139,21 +151,21 @@ export const PlaylistsCarousel: React.FC<PlaylistsCarouselProps> = ({
   playlists,
 }) => {
   return (
-	<div className='w-full relative md:px-14'>
-    <Carousel className='w-full'>
-      <CarouselContent className='pr-16 md:pr-0 pl-4 md:pl-0'>
-        {playlists.map((playlist) => (
-          <CarouselItem key={playlist.id} className='md:basis-1/2 lg:basis-1/4'>
-            <div className='p-1'>
-              <PlaylistCard playlist={playlist} />
-            </div>
-          </CarouselItem>
-        ))}
-      </CarouselContent>
-      <CarouselPrevious className='hidden md:inline-flex'/>
-      <CarouselNext  className='hidden md:inline-flex'/>
-    </Carousel>
-	
-	</div>
+    <div className='w-full relative md:px-14'>
+      <Carousel className='w-full'>
+        <CarouselContent className='pr-16 md:pr-0 pl-4 md:pl-0'>
+          {playlists.map((playlist) => (
+            <CarouselItem key={playlist.id} className='md:basis-1/2 lg:basis-1/4'>
+              <div className='p-1'>
+                <PlaylistCard playlist={playlist} />
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious className='hidden md:inline-flex' />
+        <CarouselNext className='hidden md:inline-flex' />
+      </Carousel>
+
+    </div>
   );
 };

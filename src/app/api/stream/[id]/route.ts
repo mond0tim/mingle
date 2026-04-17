@@ -20,8 +20,6 @@ export async function GET(
     }
 
     // 2. Определяем путь к файлу
-    // track.src обычно содержит что-то вроде "/audio/track.mp3"
-    // Мы убираем начальный слеш, чтобы path.join сработал относительно public
     const relativePath = track.src.startsWith('/') ? track.src.slice(1) : track.src;
     const filePath = path.join(process.cwd(), 'public', relativePath);
 
@@ -29,9 +27,26 @@ export async function GET(
       return new NextResponse('Audio file not found on server', { status: 404 });
     }
 
-    // 3. Анализируем Range заголовок
+    // 3. Stat файла + ETag
     const stat = fs.statSync(filePath);
     const fileSize = stat.size;
+    const etag = `"${stat.mtimeMs.toString(36)}-${fileSize.toString(36)}"`;
+
+    // 4. Conditional request — если ETag совпадает, 304
+    const ifNoneMatch = request.headers.get('if-none-match');
+    if (ifNoneMatch === etag) {
+      return new NextResponse(null, { status: 304 });
+    }
+
+    // Общие кэширующие заголовки — аудио файлы не меняются
+    const cacheHeaders = {
+      'Cache-Control': 'public, max-age=31536000, immutable',
+      'ETag': etag,
+      'Accept-Ranges': 'bytes',
+      'Content-Type': 'audio/mpeg',
+    };
+
+    // 5. Range request
     const range = request.headers.get('range');
 
     if (range) {
@@ -41,50 +56,62 @@ export async function GET(
       
       const chunksize = (end - start) + 1;
       const file = fs.createReadStream(filePath, { start, end });
-      const head = {
-        'Content-Range': `bytes ${start}-${end}/${fileSize}`,
-        'Accept-Ranges': 'bytes',
-        'Content-Length': chunksize.toString(),
-        'Content-Type': 'audio/mpeg',
-      };
       
-      // Node Readable Stream to Web ReadableStream
-      const stream = new ReadableStream({
-        start(controller) {
-          file.on('data', (chunk) => controller.enqueue(chunk));
-          file.on('end', () => controller.close());
-          file.on('error', (err) => controller.error(err));
+      const iterator = file[Symbol.asyncIterator]();
+      const webStream = new ReadableStream({
+        async pull(controller) {
+          try {
+            const { value, done } = await iterator.next();
+            if (done) {
+              controller.close();
+            } else {
+              controller.enqueue(new Uint8Array(value));
+            }
+          } catch (error) {
+            controller.error(error);
+          }
         },
         cancel() {
           file.destroy();
         }
       });
 
-      return new NextResponse(stream as any, {
+      return new NextResponse(webStream, {
         status: 206,
-        headers: head
+        headers: {
+          ...cacheHeaders,
+          'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+          'Content-Length': chunksize.toString(),
+        }
       });
     } else {
-      const head = {
-        'Content-Length': fileSize.toString(),
-        'Content-Type': 'audio/mpeg',
-      };
-      
       const file = fs.createReadStream(filePath);
-      const stream = new ReadableStream({
-        start(controller) {
-          file.on('data', (chunk) => controller.enqueue(chunk));
-          file.on('end', () => controller.close());
-          file.on('error', (err) => controller.error(err));
+      
+      const iterator = file[Symbol.asyncIterator]();
+      const webStream = new ReadableStream({
+        async pull(controller) {
+          try {
+            const { value, done } = await iterator.next();
+            if (done) {
+              controller.close();
+            } else {
+              controller.enqueue(new Uint8Array(value));
+            }
+          } catch (error) {
+            controller.error(error);
+          }
         },
         cancel() {
           file.destroy();
         }
       });
 
-      return new NextResponse(stream as any, {
+      return new NextResponse(webStream, {
         status: 200,
-        headers: head
+        headers: {
+          ...cacheHeaders,
+          'Content-Length': fileSize.toString(),
+        }
       });
     }
 

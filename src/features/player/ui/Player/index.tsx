@@ -108,7 +108,7 @@ const Player: React.FC<PlayerProps> = () => {
         <img
           crossOrigin="anonymous"
           ref={imgRef}
-          src={currentTrack?.cover || "/placeholder.svg"}
+          src={currentTrack?.cover || "/placeholder.png"}
           alt=""
           style={{ display: "none" }}
         />

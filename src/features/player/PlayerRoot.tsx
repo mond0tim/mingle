@@ -14,7 +14,10 @@ const CACHE_KEY = 'mingle_last_played';
 const PlayerWrapper: React.FC<PlayerWrapperProps> = ({ children }) => {
   const pathname = usePathname();
   const [showPlayer, setShowPlayer] = useState(false);
-  const { setTracks, playPlaylist, playTrack } = usePlayer();
+  const setTracks = usePlayer(state => state.setTracks);
+  const playPlaylist = usePlayer(state => state.playPlaylist);
+  const playTrack = usePlayer(state => state.playTrack);
+  const hydrateState = usePlayer(state => state.hydrateState);
 
   useEffect(() => {
     async function fetchData() {
@@ -25,11 +28,9 @@ const PlayerWrapper: React.FC<PlayerWrapperProps> = ({ children }) => {
       const vibePlaylists: Playlist[] = await vibeRes.json();
 
       const allPlaylists = [...playlists, ...vibePlaylists];
-      const allTracks = allPlaylists.flatMap((p: Playlist) => p.tracks || []);
-      setTracks(allTracks);
 
       // Получаем массив кэша
-      let cache: { playlistId: number; trackId: number }[] = [];
+      let cache: { playlistId: string; trackId: string }[] = [];
       try {
         const cacheStr = localStorage.getItem(CACHE_KEY);
         if (cacheStr) cache = JSON.parse(cacheStr);
@@ -41,15 +42,15 @@ const PlayerWrapper: React.FC<PlayerWrapperProps> = ({ children }) => {
       // Если есть кэш — ищем плейлист и трек
       if (cache.length > 0) {
         const { playlistId, trackId } = cache[0];
-        playlistToPlay = allPlaylists.find(p => p.id === playlistId) || null;
+        playlistToPlay = allPlaylists.find(p => String(p.id) === String(playlistId)) || null;
         if (playlistToPlay) {
-          trackToPlay = playlistToPlay.tracks.find(t => t.id === trackId) || null;
+          trackToPlay = playlistToPlay.tracks.find(t => String(t.id) === String(trackId)) || null;
         }
       }
 
-      // Если нет кэша — ищем vibe-плейлист с id=600
+      // Если нет кэша — ищем vibe-плейлист
       if (!playlistToPlay) {
-        playlistToPlay = vibePlaylists.find(p => p.id === 600) || null;
+        playlistToPlay = vibePlaylists.find(p => p.id === "vibe_hour") || null;
       }
 
       // Если нет vibe — fallback на первый обычный плейлист
@@ -57,12 +58,24 @@ const PlayerWrapper: React.FC<PlayerWrapperProps> = ({ children }) => {
         playlistToPlay = playlists[0];
       }
 
-      if (playlistToPlay) {
-        // autoplay=false: плейлист загружается на паузе, ждём нажатия кнопки
-        await playPlaylist(playlistToPlay, undefined, false);
-        if (trackToPlay) {
-          await playTrack(trackToPlay, playlistToPlay, false);
+      let queueObj: any[] = [];
+      try {
+        const queueRes = await fetch('/api/queue');
+        if (queueRes.ok) {
+           const queueData = await queueRes.json();
+           queueObj = queueData.queue || [];
         }
+      } catch (e) {}
+
+      // Определяем финальную очередь: сохранённая очередь ИЛИ треки текущего плейлиста
+      const finalQueue = queueObj.length > 0 ? queueObj : (playlistToPlay?.tracks || []);
+
+      if (playlistToPlay && trackToPlay) {
+        hydrateState(finalQueue, playlistToPlay, trackToPlay);
+      } else if (playlistToPlay && playlistToPlay.tracks.length > 0) {
+        hydrateState(finalQueue, playlistToPlay, playlistToPlay.tracks[0]);
+      } else {
+        setTracks(finalQueue, false);
       }
     }
 

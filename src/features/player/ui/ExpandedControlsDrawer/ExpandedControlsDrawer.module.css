@@ -76,8 +76,8 @@
 .dialogHeader {
 	grid-area: mobileHeader;
     display: grid;
-    grid-template-columns: 3fr 1fr;
-    grid-template-rows: 7fr 1fr;
+    grid-template-columns: 7fr 1fr;
+    grid-template-rows: 3fr 1fr;
     grid-template-areas: 'dialogCover dialogCover' 'mobilePlayerInfo otherBtn';
     justify-items: center;
     align-items: center;
@@ -86,10 +86,27 @@
     gap: 10px;
 }
 .dialogCover {
-    grid-area: dialogCover;
     border-radius: 20px;
     width: 80%;
-    transition: transform 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease;
+    display: block;
+    pointer-events: none;
+    user-select: none;
+}
+.coverCarouselContainer {
+    grid-area: dialogCover;
+    overflow: hidden;
+    position: relative;
+    touch-action: pan-y;
+}
+.coverStrip {
+    display: flex;
+    will-change: transform;
+}
+.coverSlide {
+    flex: 0 0 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .mobilePlayerInfo {
 	grid-area: mobilePlayerInfo;
@@ -100,17 +117,77 @@
 .trackInfo {
     color: white;
 }
+.trackTitleContainer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 80vw;
+}
 .trackTitle {
     color: #ffffff;
     mask-image: linear-gradient(90deg, #000 0%, #000 90%, transparent 100%);
-    width: 70vw;
+    width: auto;
+    flex: 0 1 auto;
+    max-width: 65vw;
+    font-size: 20px;
+    font-family: var(--font-oddval);
+    font-weight: bold;
 }
 .trackArtist {
-    color:#ffffff;
+    color: #ffffff;
+    opacity: 0.7;
     mask-image: linear-gradient(90deg, #000 0%, #000 90%, transparent 100%);
+    width: 70vw;
+    font-size: 16px;
 }
-.marquee__inner span {
-    min-width: 75vw;
+.trackText {
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+    padding-right: 15px;
+}
+.trackText:hover {
+    mask-image: linear-gradient(90deg, transparent 0%, #000 15%, #000 85%, transparent 100%);
+}
+.trackText > span {
+    display: inline-block;
+}
+.trackText:hover > span {
+    opacity: 0;
+}
+.marquee {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    pointer-events: none;
+}
+.marquee__inner {
+    width: fit-content;
+    display: flex;
+    position: relative;
+    --offset: 1rem;
+    --move-initial: calc(-25% + var(--offset));
+    --move-final: calc(-50% + var(--offset));
+    transform: translate3d(var(--move-initial), 0, 0);
+    animation: marquee 5s linear infinite;
+    animation-play-state: paused;
+    opacity: 0;
+}
+.trackText:hover .marquee__inner {
+    animation-play-state: running;
+    opacity: 1;
+    transition-duration: 0.4s;
+}
+.marquee span {
+    text-align: center;
+    white-space: nowrap;
+    padding: 0rem 1rem;
+}
+@keyframes marquee {
+    0% { transform: translate3d(var(--move-initial), 0, 0); }
+    100% { transform: translate3d(var(--move-final), 0, 0); }
 }
 .otherBtn {
 	grid-area: otherBtn;
@@ -170,18 +247,14 @@
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 	grid-template-rows: 1fr 1fr; 
-	grid-template-areas: 'lyrics prev play next queue' '. . . . .' ;
+	grid-template-areas: 'lyrics playbackContainer playbackContainer playbackContainer queue' ;
 	justify-items: center;
 	align-items: center;
 }
 .queue_button { grid-area: queue; }
 .lyrics_button { grid-area: lyrics; }
-.prev_button { justify-self: center; }
-.next_button { justify-self: center; }
-.play_button {
-    width: 40px;
-    height: 40px;
-    background-image: var(--player-icon-play);
+.playback_container {
+    grid-area: playbackContainer;
 }
 
 .drawerContent.open.mobileDrawer { animation-name: slideInFromBottom; }

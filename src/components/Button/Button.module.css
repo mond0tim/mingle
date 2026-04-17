@@ -7,8 +7,7 @@
 	--md-focus-ring-shape: var(--button-radius);
 	appearance: none;
 	border-radius: var(--button-radius);
-	height: 48px;
-	padding: 0 20px;
+	padding: 0;
 	border: 1px solid transparent;
 	transition: background 0.2s, color 0.2s, border-color 0.2s;
 	cursor: pointer;
@@ -103,4 +102,29 @@
   }
   .r_lg {
 	--button-radius:128px;
+  }
+  
+  .size_default {
+	height: 48px;
+	padding: 0 20px;
+  }
+  .size_sm {
+	height: 36px;
+	padding: 0 12px;
+	font-size: 14px;
+	line-height: 16px;
+  }
+  .size_lg {
+	height: 56px;
+	padding: 0 28px;
+	font-size: 18px;
+  }
+  .size_icon {
+	height: 40px;
+	width: 40px;
+	min-width: 40px;
+	padding: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
   }

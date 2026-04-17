@@ -61,7 +61,7 @@ export const initMediaSessionService = () => {
 				artist: state.currentTrack.artist,
 				album: state.playlistIsPlaying?.title || '',
 				artwork: [{
-					src: state.currentTrack.cover || '/placeholder.svg',
+					src: state.currentTrack.cover || '/placeholder.png',
 					sizes: '512x512',
 					type: 'image/png'
 				}]

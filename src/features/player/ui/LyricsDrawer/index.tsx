@@ -62,6 +62,8 @@ const LyricsDrawer: React.FC<LyricsDrawerProps> = ({
           }`}
           style={{ '--initial-transform': '110%' } as React.CSSProperties}
         >
+          <Drawer.Title className="sr-only">Текст песни</Drawer.Title>
+          <Drawer.Description className="sr-only">Текст текущего трека</Drawer.Description>
            
             <Drawer.Close asChild>
               <motion.button

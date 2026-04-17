@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 import type React from "react"
-import { useState, useRef, useEffect } from "react"
-// import type { Playlist, Track } from "@/types"
-import styles from "../Player.module.css"
+import { useState, useRef, useEffect, useCallback } from "react"
+import styles from "./ExpandedControlsDrawer.module.css"
 import { Drawer } from "vaul"
 import QueueDrawer from "../QueueDrawer"
 import LyricsDrawer from "../LyricsDrawer"
@@ -16,16 +15,16 @@ import { MoreIcon } from '@/shared/ui/icons';
 import { TextIcon as LyricsIcon } from '@/shared/ui/icons';
 import cn from "classnames"
 import NumberFlow, { NumberFlowGroup } from "@number-flow/react"
-import { motion, type PanInfo, useMotionValue, useTransform, animate, AnimatePresence } from "framer-motion"
-import { ChevronDown, ChevronRight } from 'lucide-react'
-
+import { motion, type PanInfo, AnimatePresence } from "framer-motion"
+import { ChevronDown } from 'lucide-react'
+import { LikeButton } from '@/components/LikeButton/LikeButton';
 import { ExpandedControlsDrawerProps } from "./ExpandedControlsDrawer.props"
+import { PlaybackButtons } from "../PlaybackButtons/PlaybackButtons"
 
 import { usePlayerStore } from "../../store/playerStore"
 
 const CurrentTime: React.FC<{ isSeeking: boolean; seekValue: number }> = ({ isSeeking, seekValue }) => {
   const seek = usePlayerStore((state) => state.seek);
-
   const formatTime = (seconds: number) => (
     <NumberFlowGroup>
       <div
@@ -33,24 +32,15 @@ const CurrentTime: React.FC<{ isSeeking: boolean; seekValue: number }> = ({ isSe
         className={cn("~text-xs/2xl flex items-baseline", styles.numberFlow)}
       >
         <NumberFlow trend={1} value={Math.floor(seconds / 60)} format={{ minimumIntegerDigits: 1 }} />
-        <NumberFlow
-          prefix=":"
-          trend={1}
-          value={Math.floor(seconds % 60)}
-          digits={{ 1: { max: 5 } }}
-          format={{ minimumIntegerDigits: 2 }}
-          transformTiming={{ duration: 370 }}
-        />
+        <NumberFlow prefix=":" trend={1} value={Math.floor(seconds % 60)} digits={{ 1: { max: 5 } }} format={{ minimumIntegerDigits: 2 }} transformTiming={{ duration: 370 }} />
       </div>
     </NumberFlowGroup>
   );
-
   return <span className={styles.driverCurrentTime}>{formatTime(isSeeking ? seekValue : seek)}</span>;
 };
 
 const DurationTime: React.FC = () => {
   const duration = usePlayerStore((state) => state.duration);
-
   const formatTime = (seconds: number) => (
     <NumberFlowGroup>
       <div
@@ -58,18 +48,10 @@ const DurationTime: React.FC = () => {
         className={cn("~text-xs/2xl flex items-baseline", styles.numberFlow)}
       >
         <NumberFlow trend={1} value={Math.floor(seconds / 60)} format={{ minimumIntegerDigits: 1 }} />
-        <NumberFlow
-          prefix=":"
-          trend={1}
-          value={Math.floor(seconds % 60)}
-          digits={{ 1: { max: 5 } }}
-          format={{ minimumIntegerDigits: 2 }}
-          transformTiming={{ duration: 370 }}
-        />
+        <NumberFlow prefix=":" trend={1} value={Math.floor(seconds % 60)} digits={{ 1: { max: 5 } }} format={{ minimumIntegerDigits: 2 }} transformTiming={{ duration: 370 }} />
       </div>
     </NumberFlowGroup>
   );
-
   return <span className={styles.driverDuration}>{formatTime(duration)}</span>;
 };
 
@@ -80,97 +62,185 @@ const ProgressBar: React.FC<{
 }> = ({ isSeeking, seekValue, onSeekStart }) => {
   const seek = usePlayerStore((state) => state.seek);
   const duration = usePlayerStore((state) => state.duration);
-
   const currentPos = isSeeking ? seekValue : seek;
   const progress = duration > 0 ? (currentPos / duration) * 100 : 0;
 
   return (
-    <div
-      className={styles.playerProgress}
-      id="player-progress-bar"
-      onMouseDown={onSeekStart}
-      onTouchStart={onSeekStart}
-      style={{ cursor: "pointer" }}
-    >
+    <div className={styles.playerProgress} id="player-progress-bar" onMouseDown={onSeekStart} onTouchStart={onSeekStart} style={{ cursor: "pointer" }}>
       <div className={styles.progressBarContainer}>
-        <div
-          className={styles.progressBar}
-          style={{
-            width: `${progress}%`,
-            transition: isSeeking ? "none" : undefined,
-          }}
-        />
-        <div
-          className={styles.progressThumb}
-          style={{
-            left: `${progress}%`,
-            transition: isSeeking ? "none" : undefined,
-          }}
-        />
+        <div className={styles.progressBar} style={{ width: `${progress}%`, transition: isSeeking ? "none" : undefined }} />
+        <div className={styles.progressThumb} style={{ left: `${progress}%`, transition: isSeeking ? "none" : undefined }} />
       </div>
     </div>
   );
 };
 
+// ─── Cover Carousel ──────────────────────────────────────────
+// Uses a simple CSS transform approach: 3 covers in a row,
+// we translate the whole strip. Drag moves the strip.
+// On release past threshold, we CSS-transition to snap,
+// then swap data and reset.
+function useCoverCarousel({
+  currentTrack, prevTrack, nextTrack, onNextTrack, onPrevTrack,
+}: {
+  currentTrack: any;
+  prevTrack: any;
+  nextTrack: any;
+  onNextTrack: () => void;
+  onPrevTrack: () => void;
+}) {
+  const stripRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [dragOffset, setDragOffset] = useState(0)
+  const [isTransitioning, setIsTransitioning] = useState(false)
+  const startXRef = useRef(0)
+  const startYRef = useRef(0)
+  const isDraggingRef = useRef(false)
+  const directionLockedRef = useRef<'horizontal' | 'vertical' | null>(null)
+  const pointerIdRef = useRef<number | null>(null)
+
+  // Get one slide width
+  const getSlideWidth = () => containerRef.current?.offsetWidth || 300
+
+  // Compute strip translateX: center on middle (current) slide
+  const baseOffset = prevTrack ? -getSlideWidth() : 0
+
+  const handlePointerDown = (e: React.PointerEvent) => {
+    if (isTransitioning) return
+    startXRef.current = e.clientX
+    startYRef.current = e.clientY
+    pointerIdRef.current = e.pointerId
+    directionLockedRef.current = null
+    isDraggingRef.current = false
+    // DON'T capture pointer yet — wait for direction detection
+  }
+
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (pointerIdRef.current !== e.pointerId) return
+    const dx = e.clientX - startXRef.current
+    const dy = e.clientY - startYRef.current
+
+    // Direction detection: first 10px of movement
+    if (!directionLockedRef.current) {
+      const absDx = Math.abs(dx)
+      const absDy = Math.abs(dy)
+      if (absDx < 10 && absDy < 10) return // Not enough movement yet
+
+      if (absDx > absDy) {
+        // Horizontal — capture pointer and start drag
+        directionLockedRef.current = 'horizontal'
+        isDraggingRef.current = true
+        try {
+          ;(e.target as HTMLElement).setPointerCapture(e.pointerId)
+        } catch {}
+      } else {
+        // Vertical — let drawer handle it, abort
+        directionLockedRef.current = 'vertical'
+        pointerIdRef.current = null
+        return
+      }
+    }
+
+    if (directionLockedRef.current !== 'horizontal') return
+    setDragOffset(dx)
+  }
+
+  const handlePointerUp = (e: React.PointerEvent) => {
+    if (pointerIdRef.current !== e.pointerId) return
+    pointerIdRef.current = null
+
+    if (!isDraggingRef.current) {
+      // No drag happened — reset
+      directionLockedRef.current = null
+      return
+    }
+
+    isDraggingRef.current = false
+    directionLockedRef.current = null
+    const dx = e.clientX - startXRef.current
+    const threshold = getSlideWidth() * 0.2
+
+    if (dx < -threshold && nextTrack) {
+      snapTo(-getSlideWidth(), () => { onNextTrack() })
+    } else if (dx > threshold && prevTrack) {
+      snapTo(getSlideWidth(), () => { onPrevTrack() })
+    } else {
+      snapTo(0, () => {})
+    }
+  }
+
+  const snapTo = (targetOffset: number, onDone: () => void) => {
+    setIsTransitioning(true)
+    setDragOffset(targetOffset)
+    // Wait for CSS transition to finish, then swap data and reset
+    setTimeout(() => {
+      // 1. Swap track data first
+      onDone()
+      // 2. Then reset visual state (React batches these)
+      setDragOffset(0)
+      setIsTransitioning(false)
+    }, 350)
+  }
+
+  // Button handlers
+  const goNext = () => {
+    if (isTransitioning || !nextTrack) return
+    snapTo(-getSlideWidth(), onNextTrack)
+  }
+  const goPrev = () => {
+    if (isTransitioning || !prevTrack) return
+    snapTo(getSlideWidth(), onPrevTrack)
+  }
+
+  const translateX = baseOffset + dragOffset
+
+  return {
+    element: (
+      <div className={styles.coverCarouselContainer} ref={containerRef}>
+        <div
+          ref={stripRef}
+          className={styles.coverStrip}
+          style={{
+            transform: `translateX(${translateX}px)`,
+            transition: isTransitioning ? 'transform 0.35s cubic-bezier(0.32, 0.72, 0, 1)' : 'none',
+          }}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onPointerCancel={handlePointerUp}
+        >
+          {prevTrack && (
+            <div className={styles.coverSlide}>
+              <Image src={prevTrack.cover || "/placeholder.png"} alt="Previous" width={400} height={400} className={styles.dialogCover} draggable={false} priority />
+            </div>
+          )}
+          <div className={styles.coverSlide}>
+            <Image src={currentTrack.cover || "/placeholder.png"} alt={currentTrack.title || "Cover"} width={400} height={400} className={styles.dialogCover} draggable={false} priority />
+          </div>
+          {nextTrack && (
+            <div className={styles.coverSlide}>
+              <Image src={nextTrack.cover || "/placeholder.png"} alt="Next" width={400} height={400} className={styles.dialogCover} draggable={false} priority />
+            </div>
+          )}
+        </div>
+      </div>
+    ),
+    goNext,
+    goPrev,
+  }
+}
+
+// ─── Main Component ──────────────────────────────────────────
 const ExpandedControlsDrawer: React.FC<ExpandedControlsDrawerProps> = ({
-  isDrawerOpen,
-  setIsDrawerOpen,
-  currentTrack,
-  prevTrack,
-  nextTrack,
-  playing,
-  onPlayPause,
-  onSeek,
-  onNextTrack,
-  onPrevTrack,
-  tracks,
-  onTrackSelect,
-  playlistIsPlaying,
+  isDrawerOpen, setIsDrawerOpen, currentTrack, prevTrack, nextTrack,
+  playing, onPlayPause, onSeek, onNextTrack, onPrevTrack,
+  tracks, onTrackSelect, playlistIsPlaying,
 }) => {
   const duration = usePlayerStore(state => state.duration)
   const [isQueueDrawerOpen, setIsQueueDrawerOpen] = useState(false)
   const [isLyricsDrawerOpen, setIsLyricsDrawerOpen] = useState(false)
-  const [isDragging, setIsDragging] = useState(false)
-  const [swipeDirection, setSwipeDirection] = useState<"left" | "right" | null>(null)
-  const [isChangingTrack, setIsChangingTrack] = useState(false)
-  const dragConstraintsRef = useRef(null)
 
-  const [activeTrackId, setActiveTrackId] = useState(currentTrack.id)
-
-  // For track change animation without swipe
-  const [prevTrackId, setPrevTrackId] = useState<number | null>(null)
-
-  useEffect(() => {
-    if (prevTrackId && prevTrackId !== currentTrack.id) {
-      // Determine direction based on track index in playlist
-      const currentIndex = tracks.findIndex((track) => track.id === currentTrack.id)
-      const prevIndex = tracks.findIndex((track) => track.id === prevTrackId)
-
-      if (currentIndex > prevIndex) {
-        setSwipeDirection("left")
-      } else {
-        setSwipeDirection("right")
-      }
-
-      // Reset after animation
-      setTimeout(() => {
-        setSwipeDirection(null)
-      }, 500)
-    }
-    setPrevTrackId(currentTrack.id)
-  }, [currentTrack.id, tracks, prevTrackId])
-
-  // Motion values for the drag animation
-  const x = useMotionValue(0)
-  const coverOpacity = useTransform(x, [-200, 0, 200], [0.3, 1, 0.3])
-  const coverScale = useTransform(x, [-200, 0, 200], [0.8, 1, 0.8])
-  const prevCoverOpacity = useTransform(x, [-100, 0, 200], [0, 0.7, 1])
-  const nextCoverOpacity = useTransform(x, [-200, 0, 100], [1, 0.7, 0])
-  const prevCoverX = useTransform(x, [-100, 0, 200], [-350, -250, 0])
-  const nextCoverX = useTransform(x, [-200, 0, 100], [0, 250, 350])
-
-  const prevCoverScale = useTransform(x, [-100, 0, 200], [0.8, 1, 1.1])
-  const nextCoverScale = useTransform(x, [-200, 0, 100], [1.1, 1, 0.8])
+  const carousel = useCoverCarousel({ currentTrack, prevTrack, nextTrack, onNextTrack, onPrevTrack })
 
   const [isSeeking, setIsSeeking] = useState(false)
   const [seekValue, setSeekValue] = useState(0)
@@ -186,27 +256,20 @@ const ExpandedControlsDrawer: React.FC<ExpandedControlsDrawerProps> = ({
 
   const handleSeekMove = (e: MouseEvent | TouchEvent | React.MouseEvent | React.TouchEvent) => {
     let clientX: number | undefined
-    if ("touches" in e) {
-      clientX = e.touches[0].clientX
-    } else if ("clientX" in e) {
-      clientX = e.clientX
-    }
+    if ("touches" in e) clientX = e.touches[0].clientX
+    else if ("clientX" in e) clientX = e.clientX
     const progressBar = document.getElementById("player-progress-bar")
     if (!progressBar || typeof clientX !== "number") return
     const rect = progressBar.getBoundingClientRect()
     const x = Math.max(0, Math.min(clientX - rect.left, rect.width))
-    const newSeek = (x / rect.width) * duration
-    setSeekValue(newSeek)
+    setSeekValue((x / rect.width) * duration)
   }
 
   const handleSeekEnd = (e: MouseEvent | TouchEvent) => {
     setIsSeeking(false)
     let clientX: number | undefined
-    if ("changedTouches" in e) {
-      clientX = e.changedTouches[0].clientX
-    } else if ("clientX" in e) {
-      clientX = e.clientX
-    }
+    if ("changedTouches" in e) clientX = e.changedTouches[0].clientX
+    else if ("clientX" in e) clientX = e.clientX
     const progressBar = document.getElementById("player-progress-bar")
     let finalSeek = seekValue
     if (progressBar && typeof clientX === "number") {
@@ -221,199 +284,49 @@ const ExpandedControlsDrawer: React.FC<ExpandedControlsDrawerProps> = ({
     onSeek(finalSeek)
   }
 
-  const toggleQueueDrawer = () => {
-    setIsQueueDrawerOpen(!isQueueDrawerOpen)
-  }
-
-  const handleDragStart = () => {
-    setIsDragging(true)
-  }
-
-  const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    const threshold = 100 // Minimum distance to trigger track change
-
-    if (info.offset.x > threshold) {
-      setIsChangingTrack(true)
-      animate(x, 300, {
-        type: "spring",
-        stiffness: 300,
-        damping: 30,
-        onComplete: () => {
-          onPrevTrack()
-          setActiveTrackId(tracks[tracks.findIndex(t => t.id === currentTrack.id) - 1]?.id ?? currentTrack.id)
-          x.set(0)
-          setIsChangingTrack(false)
-          animate(prevCoverScale, 1, { duration: 0.2 })
-          animate(nextCoverScale, 1, { duration: 0.2 })
-        },
-      })
-    } else if (info.offset.x < -threshold) {
-      setIsChangingTrack(true)
-      animate(x, -300, {
-        type: "spring",
-        stiffness: 300,
-        damping: 30,
-        onComplete: () => {
-          onNextTrack()
-          x.set(0)
-          setIsChangingTrack(false)
-          animate(prevCoverScale, 1, { duration: 0.2 })
-          animate(nextCoverScale, 1, { duration: 0.2 })
-        },
-      })
-    } else {
-      animate(x, 0, {
-        type: "spring",
-        stiffness: 500,
-        damping: 50,
-        onComplete: () => {
-          animate(prevCoverScale, 1, { duration: 0.2 })
-          animate(nextCoverScale, 1, { duration: 0.2 })
-        },
-      })
-    }
-
-    setIsDragging(false)
-  }
-
   return (
     <>
       <Drawer.Root open={isDrawerOpen} onOpenChange={setIsDrawerOpen} shouldScaleBackground={false} modal={true}>
         <Drawer.Portal>
           <Drawer.Overlay className="fixed inset-0 bg-black/40" />
-          <Drawer.Content
-            className={`${styles.drawerContent} ${isDrawerOpen ? styles.open : styles.closed} ${styles.mobileDrawer}`}
-            ref={dragConstraintsRef}
-          >
+          <Drawer.Content className={`${styles.drawerContent} ${isDrawerOpen ? styles.open : styles.closed} ${styles.mobileDrawer}`}>
+            <Drawer.Title className="sr-only">Player Controls</Drawer.Title>
             <Drawer.Close asChild>
               <motion.button
-                initial={{ scale: 0, translateX: "-50%" }}
-                animate={{ scale: 1, translateX: "-50%" }}
-                whileHover={{ scale: 1.1, translateX: "-50%" }}
-                whileTap={{ scale: 0.9, translateX: "-50%" }}
+                initial={{ scale: 0, translateX: "-50%" }} animate={{ scale: 1, translateX: "-50%" }}
+                whileHover={{ scale: 1.1, translateX: "-50%" }} whileTap={{ scale: 0.9, translateX: "-50%" }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                 className={styles.DrawerCloseButton}>
                 <ChevronDown size={16} strokeWidth={3} />
-
               </motion.button>
             </Drawer.Close>
             <div className={styles.dialogHeader}>
-              <div className={styles.coverCarouselContainer} ref={dragConstraintsRef}>
-                {/* Previous track */}
-                {prevTrack && (
-                  <motion.div
-                    className={styles.adjacentCoverPreview}
-                    style={{
-                      x: prevCoverX,
-                      opacity: prevCoverOpacity,
-                      scale: prevCoverScale,
-                      zIndex: -1,
-                    }}
-                  >
-                    <Image
-                      src={prevTrack.cover || "/placeholder.svg"}
-                      alt={prevTrack.title}
-                      width={120}
-                      height={120}
-                      className={styles.dialogCover}
-                    />
-                  </motion.div>
-                )}
-
-                {/* Current track */}
-                <motion.div
-                  drag="x"
-                  dragConstraints={dragConstraintsRef}
-                  dragElastic={0.2}
-                  onDragStart={handleDragStart}
-                  onDragEnd={handleDragEnd}
-                  style={{
-                    x,
-                    opacity: coverOpacity,
-                    scale: coverScale,
-                    zIndex: 2,
-                    position: "relative",
-                  }}
-                  className={cn(
-                    styles.dialogCoverWrapper,
-                    currentTrack.id === activeTrackId && styles.activeCover // добавьте этот класс
-                  )}
-                >
-                  <Image
-                    src={currentTrack.cover || "/placeholder.svg"}
-                    alt={currentTrack.title}
-                    width={200}
-                    height={200}
-                    className={styles.dialogCover}
-                  />
-                </motion.div>
-
-                {/* Next track */}
-                {nextTrack && (
-                  <motion.div
-                    className={styles.adjacentCoverPreview}
-                    style={{
-                      x: nextCoverX,
-                      opacity: nextCoverOpacity,
-                      scale: nextCoverScale,
-                      zIndex: -1,
-                    }}
-                  >
-                    <Image
-                      src={nextTrack.cover || "/placeholder.svg"}
-                      alt={nextTrack.title}
-                      width={120}
-                      height={120}
-                      className={styles.dialogCover}
-                    />
-                  </motion.div>
-                )}
-              </div>
+              {carousel.element}
 
               <div className={styles.mobilePlayerInfo}>
                 <AnimatePresence mode="wait">
-                  <motion.div
-                    key={currentTrack.id}
-                    className={styles.trackInfo}
-                    initial={{
-                      y: swipeDirection ? 20 : 0,
-                      opacity: swipeDirection ? 0 : 1,
-                    }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{
-                      y: swipeDirection ? -20 : 0,
-                      opacity: 0,
-                    }}
-                    transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.1 }}
-                  >
-                    <div className={cn(styles.trackTitle, styles.trackText)}>
-                      <span>{currentTrack.title}</span>
-                      <div className={styles.marquee} aria-hidden="true">
-                        <div className={styles.marquee__inner}>
-                          <span>{currentTrack.title}</span>
-                          <span>{currentTrack.title}</span>
-                          <span>{currentTrack.title}</span>
-                          <span>{currentTrack.title}</span>
+                  <motion.div key={currentTrack.id} className={styles.trackInfo}
+                    initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -20, opacity: 0 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.1 }}>
+                    <div className={styles.trackTitleContainer}>
+                      <div className={cn(styles.trackTitle, styles.trackText)}>
+                        <span>{currentTrack.title}</span>
+                        <div className={styles.marquee} aria-hidden="true">
+                          <div className={styles.marquee__inner}>
+                            <span>{currentTrack.title}</span><span>{currentTrack.title}</span>
+                            <span>{currentTrack.title}</span><span>{currentTrack.title}</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className={cn(styles.trackArtist, styles.trackText)}>
-                      <span>{currentTrack.artist}</span>
-                      <div className={styles.marquee} aria-hidden="true">
-                        <div className={styles.marquee__inner}>
-                          <span>{currentTrack.artist}</span>
-                          <span>{currentTrack.artist}</span>
-                          <span>{currentTrack.artist}</span>
-                          <span>{currentTrack.artist}</span>
-                        </div>
+                      <div className="flex items-center gap-1">
+                        <LikeButton trackId={currentTrack.id} size={24} />
                       </div>
                     </div>
+                    <div className={cn(styles.trackArtist, styles.trackText)}><span>{currentTrack.artist}</span></div>
                   </motion.div>
                 </AnimatePresence>
               </div>
-              <Button className={styles.otherBtn} view="ghost" onClick={() => setIsLyricsDrawerOpen(true)}>
-                <MoreIcon />
-              </Button>
+              <div className={styles.otherBtn}><Button view="ghost"><MoreIcon /></Button></div>
             </div>
             <div className={styles.mobileProgressBlock}>
               <ProgressBar isSeeking={isSeeking} seekValue={seekValue} onSeekStart={handleSeekStart} />
@@ -421,52 +334,25 @@ const ExpandedControlsDrawer: React.FC<ExpandedControlsDrawerProps> = ({
               <DurationTime />
             </div>
             <div className={styles.mobilePlayerControls}>
-              <Button view="ghost" onClick={() => setIsLyricsDrawerOpen(true)} className={styles.lyrics_button}>
-                <span className="material-symbols-outlined">
-                  <LyricsIcon />
-                </span>
-              </Button>
-              <button onClick={onPrevTrack} className={styles.prev_button}>
-                <span className="material-symbols-outlined">
-                  <PrevIcon />
-                </span>
+              <button onClick={() => setIsLyricsDrawerOpen(true)} className={cn("material-symbols-outlined", styles.lyrics_button)}>
+                <LyricsIcon />
               </button>
-              <button
-                onClick={onPlayPause}
-                className={cn(styles.play_button, {
-                  [styles.pauseIcon]: playing == true,
-                  [styles.playIcon]: playing == false,
-                })}
-              >
-                <span className="material-symbols-outlined">{/* playing ? <PauseIcon/> : <PlayIcon/> */}</span>
-              </button>
-              <button onClick={onNextTrack} className={styles.next_button}>
-                <span className="material-symbols-outlined">
-                  <NextIcon />
-                </span>
-              </button>
-              <Button view="ghost" onClick={toggleQueueDrawer} className={styles.queue_button}>
+              <PlaybackButtons 
+                isPlaying={playing} 
+                onPlayPause={onPlayPause} 
+                onPrev={carousel.goPrev} 
+                onNext={carousel.goNext} 
+                className={styles.playback_container} 
+              />
+              <button onClick={() => setIsQueueDrawerOpen(!isQueueDrawerOpen)} className={cn(styles.queue_button)}>
                 <QueueIcon />
-              </Button>
+              </button>
             </div>
           </Drawer.Content>
         </Drawer.Portal>
       </Drawer.Root>
-      <QueueDrawer
-        isDrawerOpen={isQueueDrawerOpen}
-        setIsDrawerOpen={setIsQueueDrawerOpen}
-        tracks={tracks}
-        currentTrack={currentTrack}
-        onTrackSelect={onTrackSelect}
-        playlist={playlistIsPlaying}
-      />
-      <LyricsDrawer
-        isDrawerOpen={isLyricsDrawerOpen}
-        setIsDrawerOpen={setIsLyricsDrawerOpen}
-        currentTrack={currentTrack}
-        togglePlay={onPlayPause}
-        isPlaying={playing}
-      />
+      <QueueDrawer isDrawerOpen={isQueueDrawerOpen} setIsDrawerOpen={setIsQueueDrawerOpen} tracks={tracks} currentTrack={currentTrack} onTrackSelect={onTrackSelect} playlist={playlistIsPlaying} />
+      <LyricsDrawer isDrawerOpen={isLyricsDrawerOpen} setIsDrawerOpen={setIsLyricsDrawerOpen} currentTrack={currentTrack} togglePlay={onPlayPause} isPlaying={playing} />
     </>
   )
 }

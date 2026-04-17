@@ -1,0 +1,25 @@
+.page {
+  padding: 2rem 4rem;
+  min-height: 100vh;
+  background: var(--mg-background);
+  overflow-x: clip;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .page {
+    padding-left: 14rem;
+  }
+}
+
+.header {
+  margin-bottom: 3rem;
+  padding-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding: 1rem;
+    padding-bottom: 10rem;
+  }
+}
