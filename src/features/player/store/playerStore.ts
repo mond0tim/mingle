@@ -1,11 +1,18 @@
 import { create } from 'zustand';
-
 import type { Track, Playlist } from '@/types';
 import React from 'react';
 import { Howl, Howler } from 'howler';
 
+/**
+ * Обертка для трека в очереди с уникальным ID.
+ * Это позволяет добавлять один и тот же трек в очередь несколько раз
+ */
+export interface QueueItem extends Track {
+  queueId: string; 
+}
+
 interface PlayerState {
-  currentTrack: Track | null;
+  currentTrack: QueueItem | null;
   playing: boolean;
   duration: number;
   seek: number;
@@ -13,7 +20,8 @@ interface PlayerState {
   isQueueDrawerOpen: boolean;
   isLyricsDrawerOpen: boolean;
   playlistIsPlaying: Playlist | null;
-  tracks: Track[];
+  tracks: QueueItem[]; 
+  originalPlaylistId: string | null;
   isMuted: boolean;
   volume: number;
   initialPlaylists: Playlist[];
@@ -27,11 +35,15 @@ interface PlayerState {
   handlePrevTrack: () => void;
   handleOnEnd: () => void;
   handleSeek: (time: number) => void;
-  setCurrentTrack: (track: Track | null) => void;
+  setCurrentTrack: (track: QueueItem | null) => void;
   setPlaying: (playing: boolean) => void;
   setDuration: (duration: number) => void;
   setSeek: (seek: number) => void;
-  setTracks: (tracks: Track[]) => void;
+  setTracks: (tracks: Track[], syncWithDb?: boolean) => void;
+  addTrackToQueue: (track: Track) => void;
+  addTrackNext: (track: Track) => void;
+  removeTrackFromQueue: (queueId: string) => void;
+  reorderQueue: (startIndex: number, endIndex: number) => void;
   setHowlerState: (state: string) => void;
   setIsQueueDrawerOpen: (isOpen: boolean) => void;
   setIsLyricsDrawerOpen: (isOpen: boolean) => void;
@@ -39,8 +51,9 @@ interface PlayerState {
   setVolume: (volume: number) => void;
   setInitialPlaylists: (playlists: Playlist[]) => void;
   setIsGlobalSeeking: (isSeeking: boolean) => void;
+  hydrateState: (queue: QueueItem[], playlist: Playlist | null, track: Track | null) => void;
 
-  // Refs for audio player control
+  // Refs
   howlerInstance: Howl | null;
   setHowlerInstance: (instance: Howl | null) => void;
   audioContext: React.RefObject<AudioContext | null>;
@@ -48,6 +61,17 @@ interface PlayerState {
   audioNode: React.RefObject<MediaElementAudioSourceNode | null>;
   setAudioNode: (ref: React.RefObject<MediaElementAudioSourceNode | null>) => void;
 }
+
+let syncTimeout: NodeJS.Timeout | null = null;
+
+// Идемпотентная обертка: возвращает существующий queueId или создает новый
+const wrapTrack = (track: Track | QueueItem): QueueItem => {
+    if ('queueId' in track && track.queueId) return track as QueueItem;
+    return {
+        ...track,
+        queueId: Math.random().toString(36).slice(2, 11) + Date.now()
+    };
+};
 
 export const usePlayerStore = create<PlayerState>((set, get) => ({
   currentTrack: null,
@@ -59,6 +83,7 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   isLyricsDrawerOpen: false,
   playlistIsPlaying: null,
   tracks: [],
+  originalPlaylistId: null,
   isMuted: false,
   volume: 1.0,
   initialPlaylists: [],
@@ -76,7 +101,63 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   setPlaying: (playing) => set({ playing }),
   setDuration: (duration) => set({ duration }),
   setSeek: (seek) => set({ seek }),
-  setTracks: (tracks) => set({ tracks }),
+  
+  setTracks: (tracks, syncWithDb = true) => {
+    // Каждый трек ДОЛЖЕН иметь уникальный queueId.
+    // Если он уже есть — сохраняем. Если нет — генерируем новый.
+    // НЕЛЬЗЯ искать по track.id, т.к. один трек может быть в очереди несколько раз.
+    const queueItems: QueueItem[] = tracks.map(t => wrapTrack(t));
+    
+    set({ tracks: queueItems });
+
+    if (syncWithDb) {
+      if (syncTimeout) clearTimeout(syncTimeout);
+      syncTimeout = setTimeout(() => {
+          fetch('/api/queue', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ queue: queueItems })
+          }).catch(err => console.error("Queue sync error:", err));
+      }, 5000);
+    }
+  },
+
+  addTrackToQueue: (track) => {
+    const { tracks, setTracks } = get();
+    const newTracks = [...tracks, wrapTrack(track)];
+    setTracks(newTracks);
+  },
+
+  addTrackNext: (track) => {
+    const { tracks, setTracks, currentTrack } = get();
+    const wrapped = wrapTrack(track);
+    if (!currentTrack) {
+        setTracks([...tracks, wrapped]);
+        return;
+    }
+    const currentIndex = tracks.findIndex(t => t.queueId === currentTrack.queueId);
+    const newTracks = [...tracks];
+    newTracks.splice(currentIndex + 1, 0, wrapped);
+    setTracks(newTracks);
+  },
+
+  removeTrackFromQueue: (queueId) => {
+    const { tracks, setTracks, currentTrack } = get();
+    const newTracks = tracks.filter(t => t.queueId !== queueId);
+    setTracks(newTracks);
+    if (currentTrack?.queueId === queueId) {
+      get().handleNextTrack();
+    }
+  },
+
+  reorderQueue: (startIndex, endIndex) => {
+    const { tracks, setTracks } = get();
+    const result = Array.from(tracks);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+    setTracks(result);
+  },
+
   setHowlerState: (state) => set({ howlerState: state }),
   setIsQueueDrawerOpen: (isOpen) => set({ isQueueDrawerOpen: isOpen }),
   setIsLyricsDrawerOpen: (isOpen) => set({ isLyricsDrawerOpen: isOpen }),
@@ -94,22 +175,30 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   },
 
   playTrack: (track, playlist, autoplay = true) => {
-    const { howlerInstance, setDuration, volume } = get();
-    console.log(`playTrack: Выбран трек "${track.title}"`);
+    const { howlerInstance, setDuration, volume, tracks, originalPlaylistId } = get();
     
-    // САМОВОССТАНОВЛЕНИЕ КОНТЕКСТА: Разблокируем Web Audio API при первом же клике
-    if (typeof Howler !== 'undefined' && Howler.ctx && Howler.ctx.state === 'suspended') {
-        try { Howler.ctx.resume(); } catch (e) {}
-    }
+    // Сразу пишем в историю
+    fetch('/api/history', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+            trackId: track.id, 
+            playlistId: playlist?.id || originalPlaylistId,
+            listenedSec: 0 
+        })
+    }).catch(e => {});
 
     if (howlerInstance) {
-      console.log('playTrack: Остановка текущего трека');
       howlerInstance.stop();
       howlerInstance.unload();
     }
     
+    const streamUrl = `/api/stream/${track.id}`;
+    const extension = track.src.split('.').pop()?.toLowerCase() || 'mp3';
+    
     const newHowler = new Howl({
-      src: [track.src],
+      src: [streamUrl],
+      format: [extension],
       html5: true,
       preload: true,
       volume: volume,
@@ -125,34 +214,149 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
           }
         }
       },
-      onloaderror: (id, err) => console.error("Howler load error:", id, err),
-      onplayerror: (id, err) => console.error("Howler play error:", id, err),
     });
 
-    set((state) => ({
-      howlerInstance: newHowler,
-      currentTrack: track,
-      playlistIsPlaying: playlist || state.playlistIsPlaying,
-      tracks: playlist ? playlist.tracks : state.tracks,
-      playing: autoplay,
-    }));
+    const queueItem = wrapTrack(track);
+
+    set((state) => {
+        let newTracks = [...state.tracks];
+        let queueItemToUse = queueItem;
+        
+        if (playlist) {
+            // Если мы переключаемся на НОВЫЙ плейлист
+            if (state.originalPlaylistId !== String(playlist.id)) {
+                newTracks = playlist.tracks.map(t => wrapTrack(t));
+                // Находим нужный трек в новом newTracks, чтобы queueId совпал
+                const foundTrack = newTracks.find(t => t.id === track.id);
+                if (foundTrack) {
+                    queueItemToUse = foundTrack;
+                } else {
+                    newTracks.unshift(queueItemToUse); 
+                }
+            } else {
+                // Плейлист тот же! Ищем уже созданный queueItem
+                if ('queueId' in track && track.queueId) {
+                    const exactTrack = newTracks.find(t => t.queueId === track.queueId);
+                    if (exactTrack) queueItemToUse = exactTrack;
+                } else {
+                    const foundTrack = newTracks.find(t => t.id === track.id);
+                    if (foundTrack) {
+                        queueItemToUse = foundTrack;
+                    } else {
+                        const exists = newTracks.some(t => t.queueId === queueItem.queueId);
+                        if (!exists) {
+                            newTracks.push(queueItem);
+                        }
+                    }
+                }
+            }
+        } else {
+            // Если трека нет в очереди, добавляем его ПЕРЕД проигрыванием
+            const exists = newTracks.some(t => t.queueId === queueItem.queueId);
+            if (!exists) {
+                newTracks.push(queueItem);
+            }
+        }
+
+        // Сохраняем последний трек/плейлист в localStorage для восстановления
+        try {
+          const playlistId = playlist ? String(playlist.id) : state.originalPlaylistId;
+          localStorage.setItem('mingle_last_played', JSON.stringify([{
+            playlistId,
+            trackId: String(track.id),
+          }]));
+        } catch {}
+
+        return {
+            howlerInstance: newHowler,
+            currentTrack: queueItemToUse,
+            playlistIsPlaying: playlist || state.playlistIsPlaying,
+            originalPlaylistId: playlist ? String(playlist.id) : state.originalPlaylistId,
+            tracks: newTracks,
+            playing: autoplay,
+        };
+    });
 
     if (autoplay) {
       newHowler.play();
     }
+
+    // Preload next track silently
+    setTimeout(() => {
+      const state = get();
+      if (state.currentTrack && state.tracks.length > 1) {
+        const currentIndex = state.tracks.findIndex((t) => t.queueId === state.currentTrack?.queueId);
+        if (currentIndex !== -1) {
+          const nextIndex = (currentIndex + 1) % state.tracks.length;
+          const nextTrack = state.tracks[nextIndex];
+          if (nextTrack) {
+            // Initiate a silent preload request for the next track
+            const preloader = new Audio();
+            preloader.preload = 'auto'; // Browsers decide how much to buffer (usually the first few seconds)
+            preloader.src = `/api/stream/${nextTrack.id}`;
+          }
+        }
+      }
+    }, 1000);
+  },
+
+  hydrateState: (queue, playlist, track) => {
+    // Безопасно восстанавливаем стейт из БД и кэша
+    if (!track) return;
+    const { volume, setDuration, howlerInstance } = get();
+
+    if (howlerInstance) {
+      howlerInstance.stop();
+      howlerInstance.unload();
+    }
+
+    const streamUrl = `/api/stream/${track.id}`;
+    const extension = track.src?.split('.').pop()?.toLowerCase() || 'mp3';
+    
+    // Инициализируем Howler без auto-play (он на паузе)
+    const newHowler = new Howl({
+      src: [streamUrl],
+      format: [extension],
+      html5: true,
+      preload: true,
+      volume: volume,
+      onend: () => get().handleOnEnd(),
+      onload: () => {
+        const dur = newHowler.duration();
+        if (!isNaN(dur) && dur > 0) {
+          setDuration(dur);
+          if (typeof navigator !== 'undefined' && 'mediaSession' in navigator && 'setPositionState' in navigator.mediaSession) {
+            try {
+              navigator.mediaSession.setPositionState({ duration: dur, playbackRate: 1, position: 0 });
+            } catch (e) {}
+          }
+        }
+      },
+    });
+
+    // Гарантируем каждому элементу очереди уникальный queueId
+    const wrappedQueue: QueueItem[] = queue.map(t => wrapTrack(t));
+    // Находим текущий трек в обернутой очереди
+    const queueItem = wrappedQueue.find(t => t.id === track.id) || wrapTrack(track);
+
+    set({
+      howlerInstance: newHowler,
+      currentTrack: queueItem,
+      playlistIsPlaying: playlist,
+      originalPlaylistId: playlist ? String(playlist.id) : null,
+      tracks: wrappedQueue,
+      playing: false,
+    });
   },
 
   playPlaylist: (playlist, track, autoplay = true) => {
-    console.log('playPlaylist: Установка плейлиста');
-    if (playlist.tracks.length > 0) {
-      const trackToPlay = track ? track : playlist.tracks[0];
-      console.log(`playPlaylist: Воспроизведение трека "${trackToPlay.title}"`);
+    const trackToPlay = track ? track : (playlist.tracks.length > 0 ? playlist.tracks[0] : null);
+    if (trackToPlay) {
       get().playTrack(trackToPlay, playlist, autoplay);
     } else {
-      console.log('playPlaylist: Плейлист пуст, остановка воспроизведения');
       set({ 
         playlistIsPlaying: playlist,
-        tracks: playlist.tracks,
+        tracks: playlist.tracks.map(t => wrapTrack(t)),
         playing: false,
       });
     }
@@ -160,29 +364,18 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
 
   togglePlay: () => {
     const { howlerInstance, playing } = get();
-    console.log(`togglePlay: Переключение состояния playing на ${!playing}`);
-    
-    if (!playing && typeof Howler !== 'undefined' && Howler.ctx && Howler.ctx.state === 'suspended') {
-        try { Howler.ctx.resume(); } catch (e) {}
-    }
-
     if (howlerInstance) {
-      if (playing) {
-        howlerInstance.pause();
-      } else {
-        howlerInstance.play();
-      }
+      if (playing) howlerInstance.pause();
+      else howlerInstance.play();
     }
-
     set({ playing: !playing });
   },
 
   handleNextTrack: () => {
     const { currentTrack, tracks, playlistIsPlaying, playTrack } = get();
     if (currentTrack && tracks.length) {
-      const currentTrackIndex = tracks.findIndex((track) => track.id === currentTrack.id);
+      const currentTrackIndex = tracks.findIndex((t) => t.queueId === currentTrack.queueId);
       const nextTrackIndex = (currentTrackIndex + 1) % tracks.length;
-      console.log(`handleNextTrack: Переход от трека ${currentTrackIndex} к ${nextTrackIndex}`);
       playTrack(tracks[nextTrackIndex], playlistIsPlaying ?? undefined);
     }
   },
@@ -190,21 +383,16 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   handlePrevTrack: () => {
     const { currentTrack, tracks, playlistIsPlaying, playTrack } = get();
     if (currentTrack && tracks.length) {
-      const currentTrackIndex = tracks.findIndex((track) => track.id === currentTrack.id);
-      const prevTrackIndex = currentTrackIndex === 0 ? tracks.length - 1 : currentTrackIndex - 1;
-      console.log(`handlePrevTrack: Переход от трека ${currentTrackIndex} к ${prevTrackIndex}`);
+      const currentTrackIndex = tracks.findIndex((t) => t.queueId === currentTrack.queueId);
+      const prevTrackIndex = currentTrackIndex <= 0 ? tracks.length - 1 : currentTrackIndex - 1;
       playTrack(tracks[prevTrackIndex], playlistIsPlaying ?? undefined);
     }
   },
 
   handleSeek: (time: number) => {
     const { howlerInstance, duration } = get();
-    if (howlerInstance) {
-      howlerInstance.seek(time);
-    }
+    if (howlerInstance) howlerInstance.seek(time);
     set({ seek: time });
-
-    // Синхронизируем интерфейс ОС (Media Session) со встроенным плеером
     if (typeof navigator !== 'undefined' && 'mediaSession' in navigator && 'setPositionState' in navigator.mediaSession && duration > 0) {
       try {
         navigator.mediaSession.setPositionState({
@@ -217,24 +405,30 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   },
 
   handleOnEnd: () => {
-    const { currentTrack, tracks, playlistIsPlaying, playTrack, setPlaying } = get();
-    console.log('handleOnEnd: Текущий трек завершён');
+    const { currentTrack, tracks, playlistIsPlaying, originalPlaylistId, playTrack, setPlaying, howlerInstance } = get();
+    if (currentTrack) {
+        const listenedSec = howlerInstance ? Math.floor(howlerInstance.duration()) : 0;
+        fetch('/api/history', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                trackId: currentTrack.id, 
+                playlistId: originalPlaylistId,
+                listenedSec 
+            })
+        }).catch(err => {});
+    }
+
     if (currentTrack && tracks.length) {
-      const currentTrackIndex = tracks.findIndex((track) => track.id === currentTrack.id);
-      if (currentTrackIndex < tracks.length - 1) {
-        console.log(`handleOnEnd: Переход к следующему треку: ${currentTrackIndex + 1}`);
+      const currentTrackIndex = tracks.findIndex((t) => t.queueId === currentTrack.queueId);
+      if (currentTrackIndex !== -1 && currentTrackIndex < tracks.length - 1) {
         playTrack(tracks[currentTrackIndex + 1], playlistIsPlaying ?? undefined);
+      } else if (playlistIsPlaying) {
+        playTrack(tracks[0], playlistIsPlaying);
       } else {
-        if (playlistIsPlaying) {
-          console.log('handleOnEnd: Воспроизведение с начала плейлиста');
-          playTrack(playlistIsPlaying.tracks[0], playlistIsPlaying);
-        } else {
-          console.log('handleOnEnd: Нет следующего трека, остановка воспроизведения');
-          setPlaying(false);
-        }
+        setPlaying(false);
       }
     } else {
-      console.log('handleOnEnd: Нет трека, остановка воспроизведения');
       setPlaying(false);
     }
   },

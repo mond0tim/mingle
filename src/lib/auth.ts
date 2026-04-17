@@ -17,7 +17,8 @@ export const auth = betterAuth({
       loginCount: { type: "number", defaultValue: 0, returned: false },
       lastLoginAt: { type: "date", returned: true },
       lastPlayedTrackId: { type: "string", returned: true },
-      lastPlayedPlaylistId: { type: "string", returned: true }
+      lastPlayedPlaylistId: { type: "string", returned: true },
+      totalPlayTime: { type: "number", defaultValue: 0, returned: true }
     }
   },
   plugins: [

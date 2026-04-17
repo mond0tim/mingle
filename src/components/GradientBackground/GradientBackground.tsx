@@ -11,7 +11,8 @@ const GradientBackground: React.FC = () => {
   const [bpmManager, setBPMManager] = useState<BPMManager | null>(null);
   const [time, setTime] = useState(0);
   const [beat, setBeat] = useState(false);
-  const { currentTrack, playing, howlerRef } = usePlayer();
+  const currentTrack = usePlayer(state => state.currentTrack);
+  const playing = usePlayer(state => state.playing);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
 
   useEffect(() => {
@@ -22,7 +23,7 @@ const GradientBackground: React.FC = () => {
     setBPMManager(newBPMManager);
 
     const init = async () => {
-      if (newAudioManager && newBPMManager && currentTrack && howlerRef.current) {
+      if (newAudioManager && newBPMManager && currentTrack) {
         if (currentTrack.src) {
           try {
             await newAudioManager.loadAudioBuffer(currentTrack.src);

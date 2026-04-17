@@ -14,7 +14,12 @@ type AnimatedHeaderProps = {
 }
 
 const AnimatedHeader = ({ playlist, visible }: AnimatedHeaderProps) => {
-  const { playTrack, playPlaylist, playlistIsPlaying, togglePlay, currentTrack, playing } = usePlayer()
+  const playTrack = usePlayer(state => state.playTrack);
+  const playPlaylist = usePlayer(state => state.playPlaylist);
+  const playlistIsPlaying = usePlayer(state => state.playlistIsPlaying);
+  const togglePlay = usePlayer(state => state.togglePlay);
+  const currentTrack = usePlayer(state => state.currentTrack);
+  const playing = usePlayer(state => state.playing);
 
   const containerVariants = {
     hidden: { opacity: 0, y: -20 },
@@ -44,7 +49,7 @@ const AnimatedHeader = ({ playlist, visible }: AnimatedHeaderProps) => {
       <div className={styles.headerContent}>
         <motion.div className={styles.coverContainer} variants={itemVariants}>
           <Image
-            src={playlist.cover || "/placeholder.svg"}
+            src={playlist.cover || "/placeholder.png"}
             alt={playlist.title}
             width={50}
             height={50}

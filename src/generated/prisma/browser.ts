@@ -67,3 +67,13 @@ export type FavoritePlaylist = Prisma.FavoritePlaylistModel
  * 
  */
 export type FavoriteArtist = Prisma.FavoriteArtistModel
+/**
+ * Model TrackHistory
+ * 
+ */
+export type TrackHistory = Prisma.TrackHistoryModel
+/**
+ * Model PlaylistHistory
+ * 
+ */
+export type PlaylistHistory = Prisma.PlaylistHistoryModel

@@ -9,10 +9,12 @@ import cn from "classnames"
 import { motion, type PanInfo, useMotionValue, useTransform, animate } from "framer-motion"
 import { PlayIcon } from '@/shared/ui/icons';
 import { PauseIcon } from '@/shared/ui/icons';
+import { LikeButton } from '@/components/LikeButton/LikeButton';
 
 import { MobilePlayerProps } from "./MobilePlayer.props"
 
 import { usePlayerStore } from "../../store/playerStore"
+import { PlayButton } from "../PlaybackButtons/PlaybackButtons"
 
 const MobilePlayer: React.FC<MobilePlayerProps> = ({
   currentTrack,
@@ -214,6 +216,9 @@ const MobilePlayer: React.FC<MobilePlayerProps> = ({
                     <div className={styles.trackTitle}>{currentTrack.title}</div>
                     <div className={styles.trackArtist}>{currentTrack.artist}</div>
                   </div>
+                  <div className="flex items-center ml-auto pr-2">
+                    <LikeButton trackId={currentTrack.id} size={18} className="opacity-80" />
+                  </div>
                 </motion.div>
               </motion.div>
 
@@ -245,6 +250,16 @@ const MobilePlayer: React.FC<MobilePlayerProps> = ({
             </div>
             {/* Fixed elements that don't move during swipe */}
             <div className={styles.mobilePlayerFixedElements}>
+              <PlayButton
+                isPlaying={playing}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onPlayPause()
+                }}
+                variant="mini"
+                className={styles.play_button}
+              />
+
               <div
                 className={styles.mobileProgressBarContainer}
                 ref={progressBarRef}
@@ -267,16 +282,7 @@ const MobilePlayer: React.FC<MobilePlayerProps> = ({
                 />
               </div>
 
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  onPlayPause()
-                }}
-                className={cn(styles.play_button, styles.mobilePlayIcon, {
-                  [styles.pauseIcon]: playing === true,
-                  [styles.playIcon]: playing === false,
-                })}
-              ></button>
+
             </div>
           </div>
 

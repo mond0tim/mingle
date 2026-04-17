@@ -60,33 +60,36 @@ export const useTrackColor = (currentTrack: Track | null) => {
     img.src = currentTrack.cover;
 
     const handleImageLoad = () => {
-      try {
-        const colorThief = new ColorThief();
-        const color = colorThief.getColor(img);
-        const finalColor = currentTrack.color ? hexToRgb(currentTrack.color) : color;
-        const hexColor = `#${finalColor.map((x: number) => x.toString(16).padStart(2, '0')).join('')}`;
-        const [r, g, b] = finalColor;
-        const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-        const isLight = luminance > 128;
+      // Defer heavy calculation so it doesn't block track transition animations
+      setTimeout(() => {
+        try {
+          const colorThief = new ColorThief();
+          const color = colorThief.getColor(img);
+          const finalColor = currentTrack.color ? hexToRgb(currentTrack.color) : color;
+          const hexColor = `#${finalColor.map((x: number) => x.toString(16).padStart(2, '0')).join('')}`;
+          const [r, g, b] = finalColor;
+          const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+          const isLight = luminance > 128;
 
-        const calculatedAccent = isLight ? darkenColor(finalColor, 0.5) : lightenColor(finalColor, 0.7);
+          const calculatedAccent = isLight ? darkenColor(finalColor, 0.5) : lightenColor(finalColor, 0.7);
 
-        setAccentColor(calculatedAccent);
-        setDominantColor(hexColor);
-        setRgb([r, g, b]);
+          setAccentColor(calculatedAccent);
+          setDominantColor(hexColor);
+          setRgb([r, g, b]);
 
-        // Save to cache
-        colorCache.set(cacheKey, {
-          dominant: hexColor,
-          rgb: [r, g, b],
-          accent: calculatedAccent,
-        });
-      } catch (error) {
-        console.error('Failed to extract color:', error);
-        setDominantColor('#0f0f23');
-        setRgb([245, 245, 245]);
-        setAccentColor('#f5f5f5');
-      }
+          // Save to cache
+          colorCache.set(cacheKey, {
+            dominant: hexColor,
+            rgb: [r, g, b],
+            accent: calculatedAccent,
+          });
+        } catch (error) {
+          console.error('Failed to extract color:', error);
+          setDominantColor('#0f0f23');
+          setRgb([245, 245, 245]);
+          setAccentColor('#f5f5f5');
+        }
+      }, 0);
     };
 
     img.onerror = () => {

@@ -36,9 +36,8 @@ const Home = () => {
   const [showBackground, setShowBackground] = useState(false);
   const [showVisualizer, setShowVisualizer] = useState(true);
 
-  // Получение плейлистов с API
-  useEffect(() => {
-    setLoading(true);
+  // Получение плейлистов с API + периодический refetch каждые 15 мин
+  const fetchVibes = () => {
     fetch('/api/vibe')
       .then(res => res.json())
       .then(data => {
@@ -46,6 +45,13 @@ const Home = () => {
         setLoading(false);
       })
       .catch(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    fetchVibes();
+    const interval = setInterval(fetchVibes, 15 * 60 * 1000); // 15 мин
+    return () => clearInterval(interval);
   }, []);
 
   const wavePlaylist = playlists.find((p) => p.category === "vibe");
@@ -97,7 +103,7 @@ const Home = () => {
             <h1 className={styles.title}>запусти свой вайб</h1>
             <Skeleton />
             {loading ? (
-              <div style={{ height: 48 }} />
+              <Skeleton className="h-[48px] w-[140px] rounded-lg mt-4" />
             ) : wavePlaylist && (
               <Button
                 ButtonRadius="lg"

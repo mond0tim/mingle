@@ -1,0 +1,45 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem;
+}
+
+.draggableItem {
+  /* Outer skeleton for the dnd library, keeps layout stable */
+  position: relative;
+}
+
+.innerCard {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1.2), background 0.2s, box-shadow 0.2s;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.innerCard:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.innerCardDragging {
+  background: var(--mg-neon);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  border-color: var(--mg-neon-hover);
+  transform: scale(0.96);
+  z-index: 9999;
+}
+
+.dragHandle {
+  padding: 1rem 0.5rem 1rem 1rem;
+  color: rgba(255, 255, 255, 0.2);
+  cursor: grab;
+  display: flex;
+  align-items: center;
+}
+
+.innerCardDragging .dragHandle {
+  color: white;
+}

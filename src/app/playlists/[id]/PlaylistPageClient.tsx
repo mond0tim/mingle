@@ -12,8 +12,9 @@ import { useEffect, useState, useRef } from "react"
 import ColorThief from "colorthief"
 import { BackIcon } from '@/shared/ui/icons';
 import { useRouter } from "next/navigation"
-import type { Playlist } from "@/types"
+import { Playlist } from "@/types"
 import AnimatedHeader from "./AnimatedHeader"
+import { LikePlaylistButton } from "@/components/LikePlaylistButton/LikePlaylistButton"
 
 type Props = {
   playlist: Playlist | null
@@ -22,7 +23,12 @@ type Props = {
 }
 
 const PlaylistPageClient = ({ playlist }: Props) => {
-  const { playTrack, playPlaylist, playlistIsPlaying, togglePlay, currentTrack, playing } = usePlayer()
+  const playTrack = usePlayer(state => state.playTrack);
+  const playPlaylist = usePlayer(state => state.playPlaylist);
+  const playlistIsPlaying = usePlayer(state => state.playlistIsPlaying);
+  const togglePlay = usePlayer(state => state.togglePlay);
+  const currentTrack = usePlayer(state => state.currentTrack);
+  const playing = usePlayer(state => state.playing);
   const [dominantColor, setDominantColor] = useState<string>("#000000")
   const [showHeader, setShowHeader] = useState(false)
   const imageRef = useRef<HTMLImageElement>(null)
@@ -81,13 +87,13 @@ const PlaylistPageClient = ({ playlist }: Props) => {
           <h1>{playlist.title}</h1>
           {playlistIsPlaying?.id === playlist.id && (
             <span className={styles.playing}>
-              <b>Now Playing:</b> {currentTrack?.title}
+              <b>Сейчас играет:</b> {currentTrack?.title}
             </span>
           )}
         </div>
         <Image
           ref={imageRef}
-          src={playlist.cover || "/placeholder.svg"}
+          src={playlist.cover || "/placeholder.png"}
           alt={playlist.title}
           width={200}
           height={200}
@@ -113,6 +119,9 @@ const PlaylistPageClient = ({ playlist }: Props) => {
             {playlistIsPlaying?.id === playlist.id && playing ? <PlayPlaylistIcon /> : <PausePlaylistIcon />}
           </span>
         </Button>
+        <div className="flex items-center gap-4 mt-4">
+          <LikePlaylistButton playlistId={playlist.id} size={32} />
+        </div>
       </div>
       <TrackList
         tracks={playlist.tracks}

@@ -29,7 +29,7 @@ const TrackList: React.FC<TrackListProps> = ({
           key={`${track.id}-${index}`}
           track={track}
           onTrackSelect={onTrackSelect}
-          isPlaying={currentTrack?.id === track.id}
+          isPlaying={('queueId' in track && track.queueId && currentTrack && 'queueId' in currentTrack && currentTrack.queueId) ? currentTrack.queueId === track.queueId : currentTrack?.id === track.id}
           maxWidth={trackItemMaxWidth || '8rem'}
           spanWidth={trackItemSpanWidth || 'var(--trackItemMaxWidth)'}
           // Передаём номер трека, только если numbered === true

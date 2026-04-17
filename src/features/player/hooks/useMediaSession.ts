@@ -35,9 +35,9 @@ export const useMediaSession = () => {
 
     const handleDebouncedSeek = (newTime: number, state: any) => {
       pendingSeekTime = newTime;
-      
+
       if (!state.isGlobalSeeking) {
-         state.setIsGlobalSeeking(true);
+        state.setIsGlobalSeeking(true);
       }
 
       if (seekTimeout) clearTimeout(seekTimeout);
@@ -118,7 +118,7 @@ export const useMediaSession = () => {
       album: playlistIsPlaying?.title || '',
       artwork: [
         {
-          src: getAbsoluteUrl(currentTrack.cover || '/placeholder.svg'),
+          src: getAbsoluteUrl(currentTrack.cover || '/placeholder.png'),
           sizes: '512x512',
           type: 'image/png',
         },

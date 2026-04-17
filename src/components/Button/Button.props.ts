@@ -6,5 +6,5 @@ export interface ButtonProps extends DetailedHTMLProps<ButtonHTMLAttributes<HTML
 	fontWeight?: 'bold' | 'regular' | 'light';
 	fontFamily?: 'Jost' | 'Geist' | 'GeistMono' | 'PixelSans' | 'Oddval' | 'OddvalItalic' | 'Raydis';
 	ButtonRadius?: 'none' | 'sm' | 'md'| 'lg';
-	// arrow?: 'right' | 'down' | 'none';
+	size?: 'default' | 'sm' | 'lg' | 'icon' | string;
 }

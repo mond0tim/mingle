@@ -60,7 +60,9 @@ export const ModelName = {
   PlaylistTrack: 'PlaylistTrack',
   FavoriteTrack: 'FavoriteTrack',
   FavoritePlaylist: 'FavoritePlaylist',
-  FavoriteArtist: 'FavoriteArtist'
+  FavoriteArtist: 'FavoriteArtist',
+  TrackHistory: 'TrackHistory',
+  PlaylistHistory: 'PlaylistHistory'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -91,6 +93,8 @@ export const UserScalarFieldEnum = {
   banned: 'banned',
   loginCount: 'loginCount',
   lastLoginAt: 'lastLoginAt',
+  totalPlayTime: 'totalPlayTime',
+  queue: 'queue',
   lastPlayedTrackId: 'lastPlayedTrackId',
   lastPlayedPlaylistId: 'lastPlayedPlaylistId',
   createdAt: 'createdAt',
@@ -104,6 +108,7 @@ export const SessionScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   expiresAt: 'expiresAt',
+  token: 'token',
   ipAddress: 'ipAddress',
   userAgent: 'userAgent',
   createdAt: 'createdAt',
@@ -216,6 +221,27 @@ export const FavoriteArtistScalarFieldEnum = {
 export type FavoriteArtistScalarFieldEnum = (typeof FavoriteArtistScalarFieldEnum)[keyof typeof FavoriteArtistScalarFieldEnum]
 
 
+export const TrackHistoryScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  trackId: 'trackId',
+  playedAt: 'playedAt',
+  listenedSec: 'listenedSec'
+} as const
+
+export type TrackHistoryScalarFieldEnum = (typeof TrackHistoryScalarFieldEnum)[keyof typeof TrackHistoryScalarFieldEnum]
+
+
+export const PlaylistHistoryScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  playlistId: 'playlistId',
+  playedAt: 'playedAt'
+} as const
+
+export type PlaylistHistoryScalarFieldEnum = (typeof PlaylistHistoryScalarFieldEnum)[keyof typeof PlaylistHistoryScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -246,6 +272,7 @@ export const UserOrderByRelevanceFieldEnum = {
   name: 'name',
   image: 'image',
   role: 'role',
+  queue: 'queue',
   lastPlayedTrackId: 'lastPlayedTrackId',
   lastPlayedPlaylistId: 'lastPlayedPlaylistId'
 } as const
@@ -256,6 +283,7 @@ export type UserOrderByRelevanceFieldEnum = (typeof UserOrderByRelevanceFieldEnu
 export const SessionOrderByRelevanceFieldEnum = {
   id: 'id',
   userId: 'userId',
+  token: 'token',
   ipAddress: 'ipAddress',
   userAgent: 'userAgent'
 } as const
@@ -362,4 +390,22 @@ export const FavoriteArtistOrderByRelevanceFieldEnum = {
 } as const
 
 export type FavoriteArtistOrderByRelevanceFieldEnum = (typeof FavoriteArtistOrderByRelevanceFieldEnum)[keyof typeof FavoriteArtistOrderByRelevanceFieldEnum]
+
+
+export const TrackHistoryOrderByRelevanceFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  trackId: 'trackId'
+} as const
+
+export type TrackHistoryOrderByRelevanceFieldEnum = (typeof TrackHistoryOrderByRelevanceFieldEnum)[keyof typeof TrackHistoryOrderByRelevanceFieldEnum]
+
+
+export const PlaylistHistoryOrderByRelevanceFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  playlistId: 'playlistId'
+} as const
+
+export type PlaylistHistoryOrderByRelevanceFieldEnum = (typeof PlaylistHistoryOrderByRelevanceFieldEnum)[keyof typeof PlaylistHistoryOrderByRelevanceFieldEnum]
 
