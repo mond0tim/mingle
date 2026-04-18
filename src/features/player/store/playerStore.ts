@@ -52,6 +52,7 @@ interface PlayerState {
   setInitialPlaylists: (playlists: Playlist[]) => void;
   setIsGlobalSeeking: (isSeeking: boolean) => void;
   hydrateState: (queue: QueueItem[], playlist: Playlist | null, track: Track | null) => void;
+  updateTrackColors: (trackId: string, colors: any) => void;
 
   // Refs
   howlerInstance: Howl | null;
@@ -431,5 +432,21 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
     } else {
       setPlaying(false);
     }
+  },
+  updateTrackColors: (trackId, colors) => {
+    set((state) => {
+      const updatedTracks = state.tracks.map(t => 
+        t.id === trackId ? { ...t, colors } : t
+      );
+      
+      const updatedCurrentTrack = state.currentTrack?.id === trackId 
+        ? { ...state.currentTrack, colors } 
+        : state.currentTrack;
+
+      return {
+        tracks: updatedTracks,
+        currentTrack: updatedCurrentTrack
+      };
+    });
   },
 }));

@@ -46,7 +46,7 @@ const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlist }) => {
 
         setColors({
           background: buttonColor,
-          title: playlist.colors.text || '#C7D3FF',
+          title: playlist.colors.title || '#C7D3FF',
           button: buttonColor,
           buttonColor: playlist.colors.icon || contrastingColor,
         });
@@ -60,6 +60,24 @@ const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlist }) => {
           );
           colorThiefResult.buttonColor = contrastingColor;
           setColors(colorThiefResult);
+
+          fetch(`/api/colors/extract`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ url: playlist.cover, id: playlist.id, type: 'playlist' }),
+          })
+          .then(res => res.json())
+          .then(data => {
+             if (data && data.colors) {
+               setColors({
+                 background: data.colors.background || colorThiefResult.background,
+                 title: data.colors.title || colorThiefResult.title,
+                 button: data.colors.button || colorThiefResult.button,
+                 buttonColor: data.colors.icon || contrastingColor,
+               });
+             }
+          })
+          .catch((err) => console.error('Failed to trigger playlist color extraction', err));
         }
       }
     };
@@ -102,7 +120,7 @@ const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlist }) => {
           '--card-blur-background': `url(${playlist.cover})`,
           '--card-button-background': playlist.colors?.button || colors?.button || '#000000',
           '--card-button-background-hover': `${playlist.colors?.button || colors?.button || '#000000'}AA`,
-          '--card-title-color': playlist.colors?.text || colors?.title || '#000000',
+          '--card-title-color': playlist.colors?.title || colors?.title || '#000000',
           '--card-button-color': playlist.colors?.icon || colors?.buttonColor || '#FFFFFF',
         } as React.CSSProperties}
       >

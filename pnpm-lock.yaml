@@ -81,6 +81,9 @@ importers:
       fast-average-color:
         specifier: ^9.5.0
         version: 9.5.1
+      fast-average-color-node:
+        specifier: ^3.2.0
+        version: 3.2.0
       framer-motion:
         specifier: ^12.0.6
         version: 12.38.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -4951,6 +4954,10 @@ packages:
 
   exsolve@1.0.8:
     resolution: {integrity: sha512-LmDxfWXwcTArk8fUEnOfSZpHOJ6zOMUJKOtFLFqJLoKJetuQG874Uc7/Kki7zFLzYybmZhp1M7+98pfMqeX8yA==}
+
+  fast-average-color-node@3.2.0:
+    resolution: {integrity: sha512-vXHrwbe3znQnqctHlzpBFamOjR2rxaQy+3cvXzjuPAA13/dNGxl5WmAFXjS4lq71o06wzvV//SGt98awhk8H+A==}
+    engines: {node: ^18.17.0 || ^20.3.0 || >=21.0.0}
 
   fast-average-color@9.5.1:
     resolution: {integrity: sha512-Io8TbYSfS23wKvIotc++0tJKauUT15NuAIx+X9wkNYIRoRmGlIU7yUAYNKbgwnzX0XjCv2kunS6V0JWx9oKkSA==}
@@ -13359,6 +13366,11 @@ snapshots:
       - supports-color
 
   exsolve@1.0.8: {}
+
+  fast-average-color-node@3.2.0:
+    dependencies:
+      fast-average-color: 9.5.1
+      sharp: 0.34.5
 
   fast-average-color@9.5.1: {}
 

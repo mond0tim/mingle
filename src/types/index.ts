@@ -1,3 +1,28 @@
+export interface ExtractedColors {
+  dominant: string;
+  accent: string;
+  vibrant?: string;
+  muted?: string;
+  darkVibrant?: string;
+  darkMuted?: string;
+  lightVibrant?: string;
+  lightMuted?: string;
+  palette?: string[];
+  
+  // FastAverageColor results
+  facetSimple?: string;
+  facetSqrt?: string;
+  facetDominant?: string;
+  vibrantDominant?: string;
+  vibrantAccent?: string;
+
+  // Playlist specific
+  background?: string;
+  title?: string;
+  button?: string;
+  icon?: string;
+}
+
 export interface Track {
 	id: string | number;
 	title: string;
@@ -5,6 +30,7 @@ export interface Track {
 	src: string;
 	cover: string;
 	color?: string;
+  colors?: ExtractedColors | null;
 	fullSrc?: string | null;
 	type: string;
 }
@@ -18,7 +44,7 @@ export interface Playlist {
 	category: string;
 	type: string;
 	author?: string | null;
-	colors?: any;
+	colors?: ExtractedColors | null;
 	updatedAt?: string;
 }
 

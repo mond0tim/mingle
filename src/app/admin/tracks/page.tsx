@@ -33,6 +33,7 @@ interface Track {
   cover: string;
   type: string;
   createdAt: string;
+  colors?: { dominant?: string; accent?: string };
 }
 
 export default function AdminTracksPage() {
@@ -254,6 +255,37 @@ export default function AdminTracksPage() {
                 value={editingTrack?.cover || ""}
                 onChange={(e) => setEditingTrack(prev => ({ ...prev!, cover: e.target.value }))}
               />
+            </div>
+            
+            <div className="flex gap-4">
+              <div className="flex-1">
+                <Label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest flex items-center gap-2">
+                  Доминирующий цвет
+                  {editingTrack?.colors?.dominant && (
+                    <span className="w-3 h-3 rounded-full border border-zinc-800 inline-block" style={{ backgroundColor: editingTrack.colors.dominant }} />
+                  )}
+                </Label>
+                <Input
+                  className="mt-1.5 bg-zinc-900/50 border-zinc-800 focus-visible:border-zinc-600 text-zinc-100 font-mono text-xs"
+                  placeholder="#0c0312"
+                  value={editingTrack?.colors?.dominant || ""}
+                  onChange={(e) => setEditingTrack(prev => ({ ...prev!, colors: { ...prev?.colors, dominant: e.target.value } }))}
+                />
+              </div>
+              <div className="flex-1">
+                <Label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest flex items-center gap-2">
+                  Акцентный цвет
+                  {editingTrack?.colors?.accent && (
+                    <span className="w-3 h-3 rounded-full border border-zinc-800 inline-block" style={{ backgroundColor: editingTrack.colors.accent }} />
+                  )}
+                </Label>
+                <Input
+                  className="mt-1.5 bg-zinc-900/50 border-zinc-800 focus-visible:border-zinc-600 text-zinc-100 font-mono text-xs"
+                  placeholder="#f5f5f5"
+                  value={editingTrack?.colors?.accent || ""}
+                  onChange={(e) => setEditingTrack(prev => ({ ...prev!, colors: { ...prev?.colors, accent: e.target.value } }))}
+                />
+              </div>
             </div>
 
             <div className="p-3 bg-zinc-900/30 rounded-xl border border-zinc-800/50">

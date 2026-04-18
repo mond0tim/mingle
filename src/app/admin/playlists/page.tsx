@@ -36,6 +36,7 @@ interface Playlist {
   isPublic: boolean;
   _count: { tracks: number };
   createdAt: string;
+  colors?: { background?: string; button?: string; title?: string };
 }
 
 const CATEGORIES = ["OTHER", "SINGLE", "ALBUM", "VIBE", "PLAYLIST", "MIX"];
@@ -275,6 +276,51 @@ export default function AdminPlaylistsPage() {
                     onChange={(e) => setEditingPlaylist(prev => ({ ...prev!, cover: e.target.value }))}
                   />
                 </div>
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <div className="flex-1">
+                <Label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest flex items-center gap-2">
+                  Colors: Фон
+                  {editingPlaylist?.colors?.background && (
+                    <span className="w-2.5 h-2.5 rounded-sm inline-block" style={{ backgroundColor: editingPlaylist.colors.background }} />
+                  )}
+                </Label>
+                <Input
+                  className="mt-1.5 bg-zinc-900/50 border-zinc-800 focus-visible:border-zinc-600 text-zinc-100 font-mono text-xs"
+                  placeholder="#000000"
+                  value={editingPlaylist?.colors?.background || ""}
+                  onChange={(e) => setEditingPlaylist(prev => ({ ...prev!, colors: { ...prev?.colors, background: e.target.value } }))}
+                />
+              </div>
+              <div className="flex-1">
+                <Label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest flex items-center gap-2">
+                  Кнопка
+                  {editingPlaylist?.colors?.button && (
+                    <span className="w-2.5 h-2.5 rounded-sm inline-block" style={{ backgroundColor: editingPlaylist.colors.button }} />
+                  )}
+                </Label>
+                <Input
+                  className="mt-1.5 bg-zinc-900/50 border-zinc-800 focus-visible:border-zinc-600 text-zinc-100 font-mono text-xs"
+                  placeholder="#C7D3FF"
+                  value={editingPlaylist?.colors?.button || ""}
+                  onChange={(e) => setEditingPlaylist(prev => ({ ...prev!, colors: { ...prev?.colors, button: e.target.value } }))}
+                />
+              </div>
+              <div className="flex-1">
+                <Label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest flex items-center gap-2">
+                  Иконки (Текст)
+                  {editingPlaylist?.colors?.title && (
+                    <span className="w-2.5 h-2.5 rounded-sm inline-block" style={{ backgroundColor: editingPlaylist.colors.title }} />
+                  )}
+                </Label>
+                <Input
+                  className="mt-1.5 bg-zinc-900/50 border-zinc-800 focus-visible:border-zinc-600 text-zinc-100 font-mono text-xs"
+                  placeholder="#FFFFFF"
+                  value={editingPlaylist?.colors?.title || ""}
+                  onChange={(e) => setEditingPlaylist(prev => ({ ...prev!, colors: { ...prev?.colors, title: e.target.value } }))}
+                />
               </div>
             </div>
 

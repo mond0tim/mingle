@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import ColorThief from 'colorthief';
+import { FastAverageColor } from 'fast-average-color';
 import { Track } from '@/types';
+import { usePlayerStore } from '@/features/player/store/playerStore';
 
 // Simple in-memory cache for extracted colors
 const colorCache = new Map<string, { dominant: string; rgb: [number, number, number]; accent: string }>();
@@ -36,17 +37,37 @@ export const useTrackColor = (currentTrack: Track | null) => {
   const [dominantColor, setDominantColor] = useState<string>('#0c0312');
   const [rgb, setRgb] = useState<[number, number, number]>([245, 245, 245]);
   const [accentColor, setAccentColor] = useState<string>('#f5f5f5');
+  const [fullPalette, setFullPalette] = useState<Track['colors']>(null);
+  
+  const updateTrackColors = usePlayerStore(state => state.updateTrackColors);
 
   useEffect(() => {
     if (!currentTrack || !currentTrack.cover) {
       setDominantColor('#f5f5f5');
       setRgb([245, 245, 245]);
       setAccentColor('#0c0312');
+      setFullPalette(null);
       return;
     }
 
+    const trackId = String(currentTrack.id);
     const cacheKey = currentTrack.cover;
 
+    // 1. ПРИОРИТЕТ: Объект трека (если цвета уже в объекте)
+    if (currentTrack.colors && currentTrack.colors.dominant && currentTrack.colors.accent) {
+      const { dominant, accent } = currentTrack.colors;
+      const parsedRgb = hexToRgb(dominant);
+      setDominantColor(dominant);
+      setRgb(parsedRgb);
+      setAccentColor(accent);
+      setFullPalette(currentTrack.colors);
+      
+      // Обновляем кэш, чтобы он не хранил старые данные после ре-экстракции
+      colorCache.set(cacheKey, { dominant, rgb: parsedRgb, accent });
+      return;
+    }
+
+    // 2. ВТОРОЙ ШАНС: Локальный кэш модуля (только если в объекте пусто)
     if (colorCache.has(cacheKey)) {
       const cached = colorCache.get(cacheKey)!;
       setDominantColor(cached.dominant);
@@ -55,6 +76,7 @@ export const useTrackColor = (currentTrack: Track | null) => {
       return;
     }
 
+    // 3. ЭКСТРАКЦИЯ: Если цветов нет нигде
     const img = new Image();
     img.crossOrigin = 'anonymous';
     img.src = currentTrack.cover;
@@ -63,31 +85,71 @@ export const useTrackColor = (currentTrack: Track | null) => {
       // Defer heavy calculation so it doesn't block track transition animations
       setTimeout(() => {
         try {
-          const colorThief = new ColorThief();
-          const color = colorThief.getColor(img);
-          const finalColor = currentTrack.color ? hexToRgb(currentTrack.color) : color;
-          const hexColor = `#${finalColor.map((x: number) => x.toString(16).padStart(2, '0')).join('')}`;
-          const [r, g, b] = finalColor;
-          const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-          const isLight = luminance > 128;
+          const fac = new FastAverageColor();
+          fac.getColorAsync(img)
+            .then((color) => {
+              const { value, hex } = color;
+              const [r, g, b] = value;
+              const finalColor: [number, number, number] = currentTrack.color ? hexToRgb(currentTrack.color) : [r, g, b] as [number, number, number];
+              const hexColor = currentTrack.color ? `#${finalColor.map((x: number) => x.toString(16).padStart(2, '0')).join('')}` : hex;
+              
+              const luminance = (0.2126 * finalColor[0]) + (0.7152 * finalColor[1]) + (0.0722 * finalColor[2]);
+              const isLight = luminance > 128;
+    
+              const calculatedAccent = isLight ? darkenColor(finalColor, 0.5) : lightenColor(finalColor, 0.7);
+    
+              // Мгновенное обновление UI (пре-экстракция)
+              setAccentColor(calculatedAccent);
+              setDominantColor(hexColor);
+              setRgb([finalColor[0], finalColor[1], finalColor[2]]);
+    
+              colorCache.set(cacheKey, {
+                dominant: hexColor,
+                rgb: [finalColor[0], finalColor[1], finalColor[2]],
+                accent: calculatedAccent,
+              });
 
-          const calculatedAccent = isLight ? darkenColor(finalColor, 0.5) : lightenColor(finalColor, 0.7);
+              // Запрос на полноценную серверную экстракцию (или получение из кэша БД)
+              fetch(`/api/colors/extract`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url: currentTrack.cover, id: trackId, type: 'track' })
+              })
+              .then(res => res.json())
+              .then(data => {
+                if (data && data.colors) {
+                  const newColors = data.colors;
+                  
+                  // Сначала обновляем локальный кэш, чтобы Effect при следующем прогоне увидел новые данные
+                  const parsedRgb = hexToRgb(newColors.dominant);
+                  colorCache.set(cacheKey, { 
+                    dominant: newColors.dominant, 
+                    rgb: parsedRgb, 
+                    accent: newColors.accent 
+                  });
 
-          setAccentColor(calculatedAccent);
-          setDominantColor(hexColor);
-          setRgb([r, g, b]);
-
-          // Save to cache
-          colorCache.set(cacheKey, {
-            dominant: hexColor,
-            rgb: [r, g, b],
-            accent: calculatedAccent,
-          });
+                  // Обновляем глобальный стор
+                  updateTrackColors(trackId, newColors);
+                  
+                  // Локальное состояние хука
+                  setFullPalette(newColors);
+                  if (newColors.dominant && newColors.accent) {
+                    setDominantColor(newColors.dominant);
+                    setAccentColor(newColors.accent);
+                    setRgb(parsedRgb);
+                  }
+                }
+              })
+              .catch((e) => console.error('Failed to trigger deep extraction', e));
+            })
+            .catch((error) => {
+              console.error('Failed to extract color:', error);
+              setDominantColor('#0f0f23');
+              setRgb([245, 245, 245]);
+              setAccentColor('#f5f5f5');
+            });
         } catch (error) {
-          console.error('Failed to extract color:', error);
-          setDominantColor('#0f0f23');
-          setRgb([245, 245, 245]);
-          setAccentColor('#f5f5f5');
+          console.error('Failed to init color extraction:', error);
         }
       }, 0);
     };
@@ -104,7 +166,7 @@ export const useTrackColor = (currentTrack: Track | null) => {
     } else {
       img.onload = handleImageLoad;
     }
-  }, [currentTrack]);
+  }, [currentTrack, updateTrackColors]);
 
-  return { dominantColor, rgb, accentColor };
+  return { dominantColor, rgb, accentColor, fullPalette };
 };
