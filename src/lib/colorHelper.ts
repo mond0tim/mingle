@@ -1,4 +1,4 @@
-import ColorThief from 'colorthief';
+import { FastAverageColor } from 'fast-average-color';
 
 export interface ColorThiefOutput {
   background: string;
@@ -6,6 +6,28 @@ export interface ColorThiefOutput {
   button: string;
   buttonColor?: string;
 }
+
+const darkenColor = (color: [number, number, number], amount: number): string => {
+  const [r, g, b] = color;
+  return `#${[r, g, b]
+    .map((c) =>
+      Math.max(0, Math.round(c - c * amount))
+        .toString(16)
+        .padStart(2, '0')
+    )
+    .join('')}`;
+};
+
+const lightenColor = (color: [number, number, number], amount: number): string => {
+  const [r, g, b] = color;
+  return `#${[r, g, b]
+    .map((c) =>
+      Math.min(255, Math.round(c + (255 - c) * amount))
+        .toString(16)
+        .padStart(2, '0')
+    )
+    .join('')}`;
+};
 
 export const getColorFromURL = async (
   imageUrl: string
@@ -29,29 +51,36 @@ export const getColorFromURL = async (
     }
   }
 
-  const colorThief = new ColorThief();
   const img = new Image();
   img.crossOrigin = 'Anonymous';
   img.src = imageUrl;
 
   return new Promise((resolve) => {
     img.onload = () => {
-      const dominantColor = colorThief.getColor(img);
-      const palette = colorThief.getPalette(img, 3);
+      const fac = new FastAverageColor();
+      try {
+        const color = fac.getColor(img);
+        const [r, g, b] = color.value;
+        const background = color.hex;
 
-      const background = rgbToHex(dominantColor);
-      const title = rgbToHex(palette[1]);
-      const button = rgbToHex(palette[2]);
+        const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+        const isLight = luminance > 128;
 
-      const result = { background, title, button };
-      // Сохраняем в массив
-      if (typeof window !== 'undefined') {
-        try {
-          cacheArr.push({ url: imageUrl, colors: result });
-          localStorage.setItem(storageKey, JSON.stringify(cacheArr));
-        } catch {}
+        const title = isLight ? darkenColor([r, g, b], 0.7) : lightenColor([r, g, b], 0.8);
+        const button = isLight ? darkenColor([r, g, b], 0.4) : lightenColor([r, g, b], 0.5);
+
+        const result = { background, title, button };
+        if (typeof window !== 'undefined') {
+          try {
+            cacheArr.push({ url: imageUrl, colors: result });
+            localStorage.setItem(storageKey, JSON.stringify(cacheArr));
+          } catch {}
+        }
+        resolve(result);
+      } catch (err) {
+        console.error('Error in fac:', err);
+        resolve(null);
       }
-      resolve(result);
     };
     img.onerror = () => {
       console.error('Error loading image for color thief:', imageUrl);
@@ -86,4 +115,4 @@ const rgbToHex = (rgb: number[]): string => {
     componentToHex(rgb[1]) +
     componentToHex(rgb[2])
   );
-};
+};

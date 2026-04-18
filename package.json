@@ -32,6 +32,7 @@
     "date-fns": "^4.1.0",
     "embla-carousel-react": "^8.5.2",
     "fast-average-color": "^9.5.0",
+    "fast-average-color-node": "^3.2.0",
     "framer-motion": "^12.0.6",
     "gsap": "^3.12.7",
     "howler": "^2.2.4",

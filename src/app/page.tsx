@@ -15,6 +15,7 @@ import AudioMotionVisualizer from '@/components/AudioMotionVisualizer/AudioMotio
 import BackgroundCanvas from '@/components/BackgroundCanvas/BackgroundCanvas';
 import { Skeleton } from '@/components/ui/skeleton';
 import { PlaylistsCarousel } from '@/components/PlaylistsCarousel/PlaylistsCarousel';
+import ColorPaletteDisplay from '@/components/ColorPaletteDisplay/ColorPaletteDisplay';
 
 const CATEGORY_NAMES: Record<string, string> = {
   vibe: 'По настроению',
@@ -139,6 +140,10 @@ const Home = () => {
         </div>
       ) : null}
       {showBackground && <BackgroundCanvas />}
+
+      <div className="max-w-7xl mx-auto px-4">
+        <ColorPaletteDisplay />
+      </div>
 
       {playlistsByCategory['vibe'] && playlistsByCategory['vibe'].length > 0 && (
         <div className="my-8 p-2">
