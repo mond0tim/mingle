@@ -5,18 +5,8 @@
     position: fixed;
     bottom: 0px;
     z-index: 2;
-    animation: controlsIn 0.4s ease-in forwards;
 }
 
-@keyframes controlsIn {
-    from {
-        clip-path: inset(0 0 100% 0);
-        
-    }
-    to {
-        clip-path: inset(0 0 0 0);
-    }
-}
 /* .mingle_controls_container.homePageMenu {
 	position: fixed;
 	top:0px;

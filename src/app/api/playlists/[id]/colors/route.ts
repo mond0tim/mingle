@@ -10,7 +10,7 @@ export async function PATCH(
     const body = await request.json();
     const { colors } = body;
 
-    if (!colors || !colors.background || !colors.title || !colors.button) {
+    if (!colors || typeof colors !== "object") {
       return NextResponse.json({ error: "Invalid colors payload" }, { status: 400 });
     }
 
@@ -23,14 +23,9 @@ export async function PATCH(
       return NextResponse.json({ error: "Playlist not found" }, { status: 404 });
     }
 
-    // Only allow update if colors are currently null
-    if (playlist.colors !== null && playlist.colors !== undefined) {
-      return NextResponse.json({ message: "Colors already set, skipping." }, { status: 200 });
-    }
-
     const updated = await prisma.playlist.update({
       where: { id },
-      data: { colors },
+      data: { colors: { ...(playlist.colors as any), ...colors } },
     });
 
     return NextResponse.json({ success: true, playlist: updated });

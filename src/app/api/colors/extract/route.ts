@@ -142,9 +142,19 @@ export async function POST(request: Request) {
     // 4. Обновляем БД (безопасно, не падем если записи нет)
     try {
       if (type === 'track') {
-        await prisma.track.update({ where: { id: stringId }, data: { colors: colorsPayload } });
+        const existing = await prisma.track.findUnique({ where: { id: stringId }, select: { colors: true } });
+        const keepBindings = (existing?.colors as any)?.bindings;
+        await prisma.track.update({
+          where: { id: stringId },
+          data: { colors: keepBindings ? { ...colorsPayload, bindings: keepBindings } : colorsPayload },
+        });
       } else if (type === 'playlist') {
-        await prisma.playlist.update({ where: { id: stringId }, data: { colors: colorsPayload } });
+        const existing = await prisma.playlist.findUnique({ where: { id: stringId }, select: { colors: true } });
+        const keepBindings = (existing?.colors as any)?.bindings;
+        await prisma.playlist.update({
+          where: { id: stringId },
+          data: { colors: keepBindings ? { ...colorsPayload, bindings: keepBindings } : colorsPayload },
+        });
       }
     } catch (e: any) {
       if (e.code === 'P2025') {

@@ -2,9 +2,15 @@ import { useState, useEffect } from 'react';
 import { FastAverageColor } from 'fast-average-color';
 import { Track } from '@/types';
 import { usePlayerStore } from '@/features/player/store/playerStore';
+import { pickChannelColor, withDefaultTrackBindings } from '@/lib/colorChannels';
 
 // Simple in-memory cache for extracted colors
-const colorCache = new Map<string, { dominant: string; rgb: [number, number, number]; accent: string }>();
+const colorCache = new Map<string, {
+  dominant: string;
+  rgb: [number, number, number];
+  accent: string;
+  fullPalette?: Track['colors'];
+}>();
 
 const hexToRgb = (hex: string): [number, number, number] => {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -57,13 +63,24 @@ export const useTrackColor = (currentTrack: Track | null) => {
     if (currentTrack.colors && currentTrack.colors.dominant && currentTrack.colors.accent) {
       const { dominant, accent } = currentTrack.colors;
       const parsedRgb = hexToRgb(dominant);
-      setDominantColor(dominant);
+      const bindings = withDefaultTrackBindings((currentTrack.colors as any)?.bindings);
+      const resolvedPrimary = pickChannelColor(
+        currentTrack.colors as any,
+        bindings.playerPrimary,
+        dominant,
+      );
+      const resolvedSecondary = pickChannelColor(
+        currentTrack.colors as any,
+        bindings.playerSecondary,
+        accent,
+      );
+      setDominantColor(resolvedPrimary);
       setRgb(parsedRgb);
-      setAccentColor(accent);
+      setAccentColor(resolvedSecondary);
       setFullPalette(currentTrack.colors);
       
       // Обновляем кэш, чтобы он не хранил старые данные после ре-экстракции
-      colorCache.set(cacheKey, { dominant, rgb: parsedRgb, accent });
+      colorCache.set(cacheKey, { dominant, rgb: parsedRgb, accent, fullPalette: currentTrack.colors });
       return;
     }
 
@@ -73,6 +90,7 @@ export const useTrackColor = (currentTrack: Track | null) => {
       setDominantColor(cached.dominant);
       setRgb(cached.rgb);
       setAccentColor(cached.accent);
+      if (cached.fullPalette) setFullPalette(cached.fullPalette);
       return;
     }
 
@@ -107,6 +125,7 @@ export const useTrackColor = (currentTrack: Track | null) => {
                 dominant: hexColor,
                 rgb: [finalColor[0], finalColor[1], finalColor[2]],
                 accent: calculatedAccent,
+                fullPalette: null,
               });
 
               // Запрос на полноценную серверную экстракцию (или получение из кэша БД)
@@ -122,10 +141,22 @@ export const useTrackColor = (currentTrack: Track | null) => {
                   
                   // Сначала обновляем локальный кэш, чтобы Effect при следующем прогоне увидел новые данные
                   const parsedRgb = hexToRgb(newColors.dominant);
+                  const bindings = withDefaultTrackBindings(newColors.bindings);
+                  const resolvedPrimary = pickChannelColor(
+                    newColors,
+                    bindings.playerPrimary,
+                    newColors.dominant,
+                  );
+                  const resolvedSecondary = pickChannelColor(
+                    newColors,
+                    bindings.playerSecondary,
+                    newColors.accent,
+                  );
                   colorCache.set(cacheKey, { 
-                    dominant: newColors.dominant, 
+                    dominant: resolvedPrimary, 
                     rgb: parsedRgb, 
-                    accent: newColors.accent 
+                    accent: resolvedSecondary,
+                    fullPalette: newColors,
                   });
 
                   // Обновляем глобальный стор
@@ -134,8 +165,8 @@ export const useTrackColor = (currentTrack: Track | null) => {
                   // Локальное состояние хука
                   setFullPalette(newColors);
                   if (newColors.dominant && newColors.accent) {
-                    setDominantColor(newColors.dominant);
-                    setAccentColor(newColors.accent);
+                    setDominantColor(resolvedPrimary);
+                    setAccentColor(resolvedSecondary);
                     setRgb(parsedRgb);
                   }
                 }

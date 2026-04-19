@@ -435,11 +435,12 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   },
   updateTrackColors: (trackId, colors) => {
     set((state) => {
+      const matchId = String(trackId);
       const updatedTracks = state.tracks.map(t => 
-        t.id === trackId ? { ...t, colors } : t
+        String(t.id) === matchId ? { ...t, colors } : t
       );
       
-      const updatedCurrentTrack = state.currentTrack?.id === trackId 
+      const updatedCurrentTrack = String(state.currentTrack?.id) === matchId
         ? { ...state.currentTrack, colors } 
         : state.currentTrack;
 

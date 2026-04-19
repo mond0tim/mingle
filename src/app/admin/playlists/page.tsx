@@ -23,6 +23,7 @@ import {
   Lock,
 } from "lucide-react";
 import { DataTable } from "@/components/admin/DataTable";
+import { ColorStudioSheet } from "@/components/color-studio/ColorStudioSheet";
 import { ColumnDef } from "@tanstack/react-table";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -36,7 +37,7 @@ interface Playlist {
   isPublic: boolean;
   _count: { tracks: number };
   createdAt: string;
-  colors?: { background?: string; button?: string; title?: string };
+  colors?: { background?: string; button?: string; title?: string; bindings?: ColorBindings };
 }
 
 const CATEGORIES = ["OTHER", "SINGLE", "ALBUM", "VIBE", "PLAYLIST", "MIX"];
@@ -322,6 +323,18 @@ export default function AdminPlaylistsPage() {
                   onChange={(e) => setEditingPlaylist(prev => ({ ...prev!, colors: { ...prev?.colors, title: e.target.value } }))}
                 />
               </div>
+            </div>
+
+            <div className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-3">
+              <p className="mb-2 text-[10px] font-bold tracking-widest text-zinc-500 uppercase">Color Studio</p>
+              <ColorStudioSheet
+                entityType="playlist"
+                entityId={editingPlaylist?.id}
+                coverUrl={editingPlaylist?.cover}
+                initialColors={editingPlaylist?.colors}
+                onSaved={(colors) => setEditingPlaylist((prev) => ({ ...prev!, colors }))}
+                triggerLabel="Открыть Color Studio"
+              />
             </div>
 
             <div>
