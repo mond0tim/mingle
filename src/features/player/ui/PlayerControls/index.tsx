@@ -7,6 +7,7 @@ import cn from 'classnames';
 import { PrevIcon, NextIcon, MoreIcon } from '@/shared/ui/icons';
 import { LikeButton } from '@/components/LikeButton/LikeButton';
 import NumberFlow, { NumberFlowGroup } from '@number-flow/react';
+import { TextMorph } from 'torph/react';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -210,7 +211,8 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
             <div className={styles.trackInfo}>
               <div className={styles.trackTitleContainer}>
                 <div className={cn(styles.trackTitle, styles.trackText)}>
-                  <span>{currentTrack.title}</span>
+                  
+                <TextMorph>{currentTrack.title}</TextMorph>
                   <div className={styles.marquee} aria-hidden="true">
                     <div className={styles.marquee__inner}>
                       <span>{currentTrack.title}</span>
@@ -225,7 +227,7 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
                 </div>
               </div>
               <div className={cn(styles.trackArtist, styles.trackText)}>
-                <span>{currentTrack.artist}</span>
+              <TextMorph>{currentTrack.artist}</TextMorph>
                 <div className={styles.marquee} aria-hidden="true">
                   <div className={styles.marquee__inner}>
                     <span>{currentTrack.artist}</span>

@@ -21,6 +21,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { DataTable } from "@/components/admin/DataTable";
+import { ColorStudioSheet } from "@/components/color-studio/ColorStudioSheet";
 import { ColumnDef } from "@tanstack/react-table";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -33,7 +34,7 @@ interface Track {
   cover: string;
   type: string;
   createdAt: string;
-  colors?: { dominant?: string; accent?: string };
+  colors?: { dominant?: string; accent?: string; bindings?: ColorBindings };
 }
 
 export default function AdminTracksPage() {
@@ -286,6 +287,18 @@ export default function AdminTracksPage() {
                   onChange={(e) => setEditingTrack(prev => ({ ...prev!, colors: { ...prev?.colors, accent: e.target.value } }))}
                 />
               </div>
+            </div>
+
+            <div className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-3">
+              <p className="mb-2 text-[10px] font-bold tracking-widest text-zinc-500 uppercase">Color Studio</p>
+              <ColorStudioSheet
+                entityType="track"
+                entityId={editingTrack?.id}
+                coverUrl={editingTrack?.cover}
+                initialColors={editingTrack?.colors}
+                onSaved={(colors) => setEditingTrack((prev) => ({ ...prev!, colors }))}
+                triggerLabel="Открыть Color Studio"
+              />
             </div>
 
             <div className="p-3 bg-zinc-900/30 rounded-xl border border-zinc-800/50">

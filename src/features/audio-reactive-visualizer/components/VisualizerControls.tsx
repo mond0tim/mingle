@@ -6,6 +6,8 @@ import type { GradientColors } from '../types';
 
 interface VisualizerControlsProps {
   gradientColors: GradientColors;
+  resolvedGradientColors?: GradientColors;
+  channelLabels?: { start?: string; mid?: string; end?: string };
   onGradientChange: (colors: GradientColors) => void;
   bpmSpeedMultiplier: number;
   onBpmSpeedMultiplierChange: (value: number) => void;
@@ -17,17 +19,19 @@ const ColorPicker: React.FC<{
   label: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}> = ({ label, value, onChange }) => (
+  disabled?: boolean;
+}> = ({ label, value, onChange, disabled }) => (
   <div className="flex flex-col items-center space-y-2">
     <label htmlFor={`${label}-color`} className="text-xs font-medium tracking-wider text-zinc-300 uppercase">
       {label}
     </label>
-    <div className="relative h-12 w-12 cursor-pointer overflow-hidden rounded-full border-2 border-zinc-600 shadow-lg">
+    <div className={`relative h-12 w-12 overflow-hidden rounded-full border-2 border-zinc-600 shadow-lg ${disabled ? 'opacity-60' : 'cursor-pointer'}`}>
       <input
         type="color"
         id={`${label}-color`}
         value={value}
         onChange={onChange}
+        disabled={disabled}
         className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
       />
       <div className="h-full w-full" style={{ backgroundColor: value }} />
@@ -37,6 +41,8 @@ const ColorPicker: React.FC<{
 
 export const VisualizerControls: React.FC<VisualizerControlsProps> = ({
   gradientColors,
+  resolvedGradientColors,
+  channelLabels,
   onGradientChange,
   bpmSpeedMultiplier,
   onBpmSpeedMultiplierChange,
@@ -94,20 +100,30 @@ export const VisualizerControls: React.FC<VisualizerControlsProps> = ({
       <div className="flex w-full items-center justify-end space-x-4 md:w-1/4">
         <ColorPicker
           label="Start"
-          value={gradientColors.start}
+          value={(resolvedGradientColors ?? gradientColors).start}
           onChange={(e) => onGradientChange({ ...gradientColors, start: e.target.value })}
+            disabled={colorMode === 'track'}
         />
         <ColorPicker
           label="Mid"
-          value={gradientColors.mid}
+          value={(resolvedGradientColors ?? gradientColors).mid}
           onChange={(e) => onGradientChange({ ...gradientColors, mid: e.target.value })}
+          disabled={colorMode === 'track'}
         />
         <ColorPicker
           label="End"
-          value={gradientColors.end}
+          value={(resolvedGradientColors ?? gradientColors).end}
           onChange={(e) => onGradientChange({ ...gradientColors, end: e.target.value })}
+          disabled={colorMode === 'track'}
         />
       </div>
+      {(channelLabels?.start || channelLabels?.mid || channelLabels?.end) && (
+        <div className="w-full text-right text-[10px] tracking-wide text-zinc-500 md:w-1/4">
+          <span>Start: {channelLabels?.start ?? 'manual'} · </span>
+          <span>Mid: {channelLabels?.mid ?? 'manual'} · </span>
+          <span>End: {channelLabels?.end ?? 'manual'}</span>
+        </div>
+      )}
     </div>
   );
 };

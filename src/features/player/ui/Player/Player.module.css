@@ -4,16 +4,10 @@
     width: 100%;
     padding: 5px;
     bottom: 4rem;
-    animation: playerIn 0.4s ease-in-out forwards;
     z-index: 50;
     @media (max-width: 600px) {
       z-index: 10;
     }
-}
-@keyframes playerIn {
-  from { clip-path: inset(100% 0 0 0); }
-  99% { clip-path: inset(0 0 0 0); }
-  100% { clip-path: none; }
 }
 
 .player::before {

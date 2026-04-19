@@ -15,6 +15,13 @@ export interface ExtractedColors {
   facetDominant?: string;
   vibrantDominant?: string;
   vibrantAccent?: string;
+  bindings?: {
+    playerPrimary?: { channel?: string; manual?: string; adjust?: number };
+    playerSecondary?: { channel?: string; manual?: string; adjust?: number };
+    visualizerStart?: { channel?: string; manual?: string; adjust?: number };
+    visualizerMid?: { channel?: string; manual?: string; adjust?: number };
+    visualizerEnd?: { channel?: string; manual?: string; adjust?: number };
+  };
 
   // Playlist specific
   background?: string;
