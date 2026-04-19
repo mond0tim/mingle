@@ -9,7 +9,10 @@ import Preloader from '@/components/Preloader/Preloader';
 
 export default function GlobalUIWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isExcluded = pathname?.startsWith('/admin') || pathname?.startsWith('/sign-in') || pathname?.startsWith('/sign-up');
+  const isExcluded =
+    pathname?.startsWith('/admin') ||
+    pathname?.startsWith('/sign-in') ||
+    pathname?.startsWith('/sign-up');
 
   if (isExcluded) {
     return <>{children}</>;
