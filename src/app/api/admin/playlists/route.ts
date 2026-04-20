@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import fs from "fs";
+import path from "path";
 
 async function requireAdmin() {
   const session = await auth.api.getSession({ headers: await headers() });
@@ -67,6 +69,19 @@ export async function DELETE(request: Request) {
 
   const { id } = await request.json();
   if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
+
+  const playlist = await prisma.playlist.findUnique({ where: { id } });
+  if (playlist?.cover && !playlist.cover.startsWith("http")) {
+    try {
+      const relativePath = playlist.cover.startsWith("/") ? playlist.cover.slice(1) : playlist.cover;
+      const filePath = path.join(process.cwd(), "public", relativePath);
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+    } catch (err) {
+      console.error("Playlist cover deletion error:", err);
+    }
+  }
 
   await prisma.playlist.delete({ where: { id } });
   return NextResponse.json({ success: true });

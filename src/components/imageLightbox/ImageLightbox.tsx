@@ -1,8 +1,7 @@
 "use client"
 
-import type React from "react"
-
-import { useState } from "react"
+import React, { useState, useEffect } from "react"
+import { createPortal } from "react-dom"
 import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, Download } from "lucide-react"
@@ -26,6 +25,11 @@ export default function ImageLightbox({
   ...imageProps
 }: ImageLightboxProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const openLightbox = () => setIsOpen(true)
   const closeLightbox = () => setIsOpen(false)
@@ -81,58 +85,61 @@ export default function ImageLightbox({
         </motion.div>
       </motion.div>
 
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4"
-            onClick={handleBackdropClick}
-          >
-            <div className="relative max-w-[100vw] max-h-screen">
-              <motion.img
-                layoutId="main-lightbox-image"
-                src={typeof src === "string" ? src : ""}
-                alt={alt}
-                className="relative rounded-lg max-w-full max-h-[80vh] object-contain"
-                transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              />
+      {mounted && typeof document !== 'undefined' && createPortal(
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-xs p-4"
+              onClick={handleBackdropClick}
+            >
+              <div className="relative max-w-[100vw] max-h-screen">
+                <motion.img
+                  layoutId="main-lightbox-image"
+                  src={typeof src === "string" ? src : ""}
+                  alt={alt}
+                  className="relative rounded-lg max-w-full max-h-[80vh] object-contain"
+                  transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                />
 
-              <motion.div
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                transition={{ y: { type: "spring", damping: 10, stiffness: 300 } }}
-                className="fixed right-2 top-2 flex flex-col-reverse items-center justify-center gap-4 mt-4"
-              >
-                {lightboxOptions.downloadable && (
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 20 }}
+                  transition={{ y: { type: "spring", damping: 10, stiffness: 300 } }}
+                  className="fixed right-2 top-2 flex flex-col-reverse items-center justify-center gap-4 mt-4"
+                >
+                  {lightboxOptions.downloadable && (
+                    <motion.button
+                      className={`p-3 rounded-full ${style.buttonColor} transition-colors`}
+                      onClick={handleDownload}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      aria-label="Download image"
+                    >
+                      <Download size={24} />
+                    </motion.button>
+                  )}
+
                   <motion.button
                     className={`p-3 rounded-full ${style.buttonColor} transition-colors`}
-                    onClick={handleDownload}
+                    onClick={closeLightbox}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
-                    aria-label="Download image"
+                    aria-label="Close lightbox"
                   >
-                    <Download size={24} />
+                    <X size={24} />
                   </motion.button>
-                )}
-
-                <motion.button
-                  className={`p-3 rounded-full ${style.buttonColor} transition-colors`}
-                  onClick={closeLightbox}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  aria-label="Close lightbox"
-                >
-                  <X size={24} />
-                </motion.button>
-              </motion.div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                </motion.div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </>
   )
 }

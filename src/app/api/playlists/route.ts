@@ -21,7 +21,7 @@ export async function GET() {
       },
     });
 
-    const mappedPlaylists = playlists.map((playlist: PlaylistWithTracks) => ({
+    const mappedPlaylists = playlists.map((playlist) => ({
       ...playlist,
       tracks: playlist.tracks.map((pt) => pt.track),
     }));

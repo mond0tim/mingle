@@ -51,5 +51,8 @@ export function generateMingleFilename(
   const cleanArtist = slugify(artist) || 'unknown-artist';
   const ext = extension ? (extension.startsWith('.') ? extension : `.${extension}`) : '';
   
-  return `${cleanTitle}--${cleanArtist}--${id}${ext}`;
+  // Add a small random suffix to avoid file locks and cache issues
+  const suffix = Math.random().toString(36).substring(2, 6);
+  
+  return `${cleanTitle}--${cleanArtist}--${id}--${suffix}${ext}`;
 }

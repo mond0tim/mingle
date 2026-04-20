@@ -67,8 +67,13 @@ export const BPMDetector: React.FC<BPMDetectorProps> = ({
     };
 
     let bpmInterval: ReturnType<typeof setInterval> | undefined;
+    let isDestroyed = false;
 
     const setupWorkletAndAnalysis = async () => {
+      // AudioWorklet can only be added to a running or suspended context, 
+      // but some browsers have issues if added during transition
+      if (audioCtx.state === 'closed') return;
+
       try {
         const workletCode = `
           class BufferProcessor extends AudioWorkletProcessor {
@@ -85,7 +90,17 @@ export const BPMDetector: React.FC<BPMDetectorProps> = ({
         const blob = new Blob([workletCode], { type: 'application/javascript' });
         const url = URL.createObjectURL(blob);
         workletUrlRef.current = url;
-        await audioCtx.audioWorklet.addModule(url);
+
+        // In some cases (HMR/Strict mode), we might try to add it twice.
+        // We can't catch "already registered" reliably, so we just try/catch the whole thing.
+        try {
+          await audioCtx.audioWorklet.addModule(url);
+        } catch (e) {
+          // If it fails because it's already there or other reason, we continue
+          console.warn('AudioWorklet module add attempt:', e);
+        }
+
+        if (isDestroyed) return;
 
         const workletNode = new AudioWorkletNode(audioCtx, 'buffer-processor');
         workletNodeRef.current = workletNode;
@@ -94,6 +109,7 @@ export const BPMDetector: React.FC<BPMDetectorProps> = ({
           const buf = audioBufferRef.current;
           if (!buf) return;
           const input = e.data;
+          // Shift buffer and add new data
           buf.set(buf.subarray(input.length));
           buf.set(input, BUFFER_SIZE - input.length);
         };
@@ -101,22 +117,34 @@ export const BPMDetector: React.FC<BPMDetectorProps> = ({
         sourceNode.connect(workletNode);
 
         const { analyze } = await import('web-audio-beat-detector');
+        
         bpmInterval = setInterval(async () => {
-          if (!audioBufferRef.current || audioCtx.state === 'suspended') return;
+          if (!audioBufferRef.current || audioCtx.state === 'suspended' || isDestroyed) return;
+          
+          // Only analyze if we have enough data (at least 2 seconds)
+          // Simple check: has the last few samples changed from zero?
+          if (audioBufferRef.current[BUFFER_SIZE - 1] === 0) return;
+
           const tempBuffer = audioCtx.createBuffer(1, BUFFER_SIZE, SAMPLE_RATE);
           tempBuffer.getChannelData(0).set(audioBufferRef.current);
+          
           try {
             onStatusChangeRef.current?.('Анализ...');
             const bpm = await analyze(tempBuffer);
-            onBpmChangeRef.current?.(Math.round(bpm));
-            onStatusChangeRef.current?.('Онлайн');
+            if (!isDestroyed) {
+              onBpmChangeRef.current?.(Math.round(bpm));
+              onStatusChangeRef.current?.('Онлайн');
+            }
           } catch {
-            onBpmChangeRef.current?.(null);
-            onStatusChangeRef.current?.('Ритм не найден');
+            if (!isDestroyed) {
+              onBpmChangeRef.current?.(null);
+              onStatusChangeRef.current?.('Ритм не найден');
+            }
           }
         }, 5000);
       } catch (err) {
-        console.error('Worklet error:', err);
+        console.error('Worklet setup error:', err);
+        onStatusChangeRef.current?.('Ошибка детектора');
       }
     };
 
@@ -124,18 +152,23 @@ export const BPMDetector: React.FC<BPMDetectorProps> = ({
     void setupWorkletAndAnalysis();
 
     return () => {
+      isDestroyed = true;
       if (animationFrameRef.current !== null) cancelAnimationFrame(animationFrameRef.current);
       if (bpmInterval) clearInterval(bpmInterval);
       if (workletNodeRef.current) {
-        workletNodeRef.current.disconnect();
+        try {
+          workletNodeRef.current.disconnect();
+        } catch (e) {}
         workletNodeRef.current = null;
       }
       if (workletUrlRef.current) {
         URL.revokeObjectURL(workletUrlRef.current);
         workletUrlRef.current = null;
       }
-      filter.disconnect();
-      analyzer.disconnect();
+      try {
+        filter.disconnect();
+        analyzer.disconnect();
+      } catch (e) {}
     };
   }, [audioCtx, sourceNode]);
 

@@ -1,0 +1,86 @@
+.skeletonContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 60px;
+    padding: 0 16px;
+    gap: 16px;
+    overflow: hidden;
+}
+
+.shimmer {
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.05) 0%,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(255, 255, 255, 0.05) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite linear;
+    border-radius: 4px;
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.trackInfo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+.art {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.texts {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+    max-width: 150px;
+}
+
+.title {
+    height: 14px;
+    width: 80%;
+}
+
+.artist {
+    height: 10px;
+    width: 50%;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+.playBtn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+}
+
+@media (max-width: 640px) {
+    .skeletonContainer {
+        height: 64px;
+    }
+    .texts {
+        max-width: 120px;
+    }
+}

@@ -8,4 +8,6 @@ export interface AudioReactiveVisualizerPrefs {
   gradientColors: GradientColors;
   bpmSpeedMultiplier: number;
   colorMode?: 'track' | 'custom';
+  smoothColorTransitions?: boolean;
+  colorBrightness?: number;
 }

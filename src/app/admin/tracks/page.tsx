@@ -25,9 +25,9 @@ import { ColorStudioSheet } from "@/components/color-studio/ColorStudioSheet";
 import { MultiStepUploadSheet } from "@/components/admin/MultiStepUploadSheet";
 import { Upload } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
-import { type ColorBindings } from "@/lib/colorChannels";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { type ColorBindings } from "@/lib/colorChannels";
 
 interface Track {
   id: number;
@@ -51,6 +51,8 @@ export default function AdminTracksPage() {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [isCoverUploading, setIsCoverUploading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const coverInputRef = React.useRef<HTMLInputElement>(null);
 
   const fetchTracks = useCallback(async () => {
@@ -77,6 +79,7 @@ export default function AdminTracksPage() {
 
   const onSave = async () => {
     if (!editingTrack) return;
+    setIsSaving(true);
     try {
       const res = await fetch("/api/admin/tracks", {
         method: "PUT",
@@ -89,11 +92,47 @@ export default function AdminTracksPage() {
       }
     } catch (err) {
       console.error("Save error", err);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const onCoverUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !editingTrack?.id) return;
+
+    setIsCoverUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("trackId", String(editingTrack.id));
+
+      const res = await fetch("/api/admin/tracks/cover?type=track", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) throw new Error(await res.text());
+
+      const data = await res.json();
+      
+      // Update local state for immediate feedback
+      setEditingTrack(prev => ({ 
+        ...prev!, 
+        cover: data.cover, 
+        colors: data.colors 
+      }));
+      setTracks(prev => prev.map(t => t.id === editingTrack.id ? { ...t, cover: data.cover, colors: data.colors } : t));
+    } catch (err) {
+      console.error("Cover upload error:", err);
+    } finally {
+      setIsCoverUploading(false);
     }
   };
 
   const onDelete = async () => {
     if (!deletingTrack) return;
+    setIsDeleting(true);
     try {
       const res = await fetch("/api/admin/tracks", {
         method: "DELETE",
@@ -106,38 +145,8 @@ export default function AdminTracksPage() {
       }
     } catch (err) {
       console.error("Delete error", err);
-    }
-  };
-
-  const onCoverUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file || !editingTrack?.id) return;
-
-    setIsCoverUploading(true);
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("trackId", editingTrack.id.toString());
-
-      const res = await fetch("/api/admin/tracks/cover", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!res.ok) throw new Error(await res.text());
-
-      const data = await res.json();
-      setEditingTrack(prev => ({ 
-        ...prev!, 
-        cover: data.cover, 
-        colors: data.colors 
-      }));
-      // Также обновим в основном списке, чтобы изменения были видны сразу
-      setTracks(prev => prev.map(t => t.id === editingTrack.id ? { ...t, cover: data.cover, colors: data.colors } : t));
-    } catch (err) {
-      console.error("Cover upload error:", err);
     } finally {
-      setIsCoverUploading(false);
+      setIsDeleting(false);
     }
   };
 
@@ -209,17 +218,17 @@ export default function AdminTracksPage() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-8 border-b border-zinc-800/50">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-zinc-800/50">
         <div>
-          <h1 className="text-4xl font-black tracking-tighter mb-2 text-zinc-100 uppercase italic">Музыкальная База</h1>
-          <p className="text-zinc-500 text-xs font-bold uppercase tracking-[0.2em] opacity-70">Централизованное управление медиа-контентом</p>
+          <h1 className="text-4xl font-bold tracking-tighter mb-2 text-zinc-100">БИБЛИОТЕКА</h1>
+          <p className="text-zinc-500 text-sm font-medium uppercase tracking-[0.2em]">Управление музыкальной базой</p>
         </div>
-        <div className="flex items-center gap-6">
-          <div className="hidden sm:flex flex-col items-end">
+        <div className="flex items-center gap-4">
+          <div className="flex flex-col items-end">
             <span className="text-2xl font-black text-zinc-100 leading-none">{tracks.length}</span>
             <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest mt-1">активных треков</span>
           </div>
-          <div className="h-10 w-px bg-zinc-800 mx-2 hidden sm:block" />
+          <div className="h-10 w-px bg-zinc-800 ml-2" />
           <Button 
             className="bg-primary text-primary-foreground hover:bg-primary/90 font-black px-6 rounded-full uppercase tracking-widest text-[10px] gap-2 shadow-xl shadow-primary/10"
             onClick={() => setIsUploadOpen(true)}
@@ -255,7 +264,7 @@ export default function AdminTracksPage() {
 
       {/* Edit Dialog */}
       <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
-        <DialogContent className="bg-[#0c0c0c] border-zinc-800 text-zinc-100 max-w-lg rounded-2xl">
+        <DialogContent className="bg-[#0c0c0c] border-zinc-800 text-zinc-100 max-w-lg rounded-2xl max-h-[90vh] overflow-y-auto custom-scrollbar">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold uppercase tracking-tight">
               Редактор трека
@@ -350,7 +359,7 @@ export default function AdminTracksPage() {
               <p className="mb-2 text-[10px] font-bold tracking-widest text-zinc-500 uppercase">Color Studio</p>
               <ColorStudioSheet
                 entityType="track"
-                entityId={editingTrack?.id?.toString()}
+                entityId={editingTrack?.id}
                 coverUrl={editingTrack?.cover}
                 initialColors={editingTrack?.colors}
                 onSaved={(colors) => setEditingTrack((prev) => ({ ...prev!, colors }))}
@@ -365,11 +374,12 @@ export default function AdminTracksPage() {
           </div>
 
           <DialogFooter className="gap-2">
-            <Button variant="outline" className="border-zinc-800 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900" onClick={() => setIsEditOpen(false)}>
+            <Button variant="outline" className="border-zinc-800 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900" onClick={() => setIsEditOpen(false)} disabled={isSaving}>
               Отмена
             </Button>
-            <Button className="bg-zinc-100 text-zinc-900 font-semibold hover:bg-white" onClick={onSave}>
-              Применить
+            <Button className="bg-zinc-100 text-zinc-900 font-bold px-6 gap-2" onClick={onSave} disabled={isSaving}>
+              {isSaving && <Loader2 className="h-4 w-4 animate-spin" />}
+              {isSaving ? "СОХРАНЕНИЕ..." : "СОХРАНИТЬ"}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -421,11 +431,12 @@ export default function AdminTracksPage() {
           </div>
 
           <DialogFooter className="gap-2">
-            <Button variant="outline" className="border-zinc-800 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900" onClick={() => setIsDeleteOpen(false)}>
+            <Button variant="outline" className="border-zinc-800 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900" onClick={() => setIsDeleteOpen(false)} disabled={isDeleting}>
               Отмена
             </Button>
-            <Button className="bg-red-600 text-white font-semibold hover:bg-red-500 shadow-[0_0_20px_rgba(220,38,38,0.2)]" onClick={onDelete}>
-              Удалить
+            <Button className="bg-red-600 text-white font-semibold hover:bg-red-500 shadow-[0_0_20px_rgba(220,38,38,0.2)] gap-2" onClick={onDelete} disabled={isDeleting}>
+              {isDeleting && <Loader2 className="h-4 w-4 animate-spin" />}
+              {isDeleting ? "УДАЛЕНИЕ..." : "Удалить"}
             </Button>
           </DialogFooter>
         </DialogContent>

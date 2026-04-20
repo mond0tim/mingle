@@ -12,6 +12,8 @@ interface ShaderBackgroundProps {
   bpmSpeedMultiplier?: number;
   baseSpeed?: number;
   lerpFactor?: number;
+  smoothColorTransitions?: boolean;
+  colorBrightness?: number;
 }
 
 export const ShaderBackground: React.FC<ShaderBackgroundProps> = ({
@@ -21,22 +23,42 @@ export const ShaderBackground: React.FC<ShaderBackgroundProps> = ({
   bpmSpeedMultiplier = 1.0,
   baseSpeed = 1.0,
   lerpFactor = 0.15,
+  smoothColorTransitions = true,
+  colorBrightness = 1.0,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const materialRef = useRef<THREE.ShaderMaterial | null>(null);
-  const paramsRef = useRef({ bpm, baseSpeed, bpmSpeedMultiplier, lerpFactor, analyzer });
+  const targetColorsRef = useRef<GradientColors>(gradientColors);
+  const paramsRef = useRef({ 
+    bpm, 
+    baseSpeed, 
+    bpmSpeedMultiplier, 
+    lerpFactor, 
+    analyzer,
+    smoothColorTransitions,
+    colorBrightness
+  });
 
   useEffect(() => {
-    paramsRef.current = { bpm, baseSpeed, bpmSpeedMultiplier, lerpFactor, analyzer };
-  }, [bpm, baseSpeed, bpmSpeedMultiplier, lerpFactor, analyzer]);
+    paramsRef.current = { 
+      bpm, 
+      baseSpeed, 
+      bpmSpeedMultiplier, 
+      lerpFactor, 
+      analyzer,
+      smoothColorTransitions,
+      colorBrightness
+    };
+  }, [bpm, baseSpeed, bpmSpeedMultiplier, lerpFactor, analyzer, smoothColorTransitions, colorBrightness]);
 
   useEffect(() => {
-    if (materialRef.current) {
+    targetColorsRef.current = gradientColors;
+    if (!smoothColorTransitions && materialRef.current) {
       materialRef.current.uniforms.u_color1.value.set(gradientColors.start);
       materialRef.current.uniforms.u_color2.value.set(gradientColors.mid);
       materialRef.current.uniforms.u_color3.value.set(gradientColors.end);
     }
-  }, [gradientColors]);
+  }, [gradientColors, smoothColorTransitions]);
 
   useEffect(() => {
     if (!canvasRef.current) return;
@@ -62,6 +84,7 @@ export const ShaderBackground: React.FC<ShaderBackgroundProps> = ({
         u_bass: { value: 0 },
         u_mid: { value: 0 },
         u_treble: { value: 0 },
+        u_brightness: { value: colorBrightness },
         u_color1: { value: new THREE.Color(gradientColors.start) },
         u_color2: { value: new THREE.Color(gradientColors.mid) },
         u_color3: { value: new THREE.Color(gradientColors.end) },
@@ -83,18 +106,35 @@ export const ShaderBackground: React.FC<ShaderBackgroundProps> = ({
     let time = 0;
     let lastFrameTime = performance.now();
 
+    const tempColor = new THREE.Color();
+
     const render = (now: number) => {
       const deltaTime = (now - lastFrameTime) / 1000;
       lastFrameTime = now;
 
-      const { bpm: currentBpmVal, baseSpeed: bs, bpmSpeedMultiplier: mult, lerpFactor: lf, analyzer: az } =
-        paramsRef.current;
+      const { 
+        bpm: currentBpmVal, 
+        baseSpeed: bs, 
+        bpmSpeedMultiplier: mult, 
+        lerpFactor: lf, 
+        analyzer: az,
+        smoothColorTransitions: smooth,
+        colorBrightness: brightness
+       } = paramsRef.current;
 
       const currentBpm = currentBpmVal || 120;
       const dynamicSpeed = bs * (currentBpm / 120) * mult;
 
       time += deltaTime * dynamicSpeed;
       material.uniforms.uTime.value = time;
+      material.uniforms.u_brightness.value = brightness;
+
+      if (smooth) {
+        const colorLerpSpeed = 0.05; // Slightly slower than audio signals for stability
+        material.uniforms.u_color1.value.lerp(tempColor.set(targetColorsRef.current.start), colorLerpSpeed);
+        material.uniforms.u_color2.value.lerp(tempColor.set(targetColorsRef.current.mid), colorLerpSpeed);
+        material.uniforms.u_color3.value.lerp(tempColor.set(targetColorsRef.current.end), colorLerpSpeed);
+      }
 
       if (az) {
         const bass = az.getEnergy('bass');
