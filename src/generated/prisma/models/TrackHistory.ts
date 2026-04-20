@@ -27,17 +27,19 @@ export type AggregateTrackHistory = {
 }
 
 export type TrackHistoryAvgAggregateOutputType = {
+  trackId: number | null
   listenedSec: number | null
 }
 
 export type TrackHistorySumAggregateOutputType = {
+  trackId: number | null
   listenedSec: number | null
 }
 
 export type TrackHistoryMinAggregateOutputType = {
   id: string | null
   userId: string | null
-  trackId: string | null
+  trackId: number | null
   playedAt: Date | null
   listenedSec: number | null
 }
@@ -45,7 +47,7 @@ export type TrackHistoryMinAggregateOutputType = {
 export type TrackHistoryMaxAggregateOutputType = {
   id: string | null
   userId: string | null
-  trackId: string | null
+  trackId: number | null
   playedAt: Date | null
   listenedSec: number | null
 }
@@ -61,10 +63,12 @@ export type TrackHistoryCountAggregateOutputType = {
 
 
 export type TrackHistoryAvgAggregateInputType = {
+  trackId?: true
   listenedSec?: true
 }
 
 export type TrackHistorySumAggregateInputType = {
+  trackId?: true
   listenedSec?: true
 }
 
@@ -182,7 +186,7 @@ export type TrackHistoryGroupByArgs<ExtArgs extends runtime.Types.Extensions.Int
 export type TrackHistoryGroupByOutputType = {
   id: string
   userId: string
-  trackId: string
+  trackId: number
   playedAt: Date
   listenedSec: number
   _count: TrackHistoryCountAggregateOutputType | null
@@ -213,7 +217,7 @@ export type TrackHistoryWhereInput = {
   NOT?: Prisma.TrackHistoryWhereInput | Prisma.TrackHistoryWhereInput[]
   id?: Prisma.StringFilter<"TrackHistory"> | string
   userId?: Prisma.StringFilter<"TrackHistory"> | string
-  trackId?: Prisma.StringFilter<"TrackHistory"> | string
+  trackId?: Prisma.IntFilter<"TrackHistory"> | number
   playedAt?: Prisma.DateTimeFilter<"TrackHistory"> | Date | string
   listenedSec?: Prisma.IntFilter<"TrackHistory"> | number
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -237,7 +241,7 @@ export type TrackHistoryWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.TrackHistoryWhereInput[]
   NOT?: Prisma.TrackHistoryWhereInput | Prisma.TrackHistoryWhereInput[]
   userId?: Prisma.StringFilter<"TrackHistory"> | string
-  trackId?: Prisma.StringFilter<"TrackHistory"> | string
+  trackId?: Prisma.IntFilter<"TrackHistory"> | number
   playedAt?: Prisma.DateTimeFilter<"TrackHistory"> | Date | string
   listenedSec?: Prisma.IntFilter<"TrackHistory"> | number
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -263,7 +267,7 @@ export type TrackHistoryScalarWhereWithAggregatesInput = {
   NOT?: Prisma.TrackHistoryScalarWhereWithAggregatesInput | Prisma.TrackHistoryScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"TrackHistory"> | string
   userId?: Prisma.StringWithAggregatesFilter<"TrackHistory"> | string
-  trackId?: Prisma.StringWithAggregatesFilter<"TrackHistory"> | string
+  trackId?: Prisma.IntWithAggregatesFilter<"TrackHistory"> | number
   playedAt?: Prisma.DateTimeWithAggregatesFilter<"TrackHistory"> | Date | string
   listenedSec?: Prisma.IntWithAggregatesFilter<"TrackHistory"> | number
 }
@@ -279,7 +283,7 @@ export type TrackHistoryCreateInput = {
 export type TrackHistoryUncheckedCreateInput = {
   id?: string
   userId: string
-  trackId: string
+  trackId: number
   playedAt?: Date | string
   listenedSec?: number
 }
@@ -295,7 +299,7 @@ export type TrackHistoryUpdateInput = {
 export type TrackHistoryUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  trackId?: Prisma.StringFieldUpdateOperationsInput | string
+  trackId?: Prisma.IntFieldUpdateOperationsInput | number
   playedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   listenedSec?: Prisma.IntFieldUpdateOperationsInput | number
 }
@@ -303,7 +307,7 @@ export type TrackHistoryUncheckedUpdateInput = {
 export type TrackHistoryCreateManyInput = {
   id?: string
   userId: string
-  trackId: string
+  trackId: number
   playedAt?: Date | string
   listenedSec?: number
 }
@@ -317,7 +321,7 @@ export type TrackHistoryUpdateManyMutationInput = {
 export type TrackHistoryUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  trackId?: Prisma.StringFieldUpdateOperationsInput | string
+  trackId?: Prisma.IntFieldUpdateOperationsInput | number
   playedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   listenedSec?: Prisma.IntFieldUpdateOperationsInput | number
 }
@@ -347,6 +351,7 @@ export type TrackHistoryCountOrderByAggregateInput = {
 }
 
 export type TrackHistoryAvgOrderByAggregateInput = {
+  trackId?: Prisma.SortOrder
   listenedSec?: Prisma.SortOrder
 }
 
@@ -367,6 +372,7 @@ export type TrackHistoryMinOrderByAggregateInput = {
 }
 
 export type TrackHistorySumOrderByAggregateInput = {
+  trackId?: Prisma.SortOrder
   listenedSec?: Prisma.SortOrder
 }
 
@@ -463,7 +469,7 @@ export type TrackHistoryCreateWithoutUserInput = {
 
 export type TrackHistoryUncheckedCreateWithoutUserInput = {
   id?: string
-  trackId: string
+  trackId: number
   playedAt?: Date | string
   listenedSec?: number
 }
@@ -500,7 +506,7 @@ export type TrackHistoryScalarWhereInput = {
   NOT?: Prisma.TrackHistoryScalarWhereInput | Prisma.TrackHistoryScalarWhereInput[]
   id?: Prisma.StringFilter<"TrackHistory"> | string
   userId?: Prisma.StringFilter<"TrackHistory"> | string
-  trackId?: Prisma.StringFilter<"TrackHistory"> | string
+  trackId?: Prisma.IntFilter<"TrackHistory"> | number
   playedAt?: Prisma.DateTimeFilter<"TrackHistory"> | Date | string
   listenedSec?: Prisma.IntFilter<"TrackHistory"> | number
 }
@@ -547,7 +553,7 @@ export type TrackHistoryUpdateManyWithWhereWithoutTrackInput = {
 
 export type TrackHistoryCreateManyUserInput = {
   id?: string
-  trackId: string
+  trackId: number
   playedAt?: Date | string
   listenedSec?: number
 }
@@ -561,14 +567,14 @@ export type TrackHistoryUpdateWithoutUserInput = {
 
 export type TrackHistoryUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  trackId?: Prisma.StringFieldUpdateOperationsInput | string
+  trackId?: Prisma.IntFieldUpdateOperationsInput | number
   playedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   listenedSec?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type TrackHistoryUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  trackId?: Prisma.StringFieldUpdateOperationsInput | string
+  trackId?: Prisma.IntFieldUpdateOperationsInput | number
   playedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   listenedSec?: Prisma.IntFieldUpdateOperationsInput | number
 }
@@ -638,7 +644,7 @@ export type $TrackHistoryPayload<ExtArgs extends runtime.Types.Extensions.Intern
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     userId: string
-    trackId: string
+    trackId: number
     playedAt: Date
     listenedSec: number
   }, ExtArgs["result"]["trackHistory"]>
@@ -1014,7 +1020,7 @@ export interface Prisma__TrackHistoryClient<T, Null = never, ExtArgs extends run
 export interface TrackHistoryFieldRefs {
   readonly id: Prisma.FieldRef<"TrackHistory", 'String'>
   readonly userId: Prisma.FieldRef<"TrackHistory", 'String'>
-  readonly trackId: Prisma.FieldRef<"TrackHistory", 'String'>
+  readonly trackId: Prisma.FieldRef<"TrackHistory", 'Int'>
   readonly playedAt: Prisma.FieldRef<"TrackHistory", 'DateTime'>
   readonly listenedSec: Prisma.FieldRef<"TrackHistory", 'Int'>
 }

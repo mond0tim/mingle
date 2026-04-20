@@ -20,21 +20,31 @@ export type FavoriteTrackModel = runtime.Types.Result.DefaultSelection<Prisma.$F
 
 export type AggregateFavoriteTrack = {
   _count: FavoriteTrackCountAggregateOutputType | null
+  _avg: FavoriteTrackAvgAggregateOutputType | null
+  _sum: FavoriteTrackSumAggregateOutputType | null
   _min: FavoriteTrackMinAggregateOutputType | null
   _max: FavoriteTrackMaxAggregateOutputType | null
+}
+
+export type FavoriteTrackAvgAggregateOutputType = {
+  trackId: number | null
+}
+
+export type FavoriteTrackSumAggregateOutputType = {
+  trackId: number | null
 }
 
 export type FavoriteTrackMinAggregateOutputType = {
   id: string | null
   userId: string | null
-  trackId: string | null
+  trackId: number | null
   createdAt: Date | null
 }
 
 export type FavoriteTrackMaxAggregateOutputType = {
   id: string | null
   userId: string | null
-  trackId: string | null
+  trackId: number | null
   createdAt: Date | null
 }
 
@@ -46,6 +56,14 @@ export type FavoriteTrackCountAggregateOutputType = {
   _all: number
 }
 
+
+export type FavoriteTrackAvgAggregateInputType = {
+  trackId?: true
+}
+
+export type FavoriteTrackSumAggregateInputType = {
+  trackId?: true
+}
 
 export type FavoriteTrackMinAggregateInputType = {
   id?: true
@@ -107,6 +125,18 @@ export type FavoriteTrackAggregateArgs<ExtArgs extends runtime.Types.Extensions.
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: FavoriteTrackAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: FavoriteTrackSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: FavoriteTrackMinAggregateInputType
@@ -137,6 +167,8 @@ export type FavoriteTrackGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   _count?: FavoriteTrackCountAggregateInputType | true
+  _avg?: FavoriteTrackAvgAggregateInputType
+  _sum?: FavoriteTrackSumAggregateInputType
   _min?: FavoriteTrackMinAggregateInputType
   _max?: FavoriteTrackMaxAggregateInputType
 }
@@ -144,9 +176,11 @@ export type FavoriteTrackGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
 export type FavoriteTrackGroupByOutputType = {
   id: string
   userId: string
-  trackId: string
+  trackId: number
   createdAt: Date
   _count: FavoriteTrackCountAggregateOutputType | null
+  _avg: FavoriteTrackAvgAggregateOutputType | null
+  _sum: FavoriteTrackSumAggregateOutputType | null
   _min: FavoriteTrackMinAggregateOutputType | null
   _max: FavoriteTrackMaxAggregateOutputType | null
 }
@@ -172,7 +206,7 @@ export type FavoriteTrackWhereInput = {
   NOT?: Prisma.FavoriteTrackWhereInput | Prisma.FavoriteTrackWhereInput[]
   id?: Prisma.StringFilter<"FavoriteTrack"> | string
   userId?: Prisma.StringFilter<"FavoriteTrack"> | string
-  trackId?: Prisma.StringFilter<"FavoriteTrack"> | string
+  trackId?: Prisma.IntFilter<"FavoriteTrack"> | number
   createdAt?: Prisma.DateTimeFilter<"FavoriteTrack"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   track?: Prisma.XOR<Prisma.TrackScalarRelationFilter, Prisma.TrackWhereInput>
@@ -195,7 +229,7 @@ export type FavoriteTrackWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.FavoriteTrackWhereInput[]
   NOT?: Prisma.FavoriteTrackWhereInput | Prisma.FavoriteTrackWhereInput[]
   userId?: Prisma.StringFilter<"FavoriteTrack"> | string
-  trackId?: Prisma.StringFilter<"FavoriteTrack"> | string
+  trackId?: Prisma.IntFilter<"FavoriteTrack"> | number
   createdAt?: Prisma.DateTimeFilter<"FavoriteTrack"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   track?: Prisma.XOR<Prisma.TrackScalarRelationFilter, Prisma.TrackWhereInput>
@@ -207,8 +241,10 @@ export type FavoriteTrackOrderByWithAggregationInput = {
   trackId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.FavoriteTrackCountOrderByAggregateInput
+  _avg?: Prisma.FavoriteTrackAvgOrderByAggregateInput
   _max?: Prisma.FavoriteTrackMaxOrderByAggregateInput
   _min?: Prisma.FavoriteTrackMinOrderByAggregateInput
+  _sum?: Prisma.FavoriteTrackSumOrderByAggregateInput
 }
 
 export type FavoriteTrackScalarWhereWithAggregatesInput = {
@@ -217,7 +253,7 @@ export type FavoriteTrackScalarWhereWithAggregatesInput = {
   NOT?: Prisma.FavoriteTrackScalarWhereWithAggregatesInput | Prisma.FavoriteTrackScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"FavoriteTrack"> | string
   userId?: Prisma.StringWithAggregatesFilter<"FavoriteTrack"> | string
-  trackId?: Prisma.StringWithAggregatesFilter<"FavoriteTrack"> | string
+  trackId?: Prisma.IntWithAggregatesFilter<"FavoriteTrack"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"FavoriteTrack"> | Date | string
 }
 
@@ -231,7 +267,7 @@ export type FavoriteTrackCreateInput = {
 export type FavoriteTrackUncheckedCreateInput = {
   id?: string
   userId: string
-  trackId: string
+  trackId: number
   createdAt?: Date | string
 }
 
@@ -245,14 +281,14 @@ export type FavoriteTrackUpdateInput = {
 export type FavoriteTrackUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  trackId?: Prisma.StringFieldUpdateOperationsInput | string
+  trackId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type FavoriteTrackCreateManyInput = {
   id?: string
   userId: string
-  trackId: string
+  trackId: number
   createdAt?: Date | string
 }
 
@@ -264,7 +300,7 @@ export type FavoriteTrackUpdateManyMutationInput = {
 export type FavoriteTrackUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  trackId?: Prisma.StringFieldUpdateOperationsInput | string
+  trackId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -286,7 +322,7 @@ export type FavoriteTrackOrderByRelevanceInput = {
 
 export type FavoriteTrackUserIdTrackIdCompoundUniqueInput = {
   userId: string
-  trackId: string
+  trackId: number
 }
 
 export type FavoriteTrackCountOrderByAggregateInput = {
@@ -294,6 +330,10 @@ export type FavoriteTrackCountOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   trackId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+}
+
+export type FavoriteTrackAvgOrderByAggregateInput = {
+  trackId?: Prisma.SortOrder
 }
 
 export type FavoriteTrackMaxOrderByAggregateInput = {
@@ -308,6 +348,10 @@ export type FavoriteTrackMinOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   trackId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+}
+
+export type FavoriteTrackSumOrderByAggregateInput = {
+  trackId?: Prisma.SortOrder
 }
 
 export type FavoriteTrackCreateNestedManyWithoutUserInput = {
@@ -402,7 +446,7 @@ export type FavoriteTrackCreateWithoutUserInput = {
 
 export type FavoriteTrackUncheckedCreateWithoutUserInput = {
   id?: string
-  trackId: string
+  trackId: number
   createdAt?: Date | string
 }
 
@@ -438,7 +482,7 @@ export type FavoriteTrackScalarWhereInput = {
   NOT?: Prisma.FavoriteTrackScalarWhereInput | Prisma.FavoriteTrackScalarWhereInput[]
   id?: Prisma.StringFilter<"FavoriteTrack"> | string
   userId?: Prisma.StringFilter<"FavoriteTrack"> | string
-  trackId?: Prisma.StringFilter<"FavoriteTrack"> | string
+  trackId?: Prisma.IntFilter<"FavoriteTrack"> | number
   createdAt?: Prisma.DateTimeFilter<"FavoriteTrack"> | Date | string
 }
 
@@ -482,7 +526,7 @@ export type FavoriteTrackUpdateManyWithWhereWithoutTrackInput = {
 
 export type FavoriteTrackCreateManyUserInput = {
   id?: string
-  trackId: string
+  trackId: number
   createdAt?: Date | string
 }
 
@@ -494,13 +538,13 @@ export type FavoriteTrackUpdateWithoutUserInput = {
 
 export type FavoriteTrackUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  trackId?: Prisma.StringFieldUpdateOperationsInput | string
+  trackId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type FavoriteTrackUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  trackId?: Prisma.StringFieldUpdateOperationsInput | string
+  trackId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -563,7 +607,7 @@ export type $FavoriteTrackPayload<ExtArgs extends runtime.Types.Extensions.Inter
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     userId: string
-    trackId: string
+    trackId: number
     createdAt: Date
   }, ExtArgs["result"]["favoriteTrack"]>
   composites: {}
@@ -938,7 +982,7 @@ export interface Prisma__FavoriteTrackClient<T, Null = never, ExtArgs extends ru
 export interface FavoriteTrackFieldRefs {
   readonly id: Prisma.FieldRef<"FavoriteTrack", 'String'>
   readonly userId: Prisma.FieldRef<"FavoriteTrack", 'String'>
-  readonly trackId: Prisma.FieldRef<"FavoriteTrack", 'String'>
+  readonly trackId: Prisma.FieldRef<"FavoriteTrack", 'Int'>
   readonly createdAt: Prisma.FieldRef<"FavoriteTrack", 'DateTime'>
 }
     

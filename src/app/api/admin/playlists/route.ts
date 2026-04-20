@@ -71,3 +71,24 @@ export async function DELETE(request: Request) {
   await prisma.playlist.delete({ where: { id } });
   return NextResponse.json({ success: true });
 }
+
+// POST /api/admin/playlists
+export async function POST(request: Request) {
+  const session = await requireAdmin();
+  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+
+  const body = await request.json();
+  const { title, cover, category, isPublic, authorId } = body;
+
+  const playlist = await prisma.playlist.create({
+    data: {
+      title: title || "Новый плейлист",
+      cover: cover || null,
+      category: category || "PLAYLIST",
+      isPublic: isPublic ?? false,
+      authorId: authorId || session.user.id,
+    }
+  });
+
+  return NextResponse.json({ playlist });
+}

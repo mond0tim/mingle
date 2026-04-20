@@ -8,11 +8,16 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = await params;
+    const { id: idParam } = await params;
+    const trackId = parseInt(idParam, 10);
+
+    if (isNaN(trackId)) {
+       return new NextResponse('Invalid Track ID format', { status: 400 });
+    }
     
     // 1. Ищем трек в БД
     const track = await prisma.track.findUnique({
-      where: { id }
+      where: { id: trackId }
     });
 
     if (!track) {

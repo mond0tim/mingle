@@ -24,7 +24,10 @@ import {
 } from "lucide-react";
 import { DataTable } from "@/components/admin/DataTable";
 import { ColorStudioSheet } from "@/components/color-studio/ColorStudioSheet";
+import { PlaylistTrackEditor } from "@/components/admin/PlaylistTrackEditor";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ColumnDef } from "@tanstack/react-table";
+import { type ColorBindings } from "@/lib/colorChannels";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -50,6 +53,8 @@ export default function AdminPlaylistsPage() {
 
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isCoverUploading, setIsCoverUploading] = useState(false);
+  const coverInputRef = React.useRef<HTMLInputElement>(null);
 
   const fetchPlaylists = useCallback(async () => {
     setLoading(true);
@@ -68,6 +73,17 @@ export default function AdminPlaylistsPage() {
     fetchPlaylists();
   }, [fetchPlaylists]);
 
+  const handleCreate = () => {
+    setEditingPlaylist({
+      title: "Новый плейлист",
+      category: "PLAYLIST",
+      isPublic: false,
+      type: "user",
+      cover: ""
+    });
+    setIsEditOpen(true);
+  };
+
   const handleEdit = (playlist: Playlist) => {
     setEditingPlaylist(playlist);
     setIsEditOpen(true);
@@ -76,8 +92,9 @@ export default function AdminPlaylistsPage() {
   const onSave = async () => {
     if (!editingPlaylist) return;
     try {
+      const method = editingPlaylist.id ? "PUT" : "POST";
       const res = await fetch("/api/admin/playlists", {
-        method: "PUT",
+        method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(editingPlaylist),
       });
@@ -107,6 +124,37 @@ export default function AdminPlaylistsPage() {
     }
   };
 
+  const onCoverUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !editingPlaylist?.id) return;
+
+    setIsCoverUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("playlistId", editingPlaylist.id);
+
+      const res = await fetch("/api/admin/playlists/cover", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) throw new Error(await res.text());
+
+      const data = await res.json();
+      setEditingPlaylist(prev => ({ 
+        ...prev!, 
+        cover: data.cover, 
+        colors: data.colors 
+      }));
+      setPlaylists(prev => prev.map(p => p.id === editingPlaylist.id ? { ...p, cover: data.cover, colors: data.colors } : p));
+    } catch (err) {
+      console.error("Playlist cover upload error:", err);
+    } finally {
+      setIsCoverUploading(false);
+    }
+  };
+
   const columns = useMemo<ColumnDef<Playlist>[]>(() => [
     {
       accessorKey: "title",
@@ -117,7 +165,7 @@ export default function AdminPlaylistsPage() {
           <div className="flex items-center gap-3">
             <img
               alt={playlist.title}
-              className="w-10 h-10 rounded-lg object-cover border border-zinc-800 flex-shrink-0"
+              className="w-10 h-10 rounded-lg object-cover border border-zinc-800 flex-shrink-0 shadow-lg"
               src={playlist.cover || "/covers/no-cover.jpg"}
               onError={(e) => { (e.target as HTMLImageElement).src = "/covers/no-cover.jpg"; }}
             />
@@ -143,7 +191,7 @@ export default function AdminPlaylistsPage() {
       header: "Треков",
       cell: ({ row }) => (
         <div className="flex items-center gap-1.5">
-          <span className="text-sm font-bold text-zinc-200">{row.original._count.tracks}</span>
+          <span className="text-sm font-bold text-zinc-200">{row.original._count?.tracks || 0}</span>
           <span className="text-[10px] text-zinc-600 font-bold">шт.</span>
         </div>
       ),
@@ -197,21 +245,21 @@ export default function AdminPlaylistsPage() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-zinc-800/50">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-8 border-b border-zinc-800/50">
         <div>
-          <h1 className="text-4xl font-bold tracking-tighter mb-2 text-zinc-100 uppercase italic">Collections</h1>
-          <p className="text-zinc-500 text-sm font-medium uppercase tracking-[0.2em]">Управление плейлистами и альбомами</p>
+          <h1 className="text-4xl font-black tracking-tighter mb-2 text-zinc-100 uppercase italic">Collections</h1>
+          <p className="text-zinc-500 text-xs font-bold uppercase tracking-[0.2em] opacity-70">Управление плейлистами и альбомами</p>
         </div>
-        <div className="flex items-center gap-4 bg-zinc-900/50 border border-zinc-800 p-4 px-5 rounded-xl">
+        <div className="flex items-center gap-4 bg-zinc-900/50 border border-zinc-800 p-4 px-5 rounded-2xl">
           <div className="flex flex-col items-start gap-1">
-            <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">Всего</span>
+            <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest leading-none">Всего</span>
             <span className="text-2xl font-black text-zinc-100 leading-none">{playlists.length}</span>
           </div>
           <div className="w-px h-8 bg-zinc-800" />
           <Button
             size="sm"
-            className="bg-zinc-100 text-zinc-900 font-semibold hover:bg-white h-9"
-            onClick={() => {}}
+            className="bg-zinc-100 text-zinc-900 font-black hover:bg-white h-9 px-6 uppercase tracking-tight italic"
+            onClick={handleCreate}
           >
             <Plus className="h-4 w-4 mr-1.5" />
             Создать
@@ -232,165 +280,194 @@ export default function AdminPlaylistsPage() {
         />
       )}
 
-      {/* Edit Dialog */}
+      {/* Edit/Create Dialog */}
       <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
-        <DialogContent className="bg-[#0c0c0c] border-zinc-800 text-zinc-100 max-w-xl rounded-2xl">
-          <DialogHeader>
+        <DialogContent className="bg-[#0c0c0c] border-zinc-800 text-zinc-100 max-w-3xl rounded-3xl overflow-hidden p-0 gap-0">
+          <DialogHeader className="p-8 pb-4">
             <DialogTitle className="flex items-center justify-between">
               <div>
-                <p className="text-2xl font-bold uppercase italic tracking-tight">Плейлист</p>
-                <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-1">Metadata Config</p>
+                <p className="text-3xl font-black uppercase italic tracking-tighter">
+                  {editingPlaylist?.id ? "Edit Collection" : "New Collection"}
+                </p>
+                <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-1 opacity-70">Management Suite</p>
               </div>
-              <div className="h-10 w-10 rounded-full border border-zinc-800 flex items-center justify-center text-zinc-700 flex-shrink-0">
-                <Settings className="h-4 w-4" />
+              <div className="h-12 w-12 rounded-xl border border-zinc-800 flex items-center justify-center bg-zinc-900/50 text-zinc-600 flex-shrink-0">
+                <Settings className="h-6 w-6" />
               </div>
             </DialogTitle>
           </DialogHeader>
 
-          <div className="space-y-6 py-2">
-            <div className="flex gap-6 items-start">
-              <div className="relative group flex-shrink-0">
-                <img
-                  alt="Cover"
-                  className="w-28 h-28 rounded-2xl object-cover border border-zinc-800 grayscale hover:grayscale-0 transition-all duration-500"
-                  src={editingPlaylist?.cover || "/covers/no-cover.jpg"}
-                  onError={(e) => { (e.target as HTMLImageElement).src = "/covers/no-cover.jpg"; }}
-                />
-                <div className="absolute inset-0 bg-zinc-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-2xl">
-                  <Pencil className="h-5 w-5 text-white" />
-                </div>
-              </div>
-              <div className="flex-1 space-y-4">
-                <div>
-                  <Label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Название</Label>
-                  <Input
-                    className="mt-1.5 bg-zinc-900/50 border-zinc-800 focus-visible:border-zinc-600 text-zinc-100"
-                    value={editingPlaylist?.title || ""}
-                    onChange={(e) => setEditingPlaylist(prev => ({ ...prev!, title: e.target.value }))}
-                  />
-                </div>
-                <div>
-                  <Label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Обложка (URL)</Label>
-                  <Input
-                    className="mt-1.5 bg-zinc-900/50 border-zinc-800 focus-visible:border-zinc-600 text-zinc-100 font-mono text-xs"
-                    value={editingPlaylist?.cover || ""}
-                    onChange={(e) => setEditingPlaylist(prev => ({ ...prev!, cover: e.target.value }))}
-                  />
-                </div>
-              </div>
-            </div>
+          <Tabs defaultValue="info" className="w-full">
+             <TabsList className="mx-8 bg-zinc-900/50 border border-zinc-800 p-1 mb-6 rounded-xl h-10">
+               <TabsTrigger value="info" className="data-[state=active]:bg-zinc-800 data-[state=active]:text-zinc-100 rounded-lg px-6 font-bold uppercase tracking-widest text-[10px]">Информация</TabsTrigger>
+               <TabsTrigger value="tracks" disabled={!editingPlaylist?.id} className="data-[state=active]:bg-zinc-800 data-[state=active]:text-zinc-100 rounded-lg px-6 font-bold uppercase tracking-widest text-[10px]">Состав Треков</TabsTrigger>
+             </TabsList>
 
-            <div className="flex gap-3">
-              <div className="flex-1">
-                <Label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest flex items-center gap-2">
-                  Colors: Фон
-                  {editingPlaylist?.colors?.background && (
-                    <span className="w-2.5 h-2.5 rounded-sm inline-block" style={{ backgroundColor: editingPlaylist.colors.background }} />
-                  )}
-                </Label>
-                <Input
-                  className="mt-1.5 bg-zinc-900/50 border-zinc-800 focus-visible:border-zinc-600 text-zinc-100 font-mono text-xs"
-                  placeholder="#000000"
-                  value={editingPlaylist?.colors?.background || ""}
-                  onChange={(e) => setEditingPlaylist(prev => ({ ...prev!, colors: { ...prev?.colors, background: e.target.value } }))}
-                />
-              </div>
-              <div className="flex-1">
-                <Label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest flex items-center gap-2">
-                  Кнопка
-                  {editingPlaylist?.colors?.button && (
-                    <span className="w-2.5 h-2.5 rounded-sm inline-block" style={{ backgroundColor: editingPlaylist.colors.button }} />
-                  )}
-                </Label>
-                <Input
-                  className="mt-1.5 bg-zinc-900/50 border-zinc-800 focus-visible:border-zinc-600 text-zinc-100 font-mono text-xs"
-                  placeholder="#C7D3FF"
-                  value={editingPlaylist?.colors?.button || ""}
-                  onChange={(e) => setEditingPlaylist(prev => ({ ...prev!, colors: { ...prev?.colors, button: e.target.value } }))}
-                />
-              </div>
-              <div className="flex-1">
-                <Label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest flex items-center gap-2">
-                  Иконки (Текст)
-                  {editingPlaylist?.colors?.title && (
-                    <span className="w-2.5 h-2.5 rounded-sm inline-block" style={{ backgroundColor: editingPlaylist.colors.title }} />
-                  )}
-                </Label>
-                <Input
-                  className="mt-1.5 bg-zinc-900/50 border-zinc-800 focus-visible:border-zinc-600 text-zinc-100 font-mono text-xs"
-                  placeholder="#FFFFFF"
-                  value={editingPlaylist?.colors?.title || ""}
-                  onChange={(e) => setEditingPlaylist(prev => ({ ...prev!, colors: { ...prev?.colors, title: e.target.value } }))}
-                />
-              </div>
-            </div>
+             <TabsContent value="info" className="p-8 pt-0 max-h-[60vh] overflow-y-auto custom-scrollbar">
+                <div className="space-y-8">
+                  <div className="flex gap-8 items-start">
+                    <div 
+                      className="relative group flex-shrink-0 cursor-pointer"
+                      onClick={() => coverInputRef.current?.click()}
+                    >
+                      <img
+                        alt="Cover"
+                        className="w-32 h-32 rounded-2xl object-cover border border-zinc-800 shadow-2xl transition-all duration-500"
+                        src={editingPlaylist?.cover || "/covers/no-cover.jpg"}
+                        onError={(e) => { (e.target as HTMLImageElement).src = "/covers/no-cover.jpg"; }}
+                      />
+                      <div className="absolute inset-0 bg-zinc-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-2xl">
+                        {isCoverUploading ? (
+                          <Loader2 className="h-8 w-8 text-white animate-spin" />
+                        ) : (
+                          <Pencil className="h-6 w-6 text-white" />
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex-1 space-y-5">
+                      <div>
+                        <Label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] mb-2 block">Название</Label>
+                        <Input
+                          className="bg-zinc-950 border-zinc-800 focus-visible:border-primary/50 text-zinc-100 h-11 text-lg font-bold"
+                          value={editingPlaylist?.title || ""}
+                          onChange={(e) => setEditingPlaylist(prev => ({ ...prev!, title: e.target.value }))}
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] mb-2 block">Обложка (URL)</Label>
+                        <Input
+                          className="bg-zinc-950 border-zinc-800 focus-visible:border-primary/50 text-zinc-100 font-mono text-xs h-10"
+                          value={editingPlaylist?.cover || ""}
+                          onChange={(e) => setEditingPlaylist(prev => ({ ...prev!, cover: e.target.value }))}
+                        />
+                      </div>
+                    </div>
+                  </div>
 
-            <div className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-3">
-              <p className="mb-2 text-[10px] font-bold tracking-widest text-zinc-500 uppercase">Color Studio</p>
-              <ColorStudioSheet
-                entityType="playlist"
-                entityId={editingPlaylist?.id}
-                coverUrl={editingPlaylist?.cover}
-                initialColors={editingPlaylist?.colors}
-                onSaved={(colors) => setEditingPlaylist((prev) => ({ ...prev!, colors }))}
-                triggerLabel="Открыть Color Studio"
-              />
-            </div>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="space-y-2">
+                      <Label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest flex items-center gap-2">
+                        Фон
+                        {editingPlaylist?.colors?.background && (
+                          <span className="w-2.5 h-2.5 rounded-full inline-block" style={{ backgroundColor: editingPlaylist.colors.background }} />
+                        )}
+                      </Label>
+                      <Input
+                        className="bg-zinc-950 border-zinc-800 text-zinc-100 font-mono text-[10px] uppercase h-9"
+                        placeholder="#000000"
+                        value={editingPlaylist?.colors?.background || ""}
+                        onChange={(e) => setEditingPlaylist(prev => ({ ...prev!, colors: { ...prev?.colors, background: e.target.value } }))}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest flex items-center gap-2">
+                        Кнопка
+                        {editingPlaylist?.colors?.button && (
+                          <span className="w-2.5 h-2.5 rounded-full inline-block" style={{ backgroundColor: editingPlaylist.colors.button }} />
+                        )}
+                      </Label>
+                      <Input
+                        className="bg-zinc-950 border-zinc-800 text-zinc-100 font-mono text-[10px] uppercase h-9"
+                        placeholder="#C7D3FF"
+                        value={editingPlaylist?.colors?.button || ""}
+                        onChange={(e) => setEditingPlaylist(prev => ({ ...prev!, colors: { ...prev?.colors, button: e.target.value } }))}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest flex items-center gap-2">
+                        Иконки
+                        {editingPlaylist?.colors?.title && (
+                          <span className="w-2.5 h-2.5 rounded-full inline-block" style={{ backgroundColor: editingPlaylist.colors.title }} />
+                        )}
+                      </Label>
+                      <Input
+                        className="bg-zinc-950 border-zinc-800 text-zinc-100 font-mono text-[10px] uppercase h-9"
+                        placeholder="#FFFFFF"
+                        value={editingPlaylist?.colors?.title || ""}
+                        onChange={(e) => setEditingPlaylist(prev => ({ ...prev!, colors: { ...prev?.colors, title: e.target.value } }))}
+                      />
+                    </div>
+                  </div>
 
-            <div>
-              <p className="text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-2">Тип коллекции</p>
-              <div className="flex flex-wrap gap-2">
-                {CATEGORIES.map((c) => (
-                  <button
-                    key={c}
-                    onClick={() => setEditingPlaylist(prev => ({ ...prev!, category: c }))}
-                    className={cn(
-                      "px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest border transition-all duration-200",
-                      editingPlaylist?.category === c
-                        ? "bg-zinc-100 text-zinc-900 border-zinc-100"
-                        : "bg-zinc-900 text-zinc-600 border-zinc-800 hover:border-zinc-600 hover:text-zinc-400"
-                    )}
+                  <div className="rounded-2xl border border-zinc-800 bg-zinc-950/50 p-4">
+                    <p className="mb-3 text-[10px] font-black tracking-[0.2em] text-zinc-500 uppercase">Color Studio Engine</p>
+                    <ColorStudioSheet
+                      entityType="playlist"
+                      entityId={editingPlaylist?.id}
+                      coverUrl={editingPlaylist?.cover}
+                      initialColors={editingPlaylist?.colors}
+                      onSaved={(colors) => setEditingPlaylist((prev) => ({ ...prev!, colors }))}
+                      triggerLabel="Интеллектуальный подбор палитры"
+                    />
+                  </div>
+
+                  <div className="space-y-3">
+                    <p className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em]">Тип коллекции</p>
+                    <div className="flex flex-wrap gap-2">
+                      {CATEGORIES.map((c) => (
+                        <button
+                          key={c}
+                          onClick={() => setEditingPlaylist(prev => ({ ...prev!, category: c }))}
+                          className={cn(
+                            "px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest border transition-all duration-300",
+                            editingPlaylist?.category === c
+                              ? "bg-zinc-100 text-zinc-900 border-zinc-100 shadow-[0_0_20px_rgba(255,255,255,0.1)]"
+                              : "bg-zinc-900 border-zinc-800 text-zinc-500 hover:border-zinc-600 hover:text-zinc-300"
+                          )}
+                        >
+                          {c}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div
+                    className="flex items-center justify-between p-5 bg-zinc-950 border border-zinc-800 rounded-2xl cursor-pointer hover:bg-zinc-900/50 transition-all group"
+                    onClick={() => setEditingPlaylist(prev => ({ ...prev!, isPublic: !prev?.isPublic }))}
                   >
-                    {c}
-                  </button>
-                ))}
-              </div>
-            </div>
+                    <div className="space-y-1">
+                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 group-hover:text-primary transition-colors">Visibility Settings</p>
+                      <p className="text-sm font-bold text-zinc-300">Публичный доступ для всех пользователей</p>
+                    </div>
+                    <div className={cn(
+                      "w-12 h-6 rounded-full border transition-all relative",
+                      editingPlaylist?.isPublic
+                        ? "bg-zinc-100 border-zinc-100"
+                        : "bg-zinc-900 border-zinc-800"
+                    )}>
+                      <div className={cn(
+                        "absolute top-1 h-4 w-4 rounded-full transition-all duration-300",
+                        editingPlaylist?.isPublic
+                          ? "left-7 bg-zinc-950"
+                          : "left-1 bg-zinc-700"
+                      )} />
+                    </div>
+                  </div>
+                </div>
+             </TabsContent>
 
-            <div
-              className="flex items-center justify-between p-4 bg-zinc-900/40 rounded-xl border border-zinc-800 cursor-pointer hover:bg-zinc-900/60 transition-colors"
-              onClick={() => setEditingPlaylist(prev => ({ ...prev!, isPublic: !prev?.isPublic }))}
-            >
-              <div className="space-y-0.5">
-                <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Приватность</p>
-                <p className="text-sm font-medium text-zinc-300">Публичный доступ</p>
-              </div>
-              {/* Native toggle */}
-              <div className={cn(
-                "w-10 h-5 rounded-full border transition-all relative",
-                editingPlaylist?.isPublic
-                  ? "bg-zinc-100 border-zinc-100"
-                  : "bg-zinc-800 border-zinc-700"
-              )}>
-                <div className={cn(
-                  "absolute top-0.5 h-4 w-4 rounded-full transition-all",
-                  editingPlaylist?.isPublic
-                    ? "left-5 bg-zinc-900"
-                    : "left-0.5 bg-zinc-500"
-                )} />
-              </div>
-            </div>
-          </div>
+             <TabsContent value="tracks" className="p-8 pt-0 max-h-[60vh] overflow-y-auto custom-scrollbar">
+                <PlaylistTrackEditor playlistId={editingPlaylist?.id!} />
+             </TabsContent>
+          </Tabs>
 
-          <DialogFooter className="gap-2">
-            <Button variant="outline" className="border-zinc-800 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900" onClick={() => setIsEditOpen(false)}>
+          <DialogFooter className="p-8 border-t border-zinc-800/50 bg-zinc-900/30 gap-3">
+            <Button variant="ghost" className="text-zinc-500 hover:text-zinc-300 font-bold uppercase tracking-widest text-xs" onClick={() => setIsEditOpen(false)}>
               Отмена
             </Button>
-            <Button className="bg-zinc-100 text-zinc-900 font-semibold hover:bg-white" onClick={onSave}>
-              Сохранить
+            <Button className="bg-zinc-100 text-zinc-900 font-black hover:bg-white px-10 uppercase tracking-tighter italic h-12 rounded-xl text-lg shadow-2xl" onClick={onSave}>
+              {editingPlaylist?.id ? "UPDATE" : "CREATE"}
             </Button>
           </DialogFooter>
         </DialogContent>
+        {/* Hidden Input for Cover */}
+        <input 
+          type="file"
+          ref={coverInputRef}
+          className="hidden"
+          accept="image/*"
+          onChange={onCoverUpload}
+        />
       </Dialog>
 
       {/* Delete Dialog */}

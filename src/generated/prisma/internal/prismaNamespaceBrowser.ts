@@ -273,7 +273,6 @@ export const UserOrderByRelevanceFieldEnum = {
   image: 'image',
   role: 'role',
   queue: 'queue',
-  lastPlayedTrackId: 'lastPlayedTrackId',
   lastPlayedPlaylistId: 'lastPlayedPlaylistId'
 } as const
 
@@ -333,7 +332,6 @@ export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
 export const TrackOrderByRelevanceFieldEnum = {
-  id: 'id',
   title: 'title',
   artist: 'artist',
   src: 'src',
@@ -358,8 +356,7 @@ export type PlaylistOrderByRelevanceFieldEnum = (typeof PlaylistOrderByRelevance
 
 export const PlaylistTrackOrderByRelevanceFieldEnum = {
   id: 'id',
-  playlistId: 'playlistId',
-  trackId: 'trackId'
+  playlistId: 'playlistId'
 } as const
 
 export type PlaylistTrackOrderByRelevanceFieldEnum = (typeof PlaylistTrackOrderByRelevanceFieldEnum)[keyof typeof PlaylistTrackOrderByRelevanceFieldEnum]
@@ -367,8 +364,7 @@ export type PlaylistTrackOrderByRelevanceFieldEnum = (typeof PlaylistTrackOrderB
 
 export const FavoriteTrackOrderByRelevanceFieldEnum = {
   id: 'id',
-  userId: 'userId',
-  trackId: 'trackId'
+  userId: 'userId'
 } as const
 
 export type FavoriteTrackOrderByRelevanceFieldEnum = (typeof FavoriteTrackOrderByRelevanceFieldEnum)[keyof typeof FavoriteTrackOrderByRelevanceFieldEnum]
@@ -394,8 +390,7 @@ export type FavoriteArtistOrderByRelevanceFieldEnum = (typeof FavoriteArtistOrde
 
 export const TrackHistoryOrderByRelevanceFieldEnum = {
   id: 'id',
-  userId: 'userId',
-  trackId: 'trackId'
+  userId: 'userId'
 } as const
 
 export type TrackHistoryOrderByRelevanceFieldEnum = (typeof TrackHistoryOrderByRelevanceFieldEnum)[keyof typeof TrackHistoryOrderByRelevanceFieldEnum]

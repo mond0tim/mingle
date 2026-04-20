@@ -27,24 +27,26 @@ export type AggregatePlaylistTrack = {
 }
 
 export type PlaylistTrackAvgAggregateOutputType = {
+  trackId: number | null
   order: number | null
 }
 
 export type PlaylistTrackSumAggregateOutputType = {
+  trackId: number | null
   order: number | null
 }
 
 export type PlaylistTrackMinAggregateOutputType = {
   id: string | null
   playlistId: string | null
-  trackId: string | null
+  trackId: number | null
   order: number | null
 }
 
 export type PlaylistTrackMaxAggregateOutputType = {
   id: string | null
   playlistId: string | null
-  trackId: string | null
+  trackId: number | null
   order: number | null
 }
 
@@ -58,10 +60,12 @@ export type PlaylistTrackCountAggregateOutputType = {
 
 
 export type PlaylistTrackAvgAggregateInputType = {
+  trackId?: true
   order?: true
 }
 
 export type PlaylistTrackSumAggregateInputType = {
+  trackId?: true
   order?: true
 }
 
@@ -176,7 +180,7 @@ export type PlaylistTrackGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
 export type PlaylistTrackGroupByOutputType = {
   id: string
   playlistId: string
-  trackId: string
+  trackId: number
   order: number
   _count: PlaylistTrackCountAggregateOutputType | null
   _avg: PlaylistTrackAvgAggregateOutputType | null
@@ -206,7 +210,7 @@ export type PlaylistTrackWhereInput = {
   NOT?: Prisma.PlaylistTrackWhereInput | Prisma.PlaylistTrackWhereInput[]
   id?: Prisma.StringFilter<"PlaylistTrack"> | string
   playlistId?: Prisma.StringFilter<"PlaylistTrack"> | string
-  trackId?: Prisma.StringFilter<"PlaylistTrack"> | string
+  trackId?: Prisma.IntFilter<"PlaylistTrack"> | number
   order?: Prisma.IntFilter<"PlaylistTrack"> | number
   playlist?: Prisma.XOR<Prisma.PlaylistScalarRelationFilter, Prisma.PlaylistWhereInput>
   track?: Prisma.XOR<Prisma.TrackScalarRelationFilter, Prisma.TrackWhereInput>
@@ -229,7 +233,7 @@ export type PlaylistTrackWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.PlaylistTrackWhereInput[]
   NOT?: Prisma.PlaylistTrackWhereInput | Prisma.PlaylistTrackWhereInput[]
   playlistId?: Prisma.StringFilter<"PlaylistTrack"> | string
-  trackId?: Prisma.StringFilter<"PlaylistTrack"> | string
+  trackId?: Prisma.IntFilter<"PlaylistTrack"> | number
   order?: Prisma.IntFilter<"PlaylistTrack"> | number
   playlist?: Prisma.XOR<Prisma.PlaylistScalarRelationFilter, Prisma.PlaylistWhereInput>
   track?: Prisma.XOR<Prisma.TrackScalarRelationFilter, Prisma.TrackWhereInput>
@@ -253,7 +257,7 @@ export type PlaylistTrackScalarWhereWithAggregatesInput = {
   NOT?: Prisma.PlaylistTrackScalarWhereWithAggregatesInput | Prisma.PlaylistTrackScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"PlaylistTrack"> | string
   playlistId?: Prisma.StringWithAggregatesFilter<"PlaylistTrack"> | string
-  trackId?: Prisma.StringWithAggregatesFilter<"PlaylistTrack"> | string
+  trackId?: Prisma.IntWithAggregatesFilter<"PlaylistTrack"> | number
   order?: Prisma.IntWithAggregatesFilter<"PlaylistTrack"> | number
 }
 
@@ -267,7 +271,7 @@ export type PlaylistTrackCreateInput = {
 export type PlaylistTrackUncheckedCreateInput = {
   id?: string
   playlistId: string
-  trackId: string
+  trackId: number
   order?: number
 }
 
@@ -281,14 +285,14 @@ export type PlaylistTrackUpdateInput = {
 export type PlaylistTrackUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   playlistId?: Prisma.StringFieldUpdateOperationsInput | string
-  trackId?: Prisma.StringFieldUpdateOperationsInput | string
+  trackId?: Prisma.IntFieldUpdateOperationsInput | number
   order?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type PlaylistTrackCreateManyInput = {
   id?: string
   playlistId: string
-  trackId: string
+  trackId: number
   order?: number
 }
 
@@ -300,7 +304,7 @@ export type PlaylistTrackUpdateManyMutationInput = {
 export type PlaylistTrackUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   playlistId?: Prisma.StringFieldUpdateOperationsInput | string
-  trackId?: Prisma.StringFieldUpdateOperationsInput | string
+  trackId?: Prisma.IntFieldUpdateOperationsInput | number
   order?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -322,7 +326,7 @@ export type PlaylistTrackOrderByRelevanceInput = {
 
 export type PlaylistTrackPlaylistIdTrackIdCompoundUniqueInput = {
   playlistId: string
-  trackId: string
+  trackId: number
 }
 
 export type PlaylistTrackCountOrderByAggregateInput = {
@@ -333,6 +337,7 @@ export type PlaylistTrackCountOrderByAggregateInput = {
 }
 
 export type PlaylistTrackAvgOrderByAggregateInput = {
+  trackId?: Prisma.SortOrder
   order?: Prisma.SortOrder
 }
 
@@ -351,6 +356,7 @@ export type PlaylistTrackMinOrderByAggregateInput = {
 }
 
 export type PlaylistTrackSumOrderByAggregateInput = {
+  trackId?: Prisma.SortOrder
   order?: Prisma.SortOrder
 }
 
@@ -482,7 +488,7 @@ export type PlaylistTrackScalarWhereInput = {
   NOT?: Prisma.PlaylistTrackScalarWhereInput | Prisma.PlaylistTrackScalarWhereInput[]
   id?: Prisma.StringFilter<"PlaylistTrack"> | string
   playlistId?: Prisma.StringFilter<"PlaylistTrack"> | string
-  trackId?: Prisma.StringFilter<"PlaylistTrack"> | string
+  trackId?: Prisma.IntFilter<"PlaylistTrack"> | number
   order?: Prisma.IntFilter<"PlaylistTrack"> | number
 }
 
@@ -494,7 +500,7 @@ export type PlaylistTrackCreateWithoutPlaylistInput = {
 
 export type PlaylistTrackUncheckedCreateWithoutPlaylistInput = {
   id?: string
-  trackId: string
+  trackId: number
   order?: number
 }
 
@@ -550,7 +556,7 @@ export type PlaylistTrackUncheckedUpdateManyWithoutTrackInput = {
 
 export type PlaylistTrackCreateManyPlaylistInput = {
   id?: string
-  trackId: string
+  trackId: number
   order?: number
 }
 
@@ -562,13 +568,13 @@ export type PlaylistTrackUpdateWithoutPlaylistInput = {
 
 export type PlaylistTrackUncheckedUpdateWithoutPlaylistInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  trackId?: Prisma.StringFieldUpdateOperationsInput | string
+  trackId?: Prisma.IntFieldUpdateOperationsInput | number
   order?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type PlaylistTrackUncheckedUpdateManyWithoutPlaylistInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  trackId?: Prisma.StringFieldUpdateOperationsInput | string
+  trackId?: Prisma.IntFieldUpdateOperationsInput | number
   order?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -607,7 +613,7 @@ export type $PlaylistTrackPayload<ExtArgs extends runtime.Types.Extensions.Inter
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     playlistId: string
-    trackId: string
+    trackId: number
     order: number
   }, ExtArgs["result"]["playlistTrack"]>
   composites: {}
@@ -982,7 +988,7 @@ export interface Prisma__PlaylistTrackClient<T, Null = never, ExtArgs extends ru
 export interface PlaylistTrackFieldRefs {
   readonly id: Prisma.FieldRef<"PlaylistTrack", 'String'>
   readonly playlistId: Prisma.FieldRef<"PlaylistTrack", 'String'>
-  readonly trackId: Prisma.FieldRef<"PlaylistTrack", 'String'>
+  readonly trackId: Prisma.FieldRef<"PlaylistTrack", 'Int'>
   readonly order: Prisma.FieldRef<"PlaylistTrack", 'Int'>
 }
     
