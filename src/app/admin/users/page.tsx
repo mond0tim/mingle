@@ -10,7 +10,6 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
-  DialogDescription,
 } from "@/components/animate-ui/components/radix/dialog";
 import {
   Loader2,
@@ -19,6 +18,10 @@ import {
   ShieldCheck,
   Ban,
   UserCheck,
+  Activity,
+  Calendar,
+  Lock,
+  Pencil
 } from "lucide-react";
 import {
   Tooltip,
@@ -37,6 +40,9 @@ interface User {
   image: string | null;
   role: string;
   banned: boolean;
+  loginCount: number;
+  lastLoginAt: string | null;
+  totalPlayTime: number;
   createdAt: string;
 }
 
@@ -90,6 +96,13 @@ export default function AdminUsersPage() {
     }
   };
 
+  const formatPlayTime = (seconds: number) => {
+    const hours = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    if (hours > 0) return `${hours}ч ${mins}м`;
+    return `${mins}м`;
+  };
+
   const columns = useMemo<ColumnDef<User>[]>(() => [
     {
       accessorKey: "name",
@@ -98,14 +111,14 @@ export default function AdminUsersPage() {
         const user = row.original;
         const initials = user.name?.[0]?.toUpperCase() || user.email[0].toUpperCase();
         return (
-          <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-xl bg-zinc-800 border border-zinc-700 flex items-center justify-center text-xs font-bold text-zinc-100 flex-shrink-0 overflow-hidden">
+          <div className="flex items-center gap-3 cursor-pointer group" onClick={() => { setEditingUser(user); setIsEditOpen(true); }}>
+            <div className="h-9 w-9 rounded-xl bg-zinc-800 border border-zinc-700 flex items-center justify-center text-xs font-bold text-zinc-100 flex-shrink-0 overflow-hidden group-hover:border-primary/50 transition-colors">
               {user.image
                 ? <img src={user.image} alt={user.name || ""} className="w-full h-full object-cover" />
                 : initials}
             </div>
             <div className="flex flex-col min-w-0">
-              <span className="font-semibold truncate max-w-[160px] text-zinc-100 text-sm">{user.name || "MEMBER"}</span>
+              <span className="font-semibold truncate max-w-[160px] text-zinc-100 text-sm group-hover:text-primary transition-colors">{user.name || "MEMBER"}</span>
               <span className="text-[11px] text-zinc-600 truncate">{user.email}</span>
             </div>
           </div>
@@ -121,13 +134,23 @@ export default function AdminUsersPage() {
           <span className={cn(
             "px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest border",
             isAdmin
-              ? "bg-zinc-100 text-zinc-900 border-zinc-100"
+              ? "bg-zinc-100 text-zinc-900 border-zinc-100 shadow-[0_0_10px_rgba(255,255,255,0.05)]"
               : "bg-transparent text-zinc-600 border-zinc-800"
           )}>
             {row.original.role}
           </span>
         );
       },
+    },
+    {
+        accessorKey: "totalPlayTime",
+        header: "Insights",
+        cell: ({ row }) => (
+          <div className="flex flex-col">
+            <span className="text-xs font-bold text-zinc-200">{formatPlayTime(row.original.totalPlayTime || 0)}</span>
+            <span className="text-[9px] text-zinc-600 font-bold uppercase tracking-tight">Listening</span>
+          </div>
+        ),
     },
     {
       accessorKey: "banned",
@@ -138,9 +161,9 @@ export default function AdminUsersPage() {
           <div className="flex items-center gap-1.5">
             <div className={cn(
               "w-1.5 h-1.5 rounded-full",
-              isBanned ? "bg-red-500 shadow-[0_0_6px_rgba(239,68,68,0.5)]" : "bg-zinc-400"
+              isBanned ? "bg-red-500 shadow-[0_0_6px_rgba(239,68,68,0.5)]" : "bg-green-500 shadow-[0_0_6px_rgba(34,197,94,0.3)]"
             )} />
-            <span className={cn("text-[10px] font-bold uppercase tracking-widest", isBanned ? "text-red-500" : "text-zinc-400")}>
+            <span className={cn("text-[10px] font-bold uppercase tracking-widest", isBanned ? "text-red-500" : "text-zinc-500")}>
               {isBanned ? "Banned" : "Active"}
             </span>
           </div>
@@ -186,7 +209,7 @@ export default function AdminUsersPage() {
                       : <Ban className="h-4 w-4" />}
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent className="bg-zinc-900 border-zinc-800 text-zinc-100 text-xs">
+                <TooltipContent className="bg-zinc-900 border-zinc-800 text-zinc-100 text-xs text-right">
                   {user.banned ? "Разбанить" : "Забанить"}
                 </TooltipContent>
               </Tooltip>
@@ -200,15 +223,15 @@ export default function AdminUsersPage() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-zinc-800/50">
-        <div className="space-y-1">
-          <h1 className="text-4xl font-bold tracking-tighter text-zinc-100 uppercase italic">Members</h1>
-          <p className="text-zinc-600 text-[10px] font-bold uppercase tracking-[0.3em]">Контроль доступа / Permissions</p>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-8 border-b border-zinc-800/50">
+        <div>
+          <h1 className="text-4xl font-black tracking-tighter text-zinc-100 uppercase italic">MEMBERSHIP</h1>
+          <p className="text-zinc-500 text-xs font-bold uppercase tracking-[0.3em] opacity-70">Централизованный контроль доступа и аналитика</p>
         </div>
-        <div className="flex gap-4 p-3 px-5 bg-zinc-900/40 border border-zinc-800/50 rounded-xl">
-          <div className="flex flex-col items-start gap-1">
-            <span className="text-[10px] font-black text-zinc-600 uppercase tracking-widest">Total Members</span>
-            <span className="text-xl font-black text-zinc-100 tracking-tighter italic">{users.length}</span>
+        <div className="flex gap-4 p-4 px-6 bg-zinc-900/40 border border-zinc-800 rounded-2xl shadow-xl">
+          <div className="flex flex-col items-start gap-0.5">
+            <span className="text-[10px] font-black text-zinc-600 uppercase tracking-widest">Active Members</span>
+            <span className="text-2xl font-black text-zinc-100 tracking-tighter italic leading-none">{users.length}</span>
           </div>
         </div>
       </div>
@@ -222,66 +245,63 @@ export default function AdminUsersPage() {
           columns={columns}
           data={users}
           searchKey="email"
-          searchPlaceholder="ID / Email search..."
+          searchPlaceholder="Поиск по Email или имени..."
         />
       )}
 
       {/* Detail Dialog */}
       <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
-        <DialogContent className="bg-[#0b0b0b] border-zinc-800 text-zinc-100 max-w-lg rounded-2xl">
-          <DialogHeader>
-            <DialogTitle className="flex items-center justify-between">
-              <div>
-                <p className="text-2xl font-bold uppercase italic tracking-tight">User Metadata</p>
-                <p className="text-[10px] text-zinc-600 font-bold uppercase tracking-widest mt-1">Platform Security Config</p>
-              </div>
-              <div className="h-10 w-10 rounded-full border border-zinc-800 flex items-center justify-center text-zinc-600 flex-shrink-0">
-                <Mail className="h-4 w-4" />
-              </div>
-            </DialogTitle>
-          </DialogHeader>
-
-          <div className="space-y-5 py-2">
-            <div className="flex items-center gap-5 p-5 bg-zinc-900/30 border border-zinc-800/50 rounded-xl">
-              <div className="h-16 w-16 rounded-2xl bg-zinc-800 border border-zinc-700 flex items-center justify-center text-xl font-black text-zinc-100 flex-shrink-0 overflow-hidden">
+        <DialogContent className="bg-[#0b0b0b] border-zinc-800 text-zinc-100 max-w-lg rounded-3xl overflow-hidden shadow-2xl p-0 gap-0">
+          <div className="h-24 bg-gradient-to-r from-zinc-800 to-zinc-900 relative">
+             <div className="absolute -bottom-10 left-8 h-20 w-20 rounded-3xl bg-zinc-950 border-4 border-[#0b0b0b] shadow-2xl flex items-center justify-center overflow-hidden">
                 {editingUser?.image
                   ? <img src={editingUser.image} alt="" className="w-full h-full object-cover" />
-                  : editingUser?.name?.[0]?.toUpperCase() || "M"}
-              </div>
-              <div>
-                <p className="text-[10px] font-black uppercase tracking-widest text-zinc-600">Registered Name</p>
-                <p className="text-lg font-bold text-white italic tracking-tight">{editingUser?.name || "Anonymous Member"}</p>
-              </div>
-            </div>
+                  : <span className="text-2xl font-black italic">{editingUser?.name?.[0]?.toUpperCase() || "M"}</span>}
+             </div>
+          </div>
 
+          <div className="p-8 pt-14 space-y-6">
             <div>
-              <Label className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest">Authentication Email</Label>
-              <Input
-                className="mt-1.5 bg-zinc-900/50 border-zinc-800 text-zinc-400 font-mono text-sm"
-                value={editingUser?.email || ""}
-                readOnly
-              />
+              <h2 className="text-2xl font-black italic uppercase tracking-tighter text-white">
+                {editingUser?.name || "Anonymous Member"}
+              </h2>
+              <p className="text-xs font-bold text-zinc-500 uppercase tracking-widest mt-1">{editingUser?.email}</p>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
-              <div className="p-4 bg-zinc-900/20 border border-zinc-800 rounded-xl">
-                <p className="text-[9px] font-bold uppercase tracking-widest text-zinc-600 mb-1">Current Role</p>
-                <p className="text-sm font-bold text-zinc-200 uppercase">{editingUser?.role}</p>
-              </div>
-              <div className="p-4 bg-zinc-900/20 border border-zinc-800 rounded-xl">
-                <p className="text-[9px] font-bold uppercase tracking-widest text-zinc-600 mb-1">Joined Date</p>
-                <p className="text-sm font-bold text-zinc-200">
-                  {editingUser?.createdAt
-                    ? new Date(editingUser.createdAt).toLocaleDateString("ru-RU")
-                    : "—"}
-                </p>
-              </div>
+            <div className="grid grid-cols-2 gap-4">
+               <div className="p-4 bg-zinc-900/40 border border-zinc-800/50 rounded-2xl space-y-1">
+                  <p className="text-[9px] font-black text-zinc-600 uppercase tracking-widest">Listening Time</p>
+                  <p className="text-xl font-black text-primary italic">{formatPlayTime(editingUser?.totalPlayTime || 0)}</p>
+               </div>
+               <div className="p-4 bg-zinc-900/40 border border-zinc-800/50 rounded-2xl space-y-1">
+                  <p className="text-[9px] font-black text-zinc-600 uppercase tracking-widest">Login Count</p>
+                  <p className="text-xl font-black text-zinc-200 italic">{editingUser?.loginCount || 0}</p>
+               </div>
+            </div>
+
+            <div className="space-y-4">
+               <div className="flex items-center justify-between py-3 border-b border-zinc-800/50">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">Member ID</span>
+                  <span className="text-[10px] font-mono text-zinc-300">{editingUser?.id}</span>
+               </div>
+               <div className="flex items-center justify-between py-3 border-b border-zinc-800/50">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">Registered</span>
+                  <span className="text-xs font-bold text-zinc-300">
+                    {editingUser?.createdAt ? new Date(editingUser.createdAt).toLocaleDateString("ru-RU") : "—"}
+                  </span>
+               </div>
+               <div className="flex items-center justify-between py-3">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">Last Seen</span>
+                  <span className="text-xs font-bold text-zinc-300">
+                    {editingUser?.lastLoginAt ? new Date(editingUser.lastLoginAt).toLocaleString("ru-RU", { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : "Never"}
+                  </span>
+               </div>
             </div>
           </div>
 
-          <DialogFooter>
-            <Button variant="outline" className="border-zinc-800 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900 w-full" onClick={() => setIsEditOpen(false)}>
-              Close Config
+          <DialogFooter className="p-6 bg-zinc-900/30 border-t border-zinc-800/50">
+            <Button variant="ghost" className="w-full text-zinc-500 hover:text-zinc-100 font-bold uppercase tracking-widest text-xs" onClick={() => setIsEditOpen(false)}>
+              Close Profile
             </Button>
           </DialogFooter>
         </DialogContent>

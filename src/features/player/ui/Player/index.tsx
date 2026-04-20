@@ -69,12 +69,12 @@ const Player: React.FC<PlayerProps> = () => {
   // Сохранение в LocalStorage
   useEffect(() => {
     if (currentTrack && playlistIsPlaying) {
-      let cache: { playlistId: number; trackId: number }[] = [];
+      let cache: { playlistId: string | number; trackId: string | number }[] = [];
       try {
         const cacheStr = localStorage.getItem(CACHE_KEY);
         if (cacheStr) cache = JSON.parse(cacheStr);
       } catch { }
-      cache = cache.filter(item => item.playlistId !== playlistIsPlaying.id);
+      cache = cache.filter(item => String(item.playlistId) !== String(playlistIsPlaying.id));
       cache.unshift({ playlistId: playlistIsPlaying.id, trackId: currentTrack.id });
       localStorage.setItem(CACHE_KEY, JSON.stringify(cache.slice(0, 10)));
     }

@@ -8,16 +8,17 @@ export async function POST(request: Request) {
     const session = await auth.api.getSession({ headers: await headers() });
     if (!session?.user) return new NextResponse('Unauthorized', { status: 401 });
 
-    const { trackId } = await request.json();
-    if (!trackId) return new NextResponse('Missing trackId', { status: 400 });
+    const { trackId: trackIdRaw } = await request.json();
+    const trackId = typeof trackIdRaw === "string" ? parseInt(trackIdRaw, 10) : trackIdRaw;
+    
+    if (!trackId || isNaN(trackId)) return new NextResponse('Missing or invalid trackId', { status: 400 });
 
     // Проверяем, в избранном ли
-    const trackIdStr = String(trackId);
     const existing = await prisma.favoriteTrack.findUnique({
       where: {
         userId_trackId: {
           userId: session.user.id,
-          trackId: trackIdStr
+          trackId: trackId
         }
       }
     });
@@ -37,7 +38,7 @@ export async function POST(request: Request) {
         await prisma.favoriteTrack.create({
           data: {
             userId: session.user.id,
-            trackId: trackIdStr
+            trackId: trackId
           }
         });
       } catch (e: any) {

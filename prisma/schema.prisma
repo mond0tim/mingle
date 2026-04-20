@@ -31,7 +31,7 @@ model User {
   
   // Очередь и Последнее воспроизведение
   queue                 String?   @default("[]") @db.LongText
-  lastPlayedTrackId     String?
+  lastPlayedTrackId     Int?
   lastPlayedPlaylistId  String?
 
   createdAt             DateTime  @default(now())
@@ -105,7 +105,7 @@ model Verification {
 // -----------------------------------------------------------------------------
 
 model Track {
-  id          String   @id @default(cuid())
+  id          Int      @id @default(autoincrement())
   
   // Музыкальные метаданные
   title       String
@@ -165,7 +165,7 @@ model Playlist {
 model PlaylistTrack {
   id         String   @id @default(cuid())
   playlistId String
-  trackId    String
+  trackId    Int
   
   order      Int      @default(0) // Для drag and drop
 
@@ -183,7 +183,7 @@ model PlaylistTrack {
 model FavoriteTrack {
   id        String   @id @default(cuid())
   userId    String
-  trackId   String
+  trackId   Int
   createdAt DateTime @default(now())
 
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -227,7 +227,7 @@ model FavoriteArtist {
 model TrackHistory {
   id          String   @id @default(cuid())
   userId      String
-  trackId     String
+  trackId     Int
   playedAt    DateTime @default(now())
   listenedSec Int      @default(0)
 

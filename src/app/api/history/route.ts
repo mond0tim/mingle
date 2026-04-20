@@ -14,17 +14,18 @@ export async function POST(request: Request) {
       return new NextResponse('Unauthorized', { status: 401 });
     }
 
-    const { trackId, playlistId, listenedSec } = await request.json();
+    const { trackId: trackIdRaw, playlistId, listenedSec } = await request.json();
+    const trackId = typeof trackIdRaw === "string" ? parseInt(trackIdRaw, 10) : trackIdRaw;
 
-    if (!trackId) {
-      return new NextResponse('Missing trackId', { status: 400 });
+    if (!trackId || isNaN(trackId)) {
+      return new NextResponse('Missing or invalid trackId', { status: 400 });
     }
 
     // 1. Запись истории прослушивания трека
     await prisma.trackHistory.create({
       data: {
         userId: user.id,
-        trackId: String(trackId),
+        trackId: trackId,
         listenedSec: listenedSec || 0,
       }
     });
@@ -64,7 +65,7 @@ export async function POST(request: Request) {
     await prisma.user.update({
       where: { id: user.id },
       data: {
-        lastPlayedTrackId: String(trackId),
+        lastPlayedTrackId: trackId,
         lastPlayedPlaylistId: dbPlaylistId,
         totalPlayTime: { increment: listenedSec || 0 },
       }
@@ -96,7 +97,7 @@ export async function GET() {
       take: 50,
     });
     
-    const seenTracks = new Set<string>();
+    const seenTracks = new Set<number>();
     const recentTracks: any[] = [];
     for (const entry of rawTrackHistory) {
       if (!seenTracks.has(entry.track.id)) {

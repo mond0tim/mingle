@@ -46,9 +46,10 @@ export async function PUT(request: Request) {
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
 
   const body = await request.json();
-  const { id, title, artist, cover, colors } = body;
+  const { id: idRaw, title, artist, cover, colors } = body;
+  const id = typeof idRaw === "string" ? parseInt(idRaw, 10) : idRaw;
 
-  if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
+  if (isNaN(id)) return NextResponse.json({ error: "Missing or invalid id" }, { status: 400 });
 
   const updated = await prisma.track.update({
     where: { id },
@@ -68,25 +69,46 @@ export async function DELETE(request: Request) {
   const session = await requireAdmin();
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
 
-  const { id, deleteFile } = await request.json();
-  if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
+  const { id: idRaw, deleteFile } = await request.json();
+  const id = typeof idRaw === "string" ? parseInt(idRaw, 10) : idRaw;
+  
+  if (isNaN(id)) return NextResponse.json({ error: "Missing or invalid id" }, { status: 400 });
 
   const track = await prisma.track.findUnique({ where: { id } });
   if (!track) return NextResponse.json({ error: "Track not found" }, { status: 404 });
 
   // 1. Если запрошено удаление файла - удаляем физически
-  if (deleteFile === true && track.src) {
-    try {
-      // track.src обычно "/audio/filename.mp3"
-      const relativePath = track.src.startsWith("/") ? track.src.slice(1) : track.src;
-      const filePath = path.join(process.cwd(), "public", relativePath);
-      
-      if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
+  if (deleteFile === true) {
+    const publicDir = path.join(process.cwd(), "public");
+
+    // Удаляем аудиофайл
+    if (track.src) {
+      try {
+        const relativePath = track.src.replace(/^\//, ""); // Remove leading slash
+        const filePath = path.join(publicDir, relativePath);
+        console.log("Attempting to delete audio file:", filePath);
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath);
+          console.log("Audio file deleted successfully");
+        }
+      } catch (err) {
+        console.error("Audio file deletion error:", err);
       }
-    } catch (err) {
-      console.error("File deletion error:", err);
-      // Мы продолжаем удаление записи из БД, даже если файл не удалился (например, его уже нет)
+    }
+
+    // Удаляем обложку
+    if (track.cover && !track.cover.startsWith("http")) {
+      try {
+        const relativeCoverPath = track.cover.replace(/^\//, ""); // Remove leading slash
+        const coverPath = path.join(publicDir, relativeCoverPath);
+        console.log("Attempting to delete cover file:", coverPath);
+        if (fs.existsSync(coverPath)) {
+          fs.unlinkSync(coverPath);
+          console.log("Cover file deleted successfully");
+        }
+      } catch (err) {
+        console.error("Cover file deletion error:", err);
+      }
     }
   }
 

@@ -22,12 +22,15 @@ import {
 } from "lucide-react";
 import { DataTable } from "@/components/admin/DataTable";
 import { ColorStudioSheet } from "@/components/color-studio/ColorStudioSheet";
+import { MultiStepUploadSheet } from "@/components/admin/MultiStepUploadSheet";
+import { Upload } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
+import { type ColorBindings } from "@/lib/colorChannels";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 interface Track {
-  id: string;
+  id: number;
   title: string;
   artist: string;
   src: string;
@@ -46,6 +49,9 @@ export default function AdminTracksPage() {
 
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [isCoverUploading, setIsCoverUploading] = useState(false);
+  const coverInputRef = React.useRef<HTMLInputElement>(null);
 
   const fetchTracks = useCallback(async () => {
     setLoading(true);
@@ -100,6 +106,38 @@ export default function AdminTracksPage() {
       }
     } catch (err) {
       console.error("Delete error", err);
+    }
+  };
+
+  const onCoverUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !editingTrack?.id) return;
+
+    setIsCoverUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("trackId", editingTrack.id.toString());
+
+      const res = await fetch("/api/admin/tracks/cover", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) throw new Error(await res.text());
+
+      const data = await res.json();
+      setEditingTrack(prev => ({ 
+        ...prev!, 
+        cover: data.cover, 
+        colors: data.colors 
+      }));
+      // Также обновим в основном списке, чтобы изменения были видны сразу
+      setTracks(prev => prev.map(t => t.id === editingTrack.id ? { ...t, cover: data.cover, colors: data.colors } : t));
+    } catch (err) {
+      console.error("Cover upload error:", err);
+    } finally {
+      setIsCoverUploading(false);
     }
   };
 
@@ -171,17 +209,29 @@ export default function AdminTracksPage() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-zinc-800/50">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-8 border-b border-zinc-800/50">
         <div>
-          <h1 className="text-4xl font-bold tracking-tighter mb-2 text-zinc-100">БИБЛИОТЕКА</h1>
-          <p className="text-zinc-500 text-sm font-medium uppercase tracking-[0.2em]">Управление музыкальной базой</p>
+          <h1 className="text-4xl font-black tracking-tighter mb-2 text-zinc-100 uppercase italic">Музыкальная База</h1>
+          <p className="text-zinc-500 text-xs font-bold uppercase tracking-[0.2em] opacity-70">Централизованное управление медиа-контентом</p>
         </div>
-        <div className="flex items-center gap-4">
-          <div className="flex flex-col items-end">
+        <div className="flex items-center gap-6">
+          <div className="hidden sm:flex flex-col items-end">
             <span className="text-2xl font-black text-zinc-100 leading-none">{tracks.length}</span>
             <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest mt-1">активных треков</span>
           </div>
-          <div className="h-10 w-px bg-zinc-800 ml-2" />
+          <div className="h-10 w-px bg-zinc-800 mx-2 hidden sm:block" />
+          <Button 
+            className="bg-primary text-primary-foreground hover:bg-primary/90 font-black px-6 rounded-full uppercase tracking-widest text-[10px] gap-2 shadow-xl shadow-primary/10"
+            onClick={() => setIsUploadOpen(true)}
+          >
+            <Upload className="h-4 w-4" />
+            Загрузить медиа
+          </Button>
+          <MultiStepUploadSheet 
+            open={isUploadOpen} 
+            onOpenChange={setIsUploadOpen} 
+            onComplete={fetchTracks} 
+          />
         </div>
       </div>
 
@@ -211,21 +261,28 @@ export default function AdminTracksPage() {
               Редактор трека
             </DialogTitle>
             <DialogDescription className="text-zinc-500 text-xs font-mono">
-              ID: {editingTrack?.id?.slice(0, 16)}
+              ID: {editingTrack?.id}
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-5 py-2">
             <div className="flex gap-5 items-start">
-              <div className="relative group flex-shrink-0">
+              <div 
+                className="relative group flex-shrink-0 cursor-pointer"
+                onClick={() => coverInputRef.current?.click()}
+              >
                 <img
                   alt="Cover"
                   className="w-20 h-20 rounded-xl object-cover border border-zinc-800"
                   src={editingTrack?.cover}
                   onError={(e) => { (e.target as HTMLImageElement).src = "/covers/no-cover.jpg"; }}
                 />
-                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-xl cursor-pointer">
-                  <Pencil className="h-4 w-4 text-zinc-100" />
+                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-xl">
+                  {isCoverUploading ? (
+                    <Loader2 className="h-4 w-4 text-zinc-100 animate-spin" />
+                  ) : (
+                    <Pencil className="h-4 w-4 text-zinc-100" />
+                  )}
                 </div>
               </div>
               <div className="flex-1 space-y-3">
@@ -293,7 +350,7 @@ export default function AdminTracksPage() {
               <p className="mb-2 text-[10px] font-bold tracking-widest text-zinc-500 uppercase">Color Studio</p>
               <ColorStudioSheet
                 entityType="track"
-                entityId={editingTrack?.id}
+                entityId={editingTrack?.id?.toString()}
                 coverUrl={editingTrack?.cover}
                 initialColors={editingTrack?.colors}
                 onSaved={(colors) => setEditingTrack((prev) => ({ ...prev!, colors }))}
@@ -316,6 +373,14 @@ export default function AdminTracksPage() {
             </Button>
           </DialogFooter>
         </DialogContent>
+        {/* Hidden Input for Cover */}
+        <input 
+          type="file"
+          ref={coverInputRef}
+          className="hidden"
+          accept="image/*"
+          onChange={onCoverUpload}
+        />
       </Dialog>
 
       {/* Delete Dialog */}

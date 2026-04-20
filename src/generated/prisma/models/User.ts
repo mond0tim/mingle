@@ -29,11 +29,13 @@ export type AggregateUser = {
 export type UserAvgAggregateOutputType = {
   loginCount: number | null
   totalPlayTime: number | null
+  lastPlayedTrackId: number | null
 }
 
 export type UserSumAggregateOutputType = {
   loginCount: number | null
   totalPlayTime: number | null
+  lastPlayedTrackId: number | null
 }
 
 export type UserMinAggregateOutputType = {
@@ -50,7 +52,7 @@ export type UserMinAggregateOutputType = {
   lastLoginAt: Date | null
   totalPlayTime: number | null
   queue: string | null
-  lastPlayedTrackId: string | null
+  lastPlayedTrackId: number | null
   lastPlayedPlaylistId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -70,7 +72,7 @@ export type UserMaxAggregateOutputType = {
   lastLoginAt: Date | null
   totalPlayTime: number | null
   queue: string | null
-  lastPlayedTrackId: string | null
+  lastPlayedTrackId: number | null
   lastPlayedPlaylistId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -101,11 +103,13 @@ export type UserCountAggregateOutputType = {
 export type UserAvgAggregateInputType = {
   loginCount?: true
   totalPlayTime?: true
+  lastPlayedTrackId?: true
 }
 
 export type UserSumAggregateInputType = {
   loginCount?: true
   totalPlayTime?: true
+  lastPlayedTrackId?: true
 }
 
 export type UserMinAggregateInputType = {
@@ -269,7 +273,7 @@ export type UserGroupByOutputType = {
   lastLoginAt: Date | null
   totalPlayTime: number
   queue: string | null
-  lastPlayedTrackId: string | null
+  lastPlayedTrackId: number | null
   lastPlayedPlaylistId: string | null
   createdAt: Date
   updatedAt: Date
@@ -312,7 +316,7 @@ export type UserWhereInput = {
   lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   totalPlayTime?: Prisma.IntFilter<"User"> | number
   queue?: Prisma.StringNullableFilter<"User"> | string | null
-  lastPlayedTrackId?: Prisma.StringNullableFilter<"User"> | string | null
+  lastPlayedTrackId?: Prisma.IntNullableFilter<"User"> | number | null
   lastPlayedPlaylistId?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
@@ -372,7 +376,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   totalPlayTime?: Prisma.IntFilter<"User"> | number
   queue?: Prisma.StringNullableFilter<"User"> | string | null
-  lastPlayedTrackId?: Prisma.StringNullableFilter<"User"> | string | null
+  lastPlayedTrackId?: Prisma.IntNullableFilter<"User"> | number | null
   lastPlayedPlaylistId?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
@@ -428,7 +432,7 @@ export type UserScalarWhereWithAggregatesInput = {
   lastLoginAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   totalPlayTime?: Prisma.IntWithAggregatesFilter<"User"> | number
   queue?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
-  lastPlayedTrackId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  lastPlayedTrackId?: Prisma.IntNullableWithAggregatesFilter<"User"> | number | null
   lastPlayedPlaylistId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -448,7 +452,7 @@ export type UserCreateInput = {
   lastLoginAt?: Date | string | null
   totalPlayTime?: number
   queue?: string | null
-  lastPlayedTrackId?: string | null
+  lastPlayedTrackId?: number | null
   lastPlayedPlaylistId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -476,7 +480,7 @@ export type UserUncheckedCreateInput = {
   lastLoginAt?: Date | string | null
   totalPlayTime?: number
   queue?: string | null
-  lastPlayedTrackId?: string | null
+  lastPlayedTrackId?: number | null
   lastPlayedPlaylistId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -504,7 +508,7 @@ export type UserUpdateInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalPlayTime?: Prisma.IntFieldUpdateOperationsInput | number
   queue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  lastPlayedTrackId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastPlayedTrackId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastPlayedPlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -532,7 +536,7 @@ export type UserUncheckedUpdateInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalPlayTime?: Prisma.IntFieldUpdateOperationsInput | number
   queue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  lastPlayedTrackId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastPlayedTrackId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastPlayedPlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -560,7 +564,7 @@ export type UserCreateManyInput = {
   lastLoginAt?: Date | string | null
   totalPlayTime?: number
   queue?: string | null
-  lastPlayedTrackId?: string | null
+  lastPlayedTrackId?: number | null
   lastPlayedPlaylistId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -580,7 +584,7 @@ export type UserUpdateManyMutationInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalPlayTime?: Prisma.IntFieldUpdateOperationsInput | number
   queue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  lastPlayedTrackId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastPlayedTrackId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastPlayedPlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -600,7 +604,7 @@ export type UserUncheckedUpdateManyInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalPlayTime?: Prisma.IntFieldUpdateOperationsInput | number
   queue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  lastPlayedTrackId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastPlayedTrackId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastPlayedPlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -635,6 +639,7 @@ export type UserCountOrderByAggregateInput = {
 export type UserAvgOrderByAggregateInput = {
   loginCount?: Prisma.SortOrder
   totalPlayTime?: Prisma.SortOrder
+  lastPlayedTrackId?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -680,6 +685,7 @@ export type UserMinOrderByAggregateInput = {
 export type UserSumOrderByAggregateInput = {
   loginCount?: Prisma.SortOrder
   totalPlayTime?: Prisma.SortOrder
+  lastPlayedTrackId?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
@@ -714,6 +720,14 @@ export type IntFieldUpdateOperationsInput = {
 
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
+}
+
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type DateTimeFieldUpdateOperationsInput = {
@@ -848,7 +862,7 @@ export type UserCreateWithoutSessionsInput = {
   lastLoginAt?: Date | string | null
   totalPlayTime?: number
   queue?: string | null
-  lastPlayedTrackId?: string | null
+  lastPlayedTrackId?: number | null
   lastPlayedPlaylistId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -875,7 +889,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   lastLoginAt?: Date | string | null
   totalPlayTime?: number
   queue?: string | null
-  lastPlayedTrackId?: string | null
+  lastPlayedTrackId?: number | null
   lastPlayedPlaylistId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -918,7 +932,7 @@ export type UserUpdateWithoutSessionsInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalPlayTime?: Prisma.IntFieldUpdateOperationsInput | number
   queue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  lastPlayedTrackId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastPlayedTrackId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastPlayedPlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -945,7 +959,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalPlayTime?: Prisma.IntFieldUpdateOperationsInput | number
   queue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  lastPlayedTrackId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastPlayedTrackId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastPlayedPlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -972,7 +986,7 @@ export type UserCreateWithoutAccountsInput = {
   lastLoginAt?: Date | string | null
   totalPlayTime?: number
   queue?: string | null
-  lastPlayedTrackId?: string | null
+  lastPlayedTrackId?: number | null
   lastPlayedPlaylistId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -999,7 +1013,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   lastLoginAt?: Date | string | null
   totalPlayTime?: number
   queue?: string | null
-  lastPlayedTrackId?: string | null
+  lastPlayedTrackId?: number | null
   lastPlayedPlaylistId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1042,7 +1056,7 @@ export type UserUpdateWithoutAccountsInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalPlayTime?: Prisma.IntFieldUpdateOperationsInput | number
   queue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  lastPlayedTrackId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastPlayedTrackId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastPlayedPlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1069,7 +1083,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalPlayTime?: Prisma.IntFieldUpdateOperationsInput | number
   queue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  lastPlayedTrackId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastPlayedTrackId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastPlayedPlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1096,7 +1110,7 @@ export type UserCreateWithoutPlaylistsInput = {
   lastLoginAt?: Date | string | null
   totalPlayTime?: number
   queue?: string | null
-  lastPlayedTrackId?: string | null
+  lastPlayedTrackId?: number | null
   lastPlayedPlaylistId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1123,7 +1137,7 @@ export type UserUncheckedCreateWithoutPlaylistsInput = {
   lastLoginAt?: Date | string | null
   totalPlayTime?: number
   queue?: string | null
-  lastPlayedTrackId?: string | null
+  lastPlayedTrackId?: number | null
   lastPlayedPlaylistId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1166,7 +1180,7 @@ export type UserUpdateWithoutPlaylistsInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalPlayTime?: Prisma.IntFieldUpdateOperationsInput | number
   queue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  lastPlayedTrackId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastPlayedTrackId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastPlayedPlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1193,7 +1207,7 @@ export type UserUncheckedUpdateWithoutPlaylistsInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalPlayTime?: Prisma.IntFieldUpdateOperationsInput | number
   queue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  lastPlayedTrackId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastPlayedTrackId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastPlayedPlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1220,7 +1234,7 @@ export type UserCreateWithoutFavoriteTracksInput = {
   lastLoginAt?: Date | string | null
   totalPlayTime?: number
   queue?: string | null
-  lastPlayedTrackId?: string | null
+  lastPlayedTrackId?: number | null
   lastPlayedPlaylistId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1247,7 +1261,7 @@ export type UserUncheckedCreateWithoutFavoriteTracksInput = {
   lastLoginAt?: Date | string | null
   totalPlayTime?: number
   queue?: string | null
-  lastPlayedTrackId?: string | null
+  lastPlayedTrackId?: number | null
   lastPlayedPlaylistId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1290,7 +1304,7 @@ export type UserUpdateWithoutFavoriteTracksInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalPlayTime?: Prisma.IntFieldUpdateOperationsInput | number
   queue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  lastPlayedTrackId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastPlayedTrackId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastPlayedPlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1317,7 +1331,7 @@ export type UserUncheckedUpdateWithoutFavoriteTracksInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalPlayTime?: Prisma.IntFieldUpdateOperationsInput | number
   queue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  lastPlayedTrackId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastPlayedTrackId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastPlayedPlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1344,7 +1358,7 @@ export type UserCreateWithoutFavoritePlaylistsInput = {
   lastLoginAt?: Date | string | null
   totalPlayTime?: number
   queue?: string | null
-  lastPlayedTrackId?: string | null
+  lastPlayedTrackId?: number | null
   lastPlayedPlaylistId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1371,7 +1385,7 @@ export type UserUncheckedCreateWithoutFavoritePlaylistsInput = {
   lastLoginAt?: Date | string | null
   totalPlayTime?: number
   queue?: string | null
-  lastPlayedTrackId?: string | null
+  lastPlayedTrackId?: number | null
   lastPlayedPlaylistId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1414,7 +1428,7 @@ export type UserUpdateWithoutFavoritePlaylistsInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalPlayTime?: Prisma.IntFieldUpdateOperationsInput | number
   queue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  lastPlayedTrackId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastPlayedTrackId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastPlayedPlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1441,7 +1455,7 @@ export type UserUncheckedUpdateWithoutFavoritePlaylistsInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalPlayTime?: Prisma.IntFieldUpdateOperationsInput | number
   queue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  lastPlayedTrackId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastPlayedTrackId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastPlayedPlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1468,7 +1482,7 @@ export type UserCreateWithoutFavoriteArtistsInput = {
   lastLoginAt?: Date | string | null
   totalPlayTime?: number
   queue?: string | null
-  lastPlayedTrackId?: string | null
+  lastPlayedTrackId?: number | null
   lastPlayedPlaylistId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1495,7 +1509,7 @@ export type UserUncheckedCreateWithoutFavoriteArtistsInput = {
   lastLoginAt?: Date | string | null
   totalPlayTime?: number
   queue?: string | null
-  lastPlayedTrackId?: string | null
+  lastPlayedTrackId?: number | null
   lastPlayedPlaylistId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1538,7 +1552,7 @@ export type UserUpdateWithoutFavoriteArtistsInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalPlayTime?: Prisma.IntFieldUpdateOperationsInput | number
   queue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  lastPlayedTrackId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastPlayedTrackId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastPlayedPlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1565,7 +1579,7 @@ export type UserUncheckedUpdateWithoutFavoriteArtistsInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalPlayTime?: Prisma.IntFieldUpdateOperationsInput | number
   queue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  lastPlayedTrackId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastPlayedTrackId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastPlayedPlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1592,7 +1606,7 @@ export type UserCreateWithoutTrackHistoryInput = {
   lastLoginAt?: Date | string | null
   totalPlayTime?: number
   queue?: string | null
-  lastPlayedTrackId?: string | null
+  lastPlayedTrackId?: number | null
   lastPlayedPlaylistId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1619,7 +1633,7 @@ export type UserUncheckedCreateWithoutTrackHistoryInput = {
   lastLoginAt?: Date | string | null
   totalPlayTime?: number
   queue?: string | null
-  lastPlayedTrackId?: string | null
+  lastPlayedTrackId?: number | null
   lastPlayedPlaylistId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1662,7 +1676,7 @@ export type UserUpdateWithoutTrackHistoryInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalPlayTime?: Prisma.IntFieldUpdateOperationsInput | number
   queue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  lastPlayedTrackId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastPlayedTrackId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastPlayedPlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1689,7 +1703,7 @@ export type UserUncheckedUpdateWithoutTrackHistoryInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalPlayTime?: Prisma.IntFieldUpdateOperationsInput | number
   queue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  lastPlayedTrackId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastPlayedTrackId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastPlayedPlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1716,7 +1730,7 @@ export type UserCreateWithoutPlaylistHistoryInput = {
   lastLoginAt?: Date | string | null
   totalPlayTime?: number
   queue?: string | null
-  lastPlayedTrackId?: string | null
+  lastPlayedTrackId?: number | null
   lastPlayedPlaylistId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1743,7 +1757,7 @@ export type UserUncheckedCreateWithoutPlaylistHistoryInput = {
   lastLoginAt?: Date | string | null
   totalPlayTime?: number
   queue?: string | null
-  lastPlayedTrackId?: string | null
+  lastPlayedTrackId?: number | null
   lastPlayedPlaylistId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1786,7 +1800,7 @@ export type UserUpdateWithoutPlaylistHistoryInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalPlayTime?: Prisma.IntFieldUpdateOperationsInput | number
   queue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  lastPlayedTrackId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastPlayedTrackId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastPlayedPlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1813,7 +1827,7 @@ export type UserUncheckedUpdateWithoutPlaylistHistoryInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalPlayTime?: Prisma.IntFieldUpdateOperationsInput | number
   queue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  lastPlayedTrackId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastPlayedTrackId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastPlayedPlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2010,7 +2024,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     lastLoginAt: Date | null
     totalPlayTime: number
     queue: string | null
-    lastPlayedTrackId: string | null
+    lastPlayedTrackId: number | null
     lastPlayedPlaylistId: string | null
     createdAt: Date
     updatedAt: Date
@@ -2404,7 +2418,7 @@ export interface UserFieldRefs {
   readonly lastLoginAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly totalPlayTime: Prisma.FieldRef<"User", 'Int'>
   readonly queue: Prisma.FieldRef<"User", 'String'>
-  readonly lastPlayedTrackId: Prisma.FieldRef<"User", 'String'>
+  readonly lastPlayedTrackId: Prisma.FieldRef<"User", 'Int'>
   readonly lastPlayedPlaylistId: Prisma.FieldRef<"User", 'String'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>

@@ -31,7 +31,7 @@ export interface ExtractedColors {
 }
 
 export interface Track {
-	id: string | number;
+	id: number;
 	title: string;
 	artist: string;
 	src: string;

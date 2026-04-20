@@ -46,6 +46,7 @@ export async function GET(request: Request) {
         canMakePlaylistsPublic: true,
         loginCount: true,
         lastLoginAt: true,
+        totalPlayTime: true,
         createdAt: true,
       },
     }),
