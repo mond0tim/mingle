@@ -60,7 +60,7 @@ export const UIOverlay: React.FC<UIOverlayProps> = ({
     <div className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center space-y-20">
       <div
         ref={textRef}
-        className="font-oddval text-7xl tracking-widest text-white transition-all duration-75 ease-out"
+        className="font-neue-regrade text-7xl tracking-widest text-white transition-all duration-75 ease-out"
       >
         {title}
       </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useMemo, useState } from 'react';
-import { Settings2, RefreshCw } from 'lucide-react';
+import { Settings2, RefreshCw, Palette, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Sheet,
@@ -21,6 +21,7 @@ import {
 import { RadioGroup, RadioGroupItem } from '@/components/animate-ui/components/radix/radio-group';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import { ColorStudio } from './ColorStudio';
 import {
   COLOR_CHANNELS,
   type ColorBindings,
@@ -57,7 +58,7 @@ export function ColorStudioSheet({
   triggerLabel = 'Color Studio',
 }: {
   entityType: 'track' | 'playlist';
-  entityId?: string;
+  entityId?: string | number;
   coverUrl?: string | null;
   initialColors?: any;
   onSaved?: (colors: any) => void;
@@ -72,21 +73,6 @@ export function ColorStudioSheet({
   const [isSaving, setIsSaving] = useState(false);
   const [isReextracting, setIsReextracting] = useState(false);
 
-  const bindings = useMemo(
-    () => withDefaultTrackBindings((colors?.bindings ?? {}) as ColorBindings),
-    [colors?.bindings],
-  );
-
-  const setBinding = (key: BindingKey, patch: any) => {
-    setColors((prev: any) => ({
-      ...(prev ?? {}),
-      bindings: {
-        ...(prev?.bindings ?? {}),
-        [key]: { ...((prev?.bindings ?? {})[key] ?? {}), ...patch },
-      },
-    }));
-  };
-
   const saveColors = async () => {
     if (!entityId) return;
     setIsSaving(true);
@@ -95,10 +81,7 @@ export function ColorStudioSheet({
         entityType === 'track'
           ? `/api/admin/tracks`
           : `/api/admin/playlists`;
-      const payload =
-        entityType === 'track'
-          ? { id: entityId, colors }
-          : { id: entityId, colors };
+      const payload = { id: entityId, colors };
       const res = await fetch(endpoint, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -132,155 +115,50 @@ export function ColorStudioSheet({
     }
   };
 
-  const extractedEntries = COLOR_CHANNELS.filter((k) => typeof colors?.[k] === 'string');
-
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button size="sm" variant="outline" className="border-zinc-700 text-zinc-200">
-          <Settings2 className="mr-1 h-3.5 w-3.5" />
+        <Button size="sm" variant="outline" className="border-zinc-800 bg-zinc-900/50 text-zinc-200 hover:bg-zinc-800 rounded-xl gap-2 font-bold uppercase tracking-widest text-[10px]">
+          <Settings2 className="size-3.5" />
           {triggerLabel}
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="w-full max-w-[920px] overflow-hidden border-zinc-800 bg-zinc-950 text-zinc-100">
-        <SheetHeader className="border-b border-zinc-800">
-          <SheetTitle>Color Studio</SheetTitle>
-          <SheetDescription>
-            Каналы, manual override и tone adjust. Отображение extracted/manual/result.
-          </SheetDescription>
+      <SheetContent side="right" className="w-full sm:max-w-[calc(100vw-80px)] xl:max-w-[1200px] border-zinc-800 bg-zinc-950 text-zinc-100 p-0 flex flex-col shadow-2xl">
+        <SheetHeader className="p-8 border-b border-zinc-800/50 bg-zinc-900/20">
+          <div className="flex items-center gap-4 mb-2">
+             <div className="p-3 bg-zinc-800/50 rounded-2xl border border-zinc-700/50">
+                <Palette className="size-6 text-zinc-400" />
+             </div>
+             <div>
+                <SheetTitle className="text-2xl font-black uppercase tracking-tighter italic">Color Studio</SheetTitle>
+                <SheetDescription className="text-zinc-500 font-medium">Каналы, ручное управление и настройка тонов медиа-объекта.</SheetDescription>
+             </div>
+          </div>
         </SheetHeader>
 
-        <div className="flex h-[calc(100%-88px)] flex-col overflow-hidden p-4">
-          <Tabs defaultValue="bindings" className="h-full">
-            <TabsList className="mb-3">
-              <TabsTrigger value="bindings">Bindings</TabsTrigger>
-              <TabsTrigger value="extracted">Extracted</TabsTrigger>
-              <TabsTrigger value="manual">Manual</TabsTrigger>
-            </TabsList>
-            <TabsContents className="min-h-0 flex-1 overflow-hidden">
-              <TabsContent value="bindings" className="h-full overflow-auto pr-1">
-                <div className="space-y-4">
-                  {BINDING_ROWS.map((row) => {
-                    const binding = bindings[row.key] ?? {};
-                    const resolved = pickChannelColor(colors ?? {}, binding, '#777777');
-                    const channelColor =
-                      binding.channel && typeof colors?.[binding.channel] === 'string'
-                        ? String(colors[binding.channel])
-                        : undefined;
-                    return (
-                      <div key={row.key} className="rounded-xl border border-zinc-800 p-3">
-                        <div className="mb-2 flex items-center justify-between">
-                          <p className="text-sm font-semibold">{row.title}</p>
-                          <div className="flex items-center gap-2 text-xs text-zinc-400">
-                            <span>Result</span>
-                            <Swatch color={resolved} />
-                            <span className="font-mono">{resolved}</span>
-                          </div>
-                        </div>
-                        <div className="mb-3 flex flex-wrap gap-3 text-[11px] text-zinc-500">
-                          <span>
-                            channel: <span className="font-mono text-zinc-300">{binding.channel ?? 'auto'}</span>
-                          </span>
-                          <span className="flex items-center gap-1">
-                            extracted:
-                            <Swatch color={channelColor} />
-                            <span className="font-mono text-zinc-300">{channelColor ?? '—'}</span>
-                          </span>
-                          <span className="flex items-center gap-1">
-                            manual:
-                            <Swatch color={binding.manual} />
-                            <span className="font-mono text-zinc-300">{binding.manual ?? '—'}</span>
-                          </span>
-                        </div>
-                        <div className="grid gap-3 md:grid-cols-3">
-                          <div>
-                            <Label className="text-[10px] uppercase tracking-wider text-zinc-500">Manual</Label>
-                            <Input
-                              className="mt-1 border-zinc-800 bg-zinc-900 text-xs"
-                              placeholder="#112233"
-                              value={binding.manual ?? ''}
-                              onChange={(e) => setBinding(row.key, { manual: e.target.value || undefined })}
-                            />
-                          </div>
-                          <div>
-                            <Label className="text-[10px] uppercase tracking-wider text-zinc-500">Adjust</Label>
-                            <Input
-                              className="mt-1 border-zinc-800 bg-zinc-900 text-xs"
-                              type="number"
-                              min={-1}
-                              max={1}
-                              step={0.05}
-                              value={binding.adjust ?? 0}
-                              onChange={(e) => setBinding(row.key, { adjust: Number(e.target.value || 0) })}
-                            />
-                          </div>
-                          <div>
-                            <Label className="text-[10px] uppercase tracking-wider text-zinc-500">Selected channel</Label>
-                            <div className="mt-1 rounded-md border border-zinc-800 p-2">
-                              <RadioGroup
-                                value={binding.channel ?? ''}
-                                onValueChange={(v) => setBinding(row.key, { channel: (v || undefined) as ColorChannel | undefined })}
-                                className="grid grid-cols-2 gap-2 md:grid-cols-3"
-                              >
-                                <label className="flex items-center gap-2 text-xs text-zinc-300">
-                                  <RadioGroupItem value="" id={`${row.key}-auto`} />
-                                  <span>auto</span>
-                                </label>
-                                {COLOR_CHANNELS.map((channel) => (
-                                  <label key={channel} className="flex items-center gap-2 text-xs text-zinc-300">
-                                    <RadioGroupItem value={channel} id={`${row.key}-${channel}`} />
-                                    <span>{channel}</span>
-                                  </label>
-                                ))}
-                              </RadioGroup>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </TabsContent>
+        <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
+          <ColorStudio 
+            colors={colors}
+            onChange={setColors}
+            onReextract={reextract}
+            isReextracting={isReextracting}
+            coverUrl={coverUrl}
+            showReextract={true}
+          />
+        </div>
 
-              <TabsContent value="extracted" className="h-full overflow-auto pr-1">
-                <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                  {extractedEntries.map((k) => (
-                    <div key={k} className="flex items-center justify-between rounded-md border border-zinc-800 p-2 text-xs">
-                      <span className="text-zinc-300">{k}</span>
-                      <div className="flex items-center gap-2">
-                        <Swatch color={colors[k]} />
-                        <span className="font-mono text-zinc-400">{String(colors[k])}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </TabsContent>
-
-              <TabsContent value="manual" className="h-full overflow-auto pr-1">
-                <div className="space-y-2 text-xs text-zinc-400">
-                  {BINDING_ROWS.map((row) => (
-                    <div key={row.key} className="flex items-center justify-between rounded-md border border-zinc-800 p-2">
-                      <span>{row.title}</span>
-                      <div className="flex items-center gap-2">
-                        <Swatch color={bindings[row.key]?.manual} />
-                        <span className="font-mono">{bindings[row.key]?.manual || '—'}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </TabsContent>
-            </TabsContents>
-          </Tabs>
-
-          <div className="mt-3 flex items-center justify-between border-t border-zinc-800 pt-3">
-            <Button variant="outline" className="border-zinc-700 text-zinc-200" onClick={reextract} disabled={isReextracting || !coverUrl}>
-              <RefreshCw className={`mr-1 h-3.5 w-3.5 ${isReextracting ? 'animate-spin' : ''}`} />
-              Переизвлечь
+        <div className="p-8 border-t border-zinc-800/50 bg-zinc-900/20 flex items-center justify-between">
+           <Button variant="ghost" className="text-zinc-500 hover:text-zinc-100" onClick={() => setOpen(false)}>
+              Закрыть
+           </Button>
+            <Button 
+             className="bg-zinc-100 text-zinc-900 font-bold px-8 py-6 rounded-full uppercase tracking-widest hover:bg-white transition-all shadow-xl shadow-white/5 gap-2" 
+             onClick={saveColors} 
+             disabled={isSaving || !entityId}
+            >
+               {isSaving ? <Loader2 className="size-4 animate-spin" /> : null}
+               {isSaving ? 'Сохранение...' : 'Применить изменения'}
             </Button>
-            <Button onClick={saveColors} disabled={isSaving || !entityId}>
-              {isSaving ? 'Сохранение...' : 'Сохранить'}
-            </Button>
-          </div>
         </div>
       </SheetContent>
     </Sheet>

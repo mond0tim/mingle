@@ -37,7 +37,7 @@ export async function GET() {
     }),
     prisma.trackHistory.findMany({
       take: 10,
-      orderBy: { createdAt: 'desc' },
+      orderBy: { playedAt: 'desc' },
       include: {
         track: true,
         user: {

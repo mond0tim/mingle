@@ -15,7 +15,11 @@ export async function GET() {
 
     const dbUser = await prisma.user.findUnique({
       where: { id: session.user.id },
-      select: { queue: true }
+      select: { 
+        queue: true,
+        lastPlayedTrackId: true,
+        lastPlayedPlaylistId: true
+      }
     });
 
     // Обрабатываем очередь как строку (вручную парсим)
@@ -28,7 +32,11 @@ export async function GET() {
       }
     }
 
-    return NextResponse.json({ queue: queueObj });
+    return NextResponse.json({ 
+      queue: queueObj,
+      lastPlayedTrackId: dbUser?.lastPlayedTrackId,
+      lastPlayedPlaylistId: dbUser?.lastPlayedPlaylistId
+    });
   } catch (error) {
     console.error('Queue GET Error:', error);
     return new NextResponse('Internal Error', { status: 500 });
@@ -45,13 +53,15 @@ export async function PUT(request: Request) {
       return new NextResponse('Unauthorized', { status: 401 });
     }
 
-    const { queue } = await request.json(); // Ожидаем массив треков
+    const { queue, lastPlayedTrackId, lastPlayedPlaylistId } = await request.json();
 
     await prisma.user.update({
       where: { id: session.user.id },
       data: { 
-        // Сериализуем массив в строку для БД
-        queue: JSON.stringify(queue || []) 
+        // Сериализуем массив в строку для БД если он передан
+        ...(queue !== undefined && { queue: JSON.stringify(queue || []) }),
+        ...(lastPlayedTrackId !== undefined && { lastPlayedTrackId: lastPlayedTrackId ? Number(lastPlayedTrackId) : null }),
+        ...(lastPlayedPlaylistId !== undefined && { lastPlayedPlaylistId: lastPlayedPlaylistId || null }),
       }
     });
 

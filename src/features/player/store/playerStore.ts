@@ -105,8 +105,6 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   
   setTracks: (tracks, syncWithDb = true) => {
     // Каждый трек ДОЛЖЕН иметь уникальный queueId.
-    // Если он уже есть — сохраняем. Если нет — генерируем новый.
-    // НЕЛЬЗЯ искать по track.id, т.к. один трек может быть в очереди несколько раз.
     const queueItems: QueueItem[] = tracks.map(t => wrapTrack(t));
     
     set({ tracks: queueItems });
@@ -114,12 +112,17 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
     if (syncWithDb) {
       if (syncTimeout) clearTimeout(syncTimeout);
       syncTimeout = setTimeout(() => {
+          const state = get();
           fetch('/api/queue', {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ queue: queueItems })
+            body: JSON.stringify({ 
+              queue: queueItems,
+              lastPlayedTrackId: state.currentTrack?.id,
+              lastPlayedPlaylistId: state.originalPlaylistId || state.playlistIsPlaying?.id
+            })
           }).catch(err => console.error("Queue sync error:", err));
-      }, 5000);
+      }, 2000); // Уменьшаем до 2 сек
     }
   },
 
@@ -259,7 +262,7 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
             }
         }
 
-        // Сохраняем последний трек/плейлист в localStorage для восстановления
+        // Сохраняем последний трек/плейлист в localStorage для сверхбыстрого восстановления (оптимистично)
         try {
           const playlistId = playlist ? String(playlist.id) : state.originalPlaylistId;
           localStorage.setItem('mingle_last_played', JSON.stringify([{
@@ -267,6 +270,17 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
             trackId: String(track.id),
           }]));
         } catch {}
+
+        // Синхронизируем с БД (без дебаунса для смены трека)
+        const playlistId = playlist ? String(playlist.id) : state.originalPlaylistId;
+        fetch('/api/queue', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                lastPlayedTrackId: track.id,
+                lastPlayedPlaylistId: playlistId
+            })
+        }).catch(() => {});
 
         return {
             howlerInstance: newHowler,
@@ -440,9 +454,10 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
         String(t.id) === matchId ? { ...t, colors } : t
       );
       
-      const updatedCurrentTrack = String(state.currentTrack?.id) === matchId
-        ? { ...state.currentTrack, colors } 
-        : state.currentTrack;
+      let updatedCurrentTrack = state.currentTrack;
+      if (state.currentTrack && String(state.currentTrack.id) === matchId) {
+        updatedCurrentTrack = { ...state.currentTrack, colors };
+      }
 
       return {
         tracks: updatedTracks,

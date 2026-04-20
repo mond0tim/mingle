@@ -12,6 +12,8 @@ export const defaultVisualizerPrefs: AudioReactiveVisualizerPrefs = {
   gradientColors: defaultGradient,
   bpmSpeedMultiplier: 1.5,
   colorMode: 'track',
+  smoothColorTransitions: true,
+  colorBrightness: 1.0,
 };
 
 export function loadVisualizerPrefs(): AudioReactiveVisualizerPrefs {
@@ -31,6 +33,8 @@ export function loadVisualizerPrefs(): AudioReactiveVisualizerPrefs {
           ? parsed.bpmSpeedMultiplier
           : defaultVisualizerPrefs.bpmSpeedMultiplier,
       colorMode: parsed.colorMode === 'custom' ? 'custom' : 'track',
+      smoothColorTransitions: typeof parsed.smoothColorTransitions === 'boolean' ? parsed.smoothColorTransitions : true,
+      colorBrightness: typeof parsed.colorBrightness === 'number' ? parsed.colorBrightness : 1.0,
     };
   } catch {
     return defaultVisualizerPrefs;

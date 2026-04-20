@@ -63,7 +63,7 @@ export async function POST(request: Request) {
     // 1. ПРИОРИТЕТ КЭША: Если цвета уже есть и мы не просим форсированно (или мы не админ) — берем из базы
     if (!force || !isAdmin) {
       if (type === 'track') {
-        const track = await prisma.track.findUnique({ where: { id: stringId } });
+        const track = await prisma.track.findUnique({ where: { id: Number(id) } });
         if (track?.colors) return NextResponse.json({ colors: track.colors });
       } else {
         const playlist = await prisma.playlist.findUnique({ where: { id: stringId } });
@@ -83,8 +83,9 @@ export async function POST(request: Request) {
     const arrayBuffer = await imageRes.arrayBuffer();
     const rawBuffer = Buffer.from(arrayBuffer);
 
-    // НОРМАЛИЗАЦИЯ: Превращаем в стандартный PNG/RGB, чтобы исправить Pink Channel Swap в B&W
+    // НОРМАЛИЗАЦИЯ И ОПТИМИЗАЦИЯ: Превращаем в стандартный PNG/RGB и сжимаем до 200px для быстрой экстракции
     const buffer = await sharp(rawBuffer)
+      .resize(200, 200, { fit: 'inside', withoutEnlargement: true })
       .toFormat('png')
       .toBuffer();
 
@@ -111,8 +112,11 @@ export async function POST(request: Request) {
     const vibrantDominant = sortedSwatches[0]?.hex || '#000000';
     const vibrantAccent = vibrantPalette.Muted?.hex || (vibrantPalette.Vibrant?.hex ? darkenColor(hexToRgb(vibrantPalette.Vibrant.hex), 0.3) : '#FFFFFF');
 
-    // Текущий Dominant (FAC)
-    const dominant = facDominant.hex;
+    // Текущий Dominant (FAC) 
+    // По умолчанию используем Sqrt (Perceived average) по просьбе пользователя
+    const dominant = facSqrt.hex; 
+    // const dominant = facDominant.hex; // Традиционный Dominant
+    // const dominant = vibrantDominant; // Vibrant Dominant
 
     const colorsPayload: any = {
       dominant,
@@ -133,19 +137,23 @@ export async function POST(request: Request) {
     };
 
     if (type === 'playlist') {
-      colorsPayload.background = dominant;
-      colorsPayload.title = getContrastingColor(dominant);
-      colorsPayload.button = vibrantPalette.Vibrant?.hex || (facSqrt.isDark ? lightenColor(facSqrt.value.slice(0, 3) as any, 0.5) : darkenColor(facSqrt.value.slice(0, 3) as any, 0.4));
+      // Для плейлистов используем более сочные цвета из Vibrant, как раньше
+      const playlistDominant = vibrantPalette.Vibrant?.hex || facSqrt.hex;
+      colorsPayload.dominant = playlistDominant;
+      colorsPayload.background = playlistDominant;
+      colorsPayload.title = getContrastingColor(playlistDominant);
+      colorsPayload.button = vibrantPalette.Muted?.hex || vibrantPalette.Vibrant?.hex || (facSqrt.isDark ? lightenColor(facSqrt.value.slice(0, 3) as any, 0.5) : darkenColor(facSqrt.value.slice(0, 3) as any, 0.4));
       colorsPayload.icon = getContrastingColor(colorsPayload.button);
     }
 
     // 4. Обновляем БД (безопасно, не падем если записи нет)
     try {
       if (type === 'track') {
-        const existing = await prisma.track.findUnique({ where: { id: stringId }, select: { colors: true } });
+        const trackIdNum = Number(id);
+        const existing = await prisma.track.findUnique({ where: { id: trackIdNum }, select: { colors: true } });
         const keepBindings = (existing?.colors as any)?.bindings;
         await prisma.track.update({
-          where: { id: stringId },
+          where: { id: trackIdNum },
           data: { colors: keepBindings ? { ...colorsPayload, bindings: keepBindings } : colorsPayload },
         });
       } else if (type === 'playlist') {

@@ -17,32 +17,45 @@ export async function POST(request: Request) {
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
 
   try {
+    const { searchParams } = new URL(request.url);
+    const type = (searchParams.get("type") as "track" | "playlist") || "track";
+    
     const formData = await request.formData();
-    const trackIdStr = formData.get("trackId") as string;
-    const trackId = parseInt(trackIdStr, 10);
+    const id = formData.get("trackId") as string; // We keep the param name "trackId" for form compatibility or change it
     const file = formData.get("file") as File;
 
-    if (!trackIdStr || !file || isNaN(trackId)) {
-      return NextResponse.json({ error: "Missing or invalid trackId or file" }, { status: 400 });
+    if (!id || !file) {
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    // Get track info to have title and artist for naming
-    const track = await prisma.track.findUnique({
-      where: { id: trackId },
-      select: { title: true, artist: true }
-    });
+    let title = "";
+    let artist = "Collection";
 
-    if (!track) {
-      return NextResponse.json({ error: "Track not found" }, { status: 404 });
+    if (type === 'track') {
+      const track = await prisma.track.findUnique({
+        where: { id: parseInt(id, 10) },
+        select: { title: true, artist: true }
+      });
+      if (!track) return NextResponse.json({ error: "Track not found" }, { status: 404 });
+      title = track.title;
+      artist = track.artist;
+    } else {
+      const playlist = await prisma.playlist.findUnique({
+        where: { id: String(id) },
+        select: { title: true }
+      });
+      if (!playlist) return NextResponse.json({ error: "Playlist not found" }, { status: 404 });
+      title = playlist.title;
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
 
     const result = await processAndSaveCover({
-      trackId,
+      id,
+      type,
       buffer,
-      title: track.title,
-      artist: track.artist,
+      title,
+      artist,
     });
 
     return NextResponse.json({ 

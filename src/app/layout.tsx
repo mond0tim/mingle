@@ -35,11 +35,10 @@ export const viewport: Viewport = {
 //   // variable: "--font-non-bureau",
 // });
 
-const Oddval = localFont({
-  src: [
-    { path: "./fonts/Neue-Regrade-Variable.woff2", weight: "100 900", style: "normal" },
-  ],
-  variable: "--font-oddval",
+const NeueRegrade = localFont({
+  src: "./fonts/Neue-Regrade-Variable.woff2",
+  variable: "--font-neue-regrade",
+  weight: "100 900",
 });
 
 const geistSans = localFont({
@@ -52,10 +51,10 @@ const geistMono = localFont({
   variable: "--font-geist-mono",
   weight: "100 900",
 });
-// const Oddval = localFont({
-//   src: "./fonts/FliegeMonoVF.woff2",
-//   variable: "--font-oddval",
-// });
+const Oddval = localFont({
+  src: "./fonts/Oddval-SemiBold.woff",
+  variable: "--font-oddval",
+});
 const OddvalItalic = localFont({
   src: "./fonts/Oddval-SemiBoldItalic.woff",
   variable: "--font-oddval-italic",
@@ -88,7 +87,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru" className={cn("font-sans", geist.variable)} >
-      <body className={`${geistSans.variable} ${Oddval.variable} ${Raydis.variable} ${OddvalItalic.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${NeueRegrade.variable} ${Oddval.variable} ${Raydis.variable} ${OddvalItalic.variable} ${geistMono.variable} antialiased`}>
         <Providers>
           <GlobalUIWrapper>{children}</GlobalUIWrapper>
         </Providers>

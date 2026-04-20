@@ -8,6 +8,7 @@
 @theme {
   --font-oddval: var(--font-oddval);
   --font-geist: var(--font-geist-sans);
+  --font-neue-regrade: var(--font-neue-regrade);
 
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
@@ -58,11 +59,11 @@
     overflow-x: hidden;
   }
 
-  :focus-visible {
+  /* :focus-visible {
     outline: 2px dashed var(--mg-neon-hover);
     outline-offset: 3px;
     border: none;
-  }
+  } */
 }
 
 @layer base {
@@ -126,12 +127,12 @@
   margin-right: 11px !important;
 } */
 
-[data-vaul-drawer] [data-vaul-drawer-direction] {
+/* [data-vaul-drawer] [data-vaul-drawer-direction] {
   background: rgba(191, 191, 191, 1);
 }
 [vaul-drawer-visible="false"] [data-vaul-drawer-direction] {
   background: rgba(191, 191, 191, 0);
-}
+} */
 
 :root {
 	--mg-background: #0c0312;
@@ -141,7 +142,7 @@
 	--mg-btn-hover: #1B0A26;
 	--mg-neon-hover: #AA6DFF;
 	--mg-btn-border: rgba(151, 104, 209, 0.345);
-    --md-sys-color-primary: #3030e0; 
+  --md-sys-color-primary: #3030e0; 
 	--mg-font-size-s: 13vw;
 	--mg-font-size-m: 16vw;
 	--mg-font-size-l: 24vw;
@@ -201,7 +202,7 @@ html.loading-out .preloader {
 	opacity: 0;
 }
 
-number-flow-react::part(number) {
+/* number-flow-react::part(number) {
   perspective: 1000px;
   transform-style: preserve-3d;
 }
@@ -210,4 +211,4 @@ number-flow-react::part(digit) {
 }
 number-flow-react {
   --number-flow-blur-radius: 4px;
-}
+} */

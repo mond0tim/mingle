@@ -89,6 +89,7 @@ uniform float uTime;
 uniform float u_bass;
 uniform float u_mid;
 uniform float u_treble;
+uniform float u_brightness;
 uniform vec3 u_color1;
 uniform vec3 u_color2;
 uniform vec3 u_color3;
@@ -149,12 +150,12 @@ void main()
     vec3 colorMix1 = mix(u_color1, u_color2, smoothstep(0.0, 0.5, distortedGradient));
     vec3 colorMix2 = mix(colorMix1, u_color3, smoothstep(0.5, 1.0, distortedGradient));
     
-    vec3 finalColor = colorMix2;
+    vec3 finalColor = colorMix2 * u_brightness;
     
     float grain = fract(sin(dot(vUv, vec2(12.9898, 78.233)) + uTime) * 43758.5453);
     finalColor += grain * u_treble * 0.08;
     
-    finalColor += u_bass * 0.08;
+    finalColor += u_bass * 0.06;
 
     gl_FragColor = vec4(finalColor, 1.0);
 }

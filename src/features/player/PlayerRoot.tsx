@@ -21,59 +21,68 @@ const PlayerWrapper: React.FC<PlayerWrapperProps> = ({ children }) => {
 
   useEffect(() => {
     async function fetchData() {
-      const playlistsRes = await fetch('/api/playlists');
+      // 1. Загружаем все доступные плейлисты
+      const [playlistsRes, vibeRes, queueRes] = await Promise.all([
+        fetch('/api/playlists'),
+        fetch('/api/vibe'),
+        fetch('/api/queue')
+      ]);
+
       const playlists: Playlist[] = await playlistsRes.json();
-
-      const vibeRes = await fetch('/api/vibe');
       const vibePlaylists: Playlist[] = await vibeRes.json();
-
       const allPlaylists = [...playlists, ...vibePlaylists];
 
-      // Получаем массив кэша
-      let cache: { playlistId: string; trackId: string }[] = [];
-      try {
-        const cacheStr = localStorage.getItem(CACHE_KEY);
-        if (cacheStr) cache = JSON.parse(cacheStr);
-      } catch {}
+      let dbState: any = { queue: [], lastPlayedTrackId: null, lastPlayedPlaylistId: null };
+      if (queueRes.ok) {
+        dbState = await queueRes.json();
+      }
 
+      // 2. Определяем IDs для восстановления (Приоритет: База > Кэш)
+      let targetPlaylistId: string | null = dbState.lastPlayedPlaylistId ? String(dbState.lastPlayedPlaylistId) : null;
+      let targetTrackId: string | null = dbState.lastPlayedTrackId ? String(dbState.lastPlayedTrackId) : null;
+
+      // Если в базе пусто — смотрим кэш
+      if (!targetPlaylistId || !targetTrackId) {
+        try {
+          const cacheStr = localStorage.getItem(CACHE_KEY);
+          if (cacheStr) {
+            const cache = JSON.parse(cacheStr);
+            if (cache.length > 0) {
+              if (!targetPlaylistId) targetPlaylistId = String(cache[0].playlistId);
+              if (!targetTrackId) targetTrackId = String(cache[0].trackId);
+            }
+          }
+        } catch {}
+      }
+
+      // 3. Ищем объекты плейлиста и трека
       let playlistToPlay: Playlist | null = null;
       let trackToPlay: Track | null = null;
 
-      // Если есть кэш — ищем плейлист и трек
-      if (cache.length > 0) {
-        const { playlistId, trackId } = cache[0];
-        playlistToPlay = allPlaylists.find(p => String(p.id) === String(playlistId)) || null;
-        if (playlistToPlay) {
-          trackToPlay = playlistToPlay.tracks.find(t => String(t.id) === String(trackId)) || null;
-        }
+      if (targetPlaylistId) {
+        playlistToPlay = allPlaylists.find(p => String(p.id) === targetPlaylistId) || null;
       }
-
-      // Если нет кэша — ищем vibe-плейлист
+      
+      // Fallback плейлиста если ничего не нашли
       if (!playlistToPlay) {
-        playlistToPlay = vibePlaylists.find(p => p.id === "vibe_hour") || null;
+        playlistToPlay = vibePlaylists.find(p => p.id === "vibe_hour") || playlists[0] || null;
       }
 
-      // Если нет vibe — fallback на первый обычный плейлист
-      if (!playlistToPlay && playlists.length > 0) {
-        playlistToPlay = playlists[0];
+      if (targetTrackId && playlistToPlay) {
+        trackToPlay = playlistToPlay.tracks.find(t => String(t.id) === targetTrackId) || null;
       }
 
-      let queueObj: any[] = [];
-      try {
-        const queueRes = await fetch('/api/queue');
-        if (queueRes.ok) {
-           const queueData = await queueRes.json();
-           queueObj = queueData.queue || [];
-        }
-      } catch (e) {}
+      // Если трек в плейлисте не найден — берем первый из плейлиста
+      if (!trackToPlay && playlistToPlay && playlistToPlay.tracks.length > 0) {
+        trackToPlay = playlistToPlay.tracks[0];
+      }
 
-      // Определяем финальную очередь: сохранённая очередь ИЛИ треки текущего плейлиста
-      const finalQueue = queueObj.length > 0 ? queueObj : (playlistToPlay?.tracks || []);
+      // 4. Очередь: из базы ИЛИ из текущего плейлиста
+      const finalQueue = dbState.queue?.length > 0 ? dbState.queue : (playlistToPlay?.tracks || []);
 
-      if (playlistToPlay && trackToPlay) {
+      // 5. Гидратация
+      if (trackToPlay) {
         hydrateState(finalQueue, playlistToPlay, trackToPlay);
-      } else if (playlistToPlay && playlistToPlay.tracks.length > 0) {
-        hydrateState(finalQueue, playlistToPlay, playlistToPlay.tracks[0]);
       } else {
         setTracks(finalQueue, false);
       }

@@ -68,8 +68,9 @@ export async function POST(request: Request) {
     if (metadata.common.picture && metadata.common.picture.length > 0) {
       const pic = metadata.common.picture[0];
       const { cover, colors: extractedColors } = await processAndSaveCover({
-        trackId: track.id,
-        buffer: pic.data,
+        id: track.id,
+        type: 'track',
+        buffer: Buffer.from(pic.data),
         title,
         artist
       });

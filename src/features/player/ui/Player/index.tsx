@@ -1,12 +1,14 @@
 "use client"
-import type React from "react"
-import { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { Howler } from "howler"
 import styles from "./Player.module.css"
 import { useMediaQuery } from "react-responsive"
 
+import { motion, AnimatePresence } from "framer-motion"
+
 import PlayerControls from "../PlayerControls"
 import MobilePlayer from "../MobilePlayer"
+import PlayerSkeleton from "./PlayerSkeleton"
 import PlayerLoader from "../PlayerLoader"
 
 import { usePlayerStore as usePlayer } from "@/features/player/store/playerStore"
@@ -47,24 +49,15 @@ const Player: React.FC<PlayerProps> = () => {
 
   useEffect(() => {
     setIsClient(true);
-    // Убеждаемся, что плеер стартует на паузе
-    setPlaying(false);
-
     // Запрещаем Howler автоматически засыпать (стабильность паузы)
     Howler.autoSuspend = false;
     Howler.autoUnlock = true;
     Howler.html5PoolSize = 100;
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); 
 
   const currentTrackIndex = currentTrack ? tracks.findIndex(t => t.id === currentTrack.id) : -1;
   const nextTrack = currentTrackIndex !== -1 && tracks.length > 0 ? tracks[(currentTrackIndex + 1) % tracks.length] : null;
   const prevTrack = currentTrackIndex !== -1 && tracks.length > 0 ? tracks[currentTrackIndex === 0 ? tracks.length - 1 : currentTrackIndex - 1] : null;
-
-  useEffect(() => {
-    if (tracks.length > 0 && !currentTrack) {
-      setCurrentTrack(tracks[0]);
-    }
-  }, [tracks, setCurrentTrack, currentTrack]);
 
   // Сохранение в LocalStorage
   useEffect(() => {
@@ -113,44 +106,67 @@ const Player: React.FC<PlayerProps> = () => {
           style={{ display: "none" }}
         />
 
-        {!isClient && <PlayerLoader />}
-
-        {isClient && isDesktopOrLaptop && (
-          <PlayerControls
-            currentTrack={currentTrack}
-            nextTrack={nextTrack}
-            prevTrack={prevTrack}
-            playing={playing}
-            onPlayPause={togglePlay}
-            onPrevTrack={handlePrevTrack}
-            onNextTrack={handleNextTrack}
-            onSeek={handleSeek}
-            isDragging={false}
-            isQueueDrawerOpen={isQueueDrawerOpen}
-            setIsQueueDrawerOpen={setIsQueueDrawerOpen}
-            isLyricsDrawerOpen={isLyricsDrawerOpen}
-            setIsLyricsDrawerOpen={setIsLyricsDrawerOpen}
-            tracks={tracks}
-            onTrackSelect={playTrack}
-            playlistIsPlaying={playlistIsPlaying}
-            togglePlay={togglePlay}
-          />
-        )}
-
-        {isClient && !isDesktopOrLaptop && (
-          <MobilePlayer
-            currentTrack={currentTrack}
-            nextTrack={nextTrack}
-            prevTrack={prevTrack}
-            playing={playing}
-            onPlayPause={togglePlay}
-            onSeek={handleSeek}
-            onNextTrack={handleNextTrack}
-            onPrevTrack={handlePrevTrack}
-            tracks={tracks}
-            onTrackSelect={playTrack}
-            playlistIsPlaying={playlistIsPlaying}
-          />
+        {!isClient ? (
+          <PlayerLoader />
+        ) : (
+          <AnimatePresence mode="wait">
+            {!currentTrack ? (
+              <motion.div
+                key="skeleton"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                style={{ width: '100%' }}
+              >
+                <PlayerSkeleton />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="player-content"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3, ease: "linear" }}
+                style={{ width: '100%' }}
+              >
+                {isDesktopOrLaptop ? (
+                  <PlayerControls
+                    currentTrack={currentTrack}
+                    nextTrack={nextTrack}
+                    prevTrack={prevTrack}
+                    playing={playing}
+                    onPlayPause={togglePlay}
+                    onPrevTrack={handlePrevTrack}
+                    onNextTrack={handleNextTrack}
+                    onSeek={handleSeek}
+                    isDragging={false}
+                    isQueueDrawerOpen={isQueueDrawerOpen}
+                    setIsQueueDrawerOpen={setIsQueueDrawerOpen}
+                    isLyricsDrawerOpen={isLyricsDrawerOpen}
+                    setIsLyricsDrawerOpen={setIsLyricsDrawerOpen}
+                    tracks={tracks}
+                    onTrackSelect={playTrack}
+                    playlistIsPlaying={playlistIsPlaying}
+                    togglePlay={togglePlay}
+                  />
+                ) : (
+                  <MobilePlayer
+                    currentTrack={currentTrack}
+                    nextTrack={nextTrack}
+                    prevTrack={prevTrack}
+                    playing={playing}
+                    onPlayPause={togglePlay}
+                    onSeek={handleSeek}
+                    onNextTrack={handleNextTrack}
+                    onPrevTrack={handlePrevTrack}
+                    tracks={tracks}
+                    onTrackSelect={playTrack}
+                    playlistIsPlaying={playlistIsPlaying}
+                  />
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         )}
       </div>
     </>

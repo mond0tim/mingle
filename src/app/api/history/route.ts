@@ -35,10 +35,14 @@ export async function POST(request: Request) {
     let dbPlaylistId: string | undefined = undefined;
 
     if (playlistIdStr) {
-      const exists = await prisma.playlist.findUnique({
-        where: { id: playlistIdStr }
-      });
-      if (exists) dbPlaylistId = playlistIdStr;
+      if (playlistIdStr.startsWith('vibe_')) {
+          dbPlaylistId = playlistIdStr;
+      } else {
+          const exists = await prisma.playlist.findUnique({
+            where: { id: playlistIdStr }
+          });
+          if (exists) dbPlaylistId = playlistIdStr;
+      }
     }
 
     if (dbPlaylistId) {

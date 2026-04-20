@@ -34,6 +34,8 @@ import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+import { ColorStudio } from "@/components/color-studio/ColorStudio";
+
 interface UploadFile {
   file: File;
   id: string;
@@ -65,6 +67,7 @@ export function MultiStepUploadSheet({
   const [isProcessing, setIsProcessing] = useState(false);
   const coverInputRef = React.useRef<HTMLInputElement>(null);
   const [activeCoverFileId, setActiveCoverFileId] = useState<string | null>(null);
+  const [selectedColorFileId, setSelectedColorFileId] = useState<string | null>(null);
 
   const steps: { value: Step; label: string; icon: any }[] = [
     { value: "upload", label: "Загрузка", icon: Upload },
@@ -165,7 +168,6 @@ export function MultiStepUploadSheet({
       });
     } catch (err: any) {
       console.error("Cover upload error:", err);
-      // We don't mark the whole process as error, just log it
     } finally {
       setIsProcessing(false);
       setActiveCoverFileId(null);
@@ -174,23 +176,30 @@ export function MultiStepUploadSheet({
 
   const saveAll = async () => {
     setIsProcessing(true);
-    // In a real app, you'd send updates to the server here
-    // For now, we simulate a delay
     await new Promise(r => setTimeout(r, 1000));
     setIsProcessing(false);
     setCurrentStep("complete");
     onComplete();
   };
 
+  // Set first successful file as selected when entering colors stage
+  useEffect(() => {
+    if (currentStep === "colors" && !selectedColorFileId) {
+      const first = files.find(f => f.status === "success");
+      if (first) setSelectedColorFileId(first.id);
+    }
+  }, [currentStep, files, selectedColorFileId]);
+
+  const selectedFile = files.find(f => f.id === selectedColorFileId);
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="w-full sm:w-[90vw] md:w-[85vw] lg:w-[1000px] xl:w-[1200px] border-l border-zinc-800 bg-zinc-950 p-0 overflow-hidden">
+      <SheetContent side="right" className="w-full sm:w-[90vw] md:w-[85vw] lg:w-[1000px] xl:w-[1240px] border-l border-zinc-800 bg-zinc-950 p-0 overflow-hidden">
         <div className="flex flex-col h-full">
-          {/* Header */}
           <SheetHeader className="p-8 border-b border-border/50">
             <div className="flex items-center justify-between">
               <div>
-                <SheetTitle className="text-3xl font-black uppercase tracking-tighter italic">Пакетная установка</SheetTitle>
+                <SheetTitle className="text-3xl font-black uppercase tracking-tighter italic text-white">Пакетная установка</SheetTitle>
                 <SheetDescription className="text-zinc-500 mt-1">Многоэтапный процесс загрузки и обработки медиафайлов.</SheetDescription>
               </div>
               <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20">
@@ -198,7 +207,6 @@ export function MultiStepUploadSheet({
               </div>
             </div>
 
-            {/* Step Indicators */}
             <div className="mt-8">
               <Tabs value={currentStep} onValueChange={(v) => setCurrentStep(v as Step)} className="w-full">
                 <TabsList className="bg-zinc-900/50 border-zinc-800 p-1 w-full flex justify-between h-auto">
@@ -208,7 +216,7 @@ export function MultiStepUploadSheet({
                       value={s.value} 
                       disabled={
                         (s.value === "metadata" && !files.some(f => f.status === "success")) ||
-                        (s.value === "colors" && currentStep === "upload") ||
+                        (s.value === "colors" && !files.some(f => f.status === "success")) ||
                         (s.value === "complete" && currentStep !== "complete")
                       }
                       className="flex-1 py-3 gap-2 data-[state=active]:bg-zinc-800 data-[state=active]:text-primary transition-all"
@@ -222,8 +230,7 @@ export function MultiStepUploadSheet({
             </div>
           </SheetHeader>
 
-          {/* Content */}
-          <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
+          <div className="flex-1 overflow-hidden">
             <AnimatePresence mode="wait">
               {currentStep === "upload" && (
                 <motion.div 
@@ -231,7 +238,7 @@ export function MultiStepUploadSheet({
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
-                  className="space-y-8"
+                  className="p-8 space-y-8 overflow-y-auto h-full"
                 >
                   <div className="relative group">
                     <input
@@ -254,7 +261,7 @@ export function MultiStepUploadSheet({
                   </div>
 
                   {files.length > 0 && (
-                    <div className="space-y-3">
+                    <div className="space-y-3 pb-8">
                       <h3 className="text-xs font-black uppercase tracking-widest text-zinc-500">Выбранные файлы ({files.length})</h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         {files.map((f) => (
@@ -302,12 +309,11 @@ export function MultiStepUploadSheet({
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
-                  className="space-y-6"
+                  className="p-8 space-y-6 overflow-y-auto h-full"
                 >
-                  <div className="grid grid-cols-1 gap-6">
+                  <div className="grid grid-cols-1 gap-6 pb-24">
                     {files.filter(f => f.status === "success").map((f) => (
                       <div key={f.id} className="bg-zinc-900/40 border border-zinc-800 rounded-3xl p-6 flex flex-col md:flex-row gap-8 items-start">
-                        {/* Cover Preview/Upload */}
                         <div 
                           className="relative group size-48 flex-shrink-0"
                           onClick={() => {
@@ -334,7 +340,6 @@ export function MultiStepUploadSheet({
                           </div>
                         </div>
 
-                        {/* Metadata Form */}
                         <div className="flex-1 space-y-6 w-full">
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="space-y-2">
@@ -342,7 +347,7 @@ export function MultiStepUploadSheet({
                               <Input 
                                 value={f.metadata?.title} 
                                 onChange={(e) => updateMetadata(f.id, { title: e.target.value })}
-                                className="bg-zinc-900/50 border-zinc-800 rounded-xl focus:ring-primary"
+                                className="bg-zinc-900/50 border-zinc-800 rounded-xl focus:ring-primary h-12"
                               />
                             </div>
                             <div className="space-y-2">
@@ -350,7 +355,7 @@ export function MultiStepUploadSheet({
                               <Input 
                                 value={f.metadata?.artist} 
                                 onChange={(e) => updateMetadata(f.id, { artist: e.target.value })}
-                                className="bg-zinc-900/50 border-zinc-800 rounded-xl focus:ring-primary"
+                                className="bg-zinc-900/50 border-zinc-800 rounded-xl focus:ring-primary h-12"
                               />
                             </div>
                           </div>
@@ -382,54 +387,68 @@ export function MultiStepUploadSheet({
                 </motion.div>
               )}
 
-              {/* Color Preview Step */}
               {currentStep === "colors" && (
                 <motion.div 
                   key="colors"
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  className="space-y-6"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="h-full flex overflow-hidden"
                 >
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {files.filter(f => f.status === "success").map((f) => (
-                      <div key={f.id} className="bg-zinc-900/40 border border-zinc-800 rounded-3xl p-6 space-y-4">
-                         <div className="flex items-center gap-4">
-                           <img src={f.metadata?.cover || "/placeholder.png"} className="size-12 rounded-lg object-cover" />
-                           <div className="min-w-0">
-                              <p className="text-sm font-bold truncate">{f.metadata?.title}</p>
-                              <p className="text-[10px] text-zinc-500 uppercase font-black">{f.metadata?.artist}</p>
-                           </div>
-                         </div>
-                         
-                         <div className="space-y-2">
-                            <Label className="text-[10px] uppercase font-black tracking-widest text-zinc-500">Извлеченная палитра</Label>
-                            <div className="flex gap-2">
-                               {f.metadata?.colors?.dominant && (
-                                 <div 
-                                   className="flex-1 h-12 rounded-xl border border-white/10 shadow-lg flex items-center justify-center group"
-                                   style={{ backgroundColor: f.metadata.colors.dominant }}
-                                 >
-                                   <span className="text-[10px] font-bold text-white opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 px-2 py-1 rounded-full uppercase">Dominant</span>
-                                 </div>
-                               )}
-                               {f.metadata?.colors?.accent && (
-                                 <div 
-                                   className="flex-1 h-12 rounded-xl border border-white/10 shadow-lg flex items-center justify-center group"
-                                   style={{ backgroundColor: f.metadata.colors.accent }}
-                                 >
-                                   <span className="text-[10px] font-bold text-white opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 px-2 py-1 rounded-full uppercase">Accent</span>
-                                 </div>
-                               )}
+                  <div className="w-80 border-r border-zinc-800 bg-zinc-900/10 overflow-y-auto p-6 space-y-3 custom-scrollbar">
+                     <h3 className="text-[10px] font-black uppercase tracking-widest text-zinc-600 mb-4">Выбор трека</h3>
+                     {files.filter(f => f.status === "success").map((f) => (
+                       <button
+                         key={f.id}
+                         onClick={() => setSelectedColorFileId(f.id)}
+                         className={cn(
+                           "w-full p-3 rounded-2xl border transition-all flex items-center gap-3 text-left hover:scale-[1.02] active:scale-[0.98]",
+                           selectedColorFileId === f.id 
+                             ? "bg-zinc-800 border-zinc-700 shadow-xl" 
+                             : "bg-zinc-900/30 border-zinc-800/50 hover:border-zinc-700"
+                         )}
+                       >
+                          <img src={f.metadata?.cover || "/placeholder.png"} className="size-10 rounded-lg object-cover shadow-lg" />
+                          <div className="min-w-0 flex-1">
+                            <p className="text-[11px] font-bold truncate text-zinc-100">{f.metadata?.title}</p>
+                            <p className="text-[9px] text-zinc-500 uppercase font-black tracking-tight">{f.metadata?.artist}</p>
+                          </div>
+                          {selectedColorFileId === f.id && <div className="size-1.5 rounded-full bg-primary animate-pulse" />}
+                       </button>
+                     ))}
+                  </div>
+
+                  <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
+                    {selectedFile ? (
+                      <div className="max-w-4xl mx-auto space-y-8 pb-12">
+                         <div className="flex items-center gap-6 pb-8 border-b border-zinc-800/50">
+                            <img src={selectedFile.metadata?.cover || "/placeholder.png"} className="size-32 rounded-3xl object-cover shadow-2xl border border-zinc-800" />
+                            <div>
+                               <div className="flex items-center gap-2 mb-2">
+                                  <span className="px-2 py-0.5 bg-zinc-800 rounded-md text-[9px] font-black uppercase tracking-widest text-zinc-400">Track Config</span>
+                               </div>
+                               <h2 className="text-3xl font-black uppercase tracking-tighter italic text-zinc-100">{selectedFile.metadata?.title}</h2>
+                               <p className="text-[11px] text-zinc-500 uppercase font-black tracking-widest mt-1 opacity-70">{selectedFile.metadata?.artist}</p>
                             </div>
                          </div>
+
+                         <ColorStudio
+                            colors={selectedFile.metadata?.colors || {}}
+                            onChange={(newColors) => updateMetadata(selectedFile.id, { colors: newColors })}
+                            coverUrl={selectedFile.metadata?.cover}
+                            showReextract={false} 
+                         />
                       </div>
-                    ))}
+                    ) : (
+                      <div className="h-full flex flex-col items-center justify-center text-zinc-600 gap-4">
+                         <Palette className="size-16 opacity-10" />
+                         <p className="text-sm font-medium">Выберите трек слева для настройки цветов</p>
+                      </div>
+                    )}
                   </div>
                 </motion.div>
-              )}
+               )}
 
-              {/* Complete Step */}
               {currentStep === "complete" && (
                  <motion.div 
                   key="complete"
@@ -441,7 +460,7 @@ export function MultiStepUploadSheet({
                     <CheckCircle2 className="size-12 text-green-500 animate-in zoom-in duration-500" />
                   </div>
                   <div>
-                    <h2 className="text-3xl font-black italic uppercase tracking-tighter">Готово!</h2>
+                    <h2 className="text-3xl font-black italic uppercase tracking-tighter text-white">Готово!</h2>
                     <p className="text-zinc-500 mt-2">Все файлы успешно обработаны и добавлены в медиатеку.</p>
                   </div>
                   <div className="bg-zinc-900/50 border border-zinc-800 rounded-3xl p-6 w-full max-w-md">
@@ -460,20 +479,19 @@ export function MultiStepUploadSheet({
                       </div>
                     </div>
                   </div>
-                  <Button onClick={() => onOpenChange(false)} className="w-full max-w-sm rounded-full py-6 font-bold uppercase tracking-widest">Закрыть</Button>
+                  <Button onClick={() => onOpenChange(false)} className="w-full max-w-sm rounded-full py-6 font-bold uppercase tracking-widest bg-white text-black hover:bg-zinc-200 border-none transition-all">Закрыть</Button>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
 
-          {/* Footer Actions */}
           {currentStep !== "complete" && (
-            <div className="p-8 border-t border-border/50 bg-zinc-900/30 flex items-center justify-between">
+            <div className="p-8 border-t border-border/50 bg-zinc-950 flex items-center justify-between">
               <Button 
                 variant="ghost" 
                 onClick={() => setFiles([])} 
                 disabled={isProcessing}
-                className="text-zinc-500 hover:text-zinc-100"
+                className="text-zinc-500 hover:text-zinc-100 hover:bg-zinc-900"
               >
                 Очистить список
               </Button>
@@ -482,7 +500,7 @@ export function MultiStepUploadSheet({
                   <Button 
                     onClick={startUpload} 
                     disabled={isProcessing || files.length === 0}
-                    className="rounded-full px-8 py-6 font-black uppercase tracking-widest gap-2 bg-primary hover:bg-primary/90"
+                    className="rounded-full px-8 py-6 font-black uppercase tracking-widest gap-2 bg-primary hover:bg-primary/90 text-white"
                   >
                     {isProcessing ? <Loader2 className="size-4 animate-spin" /> : <ChevronRight className="size-4" />}
                     {isProcessing ? "Загрузка..." : "Начать обработку"}
@@ -491,7 +509,7 @@ export function MultiStepUploadSheet({
                 {currentStep === "metadata" && (
                    <Button 
                     onClick={() => setCurrentStep("colors")} 
-                    className="rounded-full px-8 py-6 font-black uppercase tracking-widest gap-2 bg-primary hover:bg-primary/90"
+                    className="rounded-full px-8 py-6 font-black uppercase tracking-widest gap-2 bg-primary hover:bg-primary/90 text-white"
                   >
                     Продолжить (Цвета) <ChevronRight className="size-4" />
                   </Button>
@@ -511,7 +529,6 @@ export function MultiStepUploadSheet({
           )}
         </div>
         
-        {/* Hidden inputs */}
         <input 
           type="file" 
           ref={coverInputRef} 

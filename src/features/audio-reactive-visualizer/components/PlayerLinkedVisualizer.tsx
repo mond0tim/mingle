@@ -26,10 +26,14 @@ export function PlayerLinkedVisualizer({
   bpmSpeedMultiplier,
   overrideGradientColors,
   title,
+  smoothColorTransitions = true,
+  colorBrightness = 1.0,
 }: {
   bpmSpeedMultiplier: number;
   overrideGradientColors?: GradientColors;
   title?: string;
+  smoothColorTransitions?: boolean;
+  colorBrightness?: number;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const currentTrack = usePlayerStore((s) => s.currentTrack);
@@ -153,6 +157,8 @@ export function PlayerLinkedVisualizer({
         gradientColors={gradientColors}
         bpm={bpm}
         bpmSpeedMultiplier={bpmSpeedMultiplier}
+        smoothColorTransitions={smoothColorTransitions}
+        colorBrightness={colorBrightness}
       />
 
       <MotionCanvas analyzer={analyzerLike} gradientColors={gradientColors} />
