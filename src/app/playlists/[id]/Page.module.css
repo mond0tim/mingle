@@ -61,7 +61,7 @@ left:5px;
 
 @keyframes playingIn {
     from {
-        filter: blur(8px);
+        filter: blur(6px);
         opacity: 0;
     }
     to {
@@ -79,8 +79,8 @@ left:5px;
 	grid-area: playButton;
 	justify-self: center;
     align-self: center;
-    width: 55px;
-    height: 55px !important;
+    width: 85px;
+    height: 75px !important;
 }
 
 .playlist_gradient {
