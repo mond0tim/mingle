@@ -1,15 +1,13 @@
 .card_blur {
 	position: relative;
-	overflow:hidden; background:var(--card-blur-background) center no-repeat;
-	background-size:cover;
+	overflow:hidden;
 	aspect-ratio: 1/1;
 	width:100%;
 	border-radius:30px;
 	display:flex;
 	justify-content: space-around;
 	align-items: flex-end;
-  
-  }
+}
   
   .card_blur::before {
 	content: "";
