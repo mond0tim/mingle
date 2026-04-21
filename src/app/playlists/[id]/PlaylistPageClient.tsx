@@ -2,8 +2,7 @@
 import { usePlayerStore as usePlayer } from "@/features/player/store/playerStore"
 import type React from "react"
 
-import { PlayPlaylistIcon } from '@/shared/ui/icons';
-import { PausePlaylistIcon } from '@/shared/ui/icons';
+import { PlayButton } from '@/features/player/ui/PlaybackButtons/PlaybackButtons';
 import styles from "./Page.module.css"
 import TrackList from "@/components/TrackList/TrackList"
 import Image from "next/image"
@@ -15,6 +14,7 @@ import { useRouter } from "next/navigation"
 import { Playlist } from "@/types"
 import AnimatedHeader from "./AnimatedHeader"
 import { LikePlaylistButton } from "@/components/LikePlaylistButton/LikePlaylistButton"
+import { TextMorph } from 'torph/react';
 
 type Props = {
   playlist: Playlist | null
@@ -87,7 +87,7 @@ const PlaylistPageClient = ({ playlist }: Props) => {
           <h1>{playlist.title}</h1>
           {playlistIsPlaying?.id === playlist.id && (
             <span className={styles.playing}>
-              <b>Сейчас играет:</b> {currentTrack?.title}
+              <b>Сейчас играет:</b> <TextMorph>{currentTrack?.title}</TextMorph>
             </span>
           )}
         </div>
@@ -100,7 +100,8 @@ const PlaylistPageClient = ({ playlist }: Props) => {
           className={styles.cover}
           onLoad={extractDominantColor}
         />
-        <Button
+        <PlayButton
+          isPlaying={playlistIsPlaying?.id === playlist.id && playing}
           onClick={async (e) => {
             e.preventDefault()
             e.stopPropagation()
@@ -114,14 +115,17 @@ const PlaylistPageClient = ({ playlist }: Props) => {
             }
           }}
           className={styles.playButton}
-        >
-          <span className="material-symbols-outlined">
-            {playlistIsPlaying?.id === playlist.id && playing ? <PlayPlaylistIcon /> : <PausePlaylistIcon />}
-          </span>
-        </Button>
-        <div className="flex items-center gap-4 mt-4">
-          <LikePlaylistButton playlistId={playlist.id} size={32} />
-        </div>
+          variant="solo"
+          style={{
+            '--play-button-color': 'var(--playlist-dominant-color)',
+            '--play-button-background': 'white',
+          } as React.CSSProperties}
+        />
+        {playlist.id !== 'liked-tracks' && (
+          <div className="flex items-center gap-4 mt-4">
+            <LikePlaylistButton playlistId={playlist.id} size={32} />
+          </div>
+        )}
       </div>
       <TrackList
         tracks={playlist.tracks}

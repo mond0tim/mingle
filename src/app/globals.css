@@ -59,6 +59,10 @@
     overflow-x: hidden;
   }
 
+
+  svg {
+  width:24px;
+  }
   /* :focus-visible {
     outline: 2px dashed var(--mg-neon-hover);
     outline-offset: 3px;
@@ -167,9 +171,7 @@ button {
 	transition: 0.1s;
 }
 
-svg {
-  width:24px;
-}
+
 
 html {
   scrollbar-width: thin;

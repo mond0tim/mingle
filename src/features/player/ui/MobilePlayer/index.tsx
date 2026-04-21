@@ -256,8 +256,12 @@ const MobilePlayer: React.FC<MobilePlayerProps> = ({
                   e.stopPropagation()
                   onPlayPause()
                 }}
-                variant="mini"
+                variant="solo-mini"
                 className={styles.play_button}
+                style={{
+                  '--play-button-color': 'black',
+                  '--play-button-background': 'white', 
+                } as React.CSSProperties}
               />
 
               <div

@@ -1,18 +1,18 @@
-.playbackButtons {
+/* .playbackButtons {
     display: flex;
     align-items: center;
     gap: 16px;
     justify-content: center;
-}
+} */
 
 .mediaButton {
     --play-button-background: color-mix(in srgb, var(--dominant-color, #0f0f23), white 30%);
     --play-button-color: lch(from var(--play-button-background, var(--dominant-color, #0f0f23)) calc((49.44 - l) * infinity) 0 0);
     background-color: var(--play-button-background);
     border: none;
-    border-radius: 32px;
+    /* border-radius: 32px;
     width: 88px;
-    height: 88px;
+    height: 88px; */
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -53,7 +53,7 @@
 }
 
 /* Base style for Step buttons (Next/Prev) */
-.stepButton {
+/* .stepButton {
     background: rgba(255, 255, 255, 0.08);
     border: none;
     border-radius: 24px;
@@ -81,7 +81,7 @@
     height: 24px;
     fill: currentColor;
     stroke: none;
-}
+} */
 
 /* Adjustments for smaller screens or denser UI */
 @media (max-width: 640px) {
@@ -105,6 +105,413 @@
     border-radius: 16px;
 }
 .mini.mediaButton svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 6px;
+}
+
+
+
+
+
+
+
+
+.wrapper {
+    --playback-buttons-background: var(--dominant-color, #0f0f23);
+    --play-button-color: var(--dominant-color, #0f0f23);
+    --play-button-background: lch(from var(--play-button-color, var(--dominant-color, #0f0f23)) calc((49.44 - l) * infinity) 0 0);
+    
+
+}
+
+
+/* Единственное изменение в оригинальном коде: 
+   сделал flex-direction: column для .wrapper 
+   и убрал absolute с .button-content, 
+   чтобы 3 версии выстроились в столбик для проверки. */
+/* .wrapper {
+    width: 100%;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 60px;
+    padding: 40px 0;
+} */
+
+
+/* .wrapper .buttonContent {
+    position: relative;
+} 
+*/
+
+/* ОРИГИНАЛ: применяет фильтр 100% */
+.wrapper .buttonContentInner {
+    filter: url(#goo);
+}
+
+.wrapper .buttonContentInner {
+    cursor: pointer;
+    max-width: max-content
+}
+
+.wrapper .buttonContentInner .btn {
+   
+    cursor: pointer;
+    box-sizing: content-box;
+    background-color: var(--playback-buttons-background);
+    /* background-color: #000; */
+    /* outline: none;
+    border: none; */
+    /* border-radius: 9999px;
+    padding: 10px; */
+    /* justify-content: center;
+    display: flex;
+    align-items: center; */
+}
+
+.wrapper .buttonContent .buttonContentInner .btn .btnIcon {
+    pointer-events: none;
+    text-align: center;
+    position: relative;
+}
+
+/* .wrapper .buttonContent .buttonContentInner .btn .search-input {
+    width: 100%;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    color: #ddd
+}
+
+.wrapper .buttonContent .buttonContentInner .separate-element {
+    position: absolute;
+    background-color: #000;
+    width: 46px;
+    height: 46px;
+    right: -5px;
+    top: -1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 9999px
+} */
+
+/* @media (max-width: 767px) {
+    .wrapper .buttonContent .buttonContentInner .separate-element {
+        scale:1.1;
+        top: 2px
+    }
+} */
+
+/* .wrapper .buttonContent .buttonContentInner .separate-element svg {
+    width: 20px;
+    height: 20px
+}
+
+@media (max-width: 767px) {
+    .wrapper .button-content .button-content-inner .separate-element svg {
+        width:24px;
+        height: 24px
+    }
+}
+
+.wrapper .button-content .button-content-inner .separate-element svg path {
+    fill: #ddd
+} */
+
+
+
+.container {
+ display:flex; 
+  align-items: center;
+}
+
+.btnIcon {
+  min-width:30px;
+  min-height: 30px;
+  width:100%;
+  height:100%;
+  background-color: var(--play-button-background);
+  display: flex;
+  border-radius: 9999px;
+  align-items: center;
+  justify-content: center;
+}
+.btn {
+  transition: transform 0.1s ease, background-color 0.2s, padding 0.2s ease, border-radius 0.2s ease, all 0.1s ease;
+}
+
+.btnPlay .btnIcon {
+    /* --play-button-background: color-mix(in srgb, var(--dominant-color, #0f0f23), white 30%);
+    --play-button-color: lch(from var(--play-button-background, var(--dominant-color, #0f0f23)) calc((49.44 - l) * infinity) 0 0); */
+    background-color: var(--play-button-background);
+}
+
+.btnIcon svg {
+    fill: var(--play-button-color);
+    stroke: var(--play-button-color);
+    
+}
+
+.btnPlay svg {
+    width: 36px;
+    height: 36px;
+    fill: var(--play-button-color);
+    stroke: var(--play-button-color);
+    stroke-width: 6px; 
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    overflow: visible;
+    
+    /* Анимация вращения */
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+
+/* ОРИГИНАЛЬНЫЕ ACTIVE СОСТОЯНИЯ (работают для size-lg) */
+.btn:active {
+  transform:scale(0.92)!important;
+}
+
+/* .btn:active {
+  border-radius: 65px!important;
+  padding:15px!important;
+} */
+
+
+/* ========================================================
+   НОВЫЕ ПОДКЛАССЫ (Рассчитано вручную)
+   ======================================================== */
+
+/* --- 1. ПЕРВАЯ КНОПКА (100%) --- */
+.lg .buttonContentInner {
+    filter: url(#goo); /* Фильтр со сниженным размытием */
+}
+.lg .btnPrev {
+  width: 82px; 
+  height: 74px; 
+  transform: translateX(10px); 
+  border-radius: 65px 20px 20px 65px; 
+  padding: 12px 6px 12px 12px; 
+  z-index: 2;
+}
+.lg .btnPlay {
+    width: 110px;
+    height: 88px;
+    border-radius: 45px;
+    padding: 16px 10px;
+    z-index: 1;
+}
+.lg .btnNext {
+    width: 82px;
+    height: 74px;
+    transform: translateX(-10px);
+    border-radius: 20px 65px 65px 20px;
+    padding: 12px 12px 12px 6px;
+    z-index: 2;
+}
+.lg .btnIcon {
+    min-width: 18px; 
+    min-height: 18px;
+}
+.lg .btnPrev svg, 
+.lg .btnNext svg { 
+    width: 46px; 
+    height: 42px;
+    stroke: none !important;
+}
+.lg .btnPlay svg { 
+    width: 53px; 
+    height: 60px; 
+}
+/* Переопределяем :active для 60%, чтобы не было скачка до 15px */
+.lg .btn:active {
+    border-radius: 65px!important;
+    padding: 15px!important;
+}
+
+
+/* --- 2. ВТОРАЯ КНОПКА (60%) --- */
+.md .buttonContentInner {
+    filter: url(#goo); /* Фильтр со сниженным размытием */
+}
+.md .btnPrev {
+    width: 54px;
+    height: 49px;
+    transform: translateX(6px);
+    border-radius: 39px 12px 12px 39px;
+    padding: 10px 4px 10px 11px;
+    z-index: 2;
+}
+.md .btnPlay {
+    width: 74px;
+    height: 59px;
+    border-radius: 32px;
+    padding: 12px 8px;
+    z-index: 1;
+}
+.md .btnNext {
+    width: 54px;
+    height: 49px;
+    transform: translateX(-6px);
+    border-radius: 12px 39px 39px 12px;
+    padding: 10px 11px 10px 6px;
+    z-index: 2;
+}
+.md .btnIcon {
+    min-width: 18px; 
+    min-height: 18px;
+}
+.md .btnPrev svg, 
+.md .btnNext svg { 
+    width: 28px; 
+    height: 25px;
+    stroke: none !important;
+}
+.md .btnPlay svg { 
+    width: 32px; 
+    height: 36px; 
+}
+/* Переопределяем :active для 60%, чтобы не было скачка до 15px */
+.md .btn:active {
+    border-radius: 39px !important;
+    padding: 9px !important;
+}
+
+
+
+
+/* --- 3. ТРЕТЬЯ КНОПКА (45%) --- */
+.sm .buttonContentInner {
+    filter: url(#goo); /* Фильтр со сниженным размытием */
+}
+.sm .btnPrev {
+    width: 37px; 
+    height: 33px;
+    transform: translateX(4.5px);
+    border-radius: 29px 9px 9px 29px;
+    padding: 5.5px 2.5px 5.5px 5.5px;
+    z-index: 2;
+}
+.sm .btnPlay {
+    width: 50px; 
+    height: 40px;
+    border-radius: 20px;
+    padding: 7px 4.5px;
+    z-index: 1;
+}
+.sm .btnNext {
+    width: 37px; 
+    height: 33px;
+    transform: translateX(-4.5px);
+    border-radius: 9px 29px 29px 9px;
+    padding: 5.5px 5.5px 5.5px 2.5px;
+    z-index: 2;
+}
+.sm .btnIcon {
+    min-width: 13.5px; 
+    min-height: 13.5px;
+}
+.sm .btnPrev svg, 
+.sm .btnNext svg { 
+    width: 21px; 
+    height: 19px;
+    stroke: none !important;
+}
+.sm .btnPlay svg { 
+    width: 24px; 
+    height: 27px; 
+}
+/* Переопределяем :active для 45%, чтобы не было скачка до 15px */
+.sm .btn:active {
+    border-radius: 29px !important;
+    padding: 6.5px !important;
+}
+
+/* ========================================================
+   ANIMATIONS FOR NEXT/PREV BUTTONS
+   ======================================================== */
+
+.animateNextCarousel {
+    animation: slide-carousel-next 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animateNextLine {
+    animation: bump-line-next 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes slide-carousel-next {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(40px); }
+}
+
+@keyframes bump-line-next {
+    0% { transform: translateX(0); }
+    20% { transform: translateX(4px); }
+    100% { transform: translateX(0); }
+}
+
+.animatePrevCarousel {
+    animation: slide-carousel-prev 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animatePrevLine {
+    animation: bump-line-prev 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes slide-carousel-prev {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-40px); }
+}
+
+@keyframes bump-line-prev {
+    0% { transform: translateX(0); }
+    20% { transform: translateX(-4px); }
+    100% { transform: translateX(0); }
+}
+
+
+
+
+
+/* Solo button versions */
+.solo {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    padding: 0;
+    --play-button-color: var(--dominant-color, #0f0f23);
+    --play-button-background: lch(from var(--play-button-color, var(--dominant-color, #0f0f23)) calc((49.44 - l) * infinity) 0 0);
+}
+.solo .btnIcon {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: var(--play-button-background);
+}
+.solo svg {
+    width: 28px;
+    height: 28px;
+}
+
+.soloMini {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    padding: 0;
+    --play-button-color: var(--dominant-color, #0f0f23);
+    --play-button-background: lch(from var(--play-button-color, var(--dominant-color, #0f0f23)) calc((49.44 - l) * infinity) 0 0);
+}
+.soloMini .btnIcon {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: var(--play-button-background);
+}
+.soloMini svg {
     width: 20px;
     height: 20px;
     stroke-width: 6px;

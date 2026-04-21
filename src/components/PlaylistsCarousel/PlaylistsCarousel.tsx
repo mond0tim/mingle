@@ -14,8 +14,7 @@ import styles from './PlaylistsCarousel.module.css';
 import cn from 'classnames';
 import { useEffect, useState, useRef } from 'react';
 import { ColorThiefOutput, getColorFromURL, getContrastingColor } from '@/lib/colorHelper';
-import { PlayPlaylistIcon } from '@/shared/ui/icons';
-import { PausePlaylistIcon } from '@/shared/ui/icons';
+import { PlayButton } from '@/features/player/ui/PlaybackButtons/PlaybackButtons';
 import { LikePlaylistButton } from '../LikePlaylistButton/LikePlaylistButton';
 import Image from 'next/image';
 import { BProgress } from '@bprogress/core';
@@ -84,7 +83,7 @@ const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlist }) => {
     fetchColors();
   }, [playlist.cover, playlist.colors]); // Добавляем цвета плейлиста в зависимости
 
-  const handlePlayClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handlePlayClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
 
@@ -117,7 +116,6 @@ const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlist }) => {
       <div
         className={styles.card_blur}
         style={{
-          '--card-blur-background': `url(${playlist.cover})`,
           '--card-button-background': playlist.colors?.button || colors?.button || '#000000',
           '--card-button-background-hover': `${playlist.colors?.button || colors?.button || '#000000'}AA`,
           '--card-title-color': playlist.colors?.title || colors?.title || '#000000',
@@ -125,12 +123,11 @@ const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlist }) => {
         } as React.CSSProperties}
       >
         <Image
-          ref={imageRef}
           src={playlist.cover || "/placeholder.png"}
           alt={playlist.title}
-          width={300}
-          height={300}
-          style={{ display: 'none' }}
+          fill
+          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+          style={{ objectFit: 'cover', zIndex: -1, borderRadius: 'inherit' }}
         />
         <div className={styles.card_text}>
           <h3 className={styles.blur_card_title}>
@@ -145,16 +142,17 @@ const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlist }) => {
             </div>
           </h3>
 
-          <button
-            className={cn(styles.button, styles.card_button)}
+          <PlayButton
+            isPlaying={playlistIsPlaying?.id === playlist.id && isThisPlaying}
             onClick={handlePlayClick}
-          >
-            {playlistIsPlaying?.id === playlist.id && isThisPlaying ? (
-              <PausePlaylistIcon width={30} height={30} fill='currentColor' />
-            ) : (
-              <PlayPlaylistIcon width={30} height={30} fill='currentColor' />
-            )}
-          </button>
+            variant="solo"
+            className={cn(styles.button, styles.card_button)}
+            style={{
+              '--play-button-color': playlist.colors?.icon || colors?.buttonColor || '#FFFFFF',
+              '--dominant-color': playlist.colors?.icon || colors?.buttonColor || '#FFFFFF', // To force standard color mixing if needed
+              '--play-button-background': playlist.colors?.button || colors?.button || '#000000',
+            } as React.CSSProperties}
+          />
         </div>
       </div>
     </Link>
