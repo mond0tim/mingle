@@ -7,6 +7,8 @@ import { usePlayerStore as usePlayer } from "@/features/player/store/playerStore
 import { PlayPlaylistIcon } from '@/shared/ui/icons';
 import { PausePlaylistIcon } from '@/shared/ui/icons';
 import { Button } from "@/components/Button/Button"
+import { TextMorph } from 'torph/react'
+import { PlayButton } from '@/features/player/ui/PlaybackButtons/PlayButton'
 
 type AnimatedHeaderProps = {
   playlist: Playlist
@@ -61,13 +63,14 @@ const AnimatedHeader = ({ playlist, visible }: AnimatedHeaderProps) => {
           <h2>{playlist.title}</h2>
           {playlistIsPlaying?.id === playlist.id && (
             <span className={styles.nowPlaying}>
-              <b>Now Playing:</b> {currentTrack?.title}
+              <b>Now Playing:</b> <TextMorph>{currentTrack?.title}</TextMorph>
             </span>
           )}
         </motion.div>
 
         <motion.div variants={itemVariants}>
-          <Button
+          <PlayButton
+            isPlaying={playlistIsPlaying?.id === playlist.id && playing}
             onClick={async (e) => {
               e.preventDefault()
               e.stopPropagation()
@@ -81,12 +84,13 @@ const AnimatedHeader = ({ playlist, visible }: AnimatedHeaderProps) => {
               }
             }}
             className={styles.headerPlayButton}
-            view="outline-solid"
-          >
-            <span className="material-symbols-outlined">
-              {playlistIsPlaying?.id === playlist.id && playing ? <PlayPlaylistIcon /> : <PausePlaylistIcon />}
-            </span>
-          </Button>
+
+            variant="solo"
+            style={{
+              '--play-button-color': 'lch(from var(--playlist-dominant-color, #0f0f23) calc((49.44 - l) * infinity) 0 0)',
+              '--play-button-background': 'var(--playlist-dominant-color)',
+            } as React.CSSProperties}
+          />
         </motion.div>
       </div>
     </motion.div>

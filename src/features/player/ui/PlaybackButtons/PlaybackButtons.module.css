@@ -121,7 +121,7 @@
     --playback-buttons-background: var(--dominant-color, #0f0f23);
     --play-button-color: var(--dominant-color, #0f0f23);
     --play-button-background: lch(from var(--play-button-color, var(--dominant-color, #0f0f23)) calc((49.44 - l) * infinity) 0 0);
-    
+    height: 75px;
 
 }
 
@@ -227,6 +227,15 @@
 .container {
  display:flex; 
   align-items: center;
+}
+
+.buttonContent,
+.buttonContentInner {
+    height: 100%;
+}   
+
+.buttonContentInner {
+    display: flex;
 }
 
 .btnIcon {
@@ -481,7 +490,7 @@
 .solo {
     width: 64px;
     height: 64px;
-    border-radius: 50%;
+    border-radius: 99999px;
     padding: 0;
     --play-button-color: var(--dominant-color, #0f0f23);
     --play-button-background: lch(from var(--play-button-color, var(--dominant-color, #0f0f23)) calc((49.44 - l) * infinity) 0 0);
@@ -489,7 +498,7 @@
 .solo .btnIcon {
     width: 100%;
     height: 100%;
-    border-radius: 50%;
+    border-radius: 99999px;
     background-color: var(--play-button-background);
 }
 .solo svg {
@@ -500,7 +509,7 @@
 .soloMini {
     width: 44px;
     height: 44px;
-    border-radius: 50%;
+    border-radius: 99999px;
     padding: 0;
     --play-button-color: var(--dominant-color, #0f0f23);
     --play-button-background: lch(from var(--play-button-color, var(--dominant-color, #0f0f23)) calc((49.44 - l) * infinity) 0 0);
@@ -508,7 +517,7 @@
 .soloMini .btnIcon {
     width: 100%;
     height: 100%;
-    border-radius: 50%;
+    border-radius: 99999px;
     background-color: var(--play-button-background);
 }
 .soloMini svg {

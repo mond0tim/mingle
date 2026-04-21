@@ -117,8 +117,8 @@ const PlaylistPageClient = ({ playlist }: Props) => {
           className={styles.playButton}
           variant="solo"
           style={{
-            '--play-button-color': 'var(--playlist-dominant-color)',
-            '--play-button-background': 'white',
+            '--play-button-color': 'lch(from var(--playlist-dominant-color, #0f0f23) calc((49.44 - l) * infinity) 0 0)',
+            '--play-button-background': 'var(--playlist-dominant-color)',
           } as React.CSSProperties}
         />
         {playlist.id !== 'liked-tracks' && (
