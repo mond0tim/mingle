@@ -23,7 +23,7 @@
     color:lch(from var(--dominant-color, #0f0f23) calc((49.44 - l) * infinity) 0 0);
     cursor: pointer;
     @media (max-width: 768px) {
-      top: 5px;
+      top: 15px;
       left:50%;
       width: 40px;
       height: 20px;
@@ -55,10 +55,18 @@
 	width: 100%;
 	height: 100%;
 	transition: 0.3s ;
-	background-image: linear-gradient(to bottom, var(--dominant-color, #0f0f23), var(--mg-background));
+	/* background-color: transparent; */
+    background-image: linear-gradient(to bottom,  var(--dominant-color, #0f0f23), black);
 	display: grid;
-	grid-template-rows: 6fr 1fr 1.5fr;
-	grid-template-areas: 'mobileHeader' 'mobileProgressBlock' 'mobilePlayerControls';
+	grid-template-rows: 0.5fr 4fr 1fr 1fr 1fr 1.5fr 0.5fr;
+	grid-template-areas:
+    '.'
+    'mobileHeader' 
+    'trackTextContainer'
+    'trackInfoContainer'
+    'mobileProgressBlock' 
+    'mobilePlayerControls'
+    '.';
 }
 .mobileDrawer::before {
     content: '';
@@ -66,19 +74,19 @@
     background-size: 130px;
     background-repeat: repeat;
     position: absolute;
+    /* opacity: 0.5; */
     inset: 0;
     touch-action: none;
     pointer-events: none;
+    /* z-index: -1; */
 }
-.mobileDrawer::after {
-	background: var(--mg-background) !important;
-}
-.dialogHeader {
+
+.dialogCoverContainer {
 	grid-area: mobileHeader;
-    display: grid;
-    grid-template-columns: 7fr 1fr;
-    grid-template-rows: 3fr 1fr;
-    grid-template-areas: 'dialogCover dialogCover' 'mobilePlayerInfo otherBtn';
+    /* display: grid;
+    grid-template-columns: 7fr;
+    grid-template-rows: 3fr;
+    grid-template-areas: 'dialogCover   '; */
     justify-items: center;
     align-items: center;
     padding: 15px;
@@ -87,7 +95,7 @@
 }
 .dialogCover {
     border-radius: 20px;
-    width: 80%;
+    width: 100%;
     display: block;
     pointer-events: none;
     user-select: none;
@@ -101,12 +109,25 @@
 .coverStrip {
     display: flex;
     will-change: transform;
+    gap: 20px;
 }
 .coverSlide {
     flex: 0 0 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+
+.trackInfoContainer {
+    grid-area: trackInfoContainer;
+    display: grid;
+    grid-template-columns: 7fr 1fr;
+    grid-template-areas: 'mobilePlayerInfo otherBtn';
+    padding: 0px 15px;
+    /* align-content: center; */
+    
+    
 }
 .mobilePlayerInfo {
 	grid-area: mobilePlayerInfo;
@@ -191,6 +212,7 @@
 }
 .otherBtn {
 	grid-area: otherBtn;
+    display: flex;
 }
 
 .mobileProgressBlock {
@@ -271,7 +293,7 @@
 .coverCarouselContainer {
   position: relative;
   width: 100%;
-  height: 300px;
+  height: 410px;
   display: flex;
   justify-content: center;
   align-items: center;

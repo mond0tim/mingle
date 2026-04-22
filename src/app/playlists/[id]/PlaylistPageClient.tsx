@@ -15,6 +15,7 @@ import { Playlist } from "@/types"
 import AnimatedHeader from "./AnimatedHeader"
 import { LikePlaylistButton } from "@/components/LikePlaylistButton/LikePlaylistButton"
 import { TextMorph } from 'torph/react';
+import { useAudioReactiveStore } from "@/features/audio-reactive-visualizer/store/audioReactiveStore"
 
 type Props = {
   playlist: Playlist | null
@@ -36,10 +37,20 @@ const PlaylistPageClient = ({ playlist }: Props) => {
   const router = useRouter()
 
   useEffect(() => {
-    if (imageRef.current && imageRef.current.complete) {
+    if (playlist?.colors) {
+      useAudioReactiveStore.getState().setPageColors(playlist.colors);
+      if (playlist.colors.dominant) {
+        setDominantColor(playlist.colors.dominant);
+      }
+    } else if (imageRef.current && imageRef.current.complete) {
       extractDominantColor()
     }
-  }, [playlist?.id])
+    
+    // Cleanup playlist color when leaving page
+    return () => {
+      useAudioReactiveStore.getState().setPageColors(null);
+    }
+  }, [playlist])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -56,10 +67,12 @@ const PlaylistPageClient = ({ playlist }: Props) => {
   }, [])
 
   const extractDominantColor = () => {
-    if (imageRef.current) {
+    if (imageRef.current && !playlist?.colors) {
       const colorThief = new ColorThief()
       const color = colorThief.getColor(imageRef.current)
-      setDominantColor(`rgb(${color[0]}, ${color[1]}, ${color[2]})`)
+      const colorString = `rgb(${color[0]}, ${color[1]}, ${color[2]})`
+      setDominantColor(colorString)
+      useAudioReactiveStore.getState().setPageColors({ dominant: colorString })
     }
   }
 
@@ -75,14 +88,17 @@ const PlaylistPageClient = ({ playlist }: Props) => {
       </style>
       {playlist && <AnimatedHeader playlist={playlist} visible={showHeader} />}
 
-      <div
-        className={styles.playlist_gradient}
-        style={{ "--playlist-dominant-color": dominantColor } as React.CSSProperties}
-      ></div>
       <Button view="outline-solid" className={styles.back} onClick={() => router.back()}>
         <BackIcon />
       </Button>
-      <div className={styles.playlist} ref={playlistRef}>
+      <div 
+        className={`${styles.playlist} bg-white/5 backdrop-blur-xl rounded-3xl mb-8 border border-white/10`} 
+        ref={playlistRef}
+        style={{
+          backgroundColor: `color-mix(in srgb, ${dominantColor} 20%, transparent)`,
+          borderColor: `color-mix(in srgb, ${dominantColor} 30%, transparent)`,
+        }}
+      >
         <div className={styles.title}>
           <h1>{playlist.title}</h1>
           {playlistIsPlaying?.id === playlist.id && (
@@ -127,16 +143,21 @@ const PlaylistPageClient = ({ playlist }: Props) => {
           </div>
         )}
       </div>
-      <TrackList
-        tracks={playlist.tracks}
-        currentTrack={currentTrack}
-        onTrackSelect={async (track) => {
-          console.log("onTrackSelect called", track.title)
-          await playPlaylist(playlist, track)
-        }}
-        trackItemMaxWidth="50vw"
-        numbered={true}
-      />
+      <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-6 border border-white/10" style={{
+          backgroundColor: `color-mix(in srgb, ${dominantColor} 10%, transparent)`,
+          borderColor: `color-mix(in srgb, ${dominantColor} 20%, transparent)`,
+      }}>
+        <TrackList
+          tracks={playlist.tracks}
+          currentTrack={currentTrack}
+          onTrackSelect={async (track) => {
+            console.log("onTrackSelect called", track.title)
+            await playPlaylist(playlist, track)
+          }}
+          trackItemMaxWidth="50vw"
+          numbered={true}
+        />
+      </div>
     </div>
   )
 }

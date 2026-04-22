@@ -20,6 +20,8 @@ import { ChevronDown } from 'lucide-react'
 import { LikeButton } from '@/components/LikeButton/LikeButton';
 import { ExpandedControlsDrawerProps } from "./ExpandedControlsDrawer.props"
 import { PlaybackButtons } from "../PlaybackButtons/PlaybackButtons"
+import { MobileReactiveBackground } from "@/features/audio-reactive-visualizer"
+import { TextMorph } from "torph/react"
 
 import { usePlayerStore } from "../../store/playerStore"
 
@@ -75,6 +77,8 @@ const ProgressBar: React.FC<{
   );
 };
 
+const GAP = 20
+
 // ─── Cover Carousel ──────────────────────────────────────────
 // Uses a simple CSS transform approach: 3 covers in a row,
 // we translate the whole strip. Drag moves the strip.
@@ -91,6 +95,7 @@ function useCoverCarousel({
 }) {
   const stripRef = useRef<HTMLDivElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+  const [containerWidth, setContainerWidth] = useState(0)
   const [dragOffset, setDragOffset] = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const startXRef = useRef(0)
@@ -99,11 +104,29 @@ function useCoverCarousel({
   const directionLockedRef = useRef<'horizontal' | 'vertical' | null>(null)
   const pointerIdRef = useRef<number | null>(null)
 
+  // Measure container on mount and resize
+  useEffect(() => {
+    const updateWidth = () => {
+      if (containerRef.current) {
+        setContainerWidth(containerRef.current.offsetWidth)
+      }
+    }
+    updateWidth()
+    window.addEventListener('resize', updateWidth)
+    // Small delay to ensure drawer animation has settled
+    const timer = setTimeout(updateWidth, 100)
+    return () => {
+      window.removeEventListener('resize', updateWidth)
+      clearTimeout(timer)
+    }
+  }, [])
+
   // Get one slide width
-  const getSlideWidth = () => containerRef.current?.offsetWidth || 300
+  const getSlideWidth = () => containerWidth || containerRef.current?.offsetWidth || 300
 
   // Compute strip translateX: center on middle (current) slide
-  const baseOffset = prevTrack ? -getSlideWidth() : 0
+  // We need to move exactly (slideWidth + GAP) to centered on next/prev
+  const baseOffset = prevTrack ? -(getSlideWidth() + GAP) : 0
 
   const handlePointerDown = (e: React.PointerEvent) => {
     if (isTransitioning) return
@@ -131,8 +154,8 @@ function useCoverCarousel({
         directionLockedRef.current = 'horizontal'
         isDraggingRef.current = true
         try {
-          ;(e.target as HTMLElement).setPointerCapture(e.pointerId)
-        } catch {}
+          ; (e.target as HTMLElement).setPointerCapture(e.pointerId)
+        } catch { }
       } else {
         // Vertical — let drawer handle it, abort
         directionLockedRef.current = 'vertical'
@@ -158,14 +181,15 @@ function useCoverCarousel({
     isDraggingRef.current = false
     directionLockedRef.current = null
     const dx = e.clientX - startXRef.current
-    const threshold = getSlideWidth() * 0.2
+    const slideWithGap = getSlideWidth() + GAP
+    const threshold = slideWithGap * 0.2
 
     if (dx < -threshold && nextTrack) {
-      snapTo(-getSlideWidth(), () => { onNextTrack() })
+      snapTo(-slideWithGap, () => { onNextTrack() })
     } else if (dx > threshold && prevTrack) {
-      snapTo(getSlideWidth(), () => { onPrevTrack() })
+      snapTo(slideWithGap, () => { onPrevTrack() })
     } else {
-      snapTo(0, () => {})
+      snapTo(0, () => { })
     }
   }
 
@@ -185,11 +209,11 @@ function useCoverCarousel({
   // Button handlers
   const goNext = () => {
     if (isTransitioning || !nextTrack) return
-    snapTo(-getSlideWidth(), onNextTrack)
+    snapTo(-(getSlideWidth() + GAP), onNextTrack)
   }
   const goPrev = () => {
     if (isTransitioning || !prevTrack) return
-    snapTo(getSlideWidth(), onPrevTrack)
+    snapTo(getSlideWidth() + GAP, onPrevTrack)
   }
 
   const translateX = baseOffset + dragOffset
@@ -290,6 +314,10 @@ const ExpandedControlsDrawer: React.FC<ExpandedControlsDrawerProps> = ({
         <Drawer.Portal>
           <Drawer.Overlay className="fixed inset-0 bg-black/40" />
           <Drawer.Content className={`${styles.drawerContent} ${isDrawerOpen ? styles.open : styles.closed} ${styles.mobileDrawer}`}>
+            <MobileReactiveBackground
+              coverUrl={currentTrack?.cover}
+              dominantColor={(currentTrack?.colors as any)?.dominant}
+            />
             <Drawer.Title className="sr-only">Player Controls</Drawer.Title>
             <Drawer.Close asChild>
               <motion.button
@@ -297,37 +325,40 @@ const ExpandedControlsDrawer: React.FC<ExpandedControlsDrawerProps> = ({
                 whileHover={{ scale: 1.1, translateX: "-50%" }} whileTap={{ scale: 0.9, translateX: "-50%" }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                 className={styles.DrawerCloseButton}>
-                <ChevronDown size={16} strokeWidth={3} />
+                <ChevronDown size={16} strokeWidth={4} />
               </motion.button>
             </Drawer.Close>
-            <div className={styles.dialogHeader}>
+            <div className={styles.dialogCoverContainer}>
               {carousel.element}
-
+            </div>
+            <div className={styles.trackInfoContainer}>
               <div className={styles.mobilePlayerInfo}>
-                <AnimatePresence mode="wait">
-                  <motion.div key={currentTrack.id} className={styles.trackInfo}
-                    initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -20, opacity: 0 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.1 }}>
-                    <div className={styles.trackTitleContainer}>
-                      <div className={cn(styles.trackTitle, styles.trackText)}>
-                        <span>{currentTrack.title}</span>
-                        <div className={styles.marquee} aria-hidden="true">
-                          <div className={styles.marquee__inner}>
-                            <span>{currentTrack.title}</span><span>{currentTrack.title}</span>
-                            <span>{currentTrack.title}</span><span>{currentTrack.title}</span>
-                          </div>
+                <div className={styles.trackInfo}>
+                  <div className={styles.trackTitleContainer}>
+                    <div className={cn(styles.trackTitle, styles.trackText)}>
+                      <TextMorph>{currentTrack.title}</TextMorph>
+                      <div className={styles.marquee} aria-hidden="true">
+                        <div className={styles.marquee__inner}>
+                          <span>{currentTrack.title}</span><span>{currentTrack.title}</span>
+                          <span>{currentTrack.title}</span><span>{currentTrack.title}</span>
                         </div>
                       </div>
-                      <div className="flex items-center gap-1">
-                        <LikeButton trackId={currentTrack.id} size={24} />
-                      </div>
                     </div>
-                    <div className={cn(styles.trackArtist, styles.trackText)}><span>{currentTrack.artist}</span></div>
-                  </motion.div>
-                </AnimatePresence>
+                    <div className="flex items-center gap-1">
+
+                    </div>
+                  </div>
+                  <div className={cn(styles.trackArtist, styles.trackText)}>
+                    <TextMorph>{currentTrack.artist}</TextMorph>
+                  </div>
+                </div>
               </div>
-              <div className={styles.otherBtn}><Button view="ghost"><MoreIcon /></Button></div>
+              <div className={styles.otherBtn}>
+                <LikeButton trackId={currentTrack.id} size={24} />
+                <Button view="ghost"><MoreIcon /></Button>
+              </div>
             </div>
+
             <div className={styles.mobileProgressBlock}>
               <ProgressBar isSeeking={isSeeking} seekValue={seekValue} onSeekStart={handleSeekStart} />
               <CurrentTime isSeeking={isSeeking} seekValue={seekValue} />
@@ -337,12 +368,12 @@ const ExpandedControlsDrawer: React.FC<ExpandedControlsDrawerProps> = ({
               <button onClick={() => setIsLyricsDrawerOpen(true)} className={cn("material-symbols-outlined", styles.lyrics_button)}>
                 <LyricsIcon />
               </button>
-              <PlaybackButtons 
-                isPlaying={playing} 
-                onPlayPause={onPlayPause} 
-                onPrev={carousel.goPrev} 
-                onNext={carousel.goNext} 
-                className={styles.playback_container} 
+              <PlaybackButtons
+                isPlaying={playing}
+                onPlayPause={onPlayPause}
+                onPrev={carousel.goPrev}
+                onNext={carousel.goNext}
+                className={styles.playback_container}
               />
               <button onClick={() => setIsQueueDrawerOpen(!isQueueDrawerOpen)} className={cn(styles.queue_button)}>
                 <QueueIcon />

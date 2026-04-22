@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation';
 import NavigationMenu from '@/components/NavigationMenu/NavigationMenu';
 import PlayerWrapper from '@/features/player/PlayerRoot';
 import React from 'react';
+import { PlayerLinkedVisualizer } from '@/features/audio-reactive-visualizer';
 
 import Preloader from '@/components/Preloader/Preloader';
 
@@ -18,8 +19,11 @@ export default function GlobalUIWrapper({ children }: { children: React.ReactNod
     return <>{children}</>;
   }
 
+  const isVisualizerPage = pathname === '/visualizer';
+
   return (
     <>
+      <PlayerLinkedVisualizer showUI={isVisualizerPage} />
       <NavigationMenu />
       <Preloader />
       <PlayerWrapper>{children}</PlayerWrapper>

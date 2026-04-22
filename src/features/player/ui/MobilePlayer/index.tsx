@@ -216,9 +216,7 @@ const MobilePlayer: React.FC<MobilePlayerProps> = ({
                     <div className={styles.trackTitle}>{currentTrack.title}</div>
                     <div className={styles.trackArtist}>{currentTrack.artist}</div>
                   </div>
-                  <div className="flex items-center ml-auto pr-2">
-                    <LikeButton trackId={currentTrack.id} size={18} className="opacity-80" />
-                  </div>
+
                 </motion.div>
               </motion.div>
 
@@ -250,6 +248,9 @@ const MobilePlayer: React.FC<MobilePlayerProps> = ({
             </div>
             {/* Fixed elements that don't move during swipe */}
             <div className={styles.mobilePlayerFixedElements}>
+              <div className="flex items-center ml-auto pr-2">
+                <LikeButton trackId={currentTrack.id} size={18} className="opacity-80" />
+              </div>
               <PlayButton
                 isPlaying={playing}
                 onClick={(e) => {
@@ -259,8 +260,8 @@ const MobilePlayer: React.FC<MobilePlayerProps> = ({
                 variant="solo-mini"
                 className={styles.play_button}
                 style={{
-                  '--play-button-color': 'black',
-                  '--play-button-background': 'white', 
+                  '--play-button-background': 'lch(from var(--dominant-color, #0f0f23) calc((49.44 - l) * infinity) 0 0)',
+                  '--play-button-color': 'var(--dominant-color, #0f0f23)',
                 } as React.CSSProperties}
               />
 
