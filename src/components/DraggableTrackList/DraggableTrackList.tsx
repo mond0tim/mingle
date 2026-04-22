@@ -29,6 +29,8 @@ const TrackReorderItem: React.FC<any> = React.memo(({ track, onTrackSelect, onRe
       data-vaul-no-drag="true"
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
+      data-active={currentTrack?.id === track.id}
+      data-playing={('queueId' in track && track.queueId && currentTrack && 'queueId' in currentTrack && currentTrack.queueId) ? currentTrack.queueId === track.queueId : currentTrack?.id === track.id}
     >
       <div className={styles.innerCard} data-vaul-no-drag="true">
         <div 

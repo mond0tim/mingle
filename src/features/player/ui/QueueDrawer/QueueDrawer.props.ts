@@ -7,4 +7,6 @@ export interface QueueDrawerProps {
   currentTrack: Track | null;
   onTrackSelect: (track: Track) => void;
   playlist: Playlist | null;
+  scrollToMode?: 'start' | 'center';
+  showPrevious?: boolean;
 }

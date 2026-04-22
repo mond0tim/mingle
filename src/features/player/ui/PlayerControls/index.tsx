@@ -276,6 +276,7 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
               currentTrack={currentTrack}
               onTrackSelect={onTrackSelect}
               playlist={playlistIsPlaying}
+              showPrevious={true}
             />
           </div>
 
