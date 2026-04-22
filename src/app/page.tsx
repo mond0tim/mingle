@@ -16,6 +16,11 @@ import BackgroundCanvas from '@/components/BackgroundCanvas/BackgroundCanvas';
 import { Skeleton } from '@/components/ui/skeleton';
 import { PlaylistsCarousel } from '@/components/PlaylistsCarousel/PlaylistsCarousel';
 import ColorPaletteDisplay from '@/components/ColorPaletteDisplay/ColorPaletteDisplay';
+import BassPulse from '@/components/AudioReactiveToys/BassPulse';
+import BPMRotator from '@/components/AudioReactiveToys/BPMRotator';
+import MidShift from '@/components/AudioReactiveToys/MidShift';
+import TrebleGlow from '@/components/AudioReactiveToys/TrebleGlow';
+import OmniVibeCube from '@/components/AudioReactiveToys/OmniVibeCube';
 
 const CATEGORY_NAMES: Record<string, string> = {
   vibe: 'По настроению',
@@ -143,6 +148,21 @@ const Home = () => {
 
       <div className="max-w-7xl mx-auto px-4">
         <ColorPaletteDisplay />
+        
+        <div className="mt-24 mb-16 px-2">
+           <div className="mb-12">
+             <h2 className="text-3xl font-black uppercase tracking-tighter italic">Audio Reactive Lab</h2>
+             <p className="text-xs text-zinc-500 font-bold uppercase tracking-widest mt-1">Experimental UI hooks demo</p>
+           </div>
+           
+           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+              <BassPulse />
+              <BPMRotator />
+              <MidShift />
+              <TrebleGlow />
+              <OmniVibeCube />
+           </div>
+        </div>
       </div>
 
       {playlistsByCategory['vibe'] && playlistsByCategory['vibe'].length > 0 && (

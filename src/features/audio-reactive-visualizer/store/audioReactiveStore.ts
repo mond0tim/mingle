@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
+import { defaultVisualizerPrefs } from '../lib/visualizerPrefsStorage';
+import type { AudioReactiveVisualizerPrefs, GradientColors } from '../types';
 
 const idleBands = { bass: 0, mid: 0, treble: 0 };
 
@@ -24,11 +26,22 @@ interface AudioReactiveState extends AudioReactiveSnapshot {
   setBpm: (bpm: number | null) => void;
   setBpmStatus: (status: string) => void;
   setBands: (bands: typeof idleBands) => void;
+  
+  prefs: AudioReactiveVisualizerPrefs;
+  setPrefs: (prefs: Partial<AudioReactiveVisualizerPrefs>) => void;
+  pageColors: any | null;
+  setPageColors: (colors: any | null) => void;
 }
 
 export const useAudioReactiveStore = create<AudioReactiveState>((set, get) => ({
   sessionDepth: 0,
   ...idleReactive,
+
+  prefs: defaultVisualizerPrefs,
+  setPrefs: (newPrefs) => set((s) => ({ prefs: { ...s.prefs, ...newPrefs } })),
+
+  pageColors: null,
+  setPageColors: (pageColors) => set({ pageColors }),
 
   acquireSession: () => set((s) => ({ sessionDepth: s.sessionDepth + 1 })),
 

@@ -20,6 +20,7 @@ import { LogoText } from '@/shared/ui/icons';
 import InstallPWA from '@/components/pwa/Install';
 import { format } from 'date-fns';
 import Image from 'next/image';
+import { PageVisualizerColors } from '@/features/audio-reactive-visualizer';
 
 export const metadata: Metadata = {
 	title: 'О нас',
@@ -30,8 +31,8 @@ export const metadata: Metadata = {
 export default function AboutPage () {
 
   return (
-    <div className='p-5 md:ps-52 pr-4'>
-      <div className={styles.gradient}></div>
+    <div className='p-5 md:ps-52 pr-4 z-10'>
+      <PageVisualizerColors colors={{ start: '#4c1d95', mid: '#c026d3', end: '#8b5cf6' }} />
 		<h1 className={styles.title}>о проекте</h1>
     <h2 className={styles.subTitle}>Mingle: Гармония Звука и Визуала</h2>
 

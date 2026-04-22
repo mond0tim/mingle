@@ -53,7 +53,7 @@ const Player: React.FC<PlayerProps> = () => {
     Howler.autoSuspend = false;
     Howler.autoUnlock = true;
     Howler.html5PoolSize = 100;
-  }, []); 
+  }, []);
 
   const currentTrackIndex = currentTrack ? tracks.findIndex(t => t.id === currentTrack.id) : -1;
   const nextTrack = currentTrackIndex !== -1 && tracks.length > 0 ? tracks[(currentTrackIndex + 1) % tracks.length] : null;
@@ -83,7 +83,8 @@ const Player: React.FC<PlayerProps> = () => {
           --dominant-color-g: ${rgb[1]};
           --dominant-color-b: ${rgb[2]};
           --mg-accent-color: ${accentColor};
-          --dominant-color-transparent: ${currentTrack?.color || dominantColor}10;
+          --dominant-color-transparent: ${currentTrack?.color || dominantColor}10;  
+          --dominant-background-color: ${currentTrack?.color || dominantColor}20;
         }
       `}
       </style>

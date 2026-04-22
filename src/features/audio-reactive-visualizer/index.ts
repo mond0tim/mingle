@@ -14,3 +14,7 @@ export {
   defaultVisualizerPrefs,
 } from './lib/visualizerPrefsStorage';
 export { trackToGradientColors } from './lib/trackGradient';
+export { usePageVisualizerColors } from './hooks/usePageVisualizerColors';
+export { PageVisualizerColors } from './components/PageVisualizerColors';
+export { useAudioReactiveMotion } from './hooks/useAudioReactiveMotion';
+export { MobileReactiveBackground } from './components/MobileReactiveBackground';

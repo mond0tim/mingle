@@ -23,17 +23,11 @@ function getHowlerMediaElement(howlerInstance: any): HTMLMediaElement | null {
 }
 
 export function PlayerLinkedVisualizer({
-  bpmSpeedMultiplier,
-  overrideGradientColors,
   title,
-  smoothColorTransitions = true,
-  colorBrightness = 1.0,
+  showUI = false,
 }: {
-  bpmSpeedMultiplier: number;
-  overrideGradientColors?: GradientColors;
   title?: string;
-  smoothColorTransitions?: boolean;
-  colorBrightness?: number;
+  showUI?: boolean;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const currentTrack = usePlayerStore((s) => s.currentTrack);
@@ -42,17 +36,30 @@ export function PlayerLinkedVisualizer({
 
   const [ready, setReady] = useState(false);
 
+  // Store values
   const bpm = useAudioReactiveStore((s) => s.bpm);
   const bpmStatus = useAudioReactiveStore((s) => s.bpmStatus);
   const setBpm = useAudioReactiveStore((s) => s.setBpm);
   const setBpmStatus = useAudioReactiveStore((s) => s.setBpmStatus);
+  
+  const prefs = useAudioReactiveStore((s) => s.prefs);
+  const pageColors = useAudioReactiveStore((s) => s.pageColors);
 
   const gradientColors = useMemo(() => {
-    if (overrideGradientColors) return overrideGradientColors;
-    // currentTrack in store should be updated when colors extracted
+    // If we have page colors set, use them
+    if (pageColors) {
+      if ('start' in pageColors && 'mid' in pageColors && 'end' in pageColors) {
+        return pageColors as GradientColors;
+      }
+      return trackToGradientColors({ colors: pageColors } as any, prefs.gradientColors);
+    }
+
+    if (prefs.colorMode === 'custom') return prefs.gradientColors;
+
+    // Default: use track colors or fallback to gradientColors
     const track = currentTrack ? ({ ...currentTrack, colors: fullPalette ?? currentTrack.colors } as any) : null;
-    return trackToGradientColors(track, { start: '#B9C8E9', mid: '#FE94D2', end: '#0245C8' });
-  }, [overrideGradientColors, currentTrack, fullPalette]);
+    return trackToGradientColors(track, prefs.gradientColors);
+  }, [pageColors, prefs.colorMode, prefs.gradientColors, currentTrack, fullPalette]);
 
   useEffect(() => {
     const store = useAudioReactiveStore.getState();
@@ -101,8 +108,8 @@ export function PlayerLinkedVisualizer({
       }
 
       try {
-        sharedAnalyzer.disconnectInput();
-        sharedAnalyzer.connectInput(mediaEl);
+        sharedAnalyzer?.disconnectInput();
+        sharedAnalyzer?.connectInput(mediaEl);
         connectedAudioElement = mediaEl;
       } catch {
         // In strict mode/HMR we may hit InvalidStateError; keep reference to avoid reconnect loops
@@ -121,14 +128,11 @@ export function PlayerLinkedVisualizer({
     let raf = 0;
     let tick = 0;
     const loop = () => {
-      tick += 1;
-      if (tick % 2 === 0) {
-        useAudioReactiveStore.getState().setBands({
-          bass: sharedAnalyzer!.getEnergy('bass'),
-          mid: sharedAnalyzer!.getEnergy('mid'),
-          treble: sharedAnalyzer!.getEnergy('treble'),
-        });
-      }
+      useAudioReactiveStore.getState().setBands({
+        bass: sharedAnalyzer!.getEnergy('bass' as any),
+        mid: sharedAnalyzer!.getEnergy('mid' as any),
+        treble: sharedAnalyzer!.getEnergy('treble' as any),
+      });
       raf = requestAnimationFrame(loop);
     };
 
@@ -138,9 +142,9 @@ export function PlayerLinkedVisualizer({
 
   const analyzerLike = sharedAnalyzer
     ? ({
-        getEnergy: (band: string) => sharedAnalyzer!.getEnergy(band),
-        setOptions: (opts: any) => sharedAnalyzer!.setOptions(opts),
-        registerGradient: (name: string, def: any) => sharedAnalyzer!.registerGradient(name, def),
+        getEnergy: (band: string) => sharedAnalyzer?.getEnergy(band as any),
+        setOptions: (opts: any) => sharedAnalyzer?.setOptions(opts),
+        registerGradient: (name: string, def: any) => sharedAnalyzer?.registerGradient(name, def),
         canvas: sharedAnalyzer.canvas,
         audioCtx: sharedAnalyzer.audioCtx,
         connectedSources: (sharedAnalyzer as any).connectedSources,
@@ -148,7 +152,7 @@ export function PlayerLinkedVisualizer({
     : null;
 
   return (
-    <div className="absolute inset-0 overflow-hidden font-mono">
+    <div className="fixed inset-0 overflow-hidden font-mono z-[-1] pointer-events-none">
       {/* container only used to host analyzer canvas */}
       <div ref={containerRef} className="pointer-events-none absolute inset-0" />
 
@@ -156,14 +160,16 @@ export function PlayerLinkedVisualizer({
         analyzer={analyzerLike}
         gradientColors={gradientColors}
         bpm={bpm}
-        bpmSpeedMultiplier={bpmSpeedMultiplier}
-        smoothColorTransitions={smoothColorTransitions}
-        colorBrightness={colorBrightness}
+        bpmSpeedMultiplier={prefs.bpmSpeedMultiplier}
+        smoothColorTransitions={prefs.smoothColorTransitions}
+        colorBrightness={prefs.colorBrightness}
       />
 
       <MotionCanvas analyzer={analyzerLike} gradientColors={gradientColors} />
 
-      <UIOverlay analyzer={analyzerLike} bpm={bpm} bpmStatus={bpmStatus} title={title ?? 'MINGLE'} />
+      {showUI && (
+        <UIOverlay analyzer={analyzerLike} bpm={bpm} bpmStatus={bpmStatus} title={title ?? 'MINGLE'} />
+      )}
 
       <BPMDetector
         audioCtx={analyzerLike?.audioCtx}

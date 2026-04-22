@@ -26,7 +26,7 @@
     }
 }
 
-.player::before {
+/* .player::before {
     pointer-events: none;
     filter: brightness(80%);
     background-color: var(--dominant-color, #0f0f23);
@@ -61,13 +61,13 @@
     mask-repeat: no-repeat, repeat;
     mask-composite: subtract;
     backdrop-filter: saturate(180%) blur(5px);
-}
+} */
 
 @media (min-width: 640px) {
     .player {
       bottom: 0px;
     }
-    .player::before {
+    /* .player::before {
 		left: -3.1px;
 		bottom: 97.4%;
 		width: 100px;
@@ -82,5 +82,5 @@
 		height: 100px;
 		mask-image: linear-gradient(to top, red, red), radial-gradient(circle 58px at center, green 80%, transparent 81%);
 		mask-size: 50px 50px, 100%;
-	}
+	} */
 }

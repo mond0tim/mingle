@@ -40,6 +40,42 @@
 *   :sparkle: Индикация текущего проигрываемого трека и плейлиста.
 *   :sparkle: Управление очередью воспроизведения прямо из плеера (через Drawer).
 
+## Управление фоновым визуализатором
+
+Глобальный аудиовизуализатор Mingle работает в фоновом режиме на всех страницах (кроме административных). Вы можете легко задать уникальные цвета визуализатора для любой конкретной страницы, например, для создания особой атмосферы или поддержки фирменного стиля:
+
+### Использование компонента (для Server/Client Components)
+Для Server Components или простых страниц используйте компонент `PageVisualizerColors`:
+
+```tsx
+import { PageVisualizerColors } from '@/features/audio-reactive-visualizer';
+
+export default function AboutPage() {
+  return (
+    <div>
+      {/* Задаем кастомный фиолетовый градиент для фона */}
+      <PageVisualizerColors colors={{ start: '#4c1d95', mid: '#c026d3', end: '#8b5cf6' }} />
+      <h1>О проекте</h1>
+    </div>
+  );
+}
+```
+
+### Использование хука (только для Client Components)
+Если ваш компонент уже является клиентским (`"use client"`), вы можете использовать хук `usePageVisualizerColors`:
+
+```tsx
+'use client';
+import { usePageVisualizerColors } from '@/features/audio-reactive-visualizer';
+
+export default function MyClientPage() {
+  usePageVisualizerColors({ start: '#ff0000', mid: '#00ff00', end: '#0000ff' });
+
+  return <div>Клиентская страница с кастомным визуализатором</div>;
+}
+```
+*Цвета автоматически сбрасываются до дефолтных (или цветов играющего трека) при уходе со страницы.*
+
 ## Инструкция по установке и запуску
 
 **1. Клонирование репозитория:**
