@@ -85,13 +85,14 @@ const GAP = 20
 // On release past threshold, we CSS-transition to snap,
 // then swap data and reset.
 function useCoverCarousel({
-  currentTrack, prevTrack, nextTrack, onNextTrack, onPrevTrack,
+  currentTrack, prevTrack, nextTrack, onNextTrack, onPrevTrack, isDrawerOpen
 }: {
   currentTrack: any;
   prevTrack: any;
   nextTrack: any;
   onNextTrack: () => void;
   onPrevTrack: () => void;
+  isDrawerOpen: boolean;
 }) {
   const stripRef = useRef<HTMLDivElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -106,15 +107,30 @@ function useCoverCarousel({
 
   // Measure container on mount and resize
   useEffect(() => {
-    if (!containerRef.current) return
-    const observer = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        setContainerWidth(entry.target.getBoundingClientRect().width)
+    const updateWidth = () => {
+      if (containerRef.current) {
+        setContainerWidth(containerRef.current.offsetWidth)
       }
-    })
-    observer.observe(containerRef.current)
-    return () => observer.disconnect()
-  }, [])
+    }
+
+    if (isDrawerOpen) {
+      updateWidth()
+      // Small timeout to ensure Vaul animation and layout have settled
+      const timer = setTimeout(updateWidth, 100)
+      
+      const observer = new ResizeObserver((entries) => {
+        for (const entry of entries) {
+          setContainerWidth(entry.target.getBoundingClientRect().width)
+        }
+      })
+      if (containerRef.current) observer.observe(containerRef.current)
+      
+      return () => {
+        observer.disconnect()
+        clearTimeout(timer)
+      }
+    }
+  }, [isDrawerOpen])
 
   // Get one slide width
   const getSlideWidth = () => containerWidth || containerRef.current?.offsetWidth || (typeof window !== 'undefined' ? window.innerWidth : 300)
@@ -259,7 +275,7 @@ const ExpandedControlsDrawer: React.FC<ExpandedControlsDrawerProps> = ({
   const [isQueueDrawerOpen, setIsQueueDrawerOpen] = useState(false)
   const [isLyricsDrawerOpen, setIsLyricsDrawerOpen] = useState(false)
 
-  const carousel = useCoverCarousel({ currentTrack, prevTrack, nextTrack, onNextTrack, onPrevTrack })
+  const carousel = useCoverCarousel({ currentTrack, prevTrack, nextTrack, onNextTrack, onPrevTrack, isDrawerOpen })
 
   const [isSeeking, setIsSeeking] = useState(false)
   const [seekValue, setSeekValue] = useState(0)
@@ -377,7 +393,15 @@ const ExpandedControlsDrawer: React.FC<ExpandedControlsDrawerProps> = ({
           </Drawer.Content>
         </Drawer.Portal>
       </Drawer.Root>
-      <QueueDrawer isDrawerOpen={isQueueDrawerOpen} setIsDrawerOpen={setIsQueueDrawerOpen} tracks={tracks} currentTrack={currentTrack} onTrackSelect={onTrackSelect} playlist={playlistIsPlaying} />
+      <QueueDrawer
+        isDrawerOpen={isQueueDrawerOpen}
+        setIsDrawerOpen={setIsQueueDrawerOpen}
+        tracks={tracks}
+        currentTrack={currentTrack}
+        onTrackSelect={onTrackSelect}
+        playlist={playlistIsPlaying}
+        showPrevious={true}
+      />
       <LyricsDrawer isDrawerOpen={isLyricsDrawerOpen} setIsDrawerOpen={setIsLyricsDrawerOpen} currentTrack={currentTrack} togglePlay={onPlayPause} isPlaying={playing} />
     </>
   )

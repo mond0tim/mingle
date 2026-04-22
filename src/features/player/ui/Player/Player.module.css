@@ -69,7 +69,7 @@
 @media (min-width: 640px) {
     .player {
       bottom: 0px;
-      
+       margin-bottom: 0px;
     }
     /* .player::before {
 		left: -3.1px;

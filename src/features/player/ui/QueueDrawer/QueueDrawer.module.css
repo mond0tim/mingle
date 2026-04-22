@@ -42,6 +42,29 @@
     }
 }
 
+.queueDrawerExpandButton {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 12px;
+    right: 40px;
+    z-index: 10;
+    background-color: var(--dominant-color, #0f0f23);
+    color: lch(from var(--dominant-color, #0f0f23) calc((49.44 - l) * infinity) 0 0);
+    cursor: pointer;
+    @media (max-width: 768px) {
+        top: 5px;
+        left: 50%;
+        width: 40px;
+        height: 20px;
+    }
+}
+
+.queueDrawerExpandButton svg,
 .queueDrawerCloseButton svg {
     height: 16px;
     width: 16px;
@@ -101,10 +124,11 @@
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 100%;
-    color: #B7AEF2;
+    color: lch(from var(--dominant-color, #0f0f23) calc((49.44 - l) * infinity) 0 0);
     margin-left: 1.5rem;
     font-weight: 900;
     font-family: var(--font-oddval);
+    font-size: 1.5rem;
 }
 
 .drawerTrackList {
@@ -125,27 +149,25 @@
     height: 90%;
     padding: 10px;
     mask-image: linear-gradient(to bottom, transparent 0%, #000 10%, #000 95%, transparent 100%);
-    scrollbar-color: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge Legacy */
 }
 
 .tracklistDrawer::-webkit-scrollbar {
-    height: 16px;
-    width: 16px;
-    z-index: 999;
+    display: none; /* Chrome, Safari, and Opera */
 }
 
-.tracklistDrawer::-webkit-scrollbar-track {
-    background: #190f26;
-    z-index: 999;
-    border-radius: 10px;
+/* Mobile scrolling logic */
+.mobileQueueDrawer .tracklistDrawer {
+    overflow-y: hidden;
 }
 
-.tracklistDrawer::-webkit-scrollbar-thumb {
-    background-color: #B7AEF2;
-    border-radius: 10px;
-    border: 4px solid #190f26;
-    z-index: 999;
+.mobileQueueDrawer[data-snap="1"] .tracklistDrawer {
+    overflow-y: auto;
 }
+
+
+/* Desktop trigger button */
 
 /* Desktop trigger button */
 .QueueDrawerButton {
