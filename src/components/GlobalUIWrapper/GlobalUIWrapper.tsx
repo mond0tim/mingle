@@ -8,6 +8,8 @@ import { PlayerLinkedVisualizer } from '@/features/audio-reactive-visualizer';
 
 import Preloader from '@/components/Preloader/Preloader';
 
+import styles from './GlobalUIWrapper.module.css';
+
 export default function GlobalUIWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isExcluded =
