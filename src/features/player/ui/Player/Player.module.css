@@ -3,7 +3,8 @@
     position: fixed;
     width: 100%;
     padding: 5px;
-    bottom: 4rem;
+    bottom: 0px;
+    margin-bottom: calc(env(safe-area-inset-bottom) + 4.5rem);
     z-index: 50;
 
     /* Entry Animation */
@@ -12,6 +13,8 @@
 
     @media (max-width: 600px) {
       z-index: 10;
+      background-color: transparent;
+      padding: 10px 0px;
     }
 }
 
@@ -66,6 +69,7 @@
 @media (min-width: 640px) {
     .player {
       bottom: 0px;
+      
     }
     /* .player::before {
 		left: -3.1px;

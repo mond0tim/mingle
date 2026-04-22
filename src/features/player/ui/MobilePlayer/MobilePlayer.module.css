@@ -1,86 +1,86 @@
 .mobilePlayer {
-    height: 9.5vh;
-    position: relative;
+  height: 4rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: constant(safe-area-inset-bottom);
+  margin-bottom: env(safe-area-inset-bottom);
 }
-  
+
 .mobilePlayerContainer {
   position: relative;
   width: 100%;
   height: 100%;
   overflow: hidden;
+  touch-action: pan-y;
 }
 
-.mobilePlayerMask {
+.carouselStrip {
+  display: flex;
   height: 100%;
-  mask-image: linear-gradient(90deg, transparent 0%, #000 1%, #000 65%, transparent 85%, transparent 100%);
+  will-change: transform;
 }
 
-.mobilePlayerFixedElements {
-    z-index: 10;
-    pointer-events: none;
-    width: 100%;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    display: grid;
-    grid-template-columns: 1fr 50px;
-    grid-template-rows: 1fr 8px;
-    grid-template-areas: '. play_mini_button'
-    'mobileProgress mobileProgress';
-}
-
-.mobilePlayerFixedElements .mobileProgressBarContainer,
-.mobilePlayerFixedElements .play_button {
-  pointer-events: auto;
-}
-
-.mobilePlayerTrackWrapper {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
+.playerSlide {
+  flex: 0 0 calc(100% - 40px);
+  width: calc(100% - 40px);
   height: 100%;
-  z-index: 2;
-}
-
-.mobilePlayerTrackContent {
+  position: relative;
   display: grid;
-  grid-template-columns: 55px 1fr;
+  grid-template-columns: 50px 1fr 35px 50px;
+  grid-template-areas: 'mobilecover mobileInfo likeBtn play_mini_button';
+  padding:  0 10px 0 8px ;
+  gap: 10px;
+  align-items: center;
+  border-radius: 20px;
+  background-color: var(--dominant-color, #222);
+  /* box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); */
+  overflow: hidden;
+  will-change: transform, opacity;
+}
+
+.playerSlide:not(.activeSlide) {
+  pointer-events: none;
+}
+
+.emptySlide {
+  visibility: hidden;
+}
+
+.slideContent {
+  display: grid;
+  grid-template-columns: 50px 1fr;
   grid-template-areas: 'mobilecover mobileInfo';
+  grid-column: 1 / 3;
   width: 100%;
   height: 100%;
-  padding-left: 5px;
+  align-items: center;
+  gap: 5px;
 }
 
-.adjacentTrackPreview {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+.likeWrapper {
+  grid-area: likeBtn;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
 }
 
-.mobilePlayIcon {
+/* .mobilePlayIcon {
    position: absolute;
     right: 10px;
     transform: translateY(-160%);
     z-index: 10;
-}
+} */
 
-.mobileProgressBarContainer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-}
-
-.mobilePlayerMinimized {
+/* .mobilePlayerMinimized {
   position: relative;
   display: grid;
-  grid-template-columns: 55px 1fr;
+  grid-template-columns: 50px 1fr;
+
   grid-template-areas: 'mobilecover mobileInfo';
-  padding-bottom: 1rem;
-}
+} */
 
 .mobilePlayerInfo {
   overflow: hidden;
@@ -88,62 +88,72 @@
 
 .mobilePlayerCover {
 	grid-area: mobilecover;
-	border-radius: 8px;
-	justify-self: flex-start;
+	border-radius: 12px;
+	justify-self: center;
+  width: 50px;
+  height: 50px;
+  /* box-shadow: 0 2px 8px rgba(0,0,0,0.3); */
 }
 .mobilePlayerInfoMini {
 	grid-area: mobileInfo;
 	justify-self: left;
-  max-width: 62vw;
+  max-width: 45vw;
+  padding-left: 5px;
+  overflow: hidden;
 } 
 .mobilePlayerInfoMini .trackTitle {
-    mask-image: linear-gradient(90deg, #000 0%, #000 90%, transparent 100%);
+    mask-image: linear-gradient(90deg, #000 85%, transparent 100%);
 }
 .mobilePlayerInfoMini .trackArtist {
-    mask-image: linear-gradient(90deg,  #000 0%, #000 90%, transparent 100%);
+    mask-image: linear-gradient(90deg,  #000 85%, transparent 100%);
 }
 
 .mobileProgressBarContainer {
-	grid-area: mobileProgress;
-    height: 7px;
-    align-self: end;
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    align-content: center;
-    border-radius: 100000px;
+    height: 3px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: calc(100% - 20px);
+    background-color: rgba(0, 0, 0, 0.15);
+    pointer-events: none;
+    z-index: 5;
+    margin: 0 15px;
 }
 .mobileProgressBar {
-	background: white;
+	background: lch(from var(--dominant-color, #0f0f23) calc((49.44 - l) * -infinity) 0 0);
+    opacity: 0.9;
     position: relative;
-    height: 5px;
-    border-radius: 119px;
+    height: 100%;
+    transition: width 0.1s linear;
+    border-radius: 20px;
 }
 
 .play_button {
     z-index: 2;
     grid-area: play_mini_button;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
 }
+
 .trackTitle {
 	font-weight: bold;
-    width: -webkit-fill-available;
-    mask-image: linear-gradient(90deg, transparent 0%, #000 1%, #000 90%, transparent 100%);
+    width: 100%;
     overflow:hidden;
     white-space: nowrap;
     position: relative;
-    padding-right: 10px;
     font-family: var(--font-oddval);
-    color:lch(from var(--dominant-color, #0f0f23) calc((49.44 - l) * infinity) 0 0);
+    font-size: 15px;
+    color: lch(from var(--dominant-color, #0f0f23) calc((49.44 - l) * infinity) 0 0);
+    padding-right: 15px;
 }
 .trackArtist {
-    width: -webkit-fill-available;
+    width: 100%;
     white-space: nowrap;
-    mask-image: linear-gradient(90deg, transparent 0%, #000 1%, #000 85%, transparent 100%);
-  overflow:hidden;
-  white-space: nowrap;
-     position: relative;
-     padding-right: 10px;
-     color:lch(from var(--dominant-color, #0f0f23) calc((49.44 - l) * infinity) 0 0);
+    overflow:hidden;
+    position: relative;
+    font-size: 15px;
+    font-family: var(--font-geist-sans);
+    font-weight: 500;
+    color: lch(from var(--dominant-color, #0f0f23) calc((49.44 - l) * infinity) 0 0);
+    opacity: 0.7;
+    padding-right: 15px;  
 }
