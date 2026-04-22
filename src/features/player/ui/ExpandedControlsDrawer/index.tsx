@@ -106,23 +106,18 @@ function useCoverCarousel({
 
   // Measure container on mount and resize
   useEffect(() => {
-    const updateWidth = () => {
-      if (containerRef.current) {
-        setContainerWidth(containerRef.current.offsetWidth)
+    if (!containerRef.current) return
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setContainerWidth(entry.target.getBoundingClientRect().width)
       }
-    }
-    updateWidth()
-    window.addEventListener('resize', updateWidth)
-    // Small delay to ensure drawer animation has settled
-    const timer = setTimeout(updateWidth, 100)
-    return () => {
-      window.removeEventListener('resize', updateWidth)
-      clearTimeout(timer)
-    }
+    })
+    observer.observe(containerRef.current)
+    return () => observer.disconnect()
   }, [])
 
   // Get one slide width
-  const getSlideWidth = () => containerWidth || containerRef.current?.offsetWidth || 300
+  const getSlideWidth = () => containerWidth || containerRef.current?.offsetWidth || (typeof window !== 'undefined' ? window.innerWidth : 300)
 
   // Compute strip translateX: center on middle (current) slide
   // We need to move exactly (slideWidth + GAP) to centered on next/prev
