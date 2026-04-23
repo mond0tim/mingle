@@ -43,7 +43,7 @@ const PlaylistsPageClient = ({ playlists, vibePlaylists }: PlaylistsPageClientPr
   };
 
   return (
-    <div className='p-2 md:p-5 md:ps-52'>
+    <div className='p-2 md:p-5'>
       <h1 className='text-2xl font-bold mb-4 font-oddval'>
         Что послушаем сегодня?
       </h1>

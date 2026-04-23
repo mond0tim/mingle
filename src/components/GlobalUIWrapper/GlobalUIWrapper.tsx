@@ -24,11 +24,13 @@ export default function GlobalUIWrapper({ children }: { children: React.ReactNod
   const isVisualizerPage = pathname === '/visualizer';
 
   return (
-    <>
+    <div className={styles.layout}>
       <PlayerLinkedVisualizer showUI={isVisualizerPage} />
       <NavigationMenu />
-      <Preloader />
-      <PlayerWrapper>{children}</PlayerWrapper>
-    </>
+      <div className={styles.content}>
+        <Preloader />
+        <PlayerWrapper>{children}</PlayerWrapper>
+      </div>
+    </div>
   );
 }

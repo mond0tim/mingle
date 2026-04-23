@@ -35,6 +35,7 @@ type TooltipData = {
   align: Align;
   alignOffset: number;
   id: string;
+  isInstant?: boolean;
 };
 
 type GlobalTooltipContextType = {
@@ -109,13 +110,14 @@ function TooltipProvider({
     (data: TooltipData) => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
       if (currentTooltip !== null) {
-        setCurrentTooltip(data);
+        setCurrentTooltip({ ...data, isInstant: true });
         return;
       }
       const now = Date.now();
-      const delay = now - lastCloseTimeRef.current < closeDelay ? 0 : openDelay;
+      const isInstant = now - lastCloseTimeRef.current < closeDelay;
+      const delay = isInstant ? 0 : openDelay;
       timeoutRef.current = window.setTimeout(
-        () => setCurrentTooltip(data),
+        () => setCurrentTooltip({ ...data, isInstant }),
         delay,
       );
     },
@@ -279,6 +281,7 @@ function TooltipOverlay() {
   const ready = x != null && y != null;
   const Component = rendered.data?.contentAsChild ? Slot : motion.div;
   const resolvedSide = getResolvedSide(context.placement);
+  const showArrow = (rendered.data?.contentProps as any)?.['data-show-arrow'] !== false;
 
   return (
     <AnimatePresence mode="wait">
@@ -311,6 +314,7 @@ function TooltipOverlay() {
                   data-side={resolvedSide}
                   data-align={rendered.data.align}
                   data-state={rendered.open ? 'open' : 'closed'}
+                  data-show-arrow={(rendered.data.contentProps as any)?.['data-show-arrow']}
                   layoutId={`tooltip-content-${globalId}`}
                   initial={{
                     opacity: 0,
@@ -407,18 +411,27 @@ function shallowEqualWithoutChildren(
   return true;
 }
 
-function TooltipContent({ asChild = false, ...props }: TooltipContentProps) {
+function TooltipContent({
+  asChild = false,
+  showArrow = true,
+  ...props
+}: TooltipContentProps & { showArrow?: boolean }) {
   const { setProps, setAsChild } = useTooltip();
   const lastPropsRef = React.useRef<HTMLMotionProps<'div'> | undefined>(
     undefined,
   );
 
+  const finalProps = React.useMemo(() => ({
+    ...props,
+    'data-show-arrow': showArrow
+  }), [props, showArrow]);
+
   React.useEffect(() => {
-    if (!shallowEqualWithoutChildren(lastPropsRef.current, props)) {
-      lastPropsRef.current = props;
-      setProps(props);
+    if (!shallowEqualWithoutChildren(lastPropsRef.current, finalProps)) {
+      lastPropsRef.current = finalProps;
+      setProps(finalProps);
     }
-  }, [props, setProps]);
+  }, [finalProps, setProps]);
 
   React.useEffect(() => {
     setAsChild(asChild);
