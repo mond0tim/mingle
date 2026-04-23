@@ -76,7 +76,7 @@ const MiniPlayerSlide: React.FC<MiniPlayerSlideProps> = ({
       </div>
 
       <div className={styles.likeWrapper}>
-        <LikeButton trackId={track.id} size={18} className="opacity-80" />
+        <LikeButton trackId={track.id} size={24} className="" />
       </div>
 
       <PlayButton

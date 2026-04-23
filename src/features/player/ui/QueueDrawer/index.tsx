@@ -115,11 +115,11 @@ const QueueDrawer: React.FC<QueueDrawerProps> = ({
               {/* Close Button */}
               <Drawer.Close asChild key="close">
                 <motion.button
-                  initial={{ scale: 0, x: "-50%", left: "50%", translateX: "-50%" }}
+                  initial={{ scale: 0, x: isDesktopOrLaptop ? 0 : "-50%", right: isDesktopOrLaptop ? '13px' : "50%", translateX: isDesktopOrLaptop ? 0 : "50%" }}
                   animate={{
                     scale: 1,
-                    left: "50%",
-                    translateX: "-50%",
+                    right: isDesktopOrLaptop ? '13px' : "50%",
+                    translateX: isDesktopOrLaptop ? 0 : "50%",
                     x: (!isDesktopOrLaptop && snap !== 1) ? 25 : 0
                   }}
                   whileHover={{ scale: 1.1 }}
