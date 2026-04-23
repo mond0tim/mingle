@@ -2,35 +2,45 @@
 
 import React from 'react';
 import useSWR, { useSWRConfig } from 'swr';
-import { Heart } from 'lucide-react';
-import { Button } from '@/components/Button/Button';
+import { motion } from 'framer-motion';
 import cn from 'classnames';
+import styles from '../LikeButton/LikeButton.module.css';
+
+// Импортируем общие иконки и варианты анимаций из файла LikeButton
+// (Убедитесь, что пути импорта совпадают с вашей структурой проекта)
+import { HEART_ICONS, outlineVariants, filledVariants, ghostVariants } from '../LikeButton/LikeButton';
 
 interface LikePlaylistButtonProps {
   playlistId: string | number;
   className?: string;
   size?: number;
+  iconVariant?: 'small' | 'large';
+  children?: React.ReactNode;
 }
 
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
-export const LikePlaylistButton: React.FC<LikePlaylistButtonProps> = ({ playlistId, className, size = 20 }) => {
+export const LikePlaylistButton: React.FC<LikePlaylistButtonProps> = ({
+  playlistId,
+  className,
+  size = 20,
+  iconVariant = 'large', // По умолчанию большая иконка для плейлистов
+  children
+}) => {
   const { mutate } = useSWRConfig();
-  
-  // Получаем список лайкнутых плейлистов
+
   const { data, isLoading } = useSWR('/api/favorites/playlists', fetcher);
-  
+
   const isLiked = data?.playlists?.some((p: any) => String(p.id) === String(playlistId));
 
   const toggleLike = async (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
 
-    // Оптимистичное обновление
     const playlists = data?.playlists || [];
     const optimisticData = {
       ...data,
-      playlists: isLiked 
+      playlists: isLiked
         ? playlists.filter((p: any) => String(p.id) !== String(playlistId))
         : [...playlists, { id: playlistId }]
     };
@@ -43,9 +53,9 @@ export const LikePlaylistButton: React.FC<LikePlaylistButtonProps> = ({ playlist
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ playlistId })
       });
-      
+
       if (!res.ok) throw new Error('Failed to toggle like');
-      
+
       mutate('/api/favorites/playlists');
     } catch (err) {
       console.error(err);
@@ -53,19 +63,55 @@ export const LikePlaylistButton: React.FC<LikePlaylistButtonProps> = ({ playlist
     }
   };
 
+  const currentIcon = HEART_ICONS[iconVariant];
+  const animateState = isLiked ? "liked" : "unliked";
+
+  // Цвета для плейлиста: красный при активе, полупрозрачный при неактиве
+  const activeColorClass = "text-red-500";
+  const inactiveColorClass = "text-current opacity-60 hover:opacity-100";
+
   return (
-    <Button
-      view="ghost"
-      size="icon"
-      className={cn(className, "transition-all duration-300 hover:scale-110")}
+    <motion.button
+      type="button"
+      // Я заменил ваш hover:scale-110 на Framer Motion whileHover для плавности,
+      // но если вам принципиален именно Tailwind класс - добавьте его обратно в className.
+      className={cn(styles.button, "transition-colors", className)}
       onClick={toggleLike}
       disabled={isLoading}
       title={isLiked ? "Удалить из медиатеки" : "Добавить в медиатеку"}
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.85 }}
     >
-      <Heart 
-        size={size} 
-        className={cn(isLiked ? "fill-red-500 stroke-red-500" : "stroke-current opacity-60 hover:opacity-100")} 
-      />
-    </Button>
+      <div className={styles.wrapper} style={{ width: size, height: size }}>
+        <motion.div
+          className={cn(styles.layer, inactiveColorClass)}
+          variants={outlineVariants}
+          initial={false}
+          animate={animateState}
+        >
+          {currentIcon.outline}
+        </motion.div>
+
+        <motion.div
+          className={cn(styles.layer, activeColorClass)}
+          variants={filledVariants}
+          initial={false}
+          animate={animateState}
+        >
+          {currentIcon.filled}
+        </motion.div>
+
+        <motion.div
+          className={cn(styles.layer, activeColorClass)}
+          variants={ghostVariants}
+          initial={false}
+          animate={animateState}
+        >
+          {currentIcon.filled}
+        </motion.div>
+      </div>
+
+      {children}
+    </motion.button>
   );
 };
