@@ -2,7 +2,7 @@
 
 import React from 'react';
 import useSWR, { useSWRConfig } from 'swr';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import cn from 'classnames';
 import styles from '../LikeButton/LikeButton.module.css';
 
@@ -33,9 +33,12 @@ export const LikePlaylistButton: React.FC<LikePlaylistButtonProps> = ({
 
   const isLiked = data?.playlists?.some((p: any) => String(p.id) === String(playlistId));
 
+  const [isTriggered, setIsTriggered] = React.useState(false);
+
   const toggleLike = async (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
+    setIsTriggered(true);
 
     const playlists = data?.playlists || [];
     const optimisticData = {
@@ -73,8 +76,6 @@ export const LikePlaylistButton: React.FC<LikePlaylistButtonProps> = ({
   return (
     <motion.button
       type="button"
-      // Я заменил ваш hover:scale-110 на Framer Motion whileHover для плавности,
-      // но если вам принципиален именно Tailwind класс - добавьте его обратно в className.
       className={cn(styles.button, "transition-colors", className)}
       onClick={toggleLike}
       disabled={isLoading}
@@ -101,14 +102,19 @@ export const LikePlaylistButton: React.FC<LikePlaylistButtonProps> = ({
           {currentIcon.filled}
         </motion.div>
 
-        <motion.div
-          className={cn(styles.layer, activeColorClass)}
-          variants={ghostVariants}
-          initial={false}
-          animate={animateState}
-        >
-          {currentIcon.filled}
-        </motion.div>
+        <AnimatePresence>
+          {isLiked && isTriggered && (
+            <motion.div
+              className={cn(styles.layer, activeColorClass)}
+              variants={ghostVariants}
+              initial="unliked"
+              animate="liked"
+              onAnimationComplete={() => setIsTriggered(false)}
+            >
+              {currentIcon.filled}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {children}

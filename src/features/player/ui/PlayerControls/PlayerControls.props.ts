@@ -1,9 +1,10 @@
 import { Playlist, Track } from '@/types';
+import { QueueItem } from '../../store/playerStore';
 
 export interface PlayerControlsProps {
-  currentTrack: Track | null;
-  nextTrack: Track | null;
-  prevTrack: Track | null;
+  currentTrack: QueueItem | null;
+  nextTrack: QueueItem | null;
+  prevTrack: QueueItem | null;
   playing: boolean;
   onPlayPause: () => void;
   onPrevTrack: () => void;
@@ -14,7 +15,7 @@ export interface PlayerControlsProps {
   setIsQueueDrawerOpen: (isOpen: boolean) => void;
   isLyricsDrawerOpen: boolean;
   setIsLyricsDrawerOpen: (isOpen: boolean) => void;
-  tracks: Track[];
+  tracks: QueueItem[];
   onTrackSelect: (track: Track) => void;
   playlistIsPlaying: Playlist | null;
   togglePlay: () => void;

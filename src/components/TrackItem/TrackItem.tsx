@@ -1,163 +1,214 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Track } from '@/types';
 import styles from './TrackItem.module.css';
 import Image from 'next/image';
-import { DownloadIcon, MoreIcon } from '@/shared/ui/icons';
-import { Button } from '../Button/Button';
 import { LikeButton } from '../LikeButton/LikeButton';
-import { X, ListPlus, PlayCircle } from 'lucide-react';
-import { usePlayerStore } from '@/features/player/store/playerStore';
+import { X, Plus } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu";
+import { Drawer } from 'vaul';
+import { useMediaQuery } from 'react-responsive';
+import { TrackActionsContent } from './TrackActions';
+import { useLongPress } from '@/shared/hooks/useLongPress';
+import { DragIcon } from '@/shared/ui/icons';
+import { TrackActionsDrawer } from './TrackActionsDrawer';
 
 interface TrackItemProps {
   track: Track;
   onTrackSelect: (track: Track) => void;
   isPlaying: boolean;
-  maxWidth: string;
-  spanWidth: string;
+  maxWidth?: string;
+  spanWidth?: string;
   trackNumber?: number;
   pinned?: boolean;
   onRemove?: (trackId: string | number) => void;
   context?: 'queue' | 'playlist' | 'history';
+  className?: string;
+  containerClassName?: string;
+  activeColor?: string;
+  hoverColor?: string;
+  dragControls?: any;
 }
 
 const TrackItem: React.FC<TrackItemProps> = React.memo(({
   track,
   onTrackSelect,
   isPlaying,
-  maxWidth,
-  spanWidth,
+  maxWidth = "100%",
+  spanWidth = "100%",
   trackNumber,
   pinned,
   onRemove,
   context,
+  className,
+  containerClassName,
+  activeColor,
+  hoverColor,
+  dragControls,
 }) => {
-  const addTrackToQueue = usePlayerStore(state => state.addTrackToQueue);
-  const addTrackNext = usePlayerStore(state => state.addTrackNext);
+  const isDesktop = useMediaQuery({ query: '(min-width: 640px)' });
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  const handleTrackClick = () => {
+  const handleTrackSelect = (e: React.MouseEvent) => {
+    e.stopPropagation();
     onTrackSelect(track);
   };
 
+  const handleRemove = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onRemove) onRemove(track.id);
+  };
+
+  const longPressProps = useLongPress(
+    () => {
+      if (!isDesktop) setIsDrawerOpen(true);
+    },
+    (e) => {
+      handleTrackSelect(e);
+    },
+    { delay: 400 }
+  );
+
+  const menuContent = (
+    <TrackActionsContent
+      track={track}
+      context={context}
+      onRemove={onRemove}
+      closeMenu={() => setIsDrawerOpen(false)}
+    />
+  );
+
   return (
-    <div className={styles.trackItemContainer}>
-      <Button
-        view='ghost'
-        ButtonRadius='sm'
-        className={`${styles.trackItem} ${isPlaying ? styles.playing : ''} ${trackNumber ? styles.numbered : ''} ${isPlaying && pinned ? styles.pinned : ''}`}
-        onClick={handleTrackClick}
-        style={{ '--trackItemMaxWidth': maxWidth, '--trackItemSpanWidth': spanWidth } as React.CSSProperties}
+    <>
+      <div
+        className={cn(styles.trackItemContainer, containerClassName, pinned && styles.pinned)}
+        style={{
+          '--track-active-bg': isPlaying ? 'var(--dominant-color)' : activeColor,
+          '--track-hover-bg': hoverColor,
+        } as React.CSSProperties}
       >
-        {trackNumber && (
-          <span className={styles.trackNumber}>{trackNumber}</span>
-        )}
-        <Image
-          src={track.cover || "/placeholder.png"}
-          alt={track.title || "Track Cover"}
-          width={50}
-          height={50}
-          className='rounded-[9px]'
-        />
-        <div className={styles.trackInfoWrapper}>
-          <div className={`${styles.trackTitle} ${isPlaying ? styles.playing : ''}`}>
-            {isPlaying ? (
-              <>
-                <span className='opacity-0'>{track.title}</span>
-                <div className={styles.marquee} aria-hidden="true">
-                  <div className={styles.marquee__inner}>
-                    <span>{track.title}</span>
-                    <span>{track.title}</span>
-                    <span>{track.title}</span>
-                    <span>{track.title}</span>
+        <ContextMenu>
+          <ContextMenuTrigger disabled={!isDesktop} asChild>
+            <motion.div
+              {...(isDesktop ? { onClick: handleTrackSelect } : {
+                onPointerDown: longPressProps.onPointerDown,
+                onPointerUp: longPressProps.onPointerUp,
+                onPointerMove: longPressProps.onPointerMove,
+                onPointerLeave: longPressProps.onPointerLeave,
+                onTouchEnd: longPressProps.onTouchEnd,
+              })}
+              whileTap={{ scale: 0.98 }}
+              className={cn(
+                styles.trackItem,
+                isPlaying && styles.playing,
+                trackNumber && styles.numbered,
+                context === 'queue' && styles.inQueue,
+                className
+              )}
+              style={{ '--trackItemMaxWidth': maxWidth, '--trackItemSpanWidth': spanWidth } as React.CSSProperties}
+            >
+              {trackNumber && (
+                <span className={styles.trackNumber}>{trackNumber}</span>
+              )}
+
+              <div className="relative w-12 h-12 flex-shrink-0">
+                <Image
+                  src={track.cover || "/placeholder.png"}
+                  alt={track.title || "Track Cover"}
+                  fill
+                  sizes="48px"
+                  className='rounded-lg object-cover'
+                />
+              </div>
+
+              <div className={styles.trackInfoWrapper}>
+                <div className={cn(styles.trackTitle, isPlaying && styles.playing)}>
+                  {isPlaying ? (
+                    <>
+                      <span className='opacity-0'>{track.title}</span>
+                      <div className={styles.marquee} aria-hidden="true">
+                        <div className={styles.marquee__inner}>
+                          <span>{track.title}</span>
+                          <span>{track.title}</span>
+                          <span>{track.title}</span>
+                          <span>{track.title}</span>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>{track.title}</>
+                  )}
+                </div>
+                <div className={styles.trackArtist}>{track.artist || "Unknown Artist"}</div>
+              </div>
+
+              {context === 'queue' && (
+                <div className={styles.queueActions} onClick={e => e.stopPropagation()}>
+                  {!isPlaying && (
+                    <button
+                      onClick={handleRemove}
+                      className={`${styles.removeButton} size-5`}
+                      title="Удалить"
+                    >
+                      <X size={14} />
+                    </button>
+                  )}
+                  {dragControls && (
+                    <div
+                      className={styles.dragHandle}
+                      onPointerDown={(e) => {
+                        e.stopPropagation();
+                        dragControls.start(e);
+                      }}
+                      onClick={(e) => e.stopPropagation()}
+                      style={{ touchAction: 'none' }}
+                    >
+                      <DragIcon size={14} />
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {context !== 'queue' && (
+                <div className={styles.actions} onClick={e => e.stopPropagation()}>
+                  <LikeButton trackId={track.id} size={18} />
+                  <div className="md:block hidden">
+                    <Plus size={16} className="opacity-40" />
                   </div>
                 </div>
-              </>
-            ) : (
-              <>{track.title}</>
-            )}
-          </div>
-          <div className={styles.trackArtist}>{track.artist || "Unknown Artist"}</div>
-        </div>
-      </Button>
-
-      <div className={styles.actions}>
-        {context !== 'queue' && <LikeButton trackId={track.id} size={18} />}
-
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button view="ghost" className="opacity-60 hover:opacity-100">
-              <MoreIcon />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56 bg-black/80 backdrop-blur-xl border-white/10 text-white">
-            {context !== 'queue' && (
-              <>
-                <DropdownMenuItem
-                  onClick={(e) => { e.stopPropagation(); addTrackNext(track); }}
-                  className="gap-2 cursor-pointer hover:bg-white/10"
-                >
-                  <PlayCircle size={16} />
-                  <span>Играть далее</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={(e) => { e.stopPropagation(); addTrackToQueue(track); }}
-                  className="gap-2 cursor-pointer hover:bg-white/10"
-                >
-                  <ListPlus size={16} />
-                  <span>Добавить в очередь</span>
-                </DropdownMenuItem>
-              </>
-            )}
-
-            {context === 'queue' && (
-              <DropdownMenuItem asChild className="p-0 border-none cursor-pointer hover:bg-white/10">
-                <LikeButton trackId={track.id} size={16} className="w-full flex justify-start rounded p-2 gap-2 font-normal text-sm opacity-100 hover:opacity-100 h-auto">
-                  <span>Нравится</span>
-                </LikeButton>
-              </DropdownMenuItem>
-            )}
-
-            <DropdownMenuItem asChild className="gap-2 cursor-pointer hover:bg-white/10">
-              <a
-                href={track.fullSrc || undefined}
-                download={track.title + '.mp3'}
-                onClick={(e) => e.stopPropagation()}
-                className="flex items-center w-full"
-              >
-                <DownloadIcon />
-                <span className="ml-2">Скачать</span>
-              </a>
-            </DropdownMenuItem>
-
-            {onRemove && (
-              <DropdownMenuItem
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onRemove(track.id);
-                }}
-                className="gap-2 cursor-pointer hover:bg-red-500/20 text-red-400"
-              >
-                <X size={16} />
-                <span>Удалить из очереди</span>
-              </DropdownMenuItem>
-            )}
-          </DropdownMenuContent>
-        </DropdownMenu>
+              )}
+            </motion.div>
+          </ContextMenuTrigger>
+          {isDesktop && (
+            <ContextMenuContent className="w-56 bg-black/90 backdrop-blur-xl border-white/10 text-white p-1 z-[9999]">
+              {menuContent}
+            </ContextMenuContent>
+          )}
+        </ContextMenu>
       </div>
-    </div>
+
+      <TrackActionsDrawer
+        isOpen={isDrawerOpen}
+        onOpenChange={setIsDrawerOpen}
+        track={track}
+        context={context}
+        onRemove={onRemove}
+      />
+    </>
   );
 }, (prev, next) => {
   return prev.track.id === next.track.id &&
     prev.isPlaying === next.isPlaying &&
     prev.pinned === next.pinned &&
-    prev.context === next.context;
+    prev.context === next.context &&
+    prev.activeColor === next.activeColor;
 });
 
 export default TrackItem;

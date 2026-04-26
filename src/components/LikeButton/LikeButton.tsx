@@ -2,7 +2,7 @@
 
 import React from 'react';
 import useSWR, { useSWRConfig } from 'swr';
-import { motion, Variants } from 'framer-motion';
+import { motion, Variants, AnimatePresence } from 'framer-motion';
 import cn from 'classnames';
 import styles from './LikeButton.module.css';
 
@@ -66,6 +66,7 @@ interface LikeButtonProps {
   size?: number;
   iconVariant?: 'small' | 'large';
   children?: React.ReactNode;
+  showText?: boolean;
 }
 
 export const LikeButton: React.FC<LikeButtonProps> = ({
@@ -73,16 +74,19 @@ export const LikeButton: React.FC<LikeButtonProps> = ({
   className,
   size = 20,
   iconVariant = 'small',
-  children
+  children,
+  showText
 }) => {
   const { mutate } = useSWRConfig();
   const { data, isLoading } = useSWR('/api/favorites/tracks', fetcher);
 
   const isLiked = data?.tracks?.some((t: any) => t.id === trackId);
+  const [isTriggered, setIsTriggered] = React.useState(false);
 
   const toggleLike = async (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
+    setIsTriggered(true);
 
     const tracks = data?.tracks || [];
     const optimisticData = {
@@ -141,15 +145,25 @@ export const LikeButton: React.FC<LikeButtonProps> = ({
         >
           {currentIcon.filled}
         </motion.div>
-        <motion.div
-          className={cn(styles.layer, activeColorClass)}
-          variants={ghostVariants}
-          initial={false}
-          animate={animateState}
-        >
-          {currentIcon.filled}
-        </motion.div>
+        <AnimatePresence>
+          {isLiked && isTriggered && (
+            <motion.div
+              className={cn(styles.layer, activeColorClass)}
+              variants={ghostVariants}
+              initial="unliked"
+              animate="liked"
+              onAnimationComplete={() => setIsTriggered(false)}
+            >
+              {currentIcon.filled}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
+      {showText && (
+        <span className="ml-4 font-medium whitespace-nowrap">
+          {isLiked ? "В избранном" : "В избранное"}
+        </span>
+      )}
       {children}
     </motion.button>
   );

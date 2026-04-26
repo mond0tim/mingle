@@ -1,17 +1,18 @@
 import type { Playlist, Track } from "@/types"
+import { QueueItem } from "../../store/playerStore"
 
 export interface ExpandedControlsDrawerProps {
   isDrawerOpen: boolean
   setIsDrawerOpen: (isOpen: boolean) => void
-  currentTrack: Track
-  prevTrack: Track | null
-  nextTrack: Track | null
+  currentTrack: QueueItem
+  prevTrack: QueueItem | null
+  nextTrack: QueueItem | null
   playing: boolean
   onPlayPause: () => void
   onSeek: (seek: number) => void
   onNextTrack: () => void
   onPrevTrack: () => void
-  tracks: Track[]
+  tracks: QueueItem[]
   onTrackSelect: (track: Track) => void
   playlistIsPlaying: Playlist | null
 }

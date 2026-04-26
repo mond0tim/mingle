@@ -28,6 +28,7 @@ export interface ExtractedColors {
   title?: string;
   button?: string;
   icon?: string;
+  [key: string]: any;
 }
 
 export interface Track {

@@ -2,7 +2,7 @@ import type { Track } from '@/types';
 import type { GradientColors } from '../types';
 import { pickChannelColor, withDefaultTrackBindings } from '@/lib/colorChannels';
 
-const FALLBACK: GradientColors = { start: '#B9C8E9', mid: '#FE94D2', end: '#0245C8' };
+const FALLBACK: GradientColors = { start: '#02060D', mid: '#4703A6', end: '#F300FD' };
 
 export function trackToGradientColors(track: Track | null | undefined, fallback: GradientColors = FALLBACK): GradientColors {
   if (!track) return fallback;

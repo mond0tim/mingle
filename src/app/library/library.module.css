@@ -1,19 +1,18 @@
 .page {
-  padding: 2rem 4rem;
+  padding: 1rem 2rem;
   min-height: 100vh;
-  background: var(--mg-background);
   overflow-x: clip;
   box-sizing: border-box;
 }
 
-@media (min-width: 768px) {
+/* @media (min-width: 768px) {
   .page {
     padding-left: 14rem;
   }
-}
+} */
 
 .header {
-  margin-bottom: 3rem;
+  margin-bottom: 1.5rem;
   padding-top: 1rem;
 }
 

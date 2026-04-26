@@ -18,3 +18,13 @@ export { default as SearchIcon } from './searchIcon.svg';
 export { default as VinylIcon } from './simple-very-rounded-bold--vinyl-discs-icon.svg';
 export { default as TextIcon } from './textIcon.svg';
 export { default as VibeIcon } from './VibeIcon.svg';
+export { default as LibraryIcon } from './Library.svg';
+export { default as HeartIcon } from './Heart.svg';
+export { default as UserIcon } from './User.svg';
+export { default as Music1Icon } from './Music1.svg';
+export { default as Music2Icon } from './Music2.svg';
+export { default as MicroIcon } from './Micro.svg';
+export { default as OtherIcon } from './other.svg';
+export { default as DragIcon } from './drag.svg';
+
+

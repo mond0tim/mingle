@@ -1,7 +1,8 @@
 .queueDrawerContent {
     position: fixed;
-    z-index: 10;
-    background-color: color-mix(in srgb, var(--dominant-color, #0f0f23), black 20%);
+    z-index: 100;
+    background-color: color-mix(in srgb, var(--dominant-20, #0f0f23) 95%, transparent 10%);
+    backdrop-filter: blur(60px) contrast(6);
     display: flex;
     flex-direction: column;
     outline: none;
@@ -36,7 +37,7 @@
     cursor: pointer;
     @media (max-width: 768px) {
         top: 5px;
-        left: 50%;
+        /* left: 50%; */
         width: 40px;
         height: 20px;
     }
@@ -125,14 +126,14 @@
     text-overflow: ellipsis;
     max-width: 100%;
     color: lch(from var(--dominant-color, #0f0f23) calc((49.44 - l) * infinity) 0 0);
-    margin-left: 1.5rem;
+    /* margin-left: 1.5rem; */
     font-weight: 900;
     font-family: var(--font-oddval);
     font-size: 1.5rem;
 }
 
 .drawerTrackList {
-    padding: 10px;
+    /* padding: 10px; */
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -174,6 +175,47 @@
     display: flex;
 }
 
+/* .queueDrawerTrigger {
+    
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    border-radius: 50% !important;
+    padding: 0 !important;
+    color: lch(from var(--dominant-color, #0f0f23) calc((49.44 - l) * infinity) 0 0) !important;
+}
+
+.toggleHighlight {
+    background-color: color-mix(in srgb, var(--dominant-color, #0f0f23), white 20%) !important;
+    border-radius: 999px !important;
+} */
+
+
 .queueDrawerTrigger {
-    --md-ripple-pressed-color: var(--dominant-color, #0f0f23) !important;
+    --queue-background: color-mix(in srgb, var(--dominant-color, #0f0f23), black 30%);
+    height: 48px;
+    padding: 0 20px;
+    border-radius: 9999px;
+    width: auto;
+    background-color: var(--queue-background) !important;
+    color: lch(from var(--queue-background) calc((49.44 - l) * infinity) 0 0) !important;
+}
+
+.queueDrawerTrigger:hover {
+    border-radius: 9999px !important;
+    background-color: color-mix(in srgb, var(--dominant-color, #0f0f23), black 20%) !important;
+}
+
+.queueDrawerTrigger[data-state="open"] {
+    background-color: color-mix(in srgb, var(--dominant-color, #0f0f23), #000000 40%) !important;
+}
+
+.queueDrawerTrigger svg {
+    width: 20px !important;
+    height: 20px !important;
+}
+
+.toggleHighlight {
+    background-color: color-mix(in srgb, var(--dominant-color, #0f0f23), #000000 40%) !important;
+    border-radius: 999px !important;
 }

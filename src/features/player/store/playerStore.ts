@@ -30,6 +30,7 @@ interface PlayerState {
   // Actions
   playTrack: (track: Track, playlist?: Playlist, autoplay?: boolean) => void;
   playPlaylist: (playlist: Playlist, track?: Track, autoplay?: boolean) => void;
+  playTracks: (tracks: Track[], trackToPlay?: Track, playlist?: Playlist, autoplay?: boolean) => void;
   togglePlay: () => void;
   handleNextTrack: () => void;
   handlePrevTrack: () => void;
@@ -365,16 +366,64 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   },
 
   playPlaylist: (playlist, track, autoplay = true) => {
-    const trackToPlay = track ? track : (playlist.tracks.length > 0 ? playlist.tracks[0] : null);
+    if (!playlist) return;
+    const tracks = playlist.tracks || [];
+    const trackToPlay = track ? track : (tracks.length > 0 ? tracks[0] : null);
+    
     if (trackToPlay) {
       get().playTrack(trackToPlay, playlist, autoplay);
     } else {
       set({ 
         playlistIsPlaying: playlist,
-        tracks: playlist.tracks.map(t => wrapTrack(t)),
+        tracks: tracks.map(t => wrapTrack(t)),
         playing: false,
       });
     }
+  },
+
+  playTracks: (tracks, trackToPlay, playlist, autoplay = true) => {
+    const wrappedTracks = tracks.map(t => wrapTrack(t));
+    const firstTrack = trackToPlay || wrappedTracks[0] || null;
+    
+    if (!firstTrack) return;
+
+    // Use playTrack logic but with the new tracks array
+    const { howlerInstance, volume } = get();
+    if (howlerInstance) {
+      howlerInstance.stop();
+      howlerInstance.unload();
+    }
+
+    const streamUrl = `/api/stream/${firstTrack.id}`;
+    const extension = firstTrack.src.split('.').pop()?.toLowerCase() || 'mp3';
+    
+    const newHowler = new Howl({
+      src: [streamUrl],
+      format: [extension],
+      html5: true,
+      preload: true,
+      volume: volume,
+      onend: () => get().handleOnEnd(),
+      onload: () => {
+        const dur = newHowler.duration();
+        if (!isNaN(dur) && dur > 0) {
+          get().setDuration(dur);
+        }
+      },
+    });
+
+    const queueItem = wrapTrack(firstTrack);
+
+    set({
+      howlerInstance: newHowler,
+      currentTrack: queueItem,
+      playlistIsPlaying: playlist || null,
+      originalPlaylistId: playlist ? String(playlist.id) : null,
+      tracks: wrappedTracks,
+      playing: autoplay,
+    });
+
+    if (autoplay) newHowler.play();
   },
 
   togglePlay: () => {

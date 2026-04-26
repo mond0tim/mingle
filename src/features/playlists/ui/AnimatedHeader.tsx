@@ -2,7 +2,7 @@
 import { motion } from "framer-motion"
 import type { Playlist } from "@/types"
 import Image from "next/image"
-import styles from "./AnimatedHeader.module.css"
+import styles from "@/features/playlists/ui/AnimatedHeader.module.css"
 import { usePlayerStore as usePlayer } from "@/features/player/store/playerStore"
 import { PlayPlaylistIcon } from '@/shared/ui/icons';
 import { PausePlaylistIcon } from '@/shared/ui/icons';

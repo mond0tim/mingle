@@ -1,10 +1,12 @@
 .lyricsDrawerContent {
+    
     position: fixed;
-      z-index: 10;
-      background-color: color-mix(in srgb, var(--dominant-color, #0f0f23), black 20%);
-      display: flex;
-      flex-direction: column;
-      outline: none;
+    z-index: 100;
+    background-color: color-mix(in srgb, var(--dominant-20, #0f0f23) 95%, transparent 2%);
+    backdrop-filter: blur(60px) saturate(1.5) contrast(0.6);
+    display: flex;
+    flex-direction: column;
+    outline: none;
       animation-duration: 0.25s;
 }
 .lyricsDrawerBackground {
@@ -115,4 +117,35 @@
 		content: '';
 		background-color: transparent !important;
 	}
+}
+
+
+
+.LyricsDrawerTrigger {
+    --lyrics-background: color-mix(in srgb, var(--dominant-color, #0f0f23), black 30%);
+    height: 48px;
+	  padding: 0 20px;
+    border-radius: 9999px;
+    width: auto;
+    background-color: var(--lyrics-background) !important;
+    color: lch(from var(--lyrics-background) calc((49.44 - l) * infinity) 0 0) !important;
+}
+
+.LyricsDrawerTrigger:hover {
+    border-radius: 9999px !important;
+    background-color: color-mix(in srgb, var(--dominant-color, #0f0f23), black 20%) !important;
+}
+
+.LyricsDrawerTrigger[data-state="open"] {
+    background-color: color-mix(in srgb, var(--dominant-color, #0f0f23), #000000 40%) !important;
+}
+
+.LyricsDrawerTrigger svg {
+    width: 20px !important;
+    height: 20px !important;
+}
+
+.toggleHighlight {
+    background-color: color-mix(in srgb, var(--dominant-color, #0f0f23), #000000 40%) !important;
+    border-radius: 999px !important;
 }

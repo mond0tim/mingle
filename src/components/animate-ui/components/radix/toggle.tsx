@@ -35,7 +35,9 @@ const toggleVariants = cva(
 
 type ToggleProps = TogglePrimitiveProps &
   ToggleItemPrimitiveProps &
-  VariantProps<typeof toggleVariants>;
+  VariantProps<typeof toggleVariants> & {
+    highlightClassName?: string;
+  };
 
 function Toggle({
   className,
@@ -45,6 +47,7 @@ function Toggle({
   defaultPressed,
   onPressedChange,
   disabled,
+  highlightClassName,
   ...props
 }: ToggleProps) {
   return (
@@ -55,7 +58,7 @@ function Toggle({
       disabled={disabled}
       className="relative"
     >
-      <ToggleHighlightPrimitive className="bg-accent rounded-md" />
+      <ToggleHighlightPrimitive className={cn('bg-accent rounded-md', highlightClassName)} />
       <ToggleItemPrimitive
         className={cn(toggleVariants({ variant, size, className }))}
         {...props}

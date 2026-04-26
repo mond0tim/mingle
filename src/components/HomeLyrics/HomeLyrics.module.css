@@ -1,0 +1,286 @@
+/* ═══════════════════════════════════════
+   HomeLyrics – Phase-based layout
+   Positions use CSS transitions (no layout jank).
+   ═══════════════════════════════════════ */
+
+.section {
+    padding: 0px 0.5rem;
+    height: 110vh;
+}
+
+.container {
+    max-width: 1400px;
+    height: 100%;
+    /* margin: 0 auto; */
+    /* background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 3rem; 
+    backdrop-filter: blur(40px);*/
+    overflow: hidden;
+    position: relative;
+}
+
+.content {
+    height: 80%;
+    position: relative;
+}
+
+/* ═══ Logo ═══ */
+
+.logo {
+    position: absolute;
+    z-index: 2;
+    transition:
+        top 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+        left 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+        width 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.logoCentered {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: clamp(160px, 28vw, 300px);
+    opacity: 1;
+}
+
+.logoCorner {
+    top: 1.25rem;
+    left: 1.5rem;
+    transform: translate(0, 0);
+    width: 72px;
+    /* opacity: 0.3; */
+}
+
+.logoSvg {
+    width: 100%;
+    height: auto;
+    color: #fff;
+    display: block;
+}
+
+/* ═══ Shimmer (SVG shape only) ═══ */
+
+.shimmer {
+    position: relative;
+    display: block;
+}
+
+.shimmerFixed {
+    display: block;
+}
+
+.shimmerHighlight {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: auto;
+    color: #fff;
+    pointer-events: none;
+    mask-image: linear-gradient(
+        120deg,
+        transparent 30%,
+        black 45%,
+        black 55%,
+        transparent 70%
+    );
+    mask-size: 200% 100%;
+    mask-repeat: no-repeat;
+    animation: shimmerMask 3.5s infinite;
+}
+
+@keyframes shimmerMask {
+    0% { mask-position: 150% 0; }
+    100% { mask-position: -150% 0; }
+}
+
+/* ═══ Track Info ═══ */
+
+.trackInfo {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    z-index: 1;
+}
+
+/* Эти классы теперь нужны только как маркеры или для статических свойств */
+/* .trackInfoCenter { }
+.trackInfoTop { } */
+
+.trackName {
+    font-family: var(--font-geist-mono);
+    /* font-weight: 900; */
+    font-size: 2rem;
+    line-height: 1.2;
+    text-transform: uppercase;
+    /* letter-spacing: -0.02em; */
+    color: rgba(255, 255, 255, 0.9);
+    transition: opacity 0.4s ease;
+    width: 100%;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.trackInfoTop .trackName {
+    opacity: 0.9;
+}
+
+.trackArtist {
+    font-size: 1rem;
+    color: rgb(255, 255, 255);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.5rem;
+    transition: opacity 0.4s ease;
+    width: 100%;
+    opacity: 0.6;
+    white-space: nowrap;
+}
+/* }
+
+.trackInfoTop .trackArtist {
+     */
+
+/* ═══ Lyrics Line ═══ */
+
+.lyricsCenter {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem 1rem;
+    z-index: 1;
+    overflow: hidden;
+
+}
+
+.lyricScaleWrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    /* transform-origin по центру уже по умолчанию */
+}
+
+.lyricLine {
+    font-family: var(--font-oddval);
+    font-weight: 900;
+    font-size: 5rem;            /* Фиксированный размер, масштаб через transform */
+    line-height: 1.15;
+    color: var(--dominant-color, #1ed760);
+    text-align: center;
+    white-space: nowrap;        /* Без переноса — scale подгоняет */
+        filter: contrast(1.5) brightness(1.2);
+}
+
+.lyricPause {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* opacity: 0.15; */
+    color: var(--dominant-color, #1ed760);
+}
+
+.lyricPause svg {
+    width: 4rem;
+    height: 4rem;
+}
+
+/* ═══ Responsive ═══ */
+
+@media (max-width: 768px) {
+    .section {
+        height: 85vh; /* Hero height that shows a bit of the next section */
+        padding: 0;
+        --track-top: 2rem;
+        --track-scale: 0.8;
+    }
+
+    .container {
+        border-radius: 0;
+    }
+
+    .content {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .logoCentered {
+        width: 140px;
+        opacity: 1;
+    }
+
+    .mobileHidden {
+        opacity: 0 !important;
+        transform: translateY(-20px) scale(0.9) !important;
+        pointer-events: none;
+    }
+
+    .trackInfo {
+        padding: 0 1rem;
+    }
+
+    .trackName {
+        font-size: 1.65rem;
+        letter-spacing: -0.02em;
+        white-space: normal;
+        line-height: 1.2;
+    }
+
+    .trackInfoTop .trackName {
+        font-size: 1.1rem;
+    }
+
+    .trackArtist {
+        font-size: 1rem;
+        white-space: normal;
+    }
+
+    .trackInfoTop .trackArtist {
+        font-size: 0.8rem;
+    }
+
+    .lyricLine {
+        font-size: 3.25rem; /* Slightly smaller for multi-line */
+        width: 100%;
+        line-height: 1.1;
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    .lyricsCenter {
+        padding: 5rem 1.5rem 1rem;
+    }
+
+    .scrollIndicator {
+        position: absolute;
+        bottom: 6rem;
+        left: 0;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        color: #fff;
+        z-index: 10;
+        pointer-events: none;
+        rotate: 270deg;
+    }
+
+    .chevronWrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0.6;
+    }
+}

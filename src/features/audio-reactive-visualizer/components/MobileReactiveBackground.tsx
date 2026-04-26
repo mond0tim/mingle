@@ -2,6 +2,7 @@
 import { motion, useTransform, useMotionTemplate } from 'framer-motion';
 import { useAudioReactiveMotion } from '../hooks/useAudioReactiveMotion';
 import Image from 'next/image';
+import { usePlayerStore } from '@/features/player/store/playerStore';
 
 interface MobileReactiveBackgroundProps {
   coverUrl?: string;
@@ -9,16 +10,11 @@ interface MobileReactiveBackgroundProps {
 }
 
 export function MobileReactiveBackground({ coverUrl, dominantColor = '#0f0f23' }: MobileReactiveBackgroundProps) {
-  const { bassBoost, trebleBoost } = useAudioReactiveMotion();
+  const { bassBoost } = useAudioReactiveMotion();
+  const playing = usePlayerStore(state => state.playing);
 
-  // Масштаб обложки зависит от высоких частот (Ultra x4)
-  const scale = useTransform(bassBoost, [0, 1], [1.05, 1.5]);
-  // Эффекты зависят от баса (Ultra x4)
-  const brightness = useTransform(trebleBoost, [0, 1], [0.6, 0.7]);
-  const saturate = useTransform(trebleBoost, [0, 1], [1, 3]);
-
-  // Для того чтобы MotionValue работали внутри строки filter, нужно использовать useMotionTemplate
-  const filter = useMotionTemplate`brightness(${brightness}) saturate(${saturate}) blur(30px)`;
+  // Только масштаб остается реактивным (самый легкий для GPU эффект)
+  const scale = useTransform(bassBoost, [0, 1], [1.1, 1.5]);
 
   return (
     <div className="absolute inset-0 z-[-1] overflow-hidden pointer-events-none">
@@ -26,8 +22,13 @@ export function MobileReactiveBackground({ coverUrl, dominantColor = '#0f0f23' }
       {coverUrl && (
         <motion.div
           className="absolute inset-0 origin-center"
-          style={{ scale, filter }}
-          transition={{ type: 'spring', damping: 20, stiffness: 100 }}
+          style={{
+            scale,
+          }}
+          animate={{
+            opacity: playing ? 0.6 : 0.4,
+            filter: playing ? 'blur(40px) brightness(0.3) saturate(0.6)' : 'blur(40px) brightness(0.7) saturate(3.5)'
+          }}
         >
           <Image
             src={coverUrl}

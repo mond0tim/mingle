@@ -73,14 +73,11 @@ export const Visualizer: React.FC<VisualizerProps> = ({
     let tick = 0;
 
     const loop = () => {
-      tick += 1;
-      if (tick % 2 === 0) {
-        useAudioReactiveStore.getState().setBands({
-          bass: analyzer.getEnergy('bass'),
-          mid: analyzer.getEnergy('mid'),
-          treble: analyzer.getEnergy('treble'),
-        });
-      }
+      useAudioReactiveStore.getState().setBands({
+        bass: analyzer.getEnergy('bass'),
+        mid: analyzer.getEnergy('mid'),
+        treble: analyzer.getEnergy('treble'),
+      });
       raf = requestAnimationFrame(loop);
     };
 

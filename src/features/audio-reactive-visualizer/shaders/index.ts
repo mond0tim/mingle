@@ -119,32 +119,35 @@ vec2 coverUvs(vec2 imageRes, vec2 containerRes, vec2 vUv)
 
 void main()
 {
+    bool isMobile = uViewportRes.x < 768.0;
     vec2 squareUvs = coverUvs(vec2(1.), uViewportRes, vUv);
 
     vec2 centeredUv = squareUvs - 0.5;
     
-    float zoom = 1.0 - u_bass * 0.35; 
+    float zoom = 1.0 - u_bass * (isMobile ? 0.2 : 0.35); 
     centeredUv *= zoom;
     
-    float angle = u_mid * 0.15;
-    float s = sin(angle);
-    float c = cos(angle);
-    mat2 rot = mat2(c, -s, s, c);
-    centeredUv = rot * centeredUv;
+    if (!isMobile) {
+        float angle = u_mid * 0.15;
+        float s = sin(angle);
+        float c = cos(angle);
+        mat2 rot = mat2(c, -s, s, c);
+        centeredUv = rot * centeredUv;
+    }
 
     squareUvs = centeredUv + 0.5;
 
-    float time = uTime * 0.15;
+    float time = uTime * (isMobile ? 0.1 : 0.15);
 
     float noiseScale = 1.2 + u_treble * 0.3;
     float mainNoise = snoise(vec3(squareUvs * noiseScale, time));
 
-    float wave = sin(squareUvs.x * 6.0 + time * 2.0 + mainNoise * 2.0) * 0.15 * u_bass;
+    float wave = sin(squareUvs.x * 6.0 + time * 2.0 + mainNoise * 2.0) * (isMobile ? 0.08 : 0.15) * u_bass;
     squareUvs.y += wave;
 
     float gradient = squareUvs.y;
     
-    float distortionAmplitude = 0.25 + u_bass * 0.4;
+    float distortionAmplitude = (isMobile ? 0.15 : 0.25) + u_bass * (isMobile ? 0.2 : 0.4);
     float distortedGradient = clamp(gradient + mainNoise * distortionAmplitude, 0.0, 1.0);
     
     vec3 colorMix1 = mix(u_color1, u_color2, smoothstep(0.0, 0.5, distortedGradient));
@@ -152,8 +155,10 @@ void main()
     
     vec3 finalColor = colorMix2 * u_brightness;
     
-    float grain = fract(sin(dot(vUv, vec2(12.9898, 78.233)) + uTime) * 43758.5453);
-    finalColor += grain * u_treble * 0.08;
+    if (!isMobile) {
+        float grain = fract(sin(dot(vUv, vec2(12.9898, 78.233)) + uTime) * 43758.5453);
+        finalColor += grain * u_treble * 0.08;
+    }
     
     finalColor += u_bass * 0.06;
 

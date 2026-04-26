@@ -1,6 +1,6 @@
 // app/playlists/[id]/page.tsx
 
-import PlaylistPageClient from './PlaylistPageClient';
+import PlaylistPageClient from '@/features/playlists/ui/PlaylistPageClient';
 import { Metadata } from 'next';
 import { Playlist } from '@/types';
 import { prisma } from '@/lib/db';

@@ -43,7 +43,8 @@ const PlaylistsPageClient = ({ playlists, vibePlaylists }: PlaylistsPageClientPr
   };
 
   return (
-    <div className='p-2 md:p-5'>
+    <div className='m-2 mb-6 p-2 md:p-4 bg-black/40 rounded-3xl  backdrop-contrast-[1.5]'>
+      <div className="noise-overlay" />
       <h1 className='text-2xl font-bold mb-4 font-oddval'>
         Что послушаем сегодня?
       </h1>

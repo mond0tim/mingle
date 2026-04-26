@@ -1,11 +1,12 @@
 .playerControls {
 	display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 1fr 30px;
     align-items: center;
-    gap: 0px 10px;
-    margin-top: 10px;
-    grid-template-areas: 'info info . playbackContainer . otherControls otherControls'
+    gap: 0px;
+    /* margin-top: 5px; */
+    grid-template-areas: 
+    'info info . playbackContainer . otherControls otherControls'
 	'progressBlock progressBlock progressBlock progressBlock progressBlock progressBlock progressBlock';
     justify-items: center;
 }
@@ -13,33 +14,123 @@
     grid-area: playbackContainer;
     z-index: 2;
 }
-.other_controls {
+
+/* ── Right-side controls wrapper ── */
+.otherControlsWrapper {
     grid-area: otherControls;
-    margin-right: 10px;
+    /* background-color: var(--dominant-color, #0f0f23); */
+    border-radius: 99999px;
+    margin-right: 5px;
+    margin-top: 5px;
     justify-self: end;
-display: flex;
+    align-self: start;
+    height: 90%;
+    padding: 5px;
 }
-.playerInfo {
+.other_controls {
+    display: flex;
+    border-radius: 99999px;
+    background-color: var(--dominant-color, #0f0f23);
+    padding: 5px;
+    align-items: center;
+    gap: 2px;
+}
+
+/* Main icons group (lyrics, queue, etc.) — hidden on narrow screens */
+.mainControls {
     display: flex;
     align-items: center;
-    gap: 10px;
-    grid-area: info;
-    padding: 2px 9px 2px 5px;
-    border-radius: 13px;
-    background: var(--dominant-color, #0f0f23);
-    justify-self: flex-start;
-	margin-left: 10px;
+    gap: 2px;
 }
-.progressBlock {
+
+/* Compact group: smaller circular buttons (volume + more) */
+.compactControls {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    margin-left: 3px;
+    margin-right: 4px;
+    padding: 5px;
+    background-color: color-mix(in srgb, var(--dominant-color, #0f0f23), black 20%);
+    border-radius: 999px;
+}
+
+/* The "more" button matches the volume icon style */
+.moreButton {
+    --md-ripple-pressed-color: var(--accent-color) !important;
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    border-radius: 50% !important;
+    padding: 0 !important;
+    background: var(--dominant-color, #0f0f23);
+    color: lch(from var(--dominant-color, #0f0f23) calc((49.44 - l) * infinity) 0 0) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.moreButton:hover {
+    background: color-mix(in srgb, var(--dominant-color, #0f0f23), black 5%) !important;
+}
+.moreButton svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* Overflow items in dropdown — only shown when main controls are hidden */
+/* .overflowItem {
+    display: none !important;
+} */
+
+@media (max-width: 1000px) {
+    /* .mainControls {
+        display: none;
+    } */
+    /* .overflowItem {
+        display: flex !important;
+    } */
+}
+
+/* ── Track info ── */
+.playerInfo {
+    align-items: center;
+    margin-top: 5px;
+    margin-left: 5px;
+    display: flex;
+    background: var(--dominant-color, #0f0f23);
+    border-radius: 16px;
+    grid-area: info;
+    place-self: start flex-start;
+    gap: 10px;
+    height: 90%;
+    padding: 3px 9px 2px 5px;
+}
+
+/* ── Progress bar ── */
+.progressWrapper {
     grid-area: progressBlock;
+    width: 100%;
+    padding: 3px 4px;
+    justify-self: unset;
+}
+
+.progressBlock {
     display: grid;
-    grid-template-columns: 4rem 1fr 4rem;
+    grid-template-columns: 3rem 1fr 3rem;
+    background-color: var(--dominant-color, #0f0f23);
+    color:lch(from var(--dominant-color, #0f0f23) calc((49.44 - l) * infinity) 0 0);
+    border-radius: 13px;
     justify-items: center;
     width: 100%;
     grid-template-areas: 'currentTime progressBar duration';
+    font-weight: 500;
+    font-size: 0.95rem;
+    align-items: center;
 }
 .currentTime { grid-area: currentTime; }
 .duration { grid-area: duration; }
+
 .playerProgress {
 	display: flex;
 	align-items: center;
@@ -50,24 +141,76 @@ display: flex;
 	width: 100%;
 	padding: 0px;
 }
+
 .progressBarContainer {
 	width: 100%;
-    background-color: #ddd;
+    background-color: color-mix(in srgb, var(--dominant-color, #0f0f23), white 30%);
     border-radius: 28px;
-    overflow: hidden;
-    padding: 3px;
+    padding: 2px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    transition: height 0.2s ease-in-out;
 }
+
 .progressBar {
-    height: 7px;
+    height: 12px;
     background-color: var(--dominant-color, #0f0f23);
-    transition: width 0.1s linear;
-    border-radius: 25px;
+    border-radius: 25px 0px 0px 25px;
     position: relative;
 	filter: brightness(0.7);
+    transition: height 0.2s ease-in-out;
 }
+
 .progressBar.dragging {
-	transition: none;
+    height: 24px;
 }
+
+/* ── Progress thumb / handle ── */
+.progressThumb {
+    background: white;
+    pointer-events: none;
+    z-index: 2;
+    border-radius: 999px;
+    /* width: 17px; */
+    /* height: 12.49px; Made it a circle for better centering feel */
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -49%);
+    border-color: color-mix(in srgb, var(--dominant-color, #0f0f23), black 30%);
+    border-style: solid;
+    border-width: 2.5px;
+    box-sizing: border-box;
+
+    /* box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2); */
+    /* transition: height 0.2s ease, width 0.2s ease, transform 150ms cubic-bezier(0.34, 1.56, 0.64, 1); */
+}
+
+.progressBarContainer:hover .progressThumb {
+    /* transform: translate(-50%, -50%) scale(1.15); */
+    border: 0.5px solid color-mix(in srgb, var(--dominant-color, #0f0f23), black 30%);
+}
+/* .progressThumb.dragging {
+    width: 24px;
+    height: 24px;
+} */
+/* ── Time tooltip on progress bar ── */
+.progressTooltip {
+    background: rgba(0, 0, 0, 0.82);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    padding: 3px 8px;
+    border-radius: 999px;
+    white-space: nowrap;
+    backdrop-filter: blur(8px);
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: baseline;
+}
+
+/* ── Track text ── */
 .trackInfo {
     color: lch(from var(--dominant-color, #0f0f23) calc((49.44 - l) * infinity) 0 0);
     width: -webkit-fill-available;
@@ -88,11 +231,11 @@ display: flex;
     width: -webkit-fill-available;
     white-space: nowrap;
     mask-image: linear-gradient(90deg, transparent 0%, #000 1%, #000 85%, transparent 100%);
-  overflow:hidden;
-  white-space: nowrap;
-     position: relative;
-     padding-right: 10px;
-     color:lch(from var(--dominant-color, #0f0f23) calc((49.44 - l) * infinity) 0 0);
+    overflow:hidden;
+    white-space: nowrap;
+    position: relative;
+    padding-right: 10px;
+    color:lch(from var(--dominant-color, #0f0f23) calc((49.44 - l) * infinity) 0 0);
 }
 .trackText:hover {
     mask-image: linear-gradient(90deg, transparent 0%, #000 15%, #000 85%, transparent 100%);
@@ -151,7 +294,7 @@ display: flex;
 	font-size: 24px;
 }
 .downloadButton {
-    transition: all 0.3s ;
+    transition: all 0.3s;
     display: flex;
     gap: 6px;
     align-items: center;
@@ -171,7 +314,6 @@ display: flex;
     width: 24px;
   }
 }
-
 
 .trackTitleContainer {
     display: flex;

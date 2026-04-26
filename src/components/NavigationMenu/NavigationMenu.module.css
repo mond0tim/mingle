@@ -7,26 +7,36 @@
   z-index: 50;
   padding: 12px 16px;
   box-sizing: border-box;
-  pointer-events: none; /* ПРОПУСКАЕМ КЛИКИ ПО ПУСТЫМ ЗОНАМ КОНТЕЙНЕРА */
+  pointer-events: none;
 }
 
 .mingle_controls {
-  position: relative; /* Единый центр координат для offsetTop */
+  --background-menu-color:color-mix(in srgb, var(--dominant-color), black 30%);
+  --background-hover-color:color-mix(in srgb, var(--dominant-color), lch(from var(--dominant-color, #0f0f23) calc((49.44 - l) * infinity) 0 0) 15%);
+  position: relative;
   width: 100%;
   height: 64px;
-  border-radius: 36px;
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(40px);
-  border: 1px solid rgba(255, 255, 255, 0.1); /* Заменил var для стабильности */
-  box-sizing: border-box;
-  pointer-events: auto; /* Включаем клики обратно на самом меню */
+  /* Абсолютно везде максимальное скругление, как в Tailwind `rounded-full` */
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--background-menu-color), transparent 30%);
+
+  /* background: rgba(0, 0, 0, 0.4); */
+  backdrop-filter: blur(40px) contrast(1.5);
+  /* border: 1px solid rgba(255, 255, 255, 0.1); */
+  /* box-sizing: border-box; */
+  pointer-events: auto;
+  @media (max-width: 640px) {
+    backdrop-filter: none;
+    background-color: var(--dominant-color);
+     color: lch(from var(--dominant-color, #0f0f23) calc((49.44 - l) * infinity) 0 0)
+  }
 }
 
-/* === УНИКАЛЬНЫЕ РАЗМЕРЫ ДЛЯ МОБИЛОК (Пример использования) === */
+/* === УНИКАЛЬНЫЕ РАЗМЕРЫ ДЛЯ МОБИЛОК === */
 .mobileCustomVibe {
   width: 72px !important; 
-  border-radius: 24px !important;
-  /* background: rgba(255,255,255,0.05); - можно раскомментировать */
+  border-radius: 9999px !important;
+  color: lch(from var(--dominant-color, #0f0f23) calc((49.44 - l) * infinity) 0 0)
 }
 
 .mobileCustomSearch {
@@ -51,31 +61,38 @@
   pointer-events: none;
 }
 
-/* === ФОНЫ === */
+/* === ФОНЫ (Без JS-вмешательства!) === */
+
+
+
 .hoverBackground {
   position: absolute;
   z-index: 0;
-  background-color: rgba(255, 255, 255, 0.12);
+  background-color: color-mix(in srgb, var(--background-hover-color), transparent 45%);
   pointer-events: none;
+  /* Статичный радиус. Форма "таблетки" поддерживается браузером автоматически */
+  border-radius: 9999px; 
 }
 
 .activeBackground {
   position: absolute;
   z-index: 1;
   pointer-events: none;
-  background: linear-gradient(180deg, #D3D3D3 0%, #A8A8A8 100%);
-  box-shadow: 
+  border-radius: 9999px; /* Статичный радиус */
+  background-color: white;
+  /* background: linear-gradient(180deg, #D3D3D3 0%, #A8A8A8 100%); */
+  /* box-shadow: 
     inset 0 1px 0 0 rgba(255, 255, 255, 0.30),
     inset 0 -1px 0 0 rgba(255, 255, 255, 0.60),
     inset 0 0 0 1px rgba(255, 255, 255, 0.30),
-    inset 0 -6px 10.5px 0 rgba(255, 255, 255, 0.13);
+    inset 0 -6px 10.5px 0 rgba(255, 255, 255, 0.13); */
 }
 
 /* === ИКОНКИ === */
 .iconWrapper {
   width: 48px;
   height: 48px;
-  position: relative; /* Чтобы offsetTop детей считался именно отсюда */
+  position: relative;
   z-index: 2;
   border-radius: 9999px;
 }
@@ -97,16 +114,21 @@
   border-radius: inherit;
 }
 
-/* Эффект наведения для нижних кнопок без пузырька */
 .bottomItemHover {
   transition: background 0.2s;
 }
 .bottomItemHover:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background-color: color-mix(in srgb, var(--background-hover-color), transparent 35%);
 }
 
 .svg, .svgDark { width: 24px; height: 24px; }
-.svg { color: rgba(255, 255, 255, 0.8); transition: color 0.2s; }
+.svg { 
+  color: rgba(255, 255, 255, 0.8);
+   transition: color 0.2s; 
+  @media (max-width: 640px) {
+    color: lch(from var(--dominant-color, #0f0f23) calc((49.44 - l) * infinity) 0 0)
+  }
+  }
 .svgDark { 
   color: rgba(0, 0, 0, 0.9); 
   filter: drop-shadow(0px 1px 0px rgba(255, 255, 255, 0.65)); 
@@ -127,35 +149,35 @@
   position: fixed;
   top: 0;
   gap: 10px;
-  z-index: 1;
-  filter: drop-shadow(0px 0px 10px rgba(0,0,0,0.5));
+  z-index: 50;
+  /* filter: drop-shadow(0px 0px 10px rgba(0,0,0,0.5)); */
 }
 .logoSvg { width: 32px; height: 32px; }
 
 /* === ДЕСКТОП: STICKY POSITION === */
 @media (min-width: 640px) {
   .mingle_controls_container {
-    position: sticky; /* Строго Sticky */
+    position: sticky; 
     top: 0;
     width: 72px;
     min-width: 72px;
     height: 100vh;
-    padding: 16px 0;
+    padding: 5px;
     bottom: auto;
     left: auto;
-    pointer-events: none; /* Пропускаем клики мимо меню */
+    pointer-events: none;
   }
 
   .mingle_controls {
     height: 100%;       
-    border-radius: 36px;
+    border-radius: 9999px;
     pointer-events: auto;
   }
 
   .layerContent {
     flex-direction: column;
     justify-content: flex-start;
-    padding: 12px 0; 
+    padding: 9px 0;
   }
 
   .logoWrapper {
@@ -165,16 +187,17 @@
     border-radius: 9999px;
   }
 
-  /* ТА САМАЯ ГРУППА С ОТСТУПАМИ ДЛЯ ПУЗЫРЬКА */
+  .logoSvg { width: 100%; height: 100%; }
+
   .mainGroup {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 12px;
-    padding: 8px 0;  /* Задает внутренний отступ для пузырька сверху и снизу */
-    width: 48px;     /* Делает пузырек ровно по ширине кнопок */
-    border-radius: 36px; 
-    position: static;/* ВАЖНО: оставляет систему координат привязанной к mingle_controls */
+    padding: 4px;  
+    width: 53px;     
+    border-radius: 9999px; /* Сделает идеальную капсулу (пилюлю) */
+    position: static;
   }
 
   .bottomItems {
@@ -185,4 +208,30 @@
     align-items: center;
     margin-top: auto;
   }
+}
+
+.noiseOverlay {
+    z-index: 3;
+    touch-action: none;
+    pointer-events: none;
+    background: url("/noise.png") 0 0 / 50px;
+    border-radius: 30px;
+    position: absolute;
+    inset: 0;
+    opacity: 0.5;
+}
+
+
+
+
+/* === АНИМАЦИЯ ЗАГРУЗКИ === */
+.iconLoading {
+  animation: pulseIcon 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  pointer-events: none;
+}
+
+@keyframes pulseIcon {
+  0% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.92); }
+  100% { opacity: 1; transform: scale(1); }
 }

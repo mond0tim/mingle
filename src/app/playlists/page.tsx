@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import PlaylistsPageClient from './playlistsPageClient';
+import PlaylistsPageClient from '@/features/playlists/ui/AllPlaylistsPageClient';
 import { prisma } from '@/lib/db';
 import { Playlist } from '@/types';
 import { auth } from '@/lib/auth';

@@ -1,54 +1,61 @@
 'use client';
-import { useState, FormEvent, ChangeEvent } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect, ChangeEvent, useRef } from 'react';
 import styles from './SearchForm.module.css';
 import { SearchIcon } from '@/shared/ui/icons';
-import FocusRing from "material-web-components-react/focus-ring";
-import cn from 'classnames'
+import cn from 'classnames';
 
-const SearchForm = () => {
-  const [query, setQuery] = useState('');
+interface SearchFormProps {
+  initialValue?: string;
+  onQueryChange: (query: string) => void;
+  placeholder?: string;
+}
+
+const SearchForm = ({ initialValue = '', onQueryChange, placeholder = "Поиск треков и плейлистов" }: SearchFormProps) => {
+  const [query, setQuery] = useState(initialValue);
   const [isTyping, setIsTyping] = useState(false);
-  const router = useRouter();
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (query.trim()) {
-      router.push(`/search?q=${encodeURIComponent(query)}`);
-      setIsTyping(false); // Сбрасываем состояние после отправки формы
-    }
-  };
+  // Update internal state if initialValue changes
+  useEffect(() => {
+    setQuery(initialValue);
+  }, [initialValue]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newQuery = event.target.value;
     setQuery(newQuery);
     setIsTyping(newQuery.trim().length > 0);
+
+    // Debounce the callback
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    timeoutRef.current = setTimeout(() => {
+      onQueryChange(newQuery);
+      setIsTyping(false);
+    }, 500); // 500ms debounce
   };
 
   return (
-    <form onSubmit={handleSubmit} className={styles.searchForm}>
-      <FocusRing for="searchInput" className="focusRing"></FocusRing>
-      <input
-      id="searchInput"
-        type="text"
-        value={query}
-        onChange={handleChange}
-        placeholder="Search..."
-        className={cn(styles.searchInput, {
-          [styles.isTyping]: isTyping == true
-               }       )}
-      />
-      
-      {isTyping ? (
-          <button type="submit" className={styles.searchButton}>
-            <SearchIcon />
-          </button>
-      ) : (
-        <div className={styles.placeholder_icon}>
-        <SearchIcon/>
+    <div className={styles.searchFormWrapper}>
+
+      <div className={styles.inputContainer}>
+        <div className={cn(styles.searchIconWrapper, { [styles.active]: isTyping })}>
+          <SearchIcon />
         </div>
-      )}
-    </form>
+        <input
+          id="searchInput"
+          type="text"
+          value={query}
+          onChange={handleChange}
+          placeholder={placeholder}
+          className={cn(styles.searchInput, {
+            [styles.hasContent]: query.length > 0
+          })}
+          autoComplete="off"
+        />
+      </div>
+    </div>
   );
 };
 

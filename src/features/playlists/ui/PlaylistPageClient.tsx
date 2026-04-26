@@ -3,7 +3,7 @@ import { usePlayerStore as usePlayer } from "@/features/player/store/playerStore
 import type React from "react"
 
 import { PlayButton } from '@/features/player/ui/PlaybackButtons/PlaybackButtons';
-import styles from "./Page.module.css"
+import styles from "@/features/playlists/ui/PlaylistPage.module.css"
 import TrackList from "@/components/TrackList/TrackList"
 import Image from "next/image"
 import { Button } from "@/components/Button/Button"
@@ -12,7 +12,7 @@ import ColorThief from "colorthief"
 import { BackIcon } from '@/shared/ui/icons';
 import { useRouter } from "next/navigation"
 import { Playlist } from "@/types"
-import AnimatedHeader from "./AnimatedHeader"
+import AnimatedHeader from "@/features/playlists/ui/AnimatedHeader"
 import { LikePlaylistButton } from "@/components/LikePlaylistButton/LikePlaylistButton"
 import { TextMorph } from 'torph/react';
 import { useAudioReactiveStore } from "@/features/audio-reactive-visualizer/store/audioReactiveStore"
@@ -45,7 +45,7 @@ const PlaylistPageClient = ({ playlist }: Props) => {
     } else if (imageRef.current && imageRef.current.complete) {
       extractDominantColor()
     }
-    
+
     // Cleanup playlist color when leaving page
     return () => {
       useAudioReactiveStore.getState().setPageColors(null);
@@ -82,25 +82,31 @@ const PlaylistPageClient = ({ playlist }: Props) => {
 
   return (
 
-    <div className="p-5 md:ps-52 pr-4">
+    <div className="p-5 pt-0 pr-4">
       <style>
-        {`:root {--playlist-dominant-color: ${dominantColor}}`}
+        {`:root {--playlist-dominant-color: ${dominantColor}; --playlist-darken: color-mix(in srgb, ${dominantColor} 60%, black);}`}
       </style>
       {playlist && <AnimatedHeader playlist={playlist} visible={showHeader} />}
 
       <Button view="outline-solid" className={styles.back} onClick={() => router.back()}>
         <BackIcon />
       </Button>
-      <div 
-        className={`${styles.playlist} bg-white/5 backdrop-blur-xl rounded-3xl mb-8 border border-white/10`} 
+      <div
+        className={`${styles.playlist} bg-white/5 backdrop-blur-xl rounded-3xl mb-8 mt-5 border border-white/10`}
         ref={playlistRef}
         style={{
-          backgroundColor: `color-mix(in srgb, ${dominantColor} 20%, transparent)`,
-          borderColor: `color-mix(in srgb, ${dominantColor} 30%, transparent)`,
+          backgroundColor: `color-mix(in srgb, var(--playlist-darken) 40%, transparent)`,
+          borderColor: `color-mix(in srgb, var(--playlist-darken) 30%, transparent)`,
         }}
       >
+        <div className="noise-overlay-transparent" />
         <div className={styles.title}>
           <h1>{playlist.title}</h1>
+          {playlist.id !== 'liked-tracks' && (
+            <div className="flex items-center gap-4 mt-4">
+              <LikePlaylistButton playlistId={playlist.id} size={32} />
+            </div>
+          )}
           {playlistIsPlaying?.id === playlist.id && (
             <span className={styles.playing}>
               <b>Сейчас играет:</b> <TextMorph>{currentTrack?.title}</TextMorph>
@@ -137,16 +143,13 @@ const PlaylistPageClient = ({ playlist }: Props) => {
             '--play-button-background': 'var(--playlist-dominant-color)',
           } as React.CSSProperties}
         />
-        {playlist.id !== 'liked-tracks' && (
-          <div className="flex items-center gap-4 mt-4">
-            <LikePlaylistButton playlistId={playlist.id} size={32} />
-          </div>
-        )}
+
       </div>
       <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-6 border border-white/10" style={{
-          backgroundColor: `color-mix(in srgb, ${dominantColor} 10%, transparent)`,
-          borderColor: `color-mix(in srgb, ${dominantColor} 20%, transparent)`,
+        backgroundColor: `color-mix(in srgb, var(--playlist-darken) 40%, transparent)`,
+        borderColor: `color-mix(in srgb, var(--playlist-darken) 30%, transparent)`,
       }}>
+        <div className="noise-overlay-transparent" />
         <TrackList
           tracks={playlist.tracks}
           currentTrack={currentTrack}
@@ -155,7 +158,6 @@ const PlaylistPageClient = ({ playlist }: Props) => {
             await playPlaylist(playlist, track)
           }}
           trackItemMaxWidth="50vw"
-          numbered={true}
         />
       </div>
     </div>

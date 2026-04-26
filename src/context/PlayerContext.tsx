@@ -1,7 +1,7 @@
 "use client"
 
 import React, { createContext, useContext, useState, useRef, useEffect, useCallback, useMemo } from "react"
-import type ReactHowler from "react-howler"
+import type { NativeHowlerRef } from "@/features/player/ui/NativeHowler"
 import type { Track, Playlist } from "@/types"
 
 interface PlayerContextProps {
@@ -17,7 +17,7 @@ interface PlayerContextProps {
   isLyricsDrawerOpen: boolean
   setIsLyricsDrawerOpen: (isOpen: boolean) => void
   playlistIsPlaying: Playlist | null
-  howlerRef: React.RefObject<ReactHowler | null>
+  howlerRef: React.RefObject<NativeHowlerRef | null>
   audioContext: React.RefObject<AudioContext | null>
   audioNode: React.RefObject<MediaElementAudioSourceNode | null>
   tracks: Track[]
@@ -55,7 +55,7 @@ interface PlayerProviderProps {
 export const PlayerProvider: React.FC<PlayerProviderProps> = ({ children }) => {
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null)
   const [playing, setPlaying] = useState(false)
-  const howlerRef = useRef<ReactHowler>(null)
+  const howlerRef = useRef<NativeHowlerRef>(null)
   const [duration, setDuration] = useState(0)
   const [seek, setSeek] = useState(0)
   const [howlerState, setHowlerState] = useState<string>("unloaded")
@@ -87,7 +87,7 @@ export const PlayerProvider: React.FC<PlayerProviderProps> = ({ children }) => {
       const sound = howlerRef.current.howler
       if (!audioNode.current) {
         console.log("Создание audioNode для Howler")
-        audioNode.current = audioContext.current.createMediaElementSource(sound._sounds[0]?._node)
+        audioNode.current = audioContext.current.createMediaElementSource((sound as any)._sounds[0]?._node)
         audioNode.current.connect(audioContext.current.destination)
         console.log("audioNode успешно подключен")
       }

@@ -1,12 +1,24 @@
+.playerWrapper {
+  position: fixed;
+  padding: 5px;
+  z-index: 50;
+  bottom: 0px;
+  margin-bottom: calc(env(safe-area-inset-bottom) + 4.5rem);
+  width: 100%;
+  @media (max-width: 600px) {
+    padding: 0;
+  }
+}
+
 .player {
 	background-color: color-mix(in srgb, var(--dominant-color, #0f0f23), black 20%);
-    position: fixed;
+    
+   
+    /* padding: 5px; */
+    
+   
+    
     width: 100%;
-    padding: 5px;
-    bottom: 0px;
-    margin-bottom: calc(env(safe-area-inset-bottom) + 4.5rem);
-    z-index: 50;
-
     /* Entry Animation */
     animation: playerSlideUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     will-change: transform, opacity;
@@ -15,6 +27,19 @@
       z-index: 10;
       background-color: transparent;
       padding: 10px 0px;
+
+    }
+}
+
+@media (min-width: 640px) {
+    .playerWrapper {
+        margin-bottom: 0;
+    }
+    .player {
+      bottom: 0px;
+      margin-bottom: 0px;
+      width: calc(100% - 72px);
+      border-radius: 20px 20px 15px 15px;
     }
 }
 
@@ -66,12 +91,16 @@
     backdrop-filter: saturate(180%) blur(5px);
 } */
 
-@media (min-width: 640px) {
+/* @media (min-width: 640px) {
+    .playerWrapper {
+        margin-bottom: 0;
+    }
     .player {
       bottom: 0px;
-       margin-bottom: 0px;
+      margin-bottom: 0px;
+      width: calc(100% - 72px);
     }
-    /* .player::before {
+    .player::before {
 		left: -3.1px;
 		bottom: 97.4%;
 		width: 100px;
@@ -86,5 +115,6 @@
 		height: 100px;
 		mask-image: linear-gradient(to top, red, red), radial-gradient(circle 58px at center, green 80%, transparent 81%);
 		mask-size: 50px 50px, 100%;
-	} */
+	} 
 }
+*/

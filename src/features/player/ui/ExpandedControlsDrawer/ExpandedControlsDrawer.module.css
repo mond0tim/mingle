@@ -1,6 +1,6 @@
 .drawerContent {
 	position: fixed;
-    z-index: 10;
+    z-index: 100;
     background-color: #190f2678;
     backdrop-filter: blur(10px);
     display: flex;
@@ -217,7 +217,7 @@
 
 .mobileProgressBlock {
 	grid-area: mobileProgressBlock;
-    padding: 10px;
+    padding: 10px 25px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 0.5fr;
@@ -225,18 +225,36 @@
 }
 .mobileProgressBlock .playerProgress .progressBarContainer {
 	width: 100%;
-    height: 9px;
-    background-color: lch(from var(--dominant-color, #0f0f23) calc((49.44 - l) * infinity) 0 0);
-    border-radius: 28px;
+    height: 25px;
+    background-color: color-mix(in srgb, var(--dominant-color, #0f0f23) 20%, white 60%);
+    border-radius: 99px;
     overflow: hidden;
-    padding: 2px;
+    padding: 0;
+    position: relative;
 }
 .mobileProgressBlock .progressBar {
-    height: 4.3px;
+    height: 100%;
+    border-radius: 99px 0 0 99px;
+    background-color: var(--dominant-color, #0f0f23);
     filter: none;
+    position: relative;
+    z-index: 1;
 }
-.driverCurrentTime { grid-area: driverCurrentTime; font-size: 15px; }
-.driverDuration { grid-area: driverDuration; justify-self: end; font-size: 15px; }
+.progressThumb {
+    position: absolute;
+    top: 50%;
+    width: 25px;
+    height: 25px;
+    background-color: white;
+    border-radius: 50%;
+    transform: translateY(-50%);
+    /* box-shadow: 0 2px 10px rgba(0,0,0,0.3); */
+    z-index: 2;
+    border: 2.5px solid var(--dominant-color, #0f0f23);
+    box-sizing: border-box;
+}
+.driverCurrentTime { grid-area: driverCurrentTime; font-size: 13px; opacity: 0.5; font-weight: 500; margin-top: 8px;}
+.driverDuration { grid-area: driverDuration; justify-self: end; font-size: 13px; opacity: 0.5; font-weight: 500; margin-top: 8px;}
 
 .playerProgress {
 	display: flex;
@@ -246,22 +264,23 @@
 	cursor: pointer;
 	grid-area: progressBar;
 	width: 100%;
-	padding: 0px;
+	padding: 10px 0;
+    touch-action: none;
+    position: relative;
 }
 .progressBarContainer {
 	width: 100%;
-    background-color: #ddd;
-    border-radius: 28px;
+    background-color: rgba(255,255,255,0.1);
+    border-radius: 99px;
+    position: relative;
     overflow: hidden;
-    padding: 3px;
 }
 .progressBar {
-    height: 7px;
-    background-color: var(--dominant-color, #0f0f23);
+    height: 100%;
+    background-color: white;
     transition: width 0.1s linear;
-    border-radius: 25px;
+    border-radius: 99px;
     position: relative;
-	filter: brightness(0.7);
 }
 
 .mobilePlayerControls {

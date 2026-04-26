@@ -29,22 +29,22 @@ export const ShaderBackground: React.FC<ShaderBackgroundProps> = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const materialRef = useRef<THREE.ShaderMaterial | null>(null);
   const targetColorsRef = useRef<GradientColors>(gradientColors);
-  const paramsRef = useRef({ 
-    bpm, 
-    baseSpeed, 
-    bpmSpeedMultiplier, 
-    lerpFactor, 
+  const paramsRef = useRef({
+    bpm,
+    baseSpeed,
+    bpmSpeedMultiplier,
+    lerpFactor,
     analyzer,
     smoothColorTransitions,
     colorBrightness
   });
 
   useEffect(() => {
-    paramsRef.current = { 
-      bpm, 
-      baseSpeed, 
-      bpmSpeedMultiplier, 
-      lerpFactor, 
+    paramsRef.current = {
+      bpm,
+      baseSpeed,
+      bpmSpeedMultiplier,
+      lerpFactor,
       analyzer,
       smoothColorTransitions,
       colorBrightness
@@ -112,15 +112,15 @@ export const ShaderBackground: React.FC<ShaderBackgroundProps> = ({
       const deltaTime = (now - lastFrameTime) / 1000;
       lastFrameTime = now;
 
-      const { 
-        bpm: currentBpmVal, 
-        baseSpeed: bs, 
-        bpmSpeedMultiplier: mult, 
-        lerpFactor: lf, 
+      const {
+        bpm: currentBpmVal,
+        baseSpeed: bs,
+        bpmSpeedMultiplier: mult,
+        lerpFactor: lf,
         analyzer: az,
         smoothColorTransitions: smooth,
         colorBrightness: brightness
-       } = paramsRef.current;
+      } = paramsRef.current;
 
       const currentBpm = currentBpmVal || 120;
       const dynamicSpeed = bs * (currentBpm / 120) * mult;
