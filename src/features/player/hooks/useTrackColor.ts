@@ -42,16 +42,16 @@ const lightenColor = (color: [number, number, number], amount: number): string =
 export const useTrackColor = (currentTrack: Track | null) => {
   const [dominantColor, setDominantColor] = useState<string>('#0c0312');
   const [rgb, setRgb] = useState<[number, number, number]>([245, 245, 245]);
-  const [accentColor, setAccentColor] = useState<string>('#f5f5f5');
+  const [accentColor, setAccentColor] = useState<string>('#000000ff');
   const [fullPalette, setFullPalette] = useState<Track['colors']>(null);
-  
+
   const updateTrackColors = usePlayerStore(state => state.updateTrackColors);
 
   useEffect(() => {
     if (!currentTrack || !currentTrack.cover) {
-      setDominantColor('#f5f5f5');
+      setDominantColor('#000000ff');
       setRgb([245, 245, 245]);
-      setAccentColor('#0c0312');
+      setAccentColor('#ffffffff');
       setFullPalette(null);
       return;
     }
@@ -78,7 +78,7 @@ export const useTrackColor = (currentTrack: Track | null) => {
       setRgb(parsedRgb);
       setAccentColor(resolvedSecondary);
       setFullPalette(currentTrack.colors);
-      
+
       // Обновляем кэш, чтобы он не хранил старые данные после ре-экстракции
       colorCache.set(cacheKey, { dominant, rgb: parsedRgb, accent, fullPalette: currentTrack.colors });
       return;
@@ -110,17 +110,17 @@ export const useTrackColor = (currentTrack: Track | null) => {
               const [r, g, b] = value;
               const finalColor: [number, number, number] = currentTrack.color ? hexToRgb(currentTrack.color) : [r, g, b] as [number, number, number];
               const hexColor = currentTrack.color ? `#${finalColor.map((x: number) => x.toString(16).padStart(2, '0')).join('')}` : hex;
-              
+
               const luminance = (0.2126 * finalColor[0]) + (0.7152 * finalColor[1]) + (0.0722 * finalColor[2]);
               const isLight = luminance > 128;
-    
+
               const calculatedAccent = isLight ? darkenColor(finalColor, 0.5) : lightenColor(finalColor, 0.7);
-    
+
               // Мгновенное обновление UI (пре-экстракция)
               setAccentColor(calculatedAccent);
               setDominantColor(hexColor);
               setRgb([finalColor[0], finalColor[1], finalColor[2]]);
-    
+
               colorCache.set(cacheKey, {
                 dominant: hexColor,
                 rgb: [finalColor[0], finalColor[1], finalColor[2]],
@@ -134,44 +134,44 @@ export const useTrackColor = (currentTrack: Track | null) => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ url: currentTrack.cover, id: trackId, type: 'track' })
               })
-              .then(res => res.json())
-              .then(data => {
-                if (data && data.colors) {
-                  const newColors = data.colors;
-                  
-                  // Сначала обновляем локальный кэш, чтобы Effect при следующем прогоне увидел новые данные
-                  const parsedRgb = hexToRgb(newColors.dominant);
-                  const bindings = withDefaultTrackBindings(newColors.bindings);
-                  const resolvedPrimary = pickChannelColor(
-                    newColors,
-                    bindings.playerPrimary,
-                    newColors.dominant,
-                  );
-                  const resolvedSecondary = pickChannelColor(
-                    newColors,
-                    bindings.playerSecondary,
-                    newColors.accent,
-                  );
-                  colorCache.set(cacheKey, { 
-                    dominant: resolvedPrimary, 
-                    rgb: parsedRgb, 
-                    accent: resolvedSecondary,
-                    fullPalette: newColors,
-                  });
+                .then(res => res.json())
+                .then(data => {
+                  if (data && data.colors) {
+                    const newColors = data.colors;
 
-                  // Обновляем глобальный стор
-                  updateTrackColors(trackId, newColors);
-                  
-                  // Локальное состояние хука
-                  setFullPalette(newColors);
-                  if (newColors.dominant && newColors.accent) {
-                    setDominantColor(resolvedPrimary);
-                    setAccentColor(resolvedSecondary);
-                    setRgb(parsedRgb);
+                    // Сначала обновляем локальный кэш, чтобы Effect при следующем прогоне увидел новые данные
+                    const parsedRgb = hexToRgb(newColors.dominant);
+                    const bindings = withDefaultTrackBindings(newColors.bindings);
+                    const resolvedPrimary = pickChannelColor(
+                      newColors,
+                      bindings.playerPrimary,
+                      newColors.dominant,
+                    );
+                    const resolvedSecondary = pickChannelColor(
+                      newColors,
+                      bindings.playerSecondary,
+                      newColors.accent,
+                    );
+                    colorCache.set(cacheKey, {
+                      dominant: resolvedPrimary,
+                      rgb: parsedRgb,
+                      accent: resolvedSecondary,
+                      fullPalette: newColors,
+                    });
+
+                    // Обновляем глобальный стор
+                    updateTrackColors(trackId, newColors);
+
+                    // Локальное состояние хука
+                    setFullPalette(newColors);
+                    if (newColors.dominant && newColors.accent) {
+                      setDominantColor(resolvedPrimary);
+                      setAccentColor(resolvedSecondary);
+                      setRgb(parsedRgb);
+                    }
                   }
-                }
-              })
-              .catch((e) => console.error('Failed to trigger deep extraction', e));
+                })
+                .catch((e) => console.error('Failed to trigger deep extraction', e));
             })
             .catch((error) => {
               console.error('Failed to extract color:', error);

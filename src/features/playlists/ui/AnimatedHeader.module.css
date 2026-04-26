@@ -1,7 +1,7 @@
 .animatedHeader {
   position: fixed;
   top: 0;
-  left: 12.6rem;
+  left: 85px;
   right: 2px;
   backdrop-filter: blur(.5rem) brightness(100%) saturate(140%);
   background: linear-gradient(180deg, var(--playlist-dominant-color) , transparent 50%);

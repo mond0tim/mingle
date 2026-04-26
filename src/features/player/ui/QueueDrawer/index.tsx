@@ -3,12 +3,14 @@ import styles from './QueueDrawer.module.css';
 import { Drawer } from 'vaul';
 import { useMediaQuery } from 'react-responsive';
 import { QueueIcon } from '@/shared/ui/icons';
+import { Toggle } from '@/components/animate-ui/components/radix/toggle';
 import { Button } from '@/components/Button/Button';
 import { ChevronDown, ChevronRight, ChevronUp, Trash2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DraggableTrackList } from '@/components/DraggableTrackList/DraggableTrackList';
 import { usePlayerStore } from '../../store/playerStore';
 import { CurvedScrollbar } from '../CurvedScrollbar';
+import { Skeleton } from '@/components/ui/skeleton';
 
 import { QueueDrawerProps } from "./QueueDrawer.props"
 
@@ -42,9 +44,9 @@ const QueueDrawer: React.FC<QueueDrawerProps> = ({
 
   // Handle scroll to current track
   React.useEffect(() => {
-    if (isFullyOpen && contentRef.current) {
+    if (isFullyOpen && currentTrack && contentRef.current) {
       const scrollTimeout = setTimeout(() => {
-        const playingElement = contentRef.current?.querySelector('[data-playing="true"]') as HTMLElement;
+        const playingElement = contentRef.current?.querySelector(`[data-queue-id="${currentTrack.queueId}"]`) as HTMLElement;
         if (playingElement) {
           let targetElement = playingElement;
 
@@ -60,10 +62,10 @@ const QueueDrawer: React.FC<QueueDrawerProps> = ({
             block: scrollToMode
           });
         }
-      }, 100);
+      }, 300); // Increased timeout slightly for reliability
       return () => clearTimeout(scrollTimeout);
     }
-  }, [isFullyOpen, scrollToMode, showPrevious, currentTrack?.id]);
+  }, [isFullyOpen, scrollToMode, showPrevious, currentTrack?.queueId]);
 
   // Defer heavy list rendering until the drawer animation completes
   React.useEffect(() => {
@@ -89,9 +91,15 @@ const QueueDrawer: React.FC<QueueDrawerProps> = ({
     >
       {isDesktopOrLaptop && (
         <Drawer.Trigger className={styles.QueueDrawerButton} asChild>
-          <Button view='ghost' className={styles.queueDrawerTrigger}>
+          <Toggle
+            pressed={isDrawerOpen}
+            onPressedChange={setIsDrawerOpen}
+            size="icon"
+            className={styles.queueDrawerTrigger}
+            highlightClassName={styles.toggleHighlight}
+          >
             <QueueIcon />
-          </Button>
+          </Toggle>
         </Drawer.Trigger>
       )}
 
@@ -163,7 +171,7 @@ const QueueDrawer: React.FC<QueueDrawerProps> = ({
             <div className={styles.queueDrawerBackground} />
 
             <div className={styles.drawerTrackList}>
-              <div className="flex items-center justify-between px-6 py-4">
+              <div className="flex items-center justify-start px-6 py-4 pb-0">
                 <Drawer.Title className={styles.drawerTitle}>
                   {playlist ? playlist.title : "очередь"}
                 </Drawer.Title>
@@ -184,8 +192,17 @@ const QueueDrawer: React.FC<QueueDrawerProps> = ({
                     currentTrack={currentTrack}
                   />
                 ) : (
-                  <div className="flex items-center justify-center h-48 opacity-50">
-                    <span>Загрузка очереди...</span>
+                  <div className="flex flex-col gap-1 px-2">
+                    {[...Array(8)].map((_, i) => (
+                      <div key={i} className="flex items-center gap-3 p-2 opacity-20">
+                        <Skeleton className="h-12 w-12 rounded-lg bg-white/40" />
+                        <div className="flex flex-col gap-2 flex-1">
+                          <Skeleton className="h-4 w-2/3 rounded bg-white/40" />
+                          <Skeleton className="h-3 w-1/3 rounded bg-white/40" />
+                        </div>
+                        <Skeleton className="h-4 w-4 rounded-full bg-white/40" />
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>

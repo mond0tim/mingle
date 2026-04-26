@@ -36,6 +36,8 @@ const pwaWrapper = withPWAInit({
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  output: 'standalone',
+
 
   // New Next.js 15/16 Turbopack location
   turbopack: {

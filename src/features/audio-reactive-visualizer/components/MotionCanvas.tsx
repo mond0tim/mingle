@@ -28,7 +28,7 @@ export const MotionCanvas: React.FC<MotionCanvasProps> = ({
   overlay = true,
   bgAlpha = 0,
   smoothing = 0.7,
-  className = 'absolute bottom-0 left-0 h-64 w-full blur-[80px] filter',
+  className = 'absolute bottom-22 left-0 h-64 w-full blur-[80px] filter',
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 

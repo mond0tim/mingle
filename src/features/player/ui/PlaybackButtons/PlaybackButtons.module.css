@@ -121,8 +121,8 @@
     --playback-buttons-background: var(--dominant-color, #0f0f23);
     --play-button-color: var(--dominant-color, #0f0f23);
     --play-button-background: lch(from var(--play-button-color, var(--dominant-color, #0f0f23)) calc((49.44 - l) * infinity) 0 0);
-    height: 75px;
-
+    height: 65px;
+    margin-top: 3px;
 }
 
 
@@ -394,50 +394,61 @@
 
 
 /* --- 3. ТРЕТЬЯ КНОПКА (45%) --- */
+.sm .btn {
+        border:none;
+    outline:none;   
+}
 .sm .buttonContentInner {
     filter: url(#goo); /* Фильтр со сниженным размытием */
 }
 .sm .btnPrev {
-    width: 37px; 
-    height: 33px;
-    transform: translateX(4.5px);
-    border-radius: 29px 9px 9px 29px;
-    padding: 5.5px 2.5px 5.5px 5.5px;
     z-index: 2;
+    border-radius: 39px 12px 12px 39px;
+    width: 49px;
+    height: 43px;
+    padding: 10px 5px 10px 10px;
+    transform: translateX(9px);
 }
 .sm .btnPlay {
-    width: 50px; 
-    height: 40px;
-    border-radius: 20px;
-    padding: 7px 4.5px;
     z-index: 1;
+    border-radius: 32px;
+    width: 62px;
+    height: 51px;
+    padding: 12px 9px;
 }
 .sm .btnNext {
-    width: 37px; 
-    height: 33px;
-    transform: translateX(-4.5px);
-    border-radius: 9px 29px 29px 9px;
-    padding: 5.5px 5.5px 5.5px 2.5px;
     z-index: 2;
+    border-radius: 12px 39px 39px 12px;
+    width: 49px;
+    height: 43px;
+    padding: 10px 11px 10px 5px;
+    transform: translateX(-9px);
 }
 .sm .btnIcon {
-    min-width: 13.5px; 
-    min-height: 13.5px;
+    min-width: 18px; 
+    min-height: 18px;
 }
 .sm .btnPrev svg, 
 .sm .btnNext svg { 
-    width: 21px; 
-    height: 19px;
+    width: 28px; 
+    height: 25px;
     stroke: none !important;
 }
 .sm .btnPlay svg { 
-    width: 24px; 
-    height: 27px; 
+    width: 32px; 
+    height: 36px; 
 }
 /* Переопределяем :active для 45%, чтобы не было скачка до 15px */
 .sm .btn:active {
-    border-radius: 29px !important;
-    padding: 6.5px !important;
+    border-radius: 39px !important;
+    padding: 9px !important;
+
+}
+
+.sm .btn:focus-visible {
+    padding: 12px !important;
+    border:none;
+    outline:none;
 }
 
 /* ========================================================

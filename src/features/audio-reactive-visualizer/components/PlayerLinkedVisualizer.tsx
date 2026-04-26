@@ -41,7 +41,7 @@ export function PlayerLinkedVisualizer({
   const bpmStatus = useAudioReactiveStore((s) => s.bpmStatus);
   const setBpm = useAudioReactiveStore((s) => s.setBpm);
   const setBpmStatus = useAudioReactiveStore((s) => s.setBpmStatus);
-  
+
   const prefs = useAudioReactiveStore((s) => s.prefs);
   const pageColors = useAudioReactiveStore((s) => s.pageColors);
 
@@ -126,13 +126,23 @@ export function PlayerLinkedVisualizer({
     if (!ready || !sharedAnalyzer) return;
 
     let raf = 0;
-    let tick = 0;
-    const loop = () => {
-      useAudioReactiveStore.getState().setBands({
-        bass: sharedAnalyzer!.getEnergy('bass' as any),
-        mid: sharedAnalyzer!.getEnergy('mid' as any),
-        treble: sharedAnalyzer!.getEnergy('treble' as any),
-      });
+    const isMobile = window.innerWidth <= 768;
+    let lastTime = 0;
+    const interval = isMobile ? 1000 / 30 : 0; // 30fps on mobile, 60fps on desktop
+
+    const loop = (time: number) => {
+      const isPlaying = usePlayerStore.getState().playing;
+      
+      if (isPlaying) {
+        if (!interval || time - lastTime >= interval) {
+          useAudioReactiveStore.getState().setBands({
+            bass: sharedAnalyzer!.getEnergy('bass' as any),
+            mid: sharedAnalyzer!.getEnergy('mid' as any),
+            treble: sharedAnalyzer!.getEnergy('treble' as any),
+          });
+          lastTime = time;
+        }
+      }
       raf = requestAnimationFrame(loop);
     };
 
@@ -142,20 +152,20 @@ export function PlayerLinkedVisualizer({
 
   const analyzerLike = sharedAnalyzer
     ? ({
-        getEnergy: (band: string) => sharedAnalyzer?.getEnergy(band as any),
-        setOptions: (opts: any) => sharedAnalyzer?.setOptions(opts),
-        registerGradient: (name: string, def: any) => sharedAnalyzer?.registerGradient(name, def),
-        canvas: sharedAnalyzer.canvas,
-        audioCtx: sharedAnalyzer.audioCtx,
-        connectedSources: (sharedAnalyzer as any).connectedSources,
-      } as any)
+      getEnergy: (band: string) => sharedAnalyzer?.getEnergy(band as any),
+      setOptions: (opts: any) => sharedAnalyzer?.setOptions(opts),
+      registerGradient: (name: string, def: any) => sharedAnalyzer?.registerGradient(name, def),
+      canvas: sharedAnalyzer.canvas,
+      audioCtx: sharedAnalyzer.audioCtx,
+      connectedSources: (sharedAnalyzer as any).connectedSources,
+    } as any)
     : null;
 
   return (
     <div className="fixed inset-0 overflow-hidden font-mono z-[-1] pointer-events-none">
       {/* container only used to host analyzer canvas */}
       <div ref={containerRef} className="pointer-events-none absolute inset-0" />
-
+      <div className="noise-overlay-transparent" />
       <ShaderBackground
         analyzer={analyzerLike}
         gradientColors={gradientColors}

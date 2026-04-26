@@ -1,179 +1,117 @@
 'use client';
-import { useState, useRef, useEffect, use } from 'react';
+
+import { useState, useMemo, useDeferredValue } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import useSWR from 'swr';
 import SearchResults from '@/components/SearchResults/SearchResults';
+import SearchForm from '@/components/SearchForm/SearchForm';
+import FloatingBar from '@/components/FloatingBar/FloatingBar';
 import { Track, Playlist } from '@/types';
 import styles from './SearchPage.module.css';
 import cn from 'classnames';
-import { useMediaQuery } from 'react-responsive';
-import SearchForm from '@/components/SearchForm/SearchForm';
 
-interface SearchPageProps {
-  searchParams: Promise<{
-    q: string;
-  }>;
-}
-
-const filterTracks = (tracks: Track[], query: string): Track[] => {
-  const lowerCaseQuery = query.toLowerCase();
-  return tracks.filter(
-    (track) =>
-      track.title.toLowerCase().includes(lowerCaseQuery) ||
-      track.artist.toLowerCase().includes(lowerCaseQuery),
-  );
-};
-
-const filterPlaylists = (playlists: Playlist[], query: string): Playlist[] => {
-  const lowerCaseQuery = query.toLowerCase();
-  return playlists.filter((playlist) =>
-    playlist.title.toLowerCase().includes(lowerCaseQuery),
-  );
-};
+const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 type SortType = 'all' | 'tracks' | 'playlists';
 
-const SearchPage = (props: SearchPageProps) => {
-  const searchParams = use(props.searchParams);
-  const query = searchParams.q || '';
+export default function SearchPage() {
+  const [query, setQuery] = useState('');
+  const deferredQuery = useDeferredValue(query);
   const [sortType, setSortType] = useState<SortType>('all');
-  const [filteredResults, setFilteredResults] = useState<(Track | Playlist)[]>([]);
-  const [tracks, setTracks] = useState<Track[]>([]);
-  const [playlists, setPlaylists] = useState<Playlist[]>([]);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const activeTabElementRef = useRef<HTMLButtonElement>(null);
-  const isMobile = useMediaQuery({ query: '(max-width: 639px)' });
 
+  // Fetching data
+  const { data: rawTracks = [], isLoading: tracksLoading } = useSWR<Track[]>('/api/songs', fetcher);
+  const { data: rawPlaylists = [], isLoading: playlistsLoading } = useSWR<Playlist[]>('/api/playlists', fetcher);
+  const { data: rawVibePlaylists = [] } = useSWR<Playlist[]>('/api/vibe', fetcher);
 
-  useEffect(() => {
-    const container = containerRef.current;
+  // Ensure items have type property for filtering
+  const tracks = useMemo(() => rawTracks.map(t => ({ ...t, type: 'track' })), [rawTracks]);
+  const playlistsData = useMemo(() => rawPlaylists.map(p => ({ ...p, type: 'playlist' })), [rawPlaylists]);
+  const vibePlaylists = useMemo(() => rawVibePlaylists.map(p => ({ ...p, type: 'playlist' })), [rawVibePlaylists]);
 
-    if (sortType && container) {
-      const activeTabElement = activeTabElementRef.current;
+  const allPlaylists = useMemo(() => [...playlistsData, ...vibePlaylists], [playlistsData, vibePlaylists]);
 
-      if (activeTabElement) {
-        const { offsetLeft, offsetWidth } = activeTabElement;
+  const filteredTracks = useMemo(() => {
+    if (!deferredQuery.trim()) return tracks.slice(0, 10);
+    const lowerQuery = deferredQuery.toLowerCase();
+    return tracks.filter(t => 
+      t.title.toLowerCase().includes(lowerQuery) || 
+      t.artist.toLowerCase().includes(lowerQuery)
+    );
+  }, [deferredQuery, tracks]);
 
-        const clipLeft = offsetLeft;
-        const clipRight = offsetLeft + offsetWidth;
-        container.style.clipPath = `inset(0 ${Number(
-          (100 - (clipRight / container.offsetWidth) * 100).toFixed(),
-        )}% 0 ${Number(((clipLeft / container.offsetWidth) * 100).toFixed())}% round 17px)`;
-      }
-    }
-  }, [sortType, activeTabElementRef, containerRef]);
+  const filteredPlaylists = useMemo(() => {
+    if (!deferredQuery.trim()) return allPlaylists.slice(0, 12);
+    const lowerQuery = deferredQuery.toLowerCase();
+    return allPlaylists.filter(p => 
+      p.title.toLowerCase().includes(lowerQuery)
+    );
+  }, [deferredQuery, allPlaylists]);
 
-  // Загрузка данных с API
-  useEffect(() => {
-    // Получаем треки
-    fetch('/api/songs')
-      .then(res => res.json())
-      .then(data => setTracks(data))
-      .catch(() => setTracks([]));
-
-    // Получаем плейлисты из двух источников и объединяем
-    Promise.all([
-      fetch('/api/playlists').then(res => res.json()).catch(() => []),
-      fetch('/api/vibe').then(res => res.json()).catch(() => []),
-    ]).then(([playlists1, playlists2]) => {
-      setPlaylists([...playlists1, ...playlists2]);
-    });
-  }, []);
-
-  useEffect(() => {
-    // Используем загруженные данные
-    const filteredTracks = filterTracks(tracks, query);
-    const filteredPlaylists = filterPlaylists(playlists, query);
-
-    let results: (Track | Playlist)[] = [];
-    if (sortType === 'all') {
-      results = [...filteredTracks, ...filteredPlaylists];
-    } else if (sortType === 'tracks') {
-      results = filteredTracks;
-    } else if (sortType === 'playlists') {
-      results = filteredPlaylists;
-    }
-
-    setFilteredResults(results);
-  }, [query, sortType, tracks, playlists]);
-
-  const TABS = [
-    {
-      name: 'all',
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-library-big-icon lucide-library-big"><rect width="8" height="18" x="3" y="3" rx="1"/><path d="M7 3v18"/><path d="M20.4 18.9c.2.5-.1 1.1-.6 1.3l-1.9.7c-.5.2-1.1-.1-1.3-.6L11.1 5.1c-.2-.5.1-1.1.6-1.3l1.9-.7c.5-.2 1.1.1 1.3.6Z"/></svg>
-      ),
-    },
-    {
-      name: 'tracks',
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-disc3-icon lucide-disc-3"><circle cx="12" cy="12" r="10"/><path d="M6 12c0-1.7.7-3.2 1.8-4.2"/><circle cx="12" cy="12" r="2"/><path d="M18 12c0 1.7-.7 3.2-1.8 4.2"/></svg>
-      ),
-    },
-    {
-      name: 'playlists',
-      icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-list-music-icon lucide-list-music"><path d="M21 15V6"/><path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/><path d="M12 12H3"/><path d="M16 6H3"/><path d="M12 18H3"/></svg>
-      ),
-    },
+  const buttons = [
+    { id: "all", label: "Все" },
+    { id: "tracks", label: "Треки" },
+    { id: "playlists", label: "Плейлисты" },
   ];
 
   return (
-    <div className='md:ps-52 md:pr-4'>
-      
-        <div className='block sm:hidden mb-6 mx-auto'>
-          <SearchForm/>
-        </div>
-      
-      {!isMobile && query && (
-        <h1 className='text-center p-2 font-bold'>Search Results for: {query}</h1>
-      )}
-        <div className={styles.wrapper}>
-          <ul className={styles.list}>
-            {TABS.map((tab) => (
-              <li key={tab.name}>
-                <button
-                  ref={sortType === tab.name ? activeTabElementRef : null}
-                  data-tab={tab.name}
-                  onClick={() => {
-                    setSortType(tab.name as SortType);
-                  }}
-                  className={styles.button}
-                >
-                  {tab.icon}
-                  {tab.name}
-                </button>
-              </li>
-            ))}
-          </ul>
+    <div className={cn("min-h-screen md:ps-64 md:pe-8", styles.searchContainer)}>
+      <header className={styles.searchHeader}>
+        <motion.div 
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="w-full flex flex-col items-center gap-6"
+        >
+          <SearchForm 
+            initialValue={query}
+            onQueryChange={setQuery}
+            placeholder="Поиск..."
+          />
 
-          <div
-            aria-hidden
-            className={styles.clip_path_container}
-            ref={containerRef}
+          <FloatingBar 
+            activeButton={sortType} 
+            setActiveButton={(id) => setSortType(id as SortType)} 
+            buttons={buttons}
+          />
+        </motion.div>
+      </header>
+
+      <main className={cn(styles.resultsSection, "mt-8")}>
+        <div className="noise-overlay" />
+        
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={sortType + deferredQuery}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
           >
-            <ul className={cn(styles.list, styles.list_overlay)}>
-              {TABS.map((tab) => (
-                <li key={tab.name}>
-                  <button
-                    data-tab={tab.name}
-                    onClick={() => {
-                      setSortType(tab.name as SortType);
-                    }}
-                    className={cn(styles.button_overlay, styles.button)}
-                    tabIndex={-1}
-                  >
-                    {tab.icon}
-                    {tab.name}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      
-
-      <SearchResults key={`${query}-${sortType}`} results={filteredResults} />
+            <div className={styles.sectionHeader}>
+              <h2 className={styles.sectionTitle}>
+                {!deferredQuery.trim() ? 'Коллекции' : 'Результаты'}
+              </h2>
+              <div className={styles.sectionSubtitle}>
+                {sortType === 'all' 
+                  ? `${filteredTracks.length + filteredPlaylists.length} элементов найдено`
+                  : sortType === 'tracks' ? `${filteredTracks.length} треков найдено` : `${filteredPlaylists.length} элементов найдено`
+                }
+              </div>
+            </div>
+            
+            {(tracksLoading || playlistsLoading) && !filteredTracks.length && !filteredPlaylists.length ? (
+              <div className="flex justify-center py-20">
+                <div className="h-10 w-10 border-4 border-white/10 border-t-white rounded-full animate-spin" />
+              </div>
+            ) : (
+              <SearchResults 
+                results={sortType === 'all' ? [...filteredTracks, ...filteredPlaylists] : sortType === 'tracks' ? filteredTracks : filteredPlaylists} 
+                sortType={sortType} 
+              />
+            )}
+          </motion.div>
+        </AnimatePresence>
+      </main>
     </div>
   );
-};
-
-export default SearchPage;
+}

@@ -45,33 +45,23 @@ export const CurvedScrollbar: React.FC<CurvedScrollbarProps> = ({
 
     const { pathLength } = stateRef.current;
     
-    // Recalculate ratio every time to ensure it's fresh
     const scrollHeight = content.scrollHeight || 1;
     const clientHeight = content.clientHeight || 1;
     const ratio = clientHeight / scrollHeight;
     const thumbLength = Math.max(MIN_THUMB, pathLength * (isNaN(ratio) ? 0.2 : ratio));
-    stateRef.current.thumbLength = thumbLength;
-
+    
     const scrollableHeight = (scrollHeight - clientHeight) || 1;
     const scrollRatio = content.scrollTop / scrollableHeight;
-    const startOffset = (pathLength - thumbLength) * scrollRatio;
-    const endOffset = startOffset + thumbLength;
-
-    const points: string[] = [];
-    for (let i = 0; i <= SEGMENTS; i++) {
-      const t = startOffset + ((endOffset - startOffset) / SEGMENTS) * i;
-      try {
-        const p = trackPath.getPointAtLength(t);
-        points.push(`${p.x.toFixed(1)} ${p.y.toFixed(1)}`);
-      } catch (e) {
-        points.push(`0 0`);
-      }
-    }
-
-    if (points.length > 0 && points[0] !== '0 0') {
-      const d = `M ${points[0]} ${points.slice(1).map(pt => `L ${pt}`).join(' ')}`;
-      thumbPath.setAttribute('d', d);
-    }
+    
+    // We use stroke-dasharray and stroke-dashoffset to draw only a part of the track path
+    // This is MUCH faster than getPointAtLength
+    const offset = -pathLength * (1 - scrollRatio) * (1 - ratio); 
+    // Actually, simple way: dasharray = [thumbLength, pathLength]
+    // dashoffset = - (pathLength - thumbLength) * scrollRatio
+    
+    thumbPath.setAttribute('d', trackPath.getAttribute('d') || '');
+    thumbPath.style.strokeDasharray = `${thumbLength} ${pathLength}`;
+    thumbPath.style.strokeDashoffset = `${-(pathLength - thumbLength) * scrollRatio}`;
   }, [contentRef]);
 
   const updatePath = useCallback(() => {

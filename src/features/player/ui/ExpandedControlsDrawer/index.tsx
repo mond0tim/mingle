@@ -8,11 +8,9 @@ import QueueDrawer from "../QueueDrawer"
 import LyricsDrawer from "../LyricsDrawer"
 import Image from "next/image"
 import { Button } from "@/components/Button/Button"
-import { NextIcon } from '@/shared/ui/icons';
-import { PrevIcon } from '@/shared/ui/icons';
 import { QueueIcon } from '@/shared/ui/icons';
 import { MoreIcon } from '@/shared/ui/icons';
-import { TextIcon as LyricsIcon } from '@/shared/ui/icons';
+import { MicroIcon as LyricsIcon } from '@/shared/ui/icons';
 import cn from "classnames"
 import NumberFlow, { NumberFlowGroup } from "@number-flow/react"
 import { motion, type PanInfo, AnimatePresence } from "framer-motion"
@@ -24,6 +22,7 @@ import { MobileReactiveBackground } from "@/features/audio-reactive-visualizer"
 import { TextMorph } from "torph/react"
 
 import { usePlayerStore } from "../../store/playerStore"
+import { TrackActionsDrawer } from "@/components/TrackItem/TrackActionsDrawer"
 
 const CurrentTime: React.FC<{ isSeeking: boolean; seekValue: number }> = ({ isSeeking, seekValue }) => {
   const seek = usePlayerStore((state) => state.seek);
@@ -68,10 +67,10 @@ const ProgressBar: React.FC<{
   const progress = duration > 0 ? (currentPos / duration) * 100 : 0;
 
   return (
-    <div className={styles.playerProgress} id="player-progress-bar" onMouseDown={onSeekStart} onTouchStart={onSeekStart} style={{ cursor: "pointer" }}>
+    <div className={styles.playerProgress} id="player-progress-bar" onMouseDown={onSeekStart} onTouchStart={onSeekStart} data-vaul-no-drag="true">
       <div className={styles.progressBarContainer}>
-        <div className={styles.progressBar} style={{ width: `${progress}%`, transition: isSeeking ? "none" : undefined }} />
-        <div className={styles.progressThumb} style={{ left: `${progress}%`, transition: isSeeking ? "none" : undefined }} />
+        <div className={styles.progressBar} style={{ width: `calc(${progress}% + ${12.5 - progress * 0.25}px)`, transition: isSeeking ? "none" : undefined }} />
+        <div className={styles.progressThumb} style={{ left: `${progress}%`, transform: `translate(-${progress}%, -50%)`, transition: isSeeking ? "none" : undefined }} />
       </div>
     </div>
   );
@@ -117,14 +116,14 @@ function useCoverCarousel({
       updateWidth()
       // Small timeout to ensure Vaul animation and layout have settled
       const timer = setTimeout(updateWidth, 100)
-      
+
       const observer = new ResizeObserver((entries) => {
         for (const entry of entries) {
           setContainerWidth(entry.target.getBoundingClientRect().width)
         }
       })
       if (containerRef.current) observer.observe(containerRef.current)
-      
+
       return () => {
         observer.disconnect()
         clearTimeout(timer)
@@ -274,6 +273,7 @@ const ExpandedControlsDrawer: React.FC<ExpandedControlsDrawerProps> = ({
   const duration = usePlayerStore(state => state.duration)
   const [isQueueDrawerOpen, setIsQueueDrawerOpen] = useState(false)
   const [isLyricsDrawerOpen, setIsLyricsDrawerOpen] = useState(false)
+  const [isActionsDrawerOpen, setIsActionsDrawerOpen] = useState(false)
 
   const carousel = useCoverCarousel({ currentTrack, prevTrack, nextTrack, onNextTrack, onPrevTrack, isDrawerOpen })
 
@@ -366,7 +366,9 @@ const ExpandedControlsDrawer: React.FC<ExpandedControlsDrawerProps> = ({
               </div>
               <div className={styles.otherBtn}>
                 <LikeButton trackId={currentTrack.id} size={24} />
-                <Button view="ghost"><MoreIcon /></Button>
+                <Button view="ghost" onClick={() => setIsActionsDrawerOpen(true)}>
+                  <MoreIcon />
+                </Button>
               </div>
             </div>
 
@@ -403,6 +405,11 @@ const ExpandedControlsDrawer: React.FC<ExpandedControlsDrawerProps> = ({
         showPrevious={true}
       />
       <LyricsDrawer isDrawerOpen={isLyricsDrawerOpen} setIsDrawerOpen={setIsLyricsDrawerOpen} currentTrack={currentTrack} togglePlay={onPlayPause} isPlaying={playing} />
+      <TrackActionsDrawer
+        isOpen={isActionsDrawerOpen}
+        onOpenChange={setIsActionsDrawerOpen}
+        track={currentTrack}
+      />
     </>
   )
 }

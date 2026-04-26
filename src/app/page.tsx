@@ -1,180 +1,106 @@
-/* eslint-disable */
+import { Metadata } from 'next';
+import { prisma } from '@/lib/db';
+import { Playlist } from '@/types';
+import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
+import HomePageClient from './homePageClient';
 
-'use client';
-import React, { useState, useEffect } from 'react';
-import { usePlayerStore as usePlayer } from '@/features/player/store/playerStore';
-import { Button } from '@/components/Button/Button';
-import styles from "./page.module.css"
-
-import { OtherPlay } from '@/shared/ui/icons';
-import { OtherPause } from '@/shared/ui/icons';
-
-// ЕСТЬ ВОЗМОЖНОСТЬ СЛОМАТЬ ДАННЫЙ КОД, ПРОСЬБА НЕ ТРОГАТЬ ЕГО!!!!!!!!!!!!!
-
-import AudioMotionVisualizer from '@/components/AudioMotionVisualizer/AudioMotionVisualizer';
-import BackgroundCanvas from '@/components/BackgroundCanvas/BackgroundCanvas';
-import { Skeleton } from '@/components/ui/skeleton';
-import { PlaylistsCarousel } from '@/components/PlaylistsCarousel/PlaylistsCarousel';
-import ColorPaletteDisplay from '@/components/ColorPaletteDisplay/ColorPaletteDisplay';
-import BassPulse from '@/components/AudioReactiveToys/BassPulse';
-import BPMRotator from '@/components/AudioReactiveToys/BPMRotator';
-import MidShift from '@/components/AudioReactiveToys/MidShift';
-import TrebleGlow from '@/components/AudioReactiveToys/TrebleGlow';
-import OmniVibeCube from '@/components/AudioReactiveToys/OmniVibeCube';
-
-const CATEGORY_NAMES: Record<string, string> = {
-  vibe: 'По настроению',
+export const metadata: Metadata = {
+  title: 'Mingle - Твой музыкальный мир',
+  description: 'Mingle - современная музыкальная платформа с персонализированными плейлистами и умными рекомендациями.',
 };
 
-const categoryOrder: string[] = ['vibe'];
+async function getPlaylists() {
+  const session = await auth.api.getSession({
+    headers: await headers()
+  });
 
-const Home = () => {
-  const {
-    currentTrack,
-    playing,
-    playPlaylist,
-    playlistIsPlaying,
-    togglePlay,
-  } = usePlayer();
+  const [dbPlaylists, allTracksData] = await Promise.all([
+    prisma.playlist.findMany({
+      include: {
+        tracks: {
+          include: { track: true },
+          orderBy: { order: 'asc' },
+        },
+      },
+    }),
+    prisma.track.findMany({
+      orderBy: { createdAt: 'desc' }
+    })
+  ]);
 
-  const [playlists, setPlaylists] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [showBackground, setShowBackground] = useState(false);
-  const [showVisualizer, setShowVisualizer] = useState(true);
+  const favorites = session?.user ? await prisma.favoriteTrack.findMany({
+      where: { userId: session.user.id },
+      include: { track: true },
+      orderBy: { createdAt: 'desc' }
+    }) : [];
 
-  // Получение плейлистов с API + периодический refetch каждые 15 мин
-  const fetchVibes = () => {
-    fetch('/api/vibe')
-      .then(res => res.json())
-      .then(data => {
-        setPlaylists(data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  };
+  const mappedPlaylists: Playlist[] = [];
 
-  useEffect(() => {
-    setLoading(true);
-    fetchVibes();
-    const interval = setInterval(fetchVibes, 15 * 60 * 1000); // 15 мин
-    return () => clearInterval(interval);
-  }, []);
-
-  const wavePlaylist = playlists.find((p) => p.category === "vibe");
-
-  useEffect(() => {
-    let timeoutId: string | number | NodeJS.Timeout | undefined;
-
-    if (wavePlaylist && playlistIsPlaying?.category === wavePlaylist.category && playing) {
-      setShowBackground(false);
-    } else {
-      timeoutId = setTimeout(() => {
-        setShowBackground(true);
-      }, 500);
+  dbPlaylists.forEach(playlist => {
+    if (playlist.id === 'all-tracks') {
+        mappedPlaylists.push({
+            ...playlist,
+            category: "other",
+            type: "system",
+            tracks: allTracksData.map(t => ({...t, type: t.type || 'track'})),
+            isPlaying: false
+        } as unknown as Playlist);
+        return;
     }
 
-    return () => clearTimeout(timeoutId);
-  }, [playing, playlistIsPlaying, wavePlaylist]);
-
-  useEffect(() => {
-    let timeoutId: string | number | NodeJS.Timeout | undefined;
-
-    if (wavePlaylist && playlistIsPlaying?.category === wavePlaylist.category && !playing) {
-      timeoutId = setTimeout(() => {
-        setShowVisualizer(false);
-      }, 500);
-    } else {
-      setShowVisualizer(true);
+    if (playlist.id === 'liked-tracks') {
+        if (!session?.user) return;
+        mappedPlaylists.push({
+            ...playlist,
+            category: "other",
+            type: "system",
+            tracks: favorites.map(f => ({...f.track, type: f.track.type || 'track'})),
+            isPlaying: false
+        } as unknown as Playlist);
+        return;
     }
 
-    return () => clearTimeout(timeoutId);
-  }, [playing, playlistIsPlaying, wavePlaylist]);
+    if (playlist.title.toLowerCase() === "все треки" && playlist.id !== 'all-tracks') return;
+    if ((playlist.title.toLowerCase() === "понравившиеся" || playlist.title.toLowerCase() === "нравится") && playlist.id !== 'liked-tracks') return;
+    
+    mappedPlaylists.push({
+      ...playlist,
+      tracks: playlist.tracks.map((pt) => ({ ...pt.track, type: pt.track.type || 'track' })),
+      category: playlist.category.toLowerCase() as any,
+      type: playlist.type,
+      isPlaying: false,
+    } as unknown as Playlist);
+  });
 
-  // Группировка по категориям
-  const playlistsByCategory = playlists.reduce((acc, playlist) => {
-    if (playlist.category === 'vibe') {
-      if (!acc['vibe']) {
-        acc['vibe'] = [];
-      }
-      acc['vibe'].push(playlist);
-    }
-    return acc;
-  }, {} as Record<string, typeof playlists>);
+  return mappedPlaylists;
+}
 
-  return (
-    <>
-      <div className={styles.page}>
-        <div className={styles.preview}>
-          <div className={styles.vibe}>
-            <h1 className={styles.title}>запусти свой вайб</h1>
-            <Skeleton />
-            {loading ? (
-              <Skeleton className="h-[48px] w-[140px] rounded-lg mt-4" />
-            ) : wavePlaylist && (
-              <Button
-                ButtonRadius="lg"
-                view="outline-solid"
-                fontFamily='Oddval'
-                fontWeight='bold'
-                className={styles.vibe_button}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (playlistIsPlaying?.category === wavePlaylist.category) {
-                    togglePlay();
-                  } else {
-                    playPlaylist(wavePlaylist);
-                  }
-                }}
-              >
-                <span className="material-symbols-outlined">
-                  {playlistIsPlaying?.category === wavePlaylist.category && playing
-                    ? <OtherPause />
-                    : <OtherPlay />
-                  }
-                  вайб
-                </span>
-              </Button>
-            )}
-          </div>
-        </div>
-      </div>
-      {wavePlaylist && playlistIsPlaying?.category === wavePlaylist.category && showVisualizer ? (
-        <div className={styles.canvas_container}>
-          <AudioMotionVisualizer
-          />
-        </div>
-      ) : null}
-      {showBackground && <BackgroundCanvas />}
+async function getVibePlaylists() {
+  const dbVibes = await prisma.playlist.findMany({
+    where: { category: 'VIBE' },
+    include: {
+      tracks: {
+        include: { track: true },
+        orderBy: { order: 'asc' },
+      },
+    },
+  });
 
-      <div className="max-w-7xl mx-auto px-4">
-        <ColorPaletteDisplay />
-        
-        <div className="mt-24 mb-16 px-2">
-           <div className="mb-12">
-             <h2 className="text-3xl font-black uppercase tracking-tighter italic">Audio Reactive Lab</h2>
-             <p className="text-xs text-zinc-500 font-bold uppercase tracking-widest mt-1">Experimental UI hooks demo</p>
-           </div>
-           
-           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-              <BassPulse />
-              <BPMRotator />
-              <MidShift />
-              <TrebleGlow />
-              <OmniVibeCube />
-           </div>
-        </div>
-      </div>
+  return dbVibes.map(playlist => ({
+    ...playlist,
+    tracks: playlist.tracks.map((pt) => ({ ...pt.track, type: pt.track.type || 'track' })),
+    category: playlist.category.toLowerCase() as any,
+    type: playlist.type,
+    isPlaying: false,
+  })) as unknown as Playlist[];
+}
 
-      {playlistsByCategory['vibe'] && playlistsByCategory['vibe'].length > 0 && (
-        <div className="my-8 p-2">
-          <h2 className="text-xl font-oddval mb-4 font-geist">
-            {CATEGORY_NAMES['vibe']}
-          </h2>
-          <PlaylistsCarousel playlists={playlistsByCategory['vibe']} />
-        </div>
-      )}
-    </>
-  );
-};
+export default async function Home() {
+  const [playlists, vibePlaylists] = await Promise.all([
+    getPlaylists(),
+    getVibePlaylists()
+  ]);
 
-export default Home;
+  return <HomePageClient playlists={playlists} vibePlaylists={vibePlaylists} />;
+}

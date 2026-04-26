@@ -39,6 +39,27 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  --color-dominant-darken: var(--dominant-darken);
+  --color-dominant-lighten: var(--dominant-lighten);
+  --color-dominant-darken-transparent: var(--dominant-darken-transparent);
+  --color-dominant-lighten-transparent: var(--dominant-lighten-transparent);
+  --color-dominant: var(--dominant);
+  --color-dominant-10: var(--dominant-10);
+  --color-dominant-20: var(--dominant-20);
+  --color-dominant-40: var(--dominant-40);
+  --color-dominant-60: var(--dominant-60);
+  --color-dominant-80: var(--dominant-80);
+  --color-dominant-100: var(--dominant-100);
+
+  --color-accent: var(--accent);
+  --color-accent-20: var(--accent-20);
+  --color-accent-40: var(--accent-40);
+  --color-accent-60: var(--accent-60);
+  --color-accent-80: var(--accent-80);
+  --color-accent-100: var(--accent-100);
+
+  --color-background-translucent: var(--dominant-20);
 }
 
 @layer base {
@@ -105,6 +126,26 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    --dominant-darken: color-mix(in srgb, var(--dominant-color), black 30%);
+    --dominant-lighten: color-mix(in srgb, var(--dominant-color), white 30%);
+    --dominant-darken-transparent: color-mix(in srgb, var(--dominant-darken), transparent 45%);
+    --dominant-lighten-transparent: color-mix(in srgb, var(--dominant-lighten), transparent 45%);
+    --dominant-10: color-mix(in srgb, var(--dominant-color, #0f0f23), black 10%);
+    --dominant-20: color-mix(in srgb, var(--dominant-color, #0f0f23), black 20%);
+    --dominant-40: color-mix(in srgb, var(--dominant-color, #0f0f23), black 40%);
+    --dominant-60: color-mix(in srgb, var(--dominant-color, #0f0f23), black 60%);
+    --dominant-80: color-mix(in srgb, var(--dominant-color, #0f0f23), black 80%);
+    --dominant-100: color-mix(in srgb, var(--dominant-color, #0f0f23), black 100%);
+
+    --accent-color: color-mix(in srgb, var(--dominant-color, #0f0f23), black 20%);
+    --accent-20: color-mix(in srgb, var(--dominant-color, #0f0f23), black 20%);
+    --accent-40: color-mix(in srgb, var(--dominant-color, #0f0f23), black 40%);
+    --accent-60: color-mix(in srgb, var(--dominant-color, #0f0f23), black 60%);
+    --accent-80: color-mix(in srgb, var(--dominant-color, #0f0f23), black 80%);
+    --accent-100: color-mix(in srgb, var(--dominant-color, #0f0f23), black 100%);
+
+    --invert-dominant: lch(from var(--track-active-bg, var(--mg-neon)) calc((49.44 - l) * infinity) 0 0);
   }
 }
 
@@ -173,18 +214,18 @@ button {
 
 
 html {
-  scrollbar-width: thin;
-  scrollbar-color: var(--mg-neon-hover) var(--mg-background);
+  /* scrollbar-width: thin; */
+  scrollbar-color: var(--invert-dominant) var(--dominant-color);
 }
 
-body *::selection {
+/* body *::selection {
   background: var(--mg-neon-hover); 
   color: var(--mg-background);
 }
 body *::-moz-selection {
   background: var(--mg-neon-hover); 
-  color: var(--mg-background);
-}
+  color: var(--mg-background); 
+}*/
 
 .preloader {
 	position: fixed;
@@ -201,6 +242,29 @@ body *::-moz-selection {
 }
 html.loading-out .preloader {
 	opacity: 0;
+}
+
+
+.noise-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  touch-action: none;
+  pointer-events: none;
+  background: url("/noise.png") 0 0 / 50px;
+  border-radius: inherit;
+  opacity: 0.6;
+}
+
+.noise-overlay-transparent {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  touch-action: none;
+  pointer-events: none;
+  background: url("/noise.png") 0 0 / 50px;
+  border-radius: inherit;
+  opacity: 0.3;
 }
 
 /* number-flow-react::part(number) {

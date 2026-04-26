@@ -88,87 +88,89 @@ const Player: React.FC<PlayerProps> = () => {
         }
       `}
       </style>
-      <div
-        className={styles.player}
-        style={{
-          "--dominant-color": currentTrack?.color || dominantColor,
-          "--dominant-color-r": `${rgb[0]}`,
-          "--dominant-color-g": `${rgb[1]}`,
-          "--dominant-color-b": `${rgb[2]}`,
-          "--mg-accent-color": accentColor,
-        } as React.CSSProperties}
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element*/}
-        <img
-          crossOrigin="anonymous"
-          ref={imgRef}
-          src={currentTrack?.cover || "/placeholder.png"}
-          alt=""
-          style={{ display: "none" }}
-        />
+      <div className={styles.playerWrapper}>
+        <div
+          className={styles.player}
+          style={{
+            "--dominant-color": currentTrack?.color || dominantColor,
+            "--dominant-color-r": `${rgb[0]}`,
+            "--dominant-color-g": `${rgb[1]}`,
+            "--dominant-color-b": `${rgb[2]}`,
+            "--mg-accent-color": accentColor,
+          } as React.CSSProperties}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element*/}
+          <img
+            crossOrigin="anonymous"
+            ref={imgRef}
+            src={currentTrack?.cover || "/placeholder.png"}
+            alt=""
+            style={{ display: "none" }}
+          />
 
-        {!isClient ? (
-          <PlayerLoader />
-        ) : (
-          <AnimatePresence mode="wait">
-            {!currentTrack ? (
-              <motion.div
-                key="skeleton"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                style={{ width: '100%' }}
-              >
-                <PlayerSkeleton />
-              </motion.div>
-            ) : (
-              <motion.div
-                key="player-content"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3, ease: "linear" }}
-                style={{ width: '100%' }}
-              >
-                {isDesktopOrLaptop ? (
-                  <PlayerControls
-                    currentTrack={currentTrack}
-                    nextTrack={nextTrack}
-                    prevTrack={prevTrack}
-                    playing={playing}
-                    onPlayPause={togglePlay}
-                    onPrevTrack={handlePrevTrack}
-                    onNextTrack={handleNextTrack}
-                    onSeek={handleSeek}
-                    isDragging={false}
-                    isQueueDrawerOpen={isQueueDrawerOpen}
-                    setIsQueueDrawerOpen={setIsQueueDrawerOpen}
-                    isLyricsDrawerOpen={isLyricsDrawerOpen}
-                    setIsLyricsDrawerOpen={setIsLyricsDrawerOpen}
-                    tracks={tracks}
-                    onTrackSelect={playTrack}
-                    playlistIsPlaying={playlistIsPlaying}
-                    togglePlay={togglePlay}
-                  />
-                ) : (
-                  <MobilePlayer
-                    currentTrack={currentTrack}
-                    nextTrack={nextTrack}
-                    prevTrack={prevTrack}
-                    playing={playing}
-                    onPlayPause={togglePlay}
-                    onSeek={handleSeek}
-                    onNextTrack={handleNextTrack}
-                    onPrevTrack={handlePrevTrack}
-                    tracks={tracks}
-                    onTrackSelect={playTrack}
-                    playlistIsPlaying={playlistIsPlaying}
-                  />
-                )}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        )}
+          {!isClient ? (
+            <PlayerLoader />
+          ) : (
+            <AnimatePresence mode="wait">
+              {!currentTrack ? (
+                <motion.div
+                  key="skeleton"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  style={{ width: '100%' }}
+                >
+                  <PlayerSkeleton />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="player-content"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3, ease: "linear" }}
+                  style={{ width: '100%' }}
+                >
+                  {isDesktopOrLaptop ? (
+                    <PlayerControls
+                      currentTrack={currentTrack}
+                      nextTrack={nextTrack}
+                      prevTrack={prevTrack}
+                      playing={playing}
+                      onPlayPause={togglePlay}
+                      onPrevTrack={handlePrevTrack}
+                      onNextTrack={handleNextTrack}
+                      onSeek={handleSeek}
+                      isDragging={false}
+                      isQueueDrawerOpen={isQueueDrawerOpen}
+                      setIsQueueDrawerOpen={setIsQueueDrawerOpen}
+                      isLyricsDrawerOpen={isLyricsDrawerOpen}
+                      setIsLyricsDrawerOpen={setIsLyricsDrawerOpen}
+                      tracks={tracks}
+                      onTrackSelect={playTrack}
+                      playlistIsPlaying={playlistIsPlaying}
+                      togglePlay={togglePlay}
+                    />
+                  ) : (
+                    <MobilePlayer
+                      currentTrack={currentTrack}
+                      nextTrack={nextTrack}
+                      prevTrack={prevTrack}
+                      playing={playing}
+                      onPlayPause={togglePlay}
+                      onSeek={handleSeek}
+                      onNextTrack={handleNextTrack}
+                      onPrevTrack={handlePrevTrack}
+                      tracks={tracks}
+                      onTrackSelect={playTrack}
+                      playlistIsPlaying={playlistIsPlaying}
+                    />
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          )}
+        </div>
       </div>
     </>
   )

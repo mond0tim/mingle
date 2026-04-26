@@ -6,8 +6,8 @@
 }
 
 .draggableItem {
-  /* Outer skeleton for the dnd library, keeps layout stable */
   position: relative;
+  list-style: none;
 }
 
 .innerCard {
@@ -16,30 +16,44 @@
   align-items: center;
   background: rgba(255, 255, 255, 0.03);
   border-radius: 12px;
-  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1.2), background 0.2s, box-shadow 0.2s;
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1.1), background 0.2s;
   border: 1px solid rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  position: relative;
 }
 
 .innerCard:hover {
-  background: rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.innerCard[data-active="true"] {
+  border-color: rgba(var(--mg-neon-rgb), 0.3);
 }
 
 .innerCardDragging {
-  background: var(--mg-neon);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-  border-color: var(--mg-neon-hover);
-  transform: scale(0.96);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.2);
   z-index: 9999;
 }
 
 .dragHandle {
-  padding: 1rem 0.5rem 1rem 1rem;
-  color: rgba(255, 255, 255, 0.2);
+  padding: 0.5rem;
+  color: rgba(255, 255, 255, 0.15);
   cursor: grab;
   display: flex;
   align-items: center;
+  justify-content: center;
+  transition: color 0.2s, opacity 0.2s;
+  margin-right: 4px;
 }
 
-.innerCardDragging .dragHandle {
-  color: white;
+.dragHandle:hover {
+  color: rgba(255, 255, 255, 0.5);
 }
+
+.dragHandle:active {
+  cursor: grabbing;
+}
+

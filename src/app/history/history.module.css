@@ -1,34 +1,24 @@
 .page {
-  padding: 2rem;
+  padding: 1rem 2rem;
   min-height: 100vh;
-  background: var(--mg-background);
-  color: var(--foreground);
+  overflow-x: clip;
+  box-sizing: border-box;
 }
 
-@media (min-width: 640px) {
+@media (min-width: 768px) {
   .page {
-    padding-left: 14rem; /* Отступ под сайдбар (12rem + запас) */
+    padding-left: 14rem;
   }
 }
 
 .header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 3rem;
+  margin-bottom: 1.5rem;
   padding-top: 1rem;
 }
 
-.content {
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .page {
     padding: 1rem;
-  }
-  
-  .header {
-    margin-bottom: 2rem;
+    padding-bottom: 10rem;
   }
 }

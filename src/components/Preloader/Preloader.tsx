@@ -30,9 +30,13 @@ export default function Preloader() {
       handleLoad();
     } else {
       window.addEventListener("load", handleLoad);
+      // Fallback: hide loader after 3 seconds anyway
+      const fallback = setTimeout(handleLoad, 3000);
+      return () => {
+        window.removeEventListener("load", handleLoad);
+        clearTimeout(fallback);
+      };
     }
-
-    return () => window.removeEventListener("load", handleLoad);
   }, [startTime]);
 
   if (!isLoading) return null;

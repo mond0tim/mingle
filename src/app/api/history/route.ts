@@ -108,7 +108,7 @@ export async function GET() {
         seenTracks.add(entry.track.id);
         recentTracks.push(entry.track);
       }
-      if (recentTracks.length >= 20) break;
+      if (recentTracks.length >= 30) break;
     }
 
     // Получаем последние плейлисты (уникальные)
@@ -116,7 +116,7 @@ export async function GET() {
       where: { userId: user.id },
       orderBy: { playedAt: 'desc' },
       include: { playlist: true },
-      take: 30,
+      take: 100,
     });
 
     const seenPlaylists = new Set<string>();
@@ -124,9 +124,28 @@ export async function GET() {
     for (const entry of rawPlaylistHistory) {
       if (entry.playlist && !seenPlaylists.has(entry.playlist.id)) {
         seenPlaylists.add(entry.playlist.id);
-        recentPlaylists.push(entry.playlist);
+        
+        // Fetch tracks for this playlist to ensure playPlaylist works
+        const playlistWithTracks = await prisma.playlist.findUnique({
+          where: { id: entry.playlist.id },
+          include: {
+            tracks: {
+              include: { track: true },
+              orderBy: { order: 'asc' }
+            }
+          }
+        });
+
+        if (playlistWithTracks) {
+          // Map to match the expected Playlist type
+          const formattedPlaylist = {
+            ...playlistWithTracks,
+            tracks: playlistWithTracks.tracks.map(pt => pt.track)
+          };
+          recentPlaylists.push(formattedPlaylist);
+        }
       }
-      if (recentPlaylists.length >= 10) break;
+      if (recentPlaylists.length >= 40) break;
     }
 
     return NextResponse.json({
