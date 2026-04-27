@@ -37,7 +37,8 @@ const pwaWrapper = withPWAInit({
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   output: 'standalone',
-
+  serverExternalPackages: ['@prisma/client', '.prisma', 'sharp'],
+  // transpilePackages: ['@prisma/client'],
 
   // New Next.js 15/16 Turbopack location
   turbopack: {

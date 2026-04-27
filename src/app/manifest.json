@@ -2,7 +2,7 @@
   "name": "mingle",
   "short_name": "mingle",
   "description": "A Progressive Web App for playing music",
-  "theme_color": "#030712",
+  "theme_color": "#030712cc",
   "background_color": "#030712",
   "display": "standalone",
   "scope": "/",
@@ -82,6 +82,6 @@
       "type": "image/png",
       "label": "Просмотр плейлиста"
     }
- ],
+  ],
   "splash_pages": null
 }

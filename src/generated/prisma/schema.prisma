@@ -25,11 +25,13 @@ model User {
   banned                 Boolean @default(false)
 
   // Трекинг активности
-  loginCount  Int       @default(0)
-  lastLoginAt DateTime?
+  loginCount    Int       @default(0)
+  lastLoginAt   DateTime?
+  totalPlayTime Int       @default(0)
 
-  // Последнее воспроизведение
-  lastPlayedTrackId    String?
+  // Очередь и Последнее воспроизведение
+  queue                String? @default("[]") @db.LongText
+  lastPlayedTrackId    Int?
   lastPlayedPlaylistId String?
 
   createdAt DateTime @default(now())
@@ -43,6 +45,8 @@ model User {
   favoriteTracks    FavoriteTrack[]
   favoritePlaylists FavoritePlaylist[]
   favoriteArtists   FavoriteArtist[]
+  trackHistory      TrackHistory[]
+  playlistHistory   PlaylistHistory[]
 
   @@map("user") // Обязательно для better-auth (modelName: "user")
 }
@@ -51,6 +55,7 @@ model Session {
   id        String   @id
   userId    String
   expiresAt DateTime
+  token     String   @unique
   ipAddress String?
   userAgent String?
 
@@ -100,7 +105,7 @@ model Verification {
 // -----------------------------------------------------------------------------
 
 model Track {
-  id String @id @default(cuid())
+  id Int @id @default(autoincrement())
 
   // Музыкальные метаданные
   title   String
@@ -118,6 +123,7 @@ model Track {
   // Связи
   playlists   PlaylistTrack[]
   favoritedBy FavoriteTrack[]
+  history     TrackHistory[]
 
   @@map("track")
 }
@@ -151,6 +157,7 @@ model Playlist {
   // Связи
   tracks      PlaylistTrack[]
   favoritedBy FavoritePlaylist[]
+  history     PlaylistHistory[]
 
   @@map("playlist")
 }
@@ -158,7 +165,7 @@ model Playlist {
 model PlaylistTrack {
   id         String @id @default(cuid())
   playlistId String
-  trackId    String
+  trackId    Int
 
   order Int @default(0) // Для drag and drop
 
@@ -176,7 +183,7 @@ model PlaylistTrack {
 model FavoriteTrack {
   id        String   @id @default(cuid())
   userId    String
-  trackId   String
+  trackId   Int
   createdAt DateTime @default(now())
 
   user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -211,4 +218,35 @@ model FavoriteArtist {
 
   @@unique([userId, artistName])
   @@map("favorite_artist")
+}
+
+// -----------------------------------------------------------------------------
+// USER HISTORY (История прослушиваний)
+// -----------------------------------------------------------------------------
+
+model TrackHistory {
+  id          String   @id @default(cuid())
+  userId      String
+  trackId     Int
+  playedAt    DateTime @default(now())
+  listenedSec Int      @default(0)
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  track Track @relation(fields: [trackId], references: [id], onDelete: Cascade)
+
+  @@index([userId, playedAt(sort: Desc)])
+  @@map("track_history")
+}
+
+model PlaylistHistory {
+  id         String   @id @default(cuid())
+  userId     String
+  playlistId String
+  playedAt   DateTime @default(now())
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  playlist Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+
+  @@index([userId, playedAt(sort: Desc)])
+  @@map("playlist_history")
 }
