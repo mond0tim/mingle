@@ -62,22 +62,22 @@ export default function AboutPage() {
         <strong>Эстетика, плавность, интерактивность — вот три ключевых принципа, которые легли в основу разработки.</strong>
       </p>
 
-
-      <Heatmap
-        width={1280}
-        height={720}
-        image="/logocentred.svg"
-        colors={["#000000ff", "#d3cbcbff"]}
-        colorBack="#00000000"
-        contour={0.5}
-        angle={0}
-        noise={0.2}
-        innerGlow={0.5}
-        outerGlow={0.5}
-        speed={0.5}
-        scale={0.75}
-      />
-
+      <div className='h-[90vh] w-[100%] flex items-center justify-center bg-transparent'>
+        <Heatmap
+          width={1280}
+          height={720}
+          image="/logocentred.svg"
+          colors={["#000000ff", "#d3cbcbff"]}
+          colorBack="#00000000"
+          contour={0.5}
+          angle={0}
+          noise={0.2}
+          innerGlow={0.5}
+          outerGlow={0.5}
+          speed={0.5}
+          scale={0.75}
+        />
+      </div>
       <h2 className={styles.subTitle}>Почему Next.js?</h2>
       <p className={styles.text}>
         Выбор фреймворка Next.js для разработки Mingle не случаен. Он обеспечил проекту высокую производительность, оптимизацию для поисковых систем (SEO) и простоту разработки. Server-Side Rendering (SSR) позволил добиться мгновенной загрузки страниц, что особенно важно для веб-приложений. Кроме того, Next.js предоставил удобные инструменты для маршрутизации, управления состоянием и работы с данными, что значительно ускорило процесс разработки.

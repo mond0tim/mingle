@@ -63,6 +63,16 @@ export type FavoritePlaylist = $Result.DefaultSelection<Prisma.$FavoritePlaylist
  * 
  */
 export type FavoriteArtist = $Result.DefaultSelection<Prisma.$FavoriteArtistPayload>
+/**
+ * Model TrackHistory
+ * 
+ */
+export type TrackHistory = $Result.DefaultSelection<Prisma.$TrackHistoryPayload>
+/**
+ * Model PlaylistHistory
+ * 
+ */
+export type PlaylistHistory = $Result.DefaultSelection<Prisma.$PlaylistHistoryPayload>
 
 /**
  * Enums
@@ -198,7 +208,7 @@ export class PrismaClient<
    * 
    * Read more in our [docs](https://www.prisma.io/docs/orm/prisma-client/queries/transactions).
    */
-  $transaction<P extends Prisma.PrismaPromise<any>[]>(arg: [...P], options?: { isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<runtime.Types.Utils.UnwrapTuple<P>>
+  $transaction<P extends Prisma.PrismaPromise<any>[]>(arg: [...P], options?: { maxWait?: number, timeout?: number, isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<runtime.Types.Utils.UnwrapTuple<P>>
 
   $transaction<R>(fn: (prisma: Omit<PrismaClient, runtime.ITXClientDenyList>) => $Utils.JsPromise<R>, options?: { maxWait?: number, timeout?: number, isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<R>
 
@@ -305,6 +315,26 @@ export class PrismaClient<
     * ```
     */
   get favoriteArtist(): Prisma.FavoriteArtistDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.trackHistory`: Exposes CRUD operations for the **TrackHistory** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TrackHistories
+    * const trackHistories = await prisma.trackHistory.findMany()
+    * ```
+    */
+  get trackHistory(): Prisma.TrackHistoryDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.playlistHistory`: Exposes CRUD operations for the **PlaylistHistory** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PlaylistHistories
+    * const playlistHistories = await prisma.playlistHistory.findMany()
+    * ```
+    */
+  get playlistHistory(): Prisma.PlaylistHistoryDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -355,8 +385,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 7.6.0
-   * Query Engine version: 75cbdc1eb7150937890ad5465d861175c6624711
+   * Prisma Client JS version: 7.8.0
+   * Query Engine version: 3c6e192761c0362d496ed980de936e2f3cebcd3a
    */
   export type PrismaVersion = {
     client: string
@@ -748,7 +778,9 @@ export namespace Prisma {
     PlaylistTrack: 'PlaylistTrack',
     FavoriteTrack: 'FavoriteTrack',
     FavoritePlaylist: 'FavoritePlaylist',
-    FavoriteArtist: 'FavoriteArtist'
+    FavoriteArtist: 'FavoriteArtist',
+    TrackHistory: 'TrackHistory',
+    PlaylistHistory: 'PlaylistHistory'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -764,7 +796,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "account" | "verification" | "track" | "playlist" | "playlistTrack" | "favoriteTrack" | "favoritePlaylist" | "favoriteArtist"
+      modelProps: "user" | "session" | "account" | "verification" | "track" | "playlist" | "playlistTrack" | "favoriteTrack" | "favoritePlaylist" | "favoriteArtist" | "trackHistory" | "playlistHistory"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1428,6 +1460,138 @@ export namespace Prisma {
           }
         }
       }
+      TrackHistory: {
+        payload: Prisma.$TrackHistoryPayload<ExtArgs>
+        fields: Prisma.TrackHistoryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TrackHistoryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrackHistoryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TrackHistoryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrackHistoryPayload>
+          }
+          findFirst: {
+            args: Prisma.TrackHistoryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrackHistoryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TrackHistoryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrackHistoryPayload>
+          }
+          findMany: {
+            args: Prisma.TrackHistoryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrackHistoryPayload>[]
+          }
+          create: {
+            args: Prisma.TrackHistoryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrackHistoryPayload>
+          }
+          createMany: {
+            args: Prisma.TrackHistoryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.TrackHistoryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrackHistoryPayload>
+          }
+          update: {
+            args: Prisma.TrackHistoryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrackHistoryPayload>
+          }
+          deleteMany: {
+            args: Prisma.TrackHistoryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TrackHistoryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.TrackHistoryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrackHistoryPayload>
+          }
+          aggregate: {
+            args: Prisma.TrackHistoryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTrackHistory>
+          }
+          groupBy: {
+            args: Prisma.TrackHistoryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TrackHistoryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TrackHistoryCountArgs<ExtArgs>
+            result: $Utils.Optional<TrackHistoryCountAggregateOutputType> | number
+          }
+        }
+      }
+      PlaylistHistory: {
+        payload: Prisma.$PlaylistHistoryPayload<ExtArgs>
+        fields: Prisma.PlaylistHistoryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PlaylistHistoryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlaylistHistoryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PlaylistHistoryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlaylistHistoryPayload>
+          }
+          findFirst: {
+            args: Prisma.PlaylistHistoryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlaylistHistoryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PlaylistHistoryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlaylistHistoryPayload>
+          }
+          findMany: {
+            args: Prisma.PlaylistHistoryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlaylistHistoryPayload>[]
+          }
+          create: {
+            args: Prisma.PlaylistHistoryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlaylistHistoryPayload>
+          }
+          createMany: {
+            args: Prisma.PlaylistHistoryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.PlaylistHistoryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlaylistHistoryPayload>
+          }
+          update: {
+            args: Prisma.PlaylistHistoryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlaylistHistoryPayload>
+          }
+          deleteMany: {
+            args: Prisma.PlaylistHistoryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PlaylistHistoryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.PlaylistHistoryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlaylistHistoryPayload>
+          }
+          aggregate: {
+            args: Prisma.PlaylistHistoryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePlaylistHistory>
+          }
+          groupBy: {
+            args: Prisma.PlaylistHistoryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PlaylistHistoryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PlaylistHistoryCountArgs<ExtArgs>
+            result: $Utils.Optional<PlaylistHistoryCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1546,6 +1710,8 @@ export namespace Prisma {
     favoriteTrack?: FavoriteTrackOmit
     favoritePlaylist?: FavoritePlaylistOmit
     favoriteArtist?: FavoriteArtistOmit
+    trackHistory?: TrackHistoryOmit
+    playlistHistory?: PlaylistHistoryOmit
   }
 
   /* Types for Logging */
@@ -1632,6 +1798,8 @@ export namespace Prisma {
     favoriteTracks: number
     favoritePlaylists: number
     favoriteArtists: number
+    trackHistory: number
+    playlistHistory: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1641,6 +1809,8 @@ export namespace Prisma {
     favoriteTracks?: boolean | UserCountOutputTypeCountFavoriteTracksArgs
     favoritePlaylists?: boolean | UserCountOutputTypeCountFavoritePlaylistsArgs
     favoriteArtists?: boolean | UserCountOutputTypeCountFavoriteArtistsArgs
+    trackHistory?: boolean | UserCountOutputTypeCountTrackHistoryArgs
+    playlistHistory?: boolean | UserCountOutputTypeCountPlaylistHistoryArgs
   }
 
   // Custom InputTypes
@@ -1696,6 +1866,20 @@ export namespace Prisma {
     where?: FavoriteArtistWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountTrackHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TrackHistoryWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountPlaylistHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PlaylistHistoryWhereInput
+  }
+
 
   /**
    * Count Type TrackCountOutputType
@@ -1704,11 +1888,13 @@ export namespace Prisma {
   export type TrackCountOutputType = {
     playlists: number
     favoritedBy: number
+    history: number
   }
 
   export type TrackCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     playlists?: boolean | TrackCountOutputTypeCountPlaylistsArgs
     favoritedBy?: boolean | TrackCountOutputTypeCountFavoritedByArgs
+    history?: boolean | TrackCountOutputTypeCountHistoryArgs
   }
 
   // Custom InputTypes
@@ -1736,6 +1922,13 @@ export namespace Prisma {
     where?: FavoriteTrackWhereInput
   }
 
+  /**
+   * TrackCountOutputType without action
+   */
+  export type TrackCountOutputTypeCountHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TrackHistoryWhereInput
+  }
+
 
   /**
    * Count Type PlaylistCountOutputType
@@ -1744,11 +1937,13 @@ export namespace Prisma {
   export type PlaylistCountOutputType = {
     tracks: number
     favoritedBy: number
+    history: number
   }
 
   export type PlaylistCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tracks?: boolean | PlaylistCountOutputTypeCountTracksArgs
     favoritedBy?: boolean | PlaylistCountOutputTypeCountFavoritedByArgs
+    history?: boolean | PlaylistCountOutputTypeCountHistoryArgs
   }
 
   // Custom InputTypes
@@ -1776,6 +1971,13 @@ export namespace Prisma {
     where?: FavoritePlaylistWhereInput
   }
 
+  /**
+   * PlaylistCountOutputType without action
+   */
+  export type PlaylistCountOutputTypeCountHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PlaylistHistoryWhereInput
+  }
+
 
   /**
    * Models
@@ -1795,10 +1997,14 @@ export namespace Prisma {
 
   export type UserAvgAggregateOutputType = {
     loginCount: number | null
+    totalPlayTime: number | null
+    lastPlayedTrackId: number | null
   }
 
   export type UserSumAggregateOutputType = {
     loginCount: number | null
+    totalPlayTime: number | null
+    lastPlayedTrackId: number | null
   }
 
   export type UserMinAggregateOutputType = {
@@ -1813,7 +2019,9 @@ export namespace Prisma {
     banned: boolean | null
     loginCount: number | null
     lastLoginAt: Date | null
-    lastPlayedTrackId: string | null
+    totalPlayTime: number | null
+    queue: string | null
+    lastPlayedTrackId: number | null
     lastPlayedPlaylistId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -1831,7 +2039,9 @@ export namespace Prisma {
     banned: boolean | null
     loginCount: number | null
     lastLoginAt: Date | null
-    lastPlayedTrackId: string | null
+    totalPlayTime: number | null
+    queue: string | null
+    lastPlayedTrackId: number | null
     lastPlayedPlaylistId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -1849,6 +2059,8 @@ export namespace Prisma {
     banned: number
     loginCount: number
     lastLoginAt: number
+    totalPlayTime: number
+    queue: number
     lastPlayedTrackId: number
     lastPlayedPlaylistId: number
     createdAt: number
@@ -1859,10 +2071,14 @@ export namespace Prisma {
 
   export type UserAvgAggregateInputType = {
     loginCount?: true
+    totalPlayTime?: true
+    lastPlayedTrackId?: true
   }
 
   export type UserSumAggregateInputType = {
     loginCount?: true
+    totalPlayTime?: true
+    lastPlayedTrackId?: true
   }
 
   export type UserMinAggregateInputType = {
@@ -1877,6 +2093,8 @@ export namespace Prisma {
     banned?: true
     loginCount?: true
     lastLoginAt?: true
+    totalPlayTime?: true
+    queue?: true
     lastPlayedTrackId?: true
     lastPlayedPlaylistId?: true
     createdAt?: true
@@ -1895,6 +2113,8 @@ export namespace Prisma {
     banned?: true
     loginCount?: true
     lastLoginAt?: true
+    totalPlayTime?: true
+    queue?: true
     lastPlayedTrackId?: true
     lastPlayedPlaylistId?: true
     createdAt?: true
@@ -1913,6 +2133,8 @@ export namespace Prisma {
     banned?: true
     loginCount?: true
     lastLoginAt?: true
+    totalPlayTime?: true
+    queue?: true
     lastPlayedTrackId?: true
     lastPlayedPlaylistId?: true
     createdAt?: true
@@ -2018,7 +2240,9 @@ export namespace Prisma {
     banned: boolean
     loginCount: number
     lastLoginAt: Date | null
-    lastPlayedTrackId: string | null
+    totalPlayTime: number
+    queue: string | null
+    lastPlayedTrackId: number | null
     lastPlayedPlaylistId: string | null
     createdAt: Date
     updatedAt: Date
@@ -2055,6 +2279,8 @@ export namespace Prisma {
     banned?: boolean
     loginCount?: boolean
     lastLoginAt?: boolean
+    totalPlayTime?: boolean
+    queue?: boolean
     lastPlayedTrackId?: boolean
     lastPlayedPlaylistId?: boolean
     createdAt?: boolean
@@ -2065,6 +2291,8 @@ export namespace Prisma {
     favoriteTracks?: boolean | User$favoriteTracksArgs<ExtArgs>
     favoritePlaylists?: boolean | User$favoritePlaylistsArgs<ExtArgs>
     favoriteArtists?: boolean | User$favoriteArtistsArgs<ExtArgs>
+    trackHistory?: boolean | User$trackHistoryArgs<ExtArgs>
+    playlistHistory?: boolean | User$playlistHistoryArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2082,13 +2310,15 @@ export namespace Prisma {
     banned?: boolean
     loginCount?: boolean
     lastLoginAt?: boolean
+    totalPlayTime?: boolean
+    queue?: boolean
     lastPlayedTrackId?: boolean
     lastPlayedPlaylistId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "name" | "image" | "emailVerified" | "role" | "canMakePlaylistsPublic" | "isReadOnly" | "banned" | "loginCount" | "lastLoginAt" | "lastPlayedTrackId" | "lastPlayedPlaylistId" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "name" | "image" | "emailVerified" | "role" | "canMakePlaylistsPublic" | "isReadOnly" | "banned" | "loginCount" | "lastLoginAt" | "totalPlayTime" | "queue" | "lastPlayedTrackId" | "lastPlayedPlaylistId" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
@@ -2096,6 +2326,8 @@ export namespace Prisma {
     favoriteTracks?: boolean | User$favoriteTracksArgs<ExtArgs>
     favoritePlaylists?: boolean | User$favoritePlaylistsArgs<ExtArgs>
     favoriteArtists?: boolean | User$favoriteArtistsArgs<ExtArgs>
+    trackHistory?: boolean | User$trackHistoryArgs<ExtArgs>
+    playlistHistory?: boolean | User$playlistHistoryArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -2108,6 +2340,8 @@ export namespace Prisma {
       favoriteTracks: Prisma.$FavoriteTrackPayload<ExtArgs>[]
       favoritePlaylists: Prisma.$FavoritePlaylistPayload<ExtArgs>[]
       favoriteArtists: Prisma.$FavoriteArtistPayload<ExtArgs>[]
+      trackHistory: Prisma.$TrackHistoryPayload<ExtArgs>[]
+      playlistHistory: Prisma.$PlaylistHistoryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2121,7 +2355,9 @@ export namespace Prisma {
       banned: boolean
       loginCount: number
       lastLoginAt: Date | null
-      lastPlayedTrackId: string | null
+      totalPlayTime: number
+      queue: string | null
+      lastPlayedTrackId: number | null
       lastPlayedPlaylistId: string | null
       createdAt: Date
       updatedAt: Date
@@ -2471,6 +2707,8 @@ export namespace Prisma {
     favoriteTracks<T extends User$favoriteTracksArgs<ExtArgs> = {}>(args?: Subset<T, User$favoriteTracksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FavoriteTrackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     favoritePlaylists<T extends User$favoritePlaylistsArgs<ExtArgs> = {}>(args?: Subset<T, User$favoritePlaylistsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FavoritePlaylistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     favoriteArtists<T extends User$favoriteArtistsArgs<ExtArgs> = {}>(args?: Subset<T, User$favoriteArtistsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FavoriteArtistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    trackHistory<T extends User$trackHistoryArgs<ExtArgs> = {}>(args?: Subset<T, User$trackHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrackHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    playlistHistory<T extends User$playlistHistoryArgs<ExtArgs> = {}>(args?: Subset<T, User$playlistHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlaylistHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2511,7 +2749,9 @@ export namespace Prisma {
     readonly banned: FieldRef<"User", 'Boolean'>
     readonly loginCount: FieldRef<"User", 'Int'>
     readonly lastLoginAt: FieldRef<"User", 'DateTime'>
-    readonly lastPlayedTrackId: FieldRef<"User", 'String'>
+    readonly totalPlayTime: FieldRef<"User", 'Int'>
+    readonly queue: FieldRef<"User", 'String'>
+    readonly lastPlayedTrackId: FieldRef<"User", 'Int'>
     readonly lastPlayedPlaylistId: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
@@ -3007,6 +3247,54 @@ export namespace Prisma {
   }
 
   /**
+   * User.trackHistory
+   */
+  export type User$trackHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrackHistory
+     */
+    select?: TrackHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrackHistory
+     */
+    omit?: TrackHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrackHistoryInclude<ExtArgs> | null
+    where?: TrackHistoryWhereInput
+    orderBy?: TrackHistoryOrderByWithRelationInput | TrackHistoryOrderByWithRelationInput[]
+    cursor?: TrackHistoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TrackHistoryScalarFieldEnum | TrackHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * User.playlistHistory
+   */
+  export type User$playlistHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlaylistHistory
+     */
+    select?: PlaylistHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlaylistHistory
+     */
+    omit?: PlaylistHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlaylistHistoryInclude<ExtArgs> | null
+    where?: PlaylistHistoryWhereInput
+    orderBy?: PlaylistHistoryOrderByWithRelationInput | PlaylistHistoryOrderByWithRelationInput[]
+    cursor?: PlaylistHistoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PlaylistHistoryScalarFieldEnum | PlaylistHistoryScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3039,6 +3327,7 @@ export namespace Prisma {
     id: string | null
     userId: string | null
     expiresAt: Date | null
+    token: string | null
     ipAddress: string | null
     userAgent: string | null
     createdAt: Date | null
@@ -3049,6 +3338,7 @@ export namespace Prisma {
     id: string | null
     userId: string | null
     expiresAt: Date | null
+    token: string | null
     ipAddress: string | null
     userAgent: string | null
     createdAt: Date | null
@@ -3059,6 +3349,7 @@ export namespace Prisma {
     id: number
     userId: number
     expiresAt: number
+    token: number
     ipAddress: number
     userAgent: number
     createdAt: number
@@ -3071,6 +3362,7 @@ export namespace Prisma {
     id?: true
     userId?: true
     expiresAt?: true
+    token?: true
     ipAddress?: true
     userAgent?: true
     createdAt?: true
@@ -3081,6 +3373,7 @@ export namespace Prisma {
     id?: true
     userId?: true
     expiresAt?: true
+    token?: true
     ipAddress?: true
     userAgent?: true
     createdAt?: true
@@ -3091,6 +3384,7 @@ export namespace Prisma {
     id?: true
     userId?: true
     expiresAt?: true
+    token?: true
     ipAddress?: true
     userAgent?: true
     createdAt?: true
@@ -3174,6 +3468,7 @@ export namespace Prisma {
     id: string
     userId: string
     expiresAt: Date
+    token: string
     ipAddress: string | null
     userAgent: string | null
     createdAt: Date
@@ -3201,6 +3496,7 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     expiresAt?: boolean
+    token?: boolean
     ipAddress?: boolean
     userAgent?: boolean
     createdAt?: boolean
@@ -3214,13 +3510,14 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     expiresAt?: boolean
+    token?: boolean
     ipAddress?: boolean
     userAgent?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type SessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "expiresAt" | "ipAddress" | "userAgent" | "createdAt" | "updatedAt", ExtArgs["result"]["session"]>
+  export type SessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "expiresAt" | "token" | "ipAddress" | "userAgent" | "createdAt" | "updatedAt", ExtArgs["result"]["session"]>
   export type SessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -3234,6 +3531,7 @@ export namespace Prisma {
       id: string
       userId: string
       expiresAt: Date
+      token: string
       ipAddress: string | null
       userAgent: string | null
       createdAt: Date
@@ -3611,6 +3909,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Session", 'String'>
     readonly userId: FieldRef<"Session", 'String'>
     readonly expiresAt: FieldRef<"Session", 'DateTime'>
+    readonly token: FieldRef<"Session", 'String'>
     readonly ipAddress: FieldRef<"Session", 'String'>
     readonly userAgent: FieldRef<"Session", 'String'>
     readonly createdAt: FieldRef<"Session", 'DateTime'>
@@ -5907,12 +6206,22 @@ export namespace Prisma {
 
   export type AggregateTrack = {
     _count: TrackCountAggregateOutputType | null
+    _avg: TrackAvgAggregateOutputType | null
+    _sum: TrackSumAggregateOutputType | null
     _min: TrackMinAggregateOutputType | null
     _max: TrackMaxAggregateOutputType | null
   }
 
+  export type TrackAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type TrackSumAggregateOutputType = {
+    id: number | null
+  }
+
   export type TrackMinAggregateOutputType = {
-    id: string | null
+    id: number | null
     title: string | null
     artist: string | null
     src: string | null
@@ -5924,7 +6233,7 @@ export namespace Prisma {
   }
 
   export type TrackMaxAggregateOutputType = {
-    id: string | null
+    id: number | null
     title: string | null
     artist: string | null
     src: string | null
@@ -5949,6 +6258,14 @@ export namespace Prisma {
     _all: number
   }
 
+
+  export type TrackAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type TrackSumAggregateInputType = {
+    id?: true
+  }
 
   export type TrackMinAggregateInputType = {
     id?: true
@@ -6026,6 +6343,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: TrackAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TrackSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: TrackMinAggregateInputType
@@ -6056,12 +6385,14 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: TrackCountAggregateInputType | true
+    _avg?: TrackAvgAggregateInputType
+    _sum?: TrackSumAggregateInputType
     _min?: TrackMinAggregateInputType
     _max?: TrackMaxAggregateInputType
   }
 
   export type TrackGroupByOutputType = {
-    id: string
+    id: number
     title: string
     artist: string
     src: string
@@ -6072,6 +6403,8 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     _count: TrackCountAggregateOutputType | null
+    _avg: TrackAvgAggregateOutputType | null
+    _sum: TrackSumAggregateOutputType | null
     _min: TrackMinAggregateOutputType | null
     _max: TrackMaxAggregateOutputType | null
   }
@@ -6103,6 +6436,7 @@ export namespace Prisma {
     updatedAt?: boolean
     playlists?: boolean | Track$playlistsArgs<ExtArgs>
     favoritedBy?: boolean | Track$favoritedByArgs<ExtArgs>
+    history?: boolean | Track$historyArgs<ExtArgs>
     _count?: boolean | TrackCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["track"]>
 
@@ -6125,6 +6459,7 @@ export namespace Prisma {
   export type TrackInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     playlists?: boolean | Track$playlistsArgs<ExtArgs>
     favoritedBy?: boolean | Track$favoritedByArgs<ExtArgs>
+    history?: boolean | Track$historyArgs<ExtArgs>
     _count?: boolean | TrackCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -6133,9 +6468,10 @@ export namespace Prisma {
     objects: {
       playlists: Prisma.$PlaylistTrackPayload<ExtArgs>[]
       favoritedBy: Prisma.$FavoriteTrackPayload<ExtArgs>[]
+      history: Prisma.$TrackHistoryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
-      id: string
+      id: number
       title: string
       artist: string
       src: string
@@ -6487,6 +6823,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     playlists<T extends Track$playlistsArgs<ExtArgs> = {}>(args?: Subset<T, Track$playlistsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlaylistTrackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     favoritedBy<T extends Track$favoritedByArgs<ExtArgs> = {}>(args?: Subset<T, Track$favoritedByArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FavoriteTrackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    history<T extends Track$historyArgs<ExtArgs> = {}>(args?: Subset<T, Track$historyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrackHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6516,7 +6853,7 @@ export namespace Prisma {
    * Fields of the Track model
    */
   interface TrackFieldRefs {
-    readonly id: FieldRef<"Track", 'String'>
+    readonly id: FieldRef<"Track", 'Int'>
     readonly title: FieldRef<"Track", 'String'>
     readonly artist: FieldRef<"Track", 'String'>
     readonly src: FieldRef<"Track", 'String'>
@@ -6922,6 +7259,30 @@ export namespace Prisma {
   }
 
   /**
+   * Track.history
+   */
+  export type Track$historyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrackHistory
+     */
+    select?: TrackHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrackHistory
+     */
+    omit?: TrackHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrackHistoryInclude<ExtArgs> | null
+    where?: TrackHistoryWhereInput
+    orderBy?: TrackHistoryOrderByWithRelationInput | TrackHistoryOrderByWithRelationInput[]
+    cursor?: TrackHistoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TrackHistoryScalarFieldEnum | TrackHistoryScalarFieldEnum[]
+  }
+
+  /**
    * Track without action
    */
   export type TrackDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7143,6 +7504,7 @@ export namespace Prisma {
     author?: boolean | Playlist$authorArgs<ExtArgs>
     tracks?: boolean | Playlist$tracksArgs<ExtArgs>
     favoritedBy?: boolean | Playlist$favoritedByArgs<ExtArgs>
+    history?: boolean | Playlist$historyArgs<ExtArgs>
     _count?: boolean | PlaylistCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["playlist"]>
 
@@ -7166,6 +7528,7 @@ export namespace Prisma {
     author?: boolean | Playlist$authorArgs<ExtArgs>
     tracks?: boolean | Playlist$tracksArgs<ExtArgs>
     favoritedBy?: boolean | Playlist$favoritedByArgs<ExtArgs>
+    history?: boolean | Playlist$historyArgs<ExtArgs>
     _count?: boolean | PlaylistCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -7175,6 +7538,7 @@ export namespace Prisma {
       author: Prisma.$UserPayload<ExtArgs> | null
       tracks: Prisma.$PlaylistTrackPayload<ExtArgs>[]
       favoritedBy: Prisma.$FavoritePlaylistPayload<ExtArgs>[]
+      history: Prisma.$PlaylistHistoryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7530,6 +7894,7 @@ export namespace Prisma {
     author<T extends Playlist$authorArgs<ExtArgs> = {}>(args?: Subset<T, Playlist$authorArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     tracks<T extends Playlist$tracksArgs<ExtArgs> = {}>(args?: Subset<T, Playlist$tracksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlaylistTrackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     favoritedBy<T extends Playlist$favoritedByArgs<ExtArgs> = {}>(args?: Subset<T, Playlist$favoritedByArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FavoritePlaylistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    history<T extends Playlist$historyArgs<ExtArgs> = {}>(args?: Subset<T, Playlist$historyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlaylistHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7984,6 +8349,30 @@ export namespace Prisma {
   }
 
   /**
+   * Playlist.history
+   */
+  export type Playlist$historyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlaylistHistory
+     */
+    select?: PlaylistHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlaylistHistory
+     */
+    omit?: PlaylistHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlaylistHistoryInclude<ExtArgs> | null
+    where?: PlaylistHistoryWhereInput
+    orderBy?: PlaylistHistoryOrderByWithRelationInput | PlaylistHistoryOrderByWithRelationInput[]
+    cursor?: PlaylistHistoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PlaylistHistoryScalarFieldEnum | PlaylistHistoryScalarFieldEnum[]
+  }
+
+  /**
    * Playlist without action
    */
   export type PlaylistDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8015,24 +8404,26 @@ export namespace Prisma {
   }
 
   export type PlaylistTrackAvgAggregateOutputType = {
+    trackId: number | null
     order: number | null
   }
 
   export type PlaylistTrackSumAggregateOutputType = {
+    trackId: number | null
     order: number | null
   }
 
   export type PlaylistTrackMinAggregateOutputType = {
     id: string | null
     playlistId: string | null
-    trackId: string | null
+    trackId: number | null
     order: number | null
   }
 
   export type PlaylistTrackMaxAggregateOutputType = {
     id: string | null
     playlistId: string | null
-    trackId: string | null
+    trackId: number | null
     order: number | null
   }
 
@@ -8046,10 +8437,12 @@ export namespace Prisma {
 
 
   export type PlaylistTrackAvgAggregateInputType = {
+    trackId?: true
     order?: true
   }
 
   export type PlaylistTrackSumAggregateInputType = {
+    trackId?: true
     order?: true
   }
 
@@ -8164,7 +8557,7 @@ export namespace Prisma {
   export type PlaylistTrackGroupByOutputType = {
     id: string
     playlistId: string
-    trackId: string
+    trackId: number
     order: number
     _count: PlaylistTrackCountAggregateOutputType | null
     _avg: PlaylistTrackAvgAggregateOutputType | null
@@ -8220,7 +8613,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       playlistId: string
-      trackId: string
+      trackId: number
       order: number
     }, ExtArgs["result"]["playlistTrack"]>
     composites: {}
@@ -8595,7 +8988,7 @@ export namespace Prisma {
   interface PlaylistTrackFieldRefs {
     readonly id: FieldRef<"PlaylistTrack", 'String'>
     readonly playlistId: FieldRef<"PlaylistTrack", 'String'>
-    readonly trackId: FieldRef<"PlaylistTrack", 'String'>
+    readonly trackId: FieldRef<"PlaylistTrack", 'Int'>
     readonly order: FieldRef<"PlaylistTrack", 'Int'>
   }
     
@@ -8969,21 +9362,31 @@ export namespace Prisma {
 
   export type AggregateFavoriteTrack = {
     _count: FavoriteTrackCountAggregateOutputType | null
+    _avg: FavoriteTrackAvgAggregateOutputType | null
+    _sum: FavoriteTrackSumAggregateOutputType | null
     _min: FavoriteTrackMinAggregateOutputType | null
     _max: FavoriteTrackMaxAggregateOutputType | null
+  }
+
+  export type FavoriteTrackAvgAggregateOutputType = {
+    trackId: number | null
+  }
+
+  export type FavoriteTrackSumAggregateOutputType = {
+    trackId: number | null
   }
 
   export type FavoriteTrackMinAggregateOutputType = {
     id: string | null
     userId: string | null
-    trackId: string | null
+    trackId: number | null
     createdAt: Date | null
   }
 
   export type FavoriteTrackMaxAggregateOutputType = {
     id: string | null
     userId: string | null
-    trackId: string | null
+    trackId: number | null
     createdAt: Date | null
   }
 
@@ -8995,6 +9398,14 @@ export namespace Prisma {
     _all: number
   }
 
+
+  export type FavoriteTrackAvgAggregateInputType = {
+    trackId?: true
+  }
+
+  export type FavoriteTrackSumAggregateInputType = {
+    trackId?: true
+  }
 
   export type FavoriteTrackMinAggregateInputType = {
     id?: true
@@ -9056,6 +9467,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: FavoriteTrackAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: FavoriteTrackSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: FavoriteTrackMinAggregateInputType
@@ -9086,6 +9509,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: FavoriteTrackCountAggregateInputType | true
+    _avg?: FavoriteTrackAvgAggregateInputType
+    _sum?: FavoriteTrackSumAggregateInputType
     _min?: FavoriteTrackMinAggregateInputType
     _max?: FavoriteTrackMaxAggregateInputType
   }
@@ -9093,9 +9518,11 @@ export namespace Prisma {
   export type FavoriteTrackGroupByOutputType = {
     id: string
     userId: string
-    trackId: string
+    trackId: number
     createdAt: Date
     _count: FavoriteTrackCountAggregateOutputType | null
+    _avg: FavoriteTrackAvgAggregateOutputType | null
+    _sum: FavoriteTrackSumAggregateOutputType | null
     _min: FavoriteTrackMinAggregateOutputType | null
     _max: FavoriteTrackMaxAggregateOutputType | null
   }
@@ -9147,7 +9574,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       userId: string
-      trackId: string
+      trackId: number
       createdAt: Date
     }, ExtArgs["result"]["favoriteTrack"]>
     composites: {}
@@ -9522,7 +9949,7 @@ export namespace Prisma {
   interface FavoriteTrackFieldRefs {
     readonly id: FieldRef<"FavoriteTrack", 'String'>
     readonly userId: FieldRef<"FavoriteTrack", 'String'>
-    readonly trackId: FieldRef<"FavoriteTrack", 'String'>
+    readonly trackId: FieldRef<"FavoriteTrack", 'Int'>
     readonly createdAt: FieldRef<"FavoriteTrack", 'DateTime'>
   }
     
@@ -11741,6 +12168,1909 @@ export namespace Prisma {
 
 
   /**
+   * Model TrackHistory
+   */
+
+  export type AggregateTrackHistory = {
+    _count: TrackHistoryCountAggregateOutputType | null
+    _avg: TrackHistoryAvgAggregateOutputType | null
+    _sum: TrackHistorySumAggregateOutputType | null
+    _min: TrackHistoryMinAggregateOutputType | null
+    _max: TrackHistoryMaxAggregateOutputType | null
+  }
+
+  export type TrackHistoryAvgAggregateOutputType = {
+    trackId: number | null
+    listenedSec: number | null
+  }
+
+  export type TrackHistorySumAggregateOutputType = {
+    trackId: number | null
+    listenedSec: number | null
+  }
+
+  export type TrackHistoryMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    trackId: number | null
+    playedAt: Date | null
+    listenedSec: number | null
+  }
+
+  export type TrackHistoryMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    trackId: number | null
+    playedAt: Date | null
+    listenedSec: number | null
+  }
+
+  export type TrackHistoryCountAggregateOutputType = {
+    id: number
+    userId: number
+    trackId: number
+    playedAt: number
+    listenedSec: number
+    _all: number
+  }
+
+
+  export type TrackHistoryAvgAggregateInputType = {
+    trackId?: true
+    listenedSec?: true
+  }
+
+  export type TrackHistorySumAggregateInputType = {
+    trackId?: true
+    listenedSec?: true
+  }
+
+  export type TrackHistoryMinAggregateInputType = {
+    id?: true
+    userId?: true
+    trackId?: true
+    playedAt?: true
+    listenedSec?: true
+  }
+
+  export type TrackHistoryMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    trackId?: true
+    playedAt?: true
+    listenedSec?: true
+  }
+
+  export type TrackHistoryCountAggregateInputType = {
+    id?: true
+    userId?: true
+    trackId?: true
+    playedAt?: true
+    listenedSec?: true
+    _all?: true
+  }
+
+  export type TrackHistoryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TrackHistory to aggregate.
+     */
+    where?: TrackHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TrackHistories to fetch.
+     */
+    orderBy?: TrackHistoryOrderByWithRelationInput | TrackHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TrackHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TrackHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TrackHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TrackHistories
+    **/
+    _count?: true | TrackHistoryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TrackHistoryAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TrackHistorySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TrackHistoryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TrackHistoryMaxAggregateInputType
+  }
+
+  export type GetTrackHistoryAggregateType<T extends TrackHistoryAggregateArgs> = {
+        [P in keyof T & keyof AggregateTrackHistory]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTrackHistory[P]>
+      : GetScalarType<T[P], AggregateTrackHistory[P]>
+  }
+
+
+
+
+  export type TrackHistoryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TrackHistoryWhereInput
+    orderBy?: TrackHistoryOrderByWithAggregationInput | TrackHistoryOrderByWithAggregationInput[]
+    by: TrackHistoryScalarFieldEnum[] | TrackHistoryScalarFieldEnum
+    having?: TrackHistoryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TrackHistoryCountAggregateInputType | true
+    _avg?: TrackHistoryAvgAggregateInputType
+    _sum?: TrackHistorySumAggregateInputType
+    _min?: TrackHistoryMinAggregateInputType
+    _max?: TrackHistoryMaxAggregateInputType
+  }
+
+  export type TrackHistoryGroupByOutputType = {
+    id: string
+    userId: string
+    trackId: number
+    playedAt: Date
+    listenedSec: number
+    _count: TrackHistoryCountAggregateOutputType | null
+    _avg: TrackHistoryAvgAggregateOutputType | null
+    _sum: TrackHistorySumAggregateOutputType | null
+    _min: TrackHistoryMinAggregateOutputType | null
+    _max: TrackHistoryMaxAggregateOutputType | null
+  }
+
+  type GetTrackHistoryGroupByPayload<T extends TrackHistoryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TrackHistoryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TrackHistoryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TrackHistoryGroupByOutputType[P]>
+            : GetScalarType<T[P], TrackHistoryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TrackHistorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    trackId?: boolean
+    playedAt?: boolean
+    listenedSec?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    track?: boolean | TrackDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["trackHistory"]>
+
+
+
+  export type TrackHistorySelectScalar = {
+    id?: boolean
+    userId?: boolean
+    trackId?: boolean
+    playedAt?: boolean
+    listenedSec?: boolean
+  }
+
+  export type TrackHistoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "trackId" | "playedAt" | "listenedSec", ExtArgs["result"]["trackHistory"]>
+  export type TrackHistoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    track?: boolean | TrackDefaultArgs<ExtArgs>
+  }
+
+  export type $TrackHistoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TrackHistory"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      track: Prisma.$TrackPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      trackId: number
+      playedAt: Date
+      listenedSec: number
+    }, ExtArgs["result"]["trackHistory"]>
+    composites: {}
+  }
+
+  type TrackHistoryGetPayload<S extends boolean | null | undefined | TrackHistoryDefaultArgs> = $Result.GetResult<Prisma.$TrackHistoryPayload, S>
+
+  type TrackHistoryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TrackHistoryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TrackHistoryCountAggregateInputType | true
+    }
+
+  export interface TrackHistoryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TrackHistory'], meta: { name: 'TrackHistory' } }
+    /**
+     * Find zero or one TrackHistory that matches the filter.
+     * @param {TrackHistoryFindUniqueArgs} args - Arguments to find a TrackHistory
+     * @example
+     * // Get one TrackHistory
+     * const trackHistory = await prisma.trackHistory.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TrackHistoryFindUniqueArgs>(args: SelectSubset<T, TrackHistoryFindUniqueArgs<ExtArgs>>): Prisma__TrackHistoryClient<$Result.GetResult<Prisma.$TrackHistoryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TrackHistory that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TrackHistoryFindUniqueOrThrowArgs} args - Arguments to find a TrackHistory
+     * @example
+     * // Get one TrackHistory
+     * const trackHistory = await prisma.trackHistory.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TrackHistoryFindUniqueOrThrowArgs>(args: SelectSubset<T, TrackHistoryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TrackHistoryClient<$Result.GetResult<Prisma.$TrackHistoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TrackHistory that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrackHistoryFindFirstArgs} args - Arguments to find a TrackHistory
+     * @example
+     * // Get one TrackHistory
+     * const trackHistory = await prisma.trackHistory.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TrackHistoryFindFirstArgs>(args?: SelectSubset<T, TrackHistoryFindFirstArgs<ExtArgs>>): Prisma__TrackHistoryClient<$Result.GetResult<Prisma.$TrackHistoryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TrackHistory that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrackHistoryFindFirstOrThrowArgs} args - Arguments to find a TrackHistory
+     * @example
+     * // Get one TrackHistory
+     * const trackHistory = await prisma.trackHistory.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TrackHistoryFindFirstOrThrowArgs>(args?: SelectSubset<T, TrackHistoryFindFirstOrThrowArgs<ExtArgs>>): Prisma__TrackHistoryClient<$Result.GetResult<Prisma.$TrackHistoryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TrackHistories that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrackHistoryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TrackHistories
+     * const trackHistories = await prisma.trackHistory.findMany()
+     * 
+     * // Get first 10 TrackHistories
+     * const trackHistories = await prisma.trackHistory.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const trackHistoryWithIdOnly = await prisma.trackHistory.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TrackHistoryFindManyArgs>(args?: SelectSubset<T, TrackHistoryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrackHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TrackHistory.
+     * @param {TrackHistoryCreateArgs} args - Arguments to create a TrackHistory.
+     * @example
+     * // Create one TrackHistory
+     * const TrackHistory = await prisma.trackHistory.create({
+     *   data: {
+     *     // ... data to create a TrackHistory
+     *   }
+     * })
+     * 
+     */
+    create<T extends TrackHistoryCreateArgs>(args: SelectSubset<T, TrackHistoryCreateArgs<ExtArgs>>): Prisma__TrackHistoryClient<$Result.GetResult<Prisma.$TrackHistoryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TrackHistories.
+     * @param {TrackHistoryCreateManyArgs} args - Arguments to create many TrackHistories.
+     * @example
+     * // Create many TrackHistories
+     * const trackHistory = await prisma.trackHistory.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TrackHistoryCreateManyArgs>(args?: SelectSubset<T, TrackHistoryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a TrackHistory.
+     * @param {TrackHistoryDeleteArgs} args - Arguments to delete one TrackHistory.
+     * @example
+     * // Delete one TrackHistory
+     * const TrackHistory = await prisma.trackHistory.delete({
+     *   where: {
+     *     // ... filter to delete one TrackHistory
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TrackHistoryDeleteArgs>(args: SelectSubset<T, TrackHistoryDeleteArgs<ExtArgs>>): Prisma__TrackHistoryClient<$Result.GetResult<Prisma.$TrackHistoryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TrackHistory.
+     * @param {TrackHistoryUpdateArgs} args - Arguments to update one TrackHistory.
+     * @example
+     * // Update one TrackHistory
+     * const trackHistory = await prisma.trackHistory.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TrackHistoryUpdateArgs>(args: SelectSubset<T, TrackHistoryUpdateArgs<ExtArgs>>): Prisma__TrackHistoryClient<$Result.GetResult<Prisma.$TrackHistoryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TrackHistories.
+     * @param {TrackHistoryDeleteManyArgs} args - Arguments to filter TrackHistories to delete.
+     * @example
+     * // Delete a few TrackHistories
+     * const { count } = await prisma.trackHistory.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TrackHistoryDeleteManyArgs>(args?: SelectSubset<T, TrackHistoryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TrackHistories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrackHistoryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TrackHistories
+     * const trackHistory = await prisma.trackHistory.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TrackHistoryUpdateManyArgs>(args: SelectSubset<T, TrackHistoryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one TrackHistory.
+     * @param {TrackHistoryUpsertArgs} args - Arguments to update or create a TrackHistory.
+     * @example
+     * // Update or create a TrackHistory
+     * const trackHistory = await prisma.trackHistory.upsert({
+     *   create: {
+     *     // ... data to create a TrackHistory
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TrackHistory we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TrackHistoryUpsertArgs>(args: SelectSubset<T, TrackHistoryUpsertArgs<ExtArgs>>): Prisma__TrackHistoryClient<$Result.GetResult<Prisma.$TrackHistoryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TrackHistories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrackHistoryCountArgs} args - Arguments to filter TrackHistories to count.
+     * @example
+     * // Count the number of TrackHistories
+     * const count = await prisma.trackHistory.count({
+     *   where: {
+     *     // ... the filter for the TrackHistories we want to count
+     *   }
+     * })
+    **/
+    count<T extends TrackHistoryCountArgs>(
+      args?: Subset<T, TrackHistoryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TrackHistoryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TrackHistory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrackHistoryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TrackHistoryAggregateArgs>(args: Subset<T, TrackHistoryAggregateArgs>): Prisma.PrismaPromise<GetTrackHistoryAggregateType<T>>
+
+    /**
+     * Group by TrackHistory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrackHistoryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TrackHistoryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TrackHistoryGroupByArgs['orderBy'] }
+        : { orderBy?: TrackHistoryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TrackHistoryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTrackHistoryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TrackHistory model
+   */
+  readonly fields: TrackHistoryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TrackHistory.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TrackHistoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    track<T extends TrackDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TrackDefaultArgs<ExtArgs>>): Prisma__TrackClient<$Result.GetResult<Prisma.$TrackPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TrackHistory model
+   */
+  interface TrackHistoryFieldRefs {
+    readonly id: FieldRef<"TrackHistory", 'String'>
+    readonly userId: FieldRef<"TrackHistory", 'String'>
+    readonly trackId: FieldRef<"TrackHistory", 'Int'>
+    readonly playedAt: FieldRef<"TrackHistory", 'DateTime'>
+    readonly listenedSec: FieldRef<"TrackHistory", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TrackHistory findUnique
+   */
+  export type TrackHistoryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrackHistory
+     */
+    select?: TrackHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrackHistory
+     */
+    omit?: TrackHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrackHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which TrackHistory to fetch.
+     */
+    where: TrackHistoryWhereUniqueInput
+  }
+
+  /**
+   * TrackHistory findUniqueOrThrow
+   */
+  export type TrackHistoryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrackHistory
+     */
+    select?: TrackHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrackHistory
+     */
+    omit?: TrackHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrackHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which TrackHistory to fetch.
+     */
+    where: TrackHistoryWhereUniqueInput
+  }
+
+  /**
+   * TrackHistory findFirst
+   */
+  export type TrackHistoryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrackHistory
+     */
+    select?: TrackHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrackHistory
+     */
+    omit?: TrackHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrackHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which TrackHistory to fetch.
+     */
+    where?: TrackHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TrackHistories to fetch.
+     */
+    orderBy?: TrackHistoryOrderByWithRelationInput | TrackHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TrackHistories.
+     */
+    cursor?: TrackHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TrackHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TrackHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TrackHistories.
+     */
+    distinct?: TrackHistoryScalarFieldEnum | TrackHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * TrackHistory findFirstOrThrow
+   */
+  export type TrackHistoryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrackHistory
+     */
+    select?: TrackHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrackHistory
+     */
+    omit?: TrackHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrackHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which TrackHistory to fetch.
+     */
+    where?: TrackHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TrackHistories to fetch.
+     */
+    orderBy?: TrackHistoryOrderByWithRelationInput | TrackHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TrackHistories.
+     */
+    cursor?: TrackHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TrackHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TrackHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TrackHistories.
+     */
+    distinct?: TrackHistoryScalarFieldEnum | TrackHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * TrackHistory findMany
+   */
+  export type TrackHistoryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrackHistory
+     */
+    select?: TrackHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrackHistory
+     */
+    omit?: TrackHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrackHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which TrackHistories to fetch.
+     */
+    where?: TrackHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TrackHistories to fetch.
+     */
+    orderBy?: TrackHistoryOrderByWithRelationInput | TrackHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TrackHistories.
+     */
+    cursor?: TrackHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TrackHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TrackHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TrackHistories.
+     */
+    distinct?: TrackHistoryScalarFieldEnum | TrackHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * TrackHistory create
+   */
+  export type TrackHistoryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrackHistory
+     */
+    select?: TrackHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrackHistory
+     */
+    omit?: TrackHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrackHistoryInclude<ExtArgs> | null
+    /**
+     * The data needed to create a TrackHistory.
+     */
+    data: XOR<TrackHistoryCreateInput, TrackHistoryUncheckedCreateInput>
+  }
+
+  /**
+   * TrackHistory createMany
+   */
+  export type TrackHistoryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TrackHistories.
+     */
+    data: TrackHistoryCreateManyInput | TrackHistoryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TrackHistory update
+   */
+  export type TrackHistoryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrackHistory
+     */
+    select?: TrackHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrackHistory
+     */
+    omit?: TrackHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrackHistoryInclude<ExtArgs> | null
+    /**
+     * The data needed to update a TrackHistory.
+     */
+    data: XOR<TrackHistoryUpdateInput, TrackHistoryUncheckedUpdateInput>
+    /**
+     * Choose, which TrackHistory to update.
+     */
+    where: TrackHistoryWhereUniqueInput
+  }
+
+  /**
+   * TrackHistory updateMany
+   */
+  export type TrackHistoryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TrackHistories.
+     */
+    data: XOR<TrackHistoryUpdateManyMutationInput, TrackHistoryUncheckedUpdateManyInput>
+    /**
+     * Filter which TrackHistories to update
+     */
+    where?: TrackHistoryWhereInput
+    /**
+     * Limit how many TrackHistories to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TrackHistory upsert
+   */
+  export type TrackHistoryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrackHistory
+     */
+    select?: TrackHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrackHistory
+     */
+    omit?: TrackHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrackHistoryInclude<ExtArgs> | null
+    /**
+     * The filter to search for the TrackHistory to update in case it exists.
+     */
+    where: TrackHistoryWhereUniqueInput
+    /**
+     * In case the TrackHistory found by the `where` argument doesn't exist, create a new TrackHistory with this data.
+     */
+    create: XOR<TrackHistoryCreateInput, TrackHistoryUncheckedCreateInput>
+    /**
+     * In case the TrackHistory was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TrackHistoryUpdateInput, TrackHistoryUncheckedUpdateInput>
+  }
+
+  /**
+   * TrackHistory delete
+   */
+  export type TrackHistoryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrackHistory
+     */
+    select?: TrackHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrackHistory
+     */
+    omit?: TrackHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrackHistoryInclude<ExtArgs> | null
+    /**
+     * Filter which TrackHistory to delete.
+     */
+    where: TrackHistoryWhereUniqueInput
+  }
+
+  /**
+   * TrackHistory deleteMany
+   */
+  export type TrackHistoryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TrackHistories to delete
+     */
+    where?: TrackHistoryWhereInput
+    /**
+     * Limit how many TrackHistories to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TrackHistory without action
+   */
+  export type TrackHistoryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrackHistory
+     */
+    select?: TrackHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrackHistory
+     */
+    omit?: TrackHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrackHistoryInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PlaylistHistory
+   */
+
+  export type AggregatePlaylistHistory = {
+    _count: PlaylistHistoryCountAggregateOutputType | null
+    _min: PlaylistHistoryMinAggregateOutputType | null
+    _max: PlaylistHistoryMaxAggregateOutputType | null
+  }
+
+  export type PlaylistHistoryMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    playlistId: string | null
+    playedAt: Date | null
+  }
+
+  export type PlaylistHistoryMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    playlistId: string | null
+    playedAt: Date | null
+  }
+
+  export type PlaylistHistoryCountAggregateOutputType = {
+    id: number
+    userId: number
+    playlistId: number
+    playedAt: number
+    _all: number
+  }
+
+
+  export type PlaylistHistoryMinAggregateInputType = {
+    id?: true
+    userId?: true
+    playlistId?: true
+    playedAt?: true
+  }
+
+  export type PlaylistHistoryMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    playlistId?: true
+    playedAt?: true
+  }
+
+  export type PlaylistHistoryCountAggregateInputType = {
+    id?: true
+    userId?: true
+    playlistId?: true
+    playedAt?: true
+    _all?: true
+  }
+
+  export type PlaylistHistoryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PlaylistHistory to aggregate.
+     */
+    where?: PlaylistHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlaylistHistories to fetch.
+     */
+    orderBy?: PlaylistHistoryOrderByWithRelationInput | PlaylistHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PlaylistHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlaylistHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlaylistHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PlaylistHistories
+    **/
+    _count?: true | PlaylistHistoryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PlaylistHistoryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PlaylistHistoryMaxAggregateInputType
+  }
+
+  export type GetPlaylistHistoryAggregateType<T extends PlaylistHistoryAggregateArgs> = {
+        [P in keyof T & keyof AggregatePlaylistHistory]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePlaylistHistory[P]>
+      : GetScalarType<T[P], AggregatePlaylistHistory[P]>
+  }
+
+
+
+
+  export type PlaylistHistoryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PlaylistHistoryWhereInput
+    orderBy?: PlaylistHistoryOrderByWithAggregationInput | PlaylistHistoryOrderByWithAggregationInput[]
+    by: PlaylistHistoryScalarFieldEnum[] | PlaylistHistoryScalarFieldEnum
+    having?: PlaylistHistoryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PlaylistHistoryCountAggregateInputType | true
+    _min?: PlaylistHistoryMinAggregateInputType
+    _max?: PlaylistHistoryMaxAggregateInputType
+  }
+
+  export type PlaylistHistoryGroupByOutputType = {
+    id: string
+    userId: string
+    playlistId: string
+    playedAt: Date
+    _count: PlaylistHistoryCountAggregateOutputType | null
+    _min: PlaylistHistoryMinAggregateOutputType | null
+    _max: PlaylistHistoryMaxAggregateOutputType | null
+  }
+
+  type GetPlaylistHistoryGroupByPayload<T extends PlaylistHistoryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PlaylistHistoryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PlaylistHistoryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PlaylistHistoryGroupByOutputType[P]>
+            : GetScalarType<T[P], PlaylistHistoryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PlaylistHistorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    playlistId?: boolean
+    playedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    playlist?: boolean | PlaylistDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["playlistHistory"]>
+
+
+
+  export type PlaylistHistorySelectScalar = {
+    id?: boolean
+    userId?: boolean
+    playlistId?: boolean
+    playedAt?: boolean
+  }
+
+  export type PlaylistHistoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "playlistId" | "playedAt", ExtArgs["result"]["playlistHistory"]>
+  export type PlaylistHistoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    playlist?: boolean | PlaylistDefaultArgs<ExtArgs>
+  }
+
+  export type $PlaylistHistoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PlaylistHistory"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      playlist: Prisma.$PlaylistPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      playlistId: string
+      playedAt: Date
+    }, ExtArgs["result"]["playlistHistory"]>
+    composites: {}
+  }
+
+  type PlaylistHistoryGetPayload<S extends boolean | null | undefined | PlaylistHistoryDefaultArgs> = $Result.GetResult<Prisma.$PlaylistHistoryPayload, S>
+
+  type PlaylistHistoryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PlaylistHistoryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PlaylistHistoryCountAggregateInputType | true
+    }
+
+  export interface PlaylistHistoryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PlaylistHistory'], meta: { name: 'PlaylistHistory' } }
+    /**
+     * Find zero or one PlaylistHistory that matches the filter.
+     * @param {PlaylistHistoryFindUniqueArgs} args - Arguments to find a PlaylistHistory
+     * @example
+     * // Get one PlaylistHistory
+     * const playlistHistory = await prisma.playlistHistory.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PlaylistHistoryFindUniqueArgs>(args: SelectSubset<T, PlaylistHistoryFindUniqueArgs<ExtArgs>>): Prisma__PlaylistHistoryClient<$Result.GetResult<Prisma.$PlaylistHistoryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PlaylistHistory that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PlaylistHistoryFindUniqueOrThrowArgs} args - Arguments to find a PlaylistHistory
+     * @example
+     * // Get one PlaylistHistory
+     * const playlistHistory = await prisma.playlistHistory.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PlaylistHistoryFindUniqueOrThrowArgs>(args: SelectSubset<T, PlaylistHistoryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PlaylistHistoryClient<$Result.GetResult<Prisma.$PlaylistHistoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PlaylistHistory that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlaylistHistoryFindFirstArgs} args - Arguments to find a PlaylistHistory
+     * @example
+     * // Get one PlaylistHistory
+     * const playlistHistory = await prisma.playlistHistory.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PlaylistHistoryFindFirstArgs>(args?: SelectSubset<T, PlaylistHistoryFindFirstArgs<ExtArgs>>): Prisma__PlaylistHistoryClient<$Result.GetResult<Prisma.$PlaylistHistoryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PlaylistHistory that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlaylistHistoryFindFirstOrThrowArgs} args - Arguments to find a PlaylistHistory
+     * @example
+     * // Get one PlaylistHistory
+     * const playlistHistory = await prisma.playlistHistory.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PlaylistHistoryFindFirstOrThrowArgs>(args?: SelectSubset<T, PlaylistHistoryFindFirstOrThrowArgs<ExtArgs>>): Prisma__PlaylistHistoryClient<$Result.GetResult<Prisma.$PlaylistHistoryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PlaylistHistories that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlaylistHistoryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PlaylistHistories
+     * const playlistHistories = await prisma.playlistHistory.findMany()
+     * 
+     * // Get first 10 PlaylistHistories
+     * const playlistHistories = await prisma.playlistHistory.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const playlistHistoryWithIdOnly = await prisma.playlistHistory.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PlaylistHistoryFindManyArgs>(args?: SelectSubset<T, PlaylistHistoryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlaylistHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PlaylistHistory.
+     * @param {PlaylistHistoryCreateArgs} args - Arguments to create a PlaylistHistory.
+     * @example
+     * // Create one PlaylistHistory
+     * const PlaylistHistory = await prisma.playlistHistory.create({
+     *   data: {
+     *     // ... data to create a PlaylistHistory
+     *   }
+     * })
+     * 
+     */
+    create<T extends PlaylistHistoryCreateArgs>(args: SelectSubset<T, PlaylistHistoryCreateArgs<ExtArgs>>): Prisma__PlaylistHistoryClient<$Result.GetResult<Prisma.$PlaylistHistoryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PlaylistHistories.
+     * @param {PlaylistHistoryCreateManyArgs} args - Arguments to create many PlaylistHistories.
+     * @example
+     * // Create many PlaylistHistories
+     * const playlistHistory = await prisma.playlistHistory.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PlaylistHistoryCreateManyArgs>(args?: SelectSubset<T, PlaylistHistoryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a PlaylistHistory.
+     * @param {PlaylistHistoryDeleteArgs} args - Arguments to delete one PlaylistHistory.
+     * @example
+     * // Delete one PlaylistHistory
+     * const PlaylistHistory = await prisma.playlistHistory.delete({
+     *   where: {
+     *     // ... filter to delete one PlaylistHistory
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PlaylistHistoryDeleteArgs>(args: SelectSubset<T, PlaylistHistoryDeleteArgs<ExtArgs>>): Prisma__PlaylistHistoryClient<$Result.GetResult<Prisma.$PlaylistHistoryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PlaylistHistory.
+     * @param {PlaylistHistoryUpdateArgs} args - Arguments to update one PlaylistHistory.
+     * @example
+     * // Update one PlaylistHistory
+     * const playlistHistory = await prisma.playlistHistory.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PlaylistHistoryUpdateArgs>(args: SelectSubset<T, PlaylistHistoryUpdateArgs<ExtArgs>>): Prisma__PlaylistHistoryClient<$Result.GetResult<Prisma.$PlaylistHistoryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PlaylistHistories.
+     * @param {PlaylistHistoryDeleteManyArgs} args - Arguments to filter PlaylistHistories to delete.
+     * @example
+     * // Delete a few PlaylistHistories
+     * const { count } = await prisma.playlistHistory.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PlaylistHistoryDeleteManyArgs>(args?: SelectSubset<T, PlaylistHistoryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PlaylistHistories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlaylistHistoryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PlaylistHistories
+     * const playlistHistory = await prisma.playlistHistory.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PlaylistHistoryUpdateManyArgs>(args: SelectSubset<T, PlaylistHistoryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one PlaylistHistory.
+     * @param {PlaylistHistoryUpsertArgs} args - Arguments to update or create a PlaylistHistory.
+     * @example
+     * // Update or create a PlaylistHistory
+     * const playlistHistory = await prisma.playlistHistory.upsert({
+     *   create: {
+     *     // ... data to create a PlaylistHistory
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PlaylistHistory we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PlaylistHistoryUpsertArgs>(args: SelectSubset<T, PlaylistHistoryUpsertArgs<ExtArgs>>): Prisma__PlaylistHistoryClient<$Result.GetResult<Prisma.$PlaylistHistoryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PlaylistHistories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlaylistHistoryCountArgs} args - Arguments to filter PlaylistHistories to count.
+     * @example
+     * // Count the number of PlaylistHistories
+     * const count = await prisma.playlistHistory.count({
+     *   where: {
+     *     // ... the filter for the PlaylistHistories we want to count
+     *   }
+     * })
+    **/
+    count<T extends PlaylistHistoryCountArgs>(
+      args?: Subset<T, PlaylistHistoryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PlaylistHistoryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PlaylistHistory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlaylistHistoryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PlaylistHistoryAggregateArgs>(args: Subset<T, PlaylistHistoryAggregateArgs>): Prisma.PrismaPromise<GetPlaylistHistoryAggregateType<T>>
+
+    /**
+     * Group by PlaylistHistory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlaylistHistoryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PlaylistHistoryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PlaylistHistoryGroupByArgs['orderBy'] }
+        : { orderBy?: PlaylistHistoryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PlaylistHistoryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPlaylistHistoryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PlaylistHistory model
+   */
+  readonly fields: PlaylistHistoryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PlaylistHistory.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PlaylistHistoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    playlist<T extends PlaylistDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PlaylistDefaultArgs<ExtArgs>>): Prisma__PlaylistClient<$Result.GetResult<Prisma.$PlaylistPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PlaylistHistory model
+   */
+  interface PlaylistHistoryFieldRefs {
+    readonly id: FieldRef<"PlaylistHistory", 'String'>
+    readonly userId: FieldRef<"PlaylistHistory", 'String'>
+    readonly playlistId: FieldRef<"PlaylistHistory", 'String'>
+    readonly playedAt: FieldRef<"PlaylistHistory", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PlaylistHistory findUnique
+   */
+  export type PlaylistHistoryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlaylistHistory
+     */
+    select?: PlaylistHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlaylistHistory
+     */
+    omit?: PlaylistHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlaylistHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which PlaylistHistory to fetch.
+     */
+    where: PlaylistHistoryWhereUniqueInput
+  }
+
+  /**
+   * PlaylistHistory findUniqueOrThrow
+   */
+  export type PlaylistHistoryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlaylistHistory
+     */
+    select?: PlaylistHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlaylistHistory
+     */
+    omit?: PlaylistHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlaylistHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which PlaylistHistory to fetch.
+     */
+    where: PlaylistHistoryWhereUniqueInput
+  }
+
+  /**
+   * PlaylistHistory findFirst
+   */
+  export type PlaylistHistoryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlaylistHistory
+     */
+    select?: PlaylistHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlaylistHistory
+     */
+    omit?: PlaylistHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlaylistHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which PlaylistHistory to fetch.
+     */
+    where?: PlaylistHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlaylistHistories to fetch.
+     */
+    orderBy?: PlaylistHistoryOrderByWithRelationInput | PlaylistHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PlaylistHistories.
+     */
+    cursor?: PlaylistHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlaylistHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlaylistHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PlaylistHistories.
+     */
+    distinct?: PlaylistHistoryScalarFieldEnum | PlaylistHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * PlaylistHistory findFirstOrThrow
+   */
+  export type PlaylistHistoryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlaylistHistory
+     */
+    select?: PlaylistHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlaylistHistory
+     */
+    omit?: PlaylistHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlaylistHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which PlaylistHistory to fetch.
+     */
+    where?: PlaylistHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlaylistHistories to fetch.
+     */
+    orderBy?: PlaylistHistoryOrderByWithRelationInput | PlaylistHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PlaylistHistories.
+     */
+    cursor?: PlaylistHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlaylistHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlaylistHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PlaylistHistories.
+     */
+    distinct?: PlaylistHistoryScalarFieldEnum | PlaylistHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * PlaylistHistory findMany
+   */
+  export type PlaylistHistoryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlaylistHistory
+     */
+    select?: PlaylistHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlaylistHistory
+     */
+    omit?: PlaylistHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlaylistHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which PlaylistHistories to fetch.
+     */
+    where?: PlaylistHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlaylistHistories to fetch.
+     */
+    orderBy?: PlaylistHistoryOrderByWithRelationInput | PlaylistHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PlaylistHistories.
+     */
+    cursor?: PlaylistHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlaylistHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlaylistHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PlaylistHistories.
+     */
+    distinct?: PlaylistHistoryScalarFieldEnum | PlaylistHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * PlaylistHistory create
+   */
+  export type PlaylistHistoryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlaylistHistory
+     */
+    select?: PlaylistHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlaylistHistory
+     */
+    omit?: PlaylistHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlaylistHistoryInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PlaylistHistory.
+     */
+    data: XOR<PlaylistHistoryCreateInput, PlaylistHistoryUncheckedCreateInput>
+  }
+
+  /**
+   * PlaylistHistory createMany
+   */
+  export type PlaylistHistoryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PlaylistHistories.
+     */
+    data: PlaylistHistoryCreateManyInput | PlaylistHistoryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PlaylistHistory update
+   */
+  export type PlaylistHistoryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlaylistHistory
+     */
+    select?: PlaylistHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlaylistHistory
+     */
+    omit?: PlaylistHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlaylistHistoryInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PlaylistHistory.
+     */
+    data: XOR<PlaylistHistoryUpdateInput, PlaylistHistoryUncheckedUpdateInput>
+    /**
+     * Choose, which PlaylistHistory to update.
+     */
+    where: PlaylistHistoryWhereUniqueInput
+  }
+
+  /**
+   * PlaylistHistory updateMany
+   */
+  export type PlaylistHistoryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PlaylistHistories.
+     */
+    data: XOR<PlaylistHistoryUpdateManyMutationInput, PlaylistHistoryUncheckedUpdateManyInput>
+    /**
+     * Filter which PlaylistHistories to update
+     */
+    where?: PlaylistHistoryWhereInput
+    /**
+     * Limit how many PlaylistHistories to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PlaylistHistory upsert
+   */
+  export type PlaylistHistoryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlaylistHistory
+     */
+    select?: PlaylistHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlaylistHistory
+     */
+    omit?: PlaylistHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlaylistHistoryInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PlaylistHistory to update in case it exists.
+     */
+    where: PlaylistHistoryWhereUniqueInput
+    /**
+     * In case the PlaylistHistory found by the `where` argument doesn't exist, create a new PlaylistHistory with this data.
+     */
+    create: XOR<PlaylistHistoryCreateInput, PlaylistHistoryUncheckedCreateInput>
+    /**
+     * In case the PlaylistHistory was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PlaylistHistoryUpdateInput, PlaylistHistoryUncheckedUpdateInput>
+  }
+
+  /**
+   * PlaylistHistory delete
+   */
+  export type PlaylistHistoryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlaylistHistory
+     */
+    select?: PlaylistHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlaylistHistory
+     */
+    omit?: PlaylistHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlaylistHistoryInclude<ExtArgs> | null
+    /**
+     * Filter which PlaylistHistory to delete.
+     */
+    where: PlaylistHistoryWhereUniqueInput
+  }
+
+  /**
+   * PlaylistHistory deleteMany
+   */
+  export type PlaylistHistoryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PlaylistHistories to delete
+     */
+    where?: PlaylistHistoryWhereInput
+    /**
+     * Limit how many PlaylistHistories to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PlaylistHistory without action
+   */
+  export type PlaylistHistoryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlaylistHistory
+     */
+    select?: PlaylistHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlaylistHistory
+     */
+    omit?: PlaylistHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlaylistHistoryInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -11766,6 +14096,8 @@ export namespace Prisma {
     banned: 'banned',
     loginCount: 'loginCount',
     lastLoginAt: 'lastLoginAt',
+    totalPlayTime: 'totalPlayTime',
+    queue: 'queue',
     lastPlayedTrackId: 'lastPlayedTrackId',
     lastPlayedPlaylistId: 'lastPlayedPlaylistId',
     createdAt: 'createdAt',
@@ -11779,6 +14111,7 @@ export namespace Prisma {
     id: 'id',
     userId: 'userId',
     expiresAt: 'expiresAt',
+    token: 'token',
     ipAddress: 'ipAddress',
     userAgent: 'userAgent',
     createdAt: 'createdAt',
@@ -11891,6 +14224,27 @@ export namespace Prisma {
   export type FavoriteArtistScalarFieldEnum = (typeof FavoriteArtistScalarFieldEnum)[keyof typeof FavoriteArtistScalarFieldEnum]
 
 
+  export const TrackHistoryScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    trackId: 'trackId',
+    playedAt: 'playedAt',
+    listenedSec: 'listenedSec'
+  };
+
+  export type TrackHistoryScalarFieldEnum = (typeof TrackHistoryScalarFieldEnum)[keyof typeof TrackHistoryScalarFieldEnum]
+
+
+  export const PlaylistHistoryScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    playlistId: 'playlistId',
+    playedAt: 'playedAt'
+  };
+
+  export type PlaylistHistoryScalarFieldEnum = (typeof PlaylistHistoryScalarFieldEnum)[keyof typeof PlaylistHistoryScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -11921,7 +14275,7 @@ export namespace Prisma {
     name: 'name',
     image: 'image',
     role: 'role',
-    lastPlayedTrackId: 'lastPlayedTrackId',
+    queue: 'queue',
     lastPlayedPlaylistId: 'lastPlayedPlaylistId'
   };
 
@@ -11931,6 +14285,7 @@ export namespace Prisma {
   export const SessionOrderByRelevanceFieldEnum: {
     id: 'id',
     userId: 'userId',
+    token: 'token',
     ipAddress: 'ipAddress',
     userAgent: 'userAgent'
   };
@@ -11980,7 +14335,6 @@ export namespace Prisma {
 
 
   export const TrackOrderByRelevanceFieldEnum: {
-    id: 'id',
     title: 'title',
     artist: 'artist',
     src: 'src',
@@ -12005,8 +14359,7 @@ export namespace Prisma {
 
   export const PlaylistTrackOrderByRelevanceFieldEnum: {
     id: 'id',
-    playlistId: 'playlistId',
-    trackId: 'trackId'
+    playlistId: 'playlistId'
   };
 
   export type PlaylistTrackOrderByRelevanceFieldEnum = (typeof PlaylistTrackOrderByRelevanceFieldEnum)[keyof typeof PlaylistTrackOrderByRelevanceFieldEnum]
@@ -12014,8 +14367,7 @@ export namespace Prisma {
 
   export const FavoriteTrackOrderByRelevanceFieldEnum: {
     id: 'id',
-    userId: 'userId',
-    trackId: 'trackId'
+    userId: 'userId'
   };
 
   export type FavoriteTrackOrderByRelevanceFieldEnum = (typeof FavoriteTrackOrderByRelevanceFieldEnum)[keyof typeof FavoriteTrackOrderByRelevanceFieldEnum]
@@ -12037,6 +14389,23 @@ export namespace Prisma {
   };
 
   export type FavoriteArtistOrderByRelevanceFieldEnum = (typeof FavoriteArtistOrderByRelevanceFieldEnum)[keyof typeof FavoriteArtistOrderByRelevanceFieldEnum]
+
+
+  export const TrackHistoryOrderByRelevanceFieldEnum: {
+    id: 'id',
+    userId: 'userId'
+  };
+
+  export type TrackHistoryOrderByRelevanceFieldEnum = (typeof TrackHistoryOrderByRelevanceFieldEnum)[keyof typeof TrackHistoryOrderByRelevanceFieldEnum]
+
+
+  export const PlaylistHistoryOrderByRelevanceFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    playlistId: 'playlistId'
+  };
+
+  export type PlaylistHistoryOrderByRelevanceFieldEnum = (typeof PlaylistHistoryOrderByRelevanceFieldEnum)[keyof typeof PlaylistHistoryOrderByRelevanceFieldEnum]
 
 
   /**
@@ -12118,7 +14487,9 @@ export namespace Prisma {
     banned?: BoolFilter<"User"> | boolean
     loginCount?: IntFilter<"User"> | number
     lastLoginAt?: DateTimeNullableFilter<"User"> | Date | string | null
-    lastPlayedTrackId?: StringNullableFilter<"User"> | string | null
+    totalPlayTime?: IntFilter<"User"> | number
+    queue?: StringNullableFilter<"User"> | string | null
+    lastPlayedTrackId?: IntNullableFilter<"User"> | number | null
     lastPlayedPlaylistId?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
@@ -12128,6 +14499,8 @@ export namespace Prisma {
     favoriteTracks?: FavoriteTrackListRelationFilter
     favoritePlaylists?: FavoritePlaylistListRelationFilter
     favoriteArtists?: FavoriteArtistListRelationFilter
+    trackHistory?: TrackHistoryListRelationFilter
+    playlistHistory?: PlaylistHistoryListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -12142,6 +14515,8 @@ export namespace Prisma {
     banned?: SortOrder
     loginCount?: SortOrder
     lastLoginAt?: SortOrderInput | SortOrder
+    totalPlayTime?: SortOrder
+    queue?: SortOrderInput | SortOrder
     lastPlayedTrackId?: SortOrderInput | SortOrder
     lastPlayedPlaylistId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -12152,6 +14527,8 @@ export namespace Prisma {
     favoriteTracks?: FavoriteTrackOrderByRelationAggregateInput
     favoritePlaylists?: FavoritePlaylistOrderByRelationAggregateInput
     favoriteArtists?: FavoriteArtistOrderByRelationAggregateInput
+    trackHistory?: TrackHistoryOrderByRelationAggregateInput
+    playlistHistory?: PlaylistHistoryOrderByRelationAggregateInput
     _relevance?: UserOrderByRelevanceInput
   }
 
@@ -12170,7 +14547,9 @@ export namespace Prisma {
     banned?: BoolFilter<"User"> | boolean
     loginCount?: IntFilter<"User"> | number
     lastLoginAt?: DateTimeNullableFilter<"User"> | Date | string | null
-    lastPlayedTrackId?: StringNullableFilter<"User"> | string | null
+    totalPlayTime?: IntFilter<"User"> | number
+    queue?: StringNullableFilter<"User"> | string | null
+    lastPlayedTrackId?: IntNullableFilter<"User"> | number | null
     lastPlayedPlaylistId?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
@@ -12180,6 +14559,8 @@ export namespace Prisma {
     favoriteTracks?: FavoriteTrackListRelationFilter
     favoritePlaylists?: FavoritePlaylistListRelationFilter
     favoriteArtists?: FavoriteArtistListRelationFilter
+    trackHistory?: TrackHistoryListRelationFilter
+    playlistHistory?: PlaylistHistoryListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -12194,6 +14575,8 @@ export namespace Prisma {
     banned?: SortOrder
     loginCount?: SortOrder
     lastLoginAt?: SortOrderInput | SortOrder
+    totalPlayTime?: SortOrder
+    queue?: SortOrderInput | SortOrder
     lastPlayedTrackId?: SortOrderInput | SortOrder
     lastPlayedPlaylistId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -12220,7 +14603,9 @@ export namespace Prisma {
     banned?: BoolWithAggregatesFilter<"User"> | boolean
     loginCount?: IntWithAggregatesFilter<"User"> | number
     lastLoginAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
-    lastPlayedTrackId?: StringNullableWithAggregatesFilter<"User"> | string | null
+    totalPlayTime?: IntWithAggregatesFilter<"User"> | number
+    queue?: StringNullableWithAggregatesFilter<"User"> | string | null
+    lastPlayedTrackId?: IntNullableWithAggregatesFilter<"User"> | number | null
     lastPlayedPlaylistId?: StringNullableWithAggregatesFilter<"User"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -12233,6 +14618,7 @@ export namespace Prisma {
     id?: StringFilter<"Session"> | string
     userId?: StringFilter<"Session"> | string
     expiresAt?: DateTimeFilter<"Session"> | Date | string
+    token?: StringFilter<"Session"> | string
     ipAddress?: StringNullableFilter<"Session"> | string | null
     userAgent?: StringNullableFilter<"Session"> | string | null
     createdAt?: DateTimeFilter<"Session"> | Date | string
@@ -12244,6 +14630,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     expiresAt?: SortOrder
+    token?: SortOrder
     ipAddress?: SortOrderInput | SortOrder
     userAgent?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -12254,6 +14641,7 @@ export namespace Prisma {
 
   export type SessionWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    token?: string
     AND?: SessionWhereInput | SessionWhereInput[]
     OR?: SessionWhereInput[]
     NOT?: SessionWhereInput | SessionWhereInput[]
@@ -12264,12 +14652,13 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Session"> | Date | string
     updatedAt?: DateTimeFilter<"Session"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id">
+  }, "id" | "token">
 
   export type SessionOrderByWithAggregationInput = {
     id?: SortOrder
     userId?: SortOrder
     expiresAt?: SortOrder
+    token?: SortOrder
     ipAddress?: SortOrderInput | SortOrder
     userAgent?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -12286,6 +14675,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Session"> | string
     userId?: StringWithAggregatesFilter<"Session"> | string
     expiresAt?: DateTimeWithAggregatesFilter<"Session"> | Date | string
+    token?: StringWithAggregatesFilter<"Session"> | string
     ipAddress?: StringNullableWithAggregatesFilter<"Session"> | string | null
     userAgent?: StringNullableWithAggregatesFilter<"Session"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Session"> | Date | string
@@ -12450,7 +14840,7 @@ export namespace Prisma {
     AND?: TrackWhereInput | TrackWhereInput[]
     OR?: TrackWhereInput[]
     NOT?: TrackWhereInput | TrackWhereInput[]
-    id?: StringFilter<"Track"> | string
+    id?: IntFilter<"Track"> | number
     title?: StringFilter<"Track"> | string
     artist?: StringFilter<"Track"> | string
     src?: StringFilter<"Track"> | string
@@ -12462,6 +14852,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Track"> | Date | string
     playlists?: PlaylistTrackListRelationFilter
     favoritedBy?: FavoriteTrackListRelationFilter
+    history?: TrackHistoryListRelationFilter
   }
 
   export type TrackOrderByWithRelationInput = {
@@ -12477,11 +14868,12 @@ export namespace Prisma {
     updatedAt?: SortOrder
     playlists?: PlaylistTrackOrderByRelationAggregateInput
     favoritedBy?: FavoriteTrackOrderByRelationAggregateInput
+    history?: TrackHistoryOrderByRelationAggregateInput
     _relevance?: TrackOrderByRelevanceInput
   }
 
   export type TrackWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
+    id?: number
     AND?: TrackWhereInput | TrackWhereInput[]
     OR?: TrackWhereInput[]
     NOT?: TrackWhereInput | TrackWhereInput[]
@@ -12496,6 +14888,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Track"> | Date | string
     playlists?: PlaylistTrackListRelationFilter
     favoritedBy?: FavoriteTrackListRelationFilter
+    history?: TrackHistoryListRelationFilter
   }, "id">
 
   export type TrackOrderByWithAggregationInput = {
@@ -12510,15 +14903,17 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: TrackCountOrderByAggregateInput
+    _avg?: TrackAvgOrderByAggregateInput
     _max?: TrackMaxOrderByAggregateInput
     _min?: TrackMinOrderByAggregateInput
+    _sum?: TrackSumOrderByAggregateInput
   }
 
   export type TrackScalarWhereWithAggregatesInput = {
     AND?: TrackScalarWhereWithAggregatesInput | TrackScalarWhereWithAggregatesInput[]
     OR?: TrackScalarWhereWithAggregatesInput[]
     NOT?: TrackScalarWhereWithAggregatesInput | TrackScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"Track"> | string
+    id?: IntWithAggregatesFilter<"Track"> | number
     title?: StringWithAggregatesFilter<"Track"> | string
     artist?: StringWithAggregatesFilter<"Track"> | string
     src?: StringWithAggregatesFilter<"Track"> | string
@@ -12547,6 +14942,7 @@ export namespace Prisma {
     author?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     tracks?: PlaylistTrackListRelationFilter
     favoritedBy?: FavoritePlaylistListRelationFilter
+    history?: PlaylistHistoryListRelationFilter
   }
 
   export type PlaylistOrderByWithRelationInput = {
@@ -12563,6 +14959,7 @@ export namespace Prisma {
     author?: UserOrderByWithRelationInput
     tracks?: PlaylistTrackOrderByRelationAggregateInput
     favoritedBy?: FavoritePlaylistOrderByRelationAggregateInput
+    history?: PlaylistHistoryOrderByRelationAggregateInput
     _relevance?: PlaylistOrderByRelevanceInput
   }
 
@@ -12583,6 +14980,7 @@ export namespace Prisma {
     author?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     tracks?: PlaylistTrackListRelationFilter
     favoritedBy?: FavoritePlaylistListRelationFilter
+    history?: PlaylistHistoryListRelationFilter
   }, "id">
 
   export type PlaylistOrderByWithAggregationInput = {
@@ -12623,7 +15021,7 @@ export namespace Prisma {
     NOT?: PlaylistTrackWhereInput | PlaylistTrackWhereInput[]
     id?: StringFilter<"PlaylistTrack"> | string
     playlistId?: StringFilter<"PlaylistTrack"> | string
-    trackId?: StringFilter<"PlaylistTrack"> | string
+    trackId?: IntFilter<"PlaylistTrack"> | number
     order?: IntFilter<"PlaylistTrack"> | number
     playlist?: XOR<PlaylistScalarRelationFilter, PlaylistWhereInput>
     track?: XOR<TrackScalarRelationFilter, TrackWhereInput>
@@ -12646,7 +15044,7 @@ export namespace Prisma {
     OR?: PlaylistTrackWhereInput[]
     NOT?: PlaylistTrackWhereInput | PlaylistTrackWhereInput[]
     playlistId?: StringFilter<"PlaylistTrack"> | string
-    trackId?: StringFilter<"PlaylistTrack"> | string
+    trackId?: IntFilter<"PlaylistTrack"> | number
     order?: IntFilter<"PlaylistTrack"> | number
     playlist?: XOR<PlaylistScalarRelationFilter, PlaylistWhereInput>
     track?: XOR<TrackScalarRelationFilter, TrackWhereInput>
@@ -12670,7 +15068,7 @@ export namespace Prisma {
     NOT?: PlaylistTrackScalarWhereWithAggregatesInput | PlaylistTrackScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"PlaylistTrack"> | string
     playlistId?: StringWithAggregatesFilter<"PlaylistTrack"> | string
-    trackId?: StringWithAggregatesFilter<"PlaylistTrack"> | string
+    trackId?: IntWithAggregatesFilter<"PlaylistTrack"> | number
     order?: IntWithAggregatesFilter<"PlaylistTrack"> | number
   }
 
@@ -12680,7 +15078,7 @@ export namespace Prisma {
     NOT?: FavoriteTrackWhereInput | FavoriteTrackWhereInput[]
     id?: StringFilter<"FavoriteTrack"> | string
     userId?: StringFilter<"FavoriteTrack"> | string
-    trackId?: StringFilter<"FavoriteTrack"> | string
+    trackId?: IntFilter<"FavoriteTrack"> | number
     createdAt?: DateTimeFilter<"FavoriteTrack"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     track?: XOR<TrackScalarRelationFilter, TrackWhereInput>
@@ -12703,7 +15101,7 @@ export namespace Prisma {
     OR?: FavoriteTrackWhereInput[]
     NOT?: FavoriteTrackWhereInput | FavoriteTrackWhereInput[]
     userId?: StringFilter<"FavoriteTrack"> | string
-    trackId?: StringFilter<"FavoriteTrack"> | string
+    trackId?: IntFilter<"FavoriteTrack"> | number
     createdAt?: DateTimeFilter<"FavoriteTrack"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     track?: XOR<TrackScalarRelationFilter, TrackWhereInput>
@@ -12715,8 +15113,10 @@ export namespace Prisma {
     trackId?: SortOrder
     createdAt?: SortOrder
     _count?: FavoriteTrackCountOrderByAggregateInput
+    _avg?: FavoriteTrackAvgOrderByAggregateInput
     _max?: FavoriteTrackMaxOrderByAggregateInput
     _min?: FavoriteTrackMinOrderByAggregateInput
+    _sum?: FavoriteTrackSumOrderByAggregateInput
   }
 
   export type FavoriteTrackScalarWhereWithAggregatesInput = {
@@ -12725,7 +15125,7 @@ export namespace Prisma {
     NOT?: FavoriteTrackScalarWhereWithAggregatesInput | FavoriteTrackScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"FavoriteTrack"> | string
     userId?: StringWithAggregatesFilter<"FavoriteTrack"> | string
-    trackId?: StringWithAggregatesFilter<"FavoriteTrack"> | string
+    trackId?: IntWithAggregatesFilter<"FavoriteTrack"> | number
     createdAt?: DateTimeWithAggregatesFilter<"FavoriteTrack"> | Date | string
   }
 
@@ -12836,6 +15236,121 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"FavoriteArtist"> | Date | string
   }
 
+  export type TrackHistoryWhereInput = {
+    AND?: TrackHistoryWhereInput | TrackHistoryWhereInput[]
+    OR?: TrackHistoryWhereInput[]
+    NOT?: TrackHistoryWhereInput | TrackHistoryWhereInput[]
+    id?: StringFilter<"TrackHistory"> | string
+    userId?: StringFilter<"TrackHistory"> | string
+    trackId?: IntFilter<"TrackHistory"> | number
+    playedAt?: DateTimeFilter<"TrackHistory"> | Date | string
+    listenedSec?: IntFilter<"TrackHistory"> | number
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    track?: XOR<TrackScalarRelationFilter, TrackWhereInput>
+  }
+
+  export type TrackHistoryOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    trackId?: SortOrder
+    playedAt?: SortOrder
+    listenedSec?: SortOrder
+    user?: UserOrderByWithRelationInput
+    track?: TrackOrderByWithRelationInput
+    _relevance?: TrackHistoryOrderByRelevanceInput
+  }
+
+  export type TrackHistoryWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: TrackHistoryWhereInput | TrackHistoryWhereInput[]
+    OR?: TrackHistoryWhereInput[]
+    NOT?: TrackHistoryWhereInput | TrackHistoryWhereInput[]
+    userId?: StringFilter<"TrackHistory"> | string
+    trackId?: IntFilter<"TrackHistory"> | number
+    playedAt?: DateTimeFilter<"TrackHistory"> | Date | string
+    listenedSec?: IntFilter<"TrackHistory"> | number
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    track?: XOR<TrackScalarRelationFilter, TrackWhereInput>
+  }, "id">
+
+  export type TrackHistoryOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    trackId?: SortOrder
+    playedAt?: SortOrder
+    listenedSec?: SortOrder
+    _count?: TrackHistoryCountOrderByAggregateInput
+    _avg?: TrackHistoryAvgOrderByAggregateInput
+    _max?: TrackHistoryMaxOrderByAggregateInput
+    _min?: TrackHistoryMinOrderByAggregateInput
+    _sum?: TrackHistorySumOrderByAggregateInput
+  }
+
+  export type TrackHistoryScalarWhereWithAggregatesInput = {
+    AND?: TrackHistoryScalarWhereWithAggregatesInput | TrackHistoryScalarWhereWithAggregatesInput[]
+    OR?: TrackHistoryScalarWhereWithAggregatesInput[]
+    NOT?: TrackHistoryScalarWhereWithAggregatesInput | TrackHistoryScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"TrackHistory"> | string
+    userId?: StringWithAggregatesFilter<"TrackHistory"> | string
+    trackId?: IntWithAggregatesFilter<"TrackHistory"> | number
+    playedAt?: DateTimeWithAggregatesFilter<"TrackHistory"> | Date | string
+    listenedSec?: IntWithAggregatesFilter<"TrackHistory"> | number
+  }
+
+  export type PlaylistHistoryWhereInput = {
+    AND?: PlaylistHistoryWhereInput | PlaylistHistoryWhereInput[]
+    OR?: PlaylistHistoryWhereInput[]
+    NOT?: PlaylistHistoryWhereInput | PlaylistHistoryWhereInput[]
+    id?: StringFilter<"PlaylistHistory"> | string
+    userId?: StringFilter<"PlaylistHistory"> | string
+    playlistId?: StringFilter<"PlaylistHistory"> | string
+    playedAt?: DateTimeFilter<"PlaylistHistory"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    playlist?: XOR<PlaylistScalarRelationFilter, PlaylistWhereInput>
+  }
+
+  export type PlaylistHistoryOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    playlistId?: SortOrder
+    playedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    playlist?: PlaylistOrderByWithRelationInput
+    _relevance?: PlaylistHistoryOrderByRelevanceInput
+  }
+
+  export type PlaylistHistoryWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: PlaylistHistoryWhereInput | PlaylistHistoryWhereInput[]
+    OR?: PlaylistHistoryWhereInput[]
+    NOT?: PlaylistHistoryWhereInput | PlaylistHistoryWhereInput[]
+    userId?: StringFilter<"PlaylistHistory"> | string
+    playlistId?: StringFilter<"PlaylistHistory"> | string
+    playedAt?: DateTimeFilter<"PlaylistHistory"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    playlist?: XOR<PlaylistScalarRelationFilter, PlaylistWhereInput>
+  }, "id">
+
+  export type PlaylistHistoryOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    playlistId?: SortOrder
+    playedAt?: SortOrder
+    _count?: PlaylistHistoryCountOrderByAggregateInput
+    _max?: PlaylistHistoryMaxOrderByAggregateInput
+    _min?: PlaylistHistoryMinOrderByAggregateInput
+  }
+
+  export type PlaylistHistoryScalarWhereWithAggregatesInput = {
+    AND?: PlaylistHistoryScalarWhereWithAggregatesInput | PlaylistHistoryScalarWhereWithAggregatesInput[]
+    OR?: PlaylistHistoryScalarWhereWithAggregatesInput[]
+    NOT?: PlaylistHistoryScalarWhereWithAggregatesInput | PlaylistHistoryScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PlaylistHistory"> | string
+    userId?: StringWithAggregatesFilter<"PlaylistHistory"> | string
+    playlistId?: StringWithAggregatesFilter<"PlaylistHistory"> | string
+    playedAt?: DateTimeWithAggregatesFilter<"PlaylistHistory"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     email: string
@@ -12848,7 +15363,9 @@ export namespace Prisma {
     banned?: boolean
     loginCount?: number
     lastLoginAt?: Date | string | null
-    lastPlayedTrackId?: string | null
+    totalPlayTime?: number
+    queue?: string | null
+    lastPlayedTrackId?: number | null
     lastPlayedPlaylistId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -12858,6 +15375,8 @@ export namespace Prisma {
     favoriteTracks?: FavoriteTrackCreateNestedManyWithoutUserInput
     favoritePlaylists?: FavoritePlaylistCreateNestedManyWithoutUserInput
     favoriteArtists?: FavoriteArtistCreateNestedManyWithoutUserInput
+    trackHistory?: TrackHistoryCreateNestedManyWithoutUserInput
+    playlistHistory?: PlaylistHistoryCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -12872,7 +15391,9 @@ export namespace Prisma {
     banned?: boolean
     loginCount?: number
     lastLoginAt?: Date | string | null
-    lastPlayedTrackId?: string | null
+    totalPlayTime?: number
+    queue?: string | null
+    lastPlayedTrackId?: number | null
     lastPlayedPlaylistId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -12882,6 +15403,8 @@ export namespace Prisma {
     favoriteTracks?: FavoriteTrackUncheckedCreateNestedManyWithoutUserInput
     favoritePlaylists?: FavoritePlaylistUncheckedCreateNestedManyWithoutUserInput
     favoriteArtists?: FavoriteArtistUncheckedCreateNestedManyWithoutUserInput
+    trackHistory?: TrackHistoryUncheckedCreateNestedManyWithoutUserInput
+    playlistHistory?: PlaylistHistoryUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -12896,7 +15419,9 @@ export namespace Prisma {
     banned?: BoolFieldUpdateOperationsInput | boolean
     loginCount?: IntFieldUpdateOperationsInput | number
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastPlayedTrackId?: NullableStringFieldUpdateOperationsInput | string | null
+    totalPlayTime?: IntFieldUpdateOperationsInput | number
+    queue?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPlayedTrackId?: NullableIntFieldUpdateOperationsInput | number | null
     lastPlayedPlaylistId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12906,6 +15431,8 @@ export namespace Prisma {
     favoriteTracks?: FavoriteTrackUpdateManyWithoutUserNestedInput
     favoritePlaylists?: FavoritePlaylistUpdateManyWithoutUserNestedInput
     favoriteArtists?: FavoriteArtistUpdateManyWithoutUserNestedInput
+    trackHistory?: TrackHistoryUpdateManyWithoutUserNestedInput
+    playlistHistory?: PlaylistHistoryUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -12920,7 +15447,9 @@ export namespace Prisma {
     banned?: BoolFieldUpdateOperationsInput | boolean
     loginCount?: IntFieldUpdateOperationsInput | number
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastPlayedTrackId?: NullableStringFieldUpdateOperationsInput | string | null
+    totalPlayTime?: IntFieldUpdateOperationsInput | number
+    queue?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPlayedTrackId?: NullableIntFieldUpdateOperationsInput | number | null
     lastPlayedPlaylistId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12930,6 +15459,8 @@ export namespace Prisma {
     favoriteTracks?: FavoriteTrackUncheckedUpdateManyWithoutUserNestedInput
     favoritePlaylists?: FavoritePlaylistUncheckedUpdateManyWithoutUserNestedInput
     favoriteArtists?: FavoriteArtistUncheckedUpdateManyWithoutUserNestedInput
+    trackHistory?: TrackHistoryUncheckedUpdateManyWithoutUserNestedInput
+    playlistHistory?: PlaylistHistoryUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -12944,7 +15475,9 @@ export namespace Prisma {
     banned?: boolean
     loginCount?: number
     lastLoginAt?: Date | string | null
-    lastPlayedTrackId?: string | null
+    totalPlayTime?: number
+    queue?: string | null
+    lastPlayedTrackId?: number | null
     lastPlayedPlaylistId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -12962,7 +15495,9 @@ export namespace Prisma {
     banned?: BoolFieldUpdateOperationsInput | boolean
     loginCount?: IntFieldUpdateOperationsInput | number
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastPlayedTrackId?: NullableStringFieldUpdateOperationsInput | string | null
+    totalPlayTime?: IntFieldUpdateOperationsInput | number
+    queue?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPlayedTrackId?: NullableIntFieldUpdateOperationsInput | number | null
     lastPlayedPlaylistId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12980,7 +15515,9 @@ export namespace Prisma {
     banned?: BoolFieldUpdateOperationsInput | boolean
     loginCount?: IntFieldUpdateOperationsInput | number
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastPlayedTrackId?: NullableStringFieldUpdateOperationsInput | string | null
+    totalPlayTime?: IntFieldUpdateOperationsInput | number
+    queue?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPlayedTrackId?: NullableIntFieldUpdateOperationsInput | number | null
     lastPlayedPlaylistId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12989,6 +15526,7 @@ export namespace Prisma {
   export type SessionCreateInput = {
     id: string
     expiresAt: Date | string
+    token: string
     ipAddress?: string | null
     userAgent?: string | null
     createdAt?: Date | string
@@ -13000,6 +15538,7 @@ export namespace Prisma {
     id: string
     userId: string
     expiresAt: Date | string
+    token: string
     ipAddress?: string | null
     userAgent?: string | null
     createdAt?: Date | string
@@ -13009,6 +15548,7 @@ export namespace Prisma {
   export type SessionUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    token?: StringFieldUpdateOperationsInput | string
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13020,6 +15560,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    token?: StringFieldUpdateOperationsInput | string
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13030,6 +15571,7 @@ export namespace Prisma {
     id: string
     userId: string
     expiresAt: Date | string
+    token: string
     ipAddress?: string | null
     userAgent?: string | null
     createdAt?: Date | string
@@ -13039,6 +15581,7 @@ export namespace Prisma {
   export type SessionUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    token?: StringFieldUpdateOperationsInput | string
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13049,6 +15592,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    token?: StringFieldUpdateOperationsInput | string
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13230,7 +15774,6 @@ export namespace Prisma {
   }
 
   export type TrackCreateInput = {
-    id?: string
     title: string
     artist: string
     src: string
@@ -13242,10 +15785,11 @@ export namespace Prisma {
     updatedAt?: Date | string
     playlists?: PlaylistTrackCreateNestedManyWithoutTrackInput
     favoritedBy?: FavoriteTrackCreateNestedManyWithoutTrackInput
+    history?: TrackHistoryCreateNestedManyWithoutTrackInput
   }
 
   export type TrackUncheckedCreateInput = {
-    id?: string
+    id?: number
     title: string
     artist: string
     src: string
@@ -13257,10 +15801,10 @@ export namespace Prisma {
     updatedAt?: Date | string
     playlists?: PlaylistTrackUncheckedCreateNestedManyWithoutTrackInput
     favoritedBy?: FavoriteTrackUncheckedCreateNestedManyWithoutTrackInput
+    history?: TrackHistoryUncheckedCreateNestedManyWithoutTrackInput
   }
 
   export type TrackUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     artist?: StringFieldUpdateOperationsInput | string
     src?: StringFieldUpdateOperationsInput | string
@@ -13272,10 +15816,11 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     playlists?: PlaylistTrackUpdateManyWithoutTrackNestedInput
     favoritedBy?: FavoriteTrackUpdateManyWithoutTrackNestedInput
+    history?: TrackHistoryUpdateManyWithoutTrackNestedInput
   }
 
   export type TrackUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     artist?: StringFieldUpdateOperationsInput | string
     src?: StringFieldUpdateOperationsInput | string
@@ -13287,10 +15832,11 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     playlists?: PlaylistTrackUncheckedUpdateManyWithoutTrackNestedInput
     favoritedBy?: FavoriteTrackUncheckedUpdateManyWithoutTrackNestedInput
+    history?: TrackHistoryUncheckedUpdateManyWithoutTrackNestedInput
   }
 
   export type TrackCreateManyInput = {
-    id?: string
+    id?: number
     title: string
     artist: string
     src: string
@@ -13303,7 +15849,6 @@ export namespace Prisma {
   }
 
   export type TrackUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     artist?: StringFieldUpdateOperationsInput | string
     src?: StringFieldUpdateOperationsInput | string
@@ -13316,7 +15861,7 @@ export namespace Prisma {
   }
 
   export type TrackUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     artist?: StringFieldUpdateOperationsInput | string
     src?: StringFieldUpdateOperationsInput | string
@@ -13341,6 +15886,7 @@ export namespace Prisma {
     author?: UserCreateNestedOneWithoutPlaylistsInput
     tracks?: PlaylistTrackCreateNestedManyWithoutPlaylistInput
     favoritedBy?: FavoritePlaylistCreateNestedManyWithoutPlaylistInput
+    history?: PlaylistHistoryCreateNestedManyWithoutPlaylistInput
   }
 
   export type PlaylistUncheckedCreateInput = {
@@ -13356,6 +15902,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     tracks?: PlaylistTrackUncheckedCreateNestedManyWithoutPlaylistInput
     favoritedBy?: FavoritePlaylistUncheckedCreateNestedManyWithoutPlaylistInput
+    history?: PlaylistHistoryUncheckedCreateNestedManyWithoutPlaylistInput
   }
 
   export type PlaylistUpdateInput = {
@@ -13371,6 +15918,7 @@ export namespace Prisma {
     author?: UserUpdateOneWithoutPlaylistsNestedInput
     tracks?: PlaylistTrackUpdateManyWithoutPlaylistNestedInput
     favoritedBy?: FavoritePlaylistUpdateManyWithoutPlaylistNestedInput
+    history?: PlaylistHistoryUpdateManyWithoutPlaylistNestedInput
   }
 
   export type PlaylistUncheckedUpdateInput = {
@@ -13386,6 +15934,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tracks?: PlaylistTrackUncheckedUpdateManyWithoutPlaylistNestedInput
     favoritedBy?: FavoritePlaylistUncheckedUpdateManyWithoutPlaylistNestedInput
+    history?: PlaylistHistoryUncheckedUpdateManyWithoutPlaylistNestedInput
   }
 
   export type PlaylistCreateManyInput = {
@@ -13436,7 +15985,7 @@ export namespace Prisma {
   export type PlaylistTrackUncheckedCreateInput = {
     id?: string
     playlistId: string
-    trackId: string
+    trackId: number
     order?: number
   }
 
@@ -13450,14 +15999,14 @@ export namespace Prisma {
   export type PlaylistTrackUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     playlistId?: StringFieldUpdateOperationsInput | string
-    trackId?: StringFieldUpdateOperationsInput | string
+    trackId?: IntFieldUpdateOperationsInput | number
     order?: IntFieldUpdateOperationsInput | number
   }
 
   export type PlaylistTrackCreateManyInput = {
     id?: string
     playlistId: string
-    trackId: string
+    trackId: number
     order?: number
   }
 
@@ -13469,7 +16018,7 @@ export namespace Prisma {
   export type PlaylistTrackUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     playlistId?: StringFieldUpdateOperationsInput | string
-    trackId?: StringFieldUpdateOperationsInput | string
+    trackId?: IntFieldUpdateOperationsInput | number
     order?: IntFieldUpdateOperationsInput | number
   }
 
@@ -13483,7 +16032,7 @@ export namespace Prisma {
   export type FavoriteTrackUncheckedCreateInput = {
     id?: string
     userId: string
-    trackId: string
+    trackId: number
     createdAt?: Date | string
   }
 
@@ -13497,14 +16046,14 @@ export namespace Prisma {
   export type FavoriteTrackUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    trackId?: StringFieldUpdateOperationsInput | string
+    trackId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type FavoriteTrackCreateManyInput = {
     id?: string
     userId: string
-    trackId: string
+    trackId: number
     createdAt?: Date | string
   }
 
@@ -13516,7 +16065,7 @@ export namespace Prisma {
   export type FavoriteTrackUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    trackId?: StringFieldUpdateOperationsInput | string
+    trackId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -13615,6 +16164,107 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type TrackHistoryCreateInput = {
+    id?: string
+    playedAt?: Date | string
+    listenedSec?: number
+    user: UserCreateNestedOneWithoutTrackHistoryInput
+    track: TrackCreateNestedOneWithoutHistoryInput
+  }
+
+  export type TrackHistoryUncheckedCreateInput = {
+    id?: string
+    userId: string
+    trackId: number
+    playedAt?: Date | string
+    listenedSec?: number
+  }
+
+  export type TrackHistoryUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    playedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    listenedSec?: IntFieldUpdateOperationsInput | number
+    user?: UserUpdateOneRequiredWithoutTrackHistoryNestedInput
+    track?: TrackUpdateOneRequiredWithoutHistoryNestedInput
+  }
+
+  export type TrackHistoryUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    trackId?: IntFieldUpdateOperationsInput | number
+    playedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    listenedSec?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type TrackHistoryCreateManyInput = {
+    id?: string
+    userId: string
+    trackId: number
+    playedAt?: Date | string
+    listenedSec?: number
+  }
+
+  export type TrackHistoryUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    playedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    listenedSec?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type TrackHistoryUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    trackId?: IntFieldUpdateOperationsInput | number
+    playedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    listenedSec?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type PlaylistHistoryCreateInput = {
+    id?: string
+    playedAt?: Date | string
+    user: UserCreateNestedOneWithoutPlaylistHistoryInput
+    playlist: PlaylistCreateNestedOneWithoutHistoryInput
+  }
+
+  export type PlaylistHistoryUncheckedCreateInput = {
+    id?: string
+    userId: string
+    playlistId: string
+    playedAt?: Date | string
+  }
+
+  export type PlaylistHistoryUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    playedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutPlaylistHistoryNestedInput
+    playlist?: PlaylistUpdateOneRequiredWithoutHistoryNestedInput
+  }
+
+  export type PlaylistHistoryUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    playlistId?: StringFieldUpdateOperationsInput | string
+    playedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlaylistHistoryCreateManyInput = {
+    id?: string
+    userId: string
+    playlistId: string
+    playedAt?: Date | string
+  }
+
+  export type PlaylistHistoryUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    playedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlaylistHistoryUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    playlistId?: StringFieldUpdateOperationsInput | string
+    playedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -13672,6 +16322,17 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[]
@@ -13719,6 +16380,18 @@ export namespace Prisma {
     none?: FavoriteArtistWhereInput
   }
 
+  export type TrackHistoryListRelationFilter = {
+    every?: TrackHistoryWhereInput
+    some?: TrackHistoryWhereInput
+    none?: TrackHistoryWhereInput
+  }
+
+  export type PlaylistHistoryListRelationFilter = {
+    every?: PlaylistHistoryWhereInput
+    some?: PlaylistHistoryWhereInput
+    none?: PlaylistHistoryWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -13748,6 +16421,14 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type TrackHistoryOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PlaylistHistoryOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type UserOrderByRelevanceInput = {
     fields: UserOrderByRelevanceFieldEnum | UserOrderByRelevanceFieldEnum[]
     sort: SortOrder
@@ -13766,6 +16447,8 @@ export namespace Prisma {
     banned?: SortOrder
     loginCount?: SortOrder
     lastLoginAt?: SortOrder
+    totalPlayTime?: SortOrder
+    queue?: SortOrder
     lastPlayedTrackId?: SortOrder
     lastPlayedPlaylistId?: SortOrder
     createdAt?: SortOrder
@@ -13774,6 +16457,8 @@ export namespace Prisma {
 
   export type UserAvgOrderByAggregateInput = {
     loginCount?: SortOrder
+    totalPlayTime?: SortOrder
+    lastPlayedTrackId?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -13788,6 +16473,8 @@ export namespace Prisma {
     banned?: SortOrder
     loginCount?: SortOrder
     lastLoginAt?: SortOrder
+    totalPlayTime?: SortOrder
+    queue?: SortOrder
     lastPlayedTrackId?: SortOrder
     lastPlayedPlaylistId?: SortOrder
     createdAt?: SortOrder
@@ -13806,6 +16493,8 @@ export namespace Prisma {
     banned?: SortOrder
     loginCount?: SortOrder
     lastLoginAt?: SortOrder
+    totalPlayTime?: SortOrder
+    queue?: SortOrder
     lastPlayedTrackId?: SortOrder
     lastPlayedPlaylistId?: SortOrder
     createdAt?: SortOrder
@@ -13814,6 +16503,8 @@ export namespace Prisma {
 
   export type UserSumOrderByAggregateInput = {
     loginCount?: SortOrder
+    totalPlayTime?: SortOrder
+    lastPlayedTrackId?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -13890,6 +16581,22 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[]
@@ -13919,6 +16626,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     expiresAt?: SortOrder
+    token?: SortOrder
     ipAddress?: SortOrder
     userAgent?: SortOrder
     createdAt?: SortOrder
@@ -13929,6 +16637,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     expiresAt?: SortOrder
+    token?: SortOrder
     ipAddress?: SortOrder
     userAgent?: SortOrder
     createdAt?: SortOrder
@@ -13939,6 +16648,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     expiresAt?: SortOrder
+    token?: SortOrder
     ipAddress?: SortOrder
     userAgent?: SortOrder
     createdAt?: SortOrder
@@ -14084,6 +16794,10 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type TrackAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
   export type TrackMaxOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
@@ -14106,6 +16820,10 @@ export namespace Prisma {
     type?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type TrackSumOrderByAggregateInput = {
+    id?: SortOrder
   }
   export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -14217,7 +16935,7 @@ export namespace Prisma {
 
   export type PlaylistTrackPlaylistIdTrackIdCompoundUniqueInput = {
     playlistId: string
-    trackId: string
+    trackId: number
   }
 
   export type PlaylistTrackCountOrderByAggregateInput = {
@@ -14228,6 +16946,7 @@ export namespace Prisma {
   }
 
   export type PlaylistTrackAvgOrderByAggregateInput = {
+    trackId?: SortOrder
     order?: SortOrder
   }
 
@@ -14246,6 +16965,7 @@ export namespace Prisma {
   }
 
   export type PlaylistTrackSumOrderByAggregateInput = {
+    trackId?: SortOrder
     order?: SortOrder
   }
 
@@ -14257,7 +16977,7 @@ export namespace Prisma {
 
   export type FavoriteTrackUserIdTrackIdCompoundUniqueInput = {
     userId: string
-    trackId: string
+    trackId: number
   }
 
   export type FavoriteTrackCountOrderByAggregateInput = {
@@ -14265,6 +16985,10 @@ export namespace Prisma {
     userId?: SortOrder
     trackId?: SortOrder
     createdAt?: SortOrder
+  }
+
+  export type FavoriteTrackAvgOrderByAggregateInput = {
+    trackId?: SortOrder
   }
 
   export type FavoriteTrackMaxOrderByAggregateInput = {
@@ -14279,6 +17003,10 @@ export namespace Prisma {
     userId?: SortOrder
     trackId?: SortOrder
     createdAt?: SortOrder
+  }
+
+  export type FavoriteTrackSumOrderByAggregateInput = {
+    trackId?: SortOrder
   }
 
   export type FavoritePlaylistOrderByRelevanceInput = {
@@ -14345,6 +17073,73 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type TrackHistoryOrderByRelevanceInput = {
+    fields: TrackHistoryOrderByRelevanceFieldEnum | TrackHistoryOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type TrackHistoryCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    trackId?: SortOrder
+    playedAt?: SortOrder
+    listenedSec?: SortOrder
+  }
+
+  export type TrackHistoryAvgOrderByAggregateInput = {
+    trackId?: SortOrder
+    listenedSec?: SortOrder
+  }
+
+  export type TrackHistoryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    trackId?: SortOrder
+    playedAt?: SortOrder
+    listenedSec?: SortOrder
+  }
+
+  export type TrackHistoryMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    trackId?: SortOrder
+    playedAt?: SortOrder
+    listenedSec?: SortOrder
+  }
+
+  export type TrackHistorySumOrderByAggregateInput = {
+    trackId?: SortOrder
+    listenedSec?: SortOrder
+  }
+
+  export type PlaylistHistoryOrderByRelevanceInput = {
+    fields: PlaylistHistoryOrderByRelevanceFieldEnum | PlaylistHistoryOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type PlaylistHistoryCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    playlistId?: SortOrder
+    playedAt?: SortOrder
+  }
+
+  export type PlaylistHistoryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    playlistId?: SortOrder
+    playedAt?: SortOrder
+  }
+
+  export type PlaylistHistoryMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    playlistId?: SortOrder
+    playedAt?: SortOrder
+  }
+
   export type SessionCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -14385,6 +17180,20 @@ export namespace Prisma {
     connectOrCreate?: FavoriteArtistCreateOrConnectWithoutUserInput | FavoriteArtistCreateOrConnectWithoutUserInput[]
     createMany?: FavoriteArtistCreateManyUserInputEnvelope
     connect?: FavoriteArtistWhereUniqueInput | FavoriteArtistWhereUniqueInput[]
+  }
+
+  export type TrackHistoryCreateNestedManyWithoutUserInput = {
+    create?: XOR<TrackHistoryCreateWithoutUserInput, TrackHistoryUncheckedCreateWithoutUserInput> | TrackHistoryCreateWithoutUserInput[] | TrackHistoryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TrackHistoryCreateOrConnectWithoutUserInput | TrackHistoryCreateOrConnectWithoutUserInput[]
+    createMany?: TrackHistoryCreateManyUserInputEnvelope
+    connect?: TrackHistoryWhereUniqueInput | TrackHistoryWhereUniqueInput[]
+  }
+
+  export type PlaylistHistoryCreateNestedManyWithoutUserInput = {
+    create?: XOR<PlaylistHistoryCreateWithoutUserInput, PlaylistHistoryUncheckedCreateWithoutUserInput> | PlaylistHistoryCreateWithoutUserInput[] | PlaylistHistoryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PlaylistHistoryCreateOrConnectWithoutUserInput | PlaylistHistoryCreateOrConnectWithoutUserInput[]
+    createMany?: PlaylistHistoryCreateManyUserInputEnvelope
+    connect?: PlaylistHistoryWhereUniqueInput | PlaylistHistoryWhereUniqueInput[]
   }
 
   export type SessionUncheckedCreateNestedManyWithoutUserInput = {
@@ -14429,6 +17238,20 @@ export namespace Prisma {
     connect?: FavoriteArtistWhereUniqueInput | FavoriteArtistWhereUniqueInput[]
   }
 
+  export type TrackHistoryUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<TrackHistoryCreateWithoutUserInput, TrackHistoryUncheckedCreateWithoutUserInput> | TrackHistoryCreateWithoutUserInput[] | TrackHistoryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TrackHistoryCreateOrConnectWithoutUserInput | TrackHistoryCreateOrConnectWithoutUserInput[]
+    createMany?: TrackHistoryCreateManyUserInputEnvelope
+    connect?: TrackHistoryWhereUniqueInput | TrackHistoryWhereUniqueInput[]
+  }
+
+  export type PlaylistHistoryUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<PlaylistHistoryCreateWithoutUserInput, PlaylistHistoryUncheckedCreateWithoutUserInput> | PlaylistHistoryCreateWithoutUserInput[] | PlaylistHistoryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PlaylistHistoryCreateOrConnectWithoutUserInput | PlaylistHistoryCreateOrConnectWithoutUserInput[]
+    createMany?: PlaylistHistoryCreateManyUserInputEnvelope
+    connect?: PlaylistHistoryWhereUniqueInput | PlaylistHistoryWhereUniqueInput[]
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -14451,6 +17274,14 @@ export namespace Prisma {
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
@@ -14541,6 +17372,34 @@ export namespace Prisma {
     deleteMany?: FavoriteArtistScalarWhereInput | FavoriteArtistScalarWhereInput[]
   }
 
+  export type TrackHistoryUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TrackHistoryCreateWithoutUserInput, TrackHistoryUncheckedCreateWithoutUserInput> | TrackHistoryCreateWithoutUserInput[] | TrackHistoryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TrackHistoryCreateOrConnectWithoutUserInput | TrackHistoryCreateOrConnectWithoutUserInput[]
+    upsert?: TrackHistoryUpsertWithWhereUniqueWithoutUserInput | TrackHistoryUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TrackHistoryCreateManyUserInputEnvelope
+    set?: TrackHistoryWhereUniqueInput | TrackHistoryWhereUniqueInput[]
+    disconnect?: TrackHistoryWhereUniqueInput | TrackHistoryWhereUniqueInput[]
+    delete?: TrackHistoryWhereUniqueInput | TrackHistoryWhereUniqueInput[]
+    connect?: TrackHistoryWhereUniqueInput | TrackHistoryWhereUniqueInput[]
+    update?: TrackHistoryUpdateWithWhereUniqueWithoutUserInput | TrackHistoryUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TrackHistoryUpdateManyWithWhereWithoutUserInput | TrackHistoryUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TrackHistoryScalarWhereInput | TrackHistoryScalarWhereInput[]
+  }
+
+  export type PlaylistHistoryUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PlaylistHistoryCreateWithoutUserInput, PlaylistHistoryUncheckedCreateWithoutUserInput> | PlaylistHistoryCreateWithoutUserInput[] | PlaylistHistoryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PlaylistHistoryCreateOrConnectWithoutUserInput | PlaylistHistoryCreateOrConnectWithoutUserInput[]
+    upsert?: PlaylistHistoryUpsertWithWhereUniqueWithoutUserInput | PlaylistHistoryUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PlaylistHistoryCreateManyUserInputEnvelope
+    set?: PlaylistHistoryWhereUniqueInput | PlaylistHistoryWhereUniqueInput[]
+    disconnect?: PlaylistHistoryWhereUniqueInput | PlaylistHistoryWhereUniqueInput[]
+    delete?: PlaylistHistoryWhereUniqueInput | PlaylistHistoryWhereUniqueInput[]
+    connect?: PlaylistHistoryWhereUniqueInput | PlaylistHistoryWhereUniqueInput[]
+    update?: PlaylistHistoryUpdateWithWhereUniqueWithoutUserInput | PlaylistHistoryUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PlaylistHistoryUpdateManyWithWhereWithoutUserInput | PlaylistHistoryUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PlaylistHistoryScalarWhereInput | PlaylistHistoryScalarWhereInput[]
+  }
+
   export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -14625,6 +17484,34 @@ export namespace Prisma {
     deleteMany?: FavoriteArtistScalarWhereInput | FavoriteArtistScalarWhereInput[]
   }
 
+  export type TrackHistoryUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TrackHistoryCreateWithoutUserInput, TrackHistoryUncheckedCreateWithoutUserInput> | TrackHistoryCreateWithoutUserInput[] | TrackHistoryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TrackHistoryCreateOrConnectWithoutUserInput | TrackHistoryCreateOrConnectWithoutUserInput[]
+    upsert?: TrackHistoryUpsertWithWhereUniqueWithoutUserInput | TrackHistoryUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TrackHistoryCreateManyUserInputEnvelope
+    set?: TrackHistoryWhereUniqueInput | TrackHistoryWhereUniqueInput[]
+    disconnect?: TrackHistoryWhereUniqueInput | TrackHistoryWhereUniqueInput[]
+    delete?: TrackHistoryWhereUniqueInput | TrackHistoryWhereUniqueInput[]
+    connect?: TrackHistoryWhereUniqueInput | TrackHistoryWhereUniqueInput[]
+    update?: TrackHistoryUpdateWithWhereUniqueWithoutUserInput | TrackHistoryUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TrackHistoryUpdateManyWithWhereWithoutUserInput | TrackHistoryUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TrackHistoryScalarWhereInput | TrackHistoryScalarWhereInput[]
+  }
+
+  export type PlaylistHistoryUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PlaylistHistoryCreateWithoutUserInput, PlaylistHistoryUncheckedCreateWithoutUserInput> | PlaylistHistoryCreateWithoutUserInput[] | PlaylistHistoryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PlaylistHistoryCreateOrConnectWithoutUserInput | PlaylistHistoryCreateOrConnectWithoutUserInput[]
+    upsert?: PlaylistHistoryUpsertWithWhereUniqueWithoutUserInput | PlaylistHistoryUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PlaylistHistoryCreateManyUserInputEnvelope
+    set?: PlaylistHistoryWhereUniqueInput | PlaylistHistoryWhereUniqueInput[]
+    disconnect?: PlaylistHistoryWhereUniqueInput | PlaylistHistoryWhereUniqueInput[]
+    delete?: PlaylistHistoryWhereUniqueInput | PlaylistHistoryWhereUniqueInput[]
+    connect?: PlaylistHistoryWhereUniqueInput | PlaylistHistoryWhereUniqueInput[]
+    update?: PlaylistHistoryUpdateWithWhereUniqueWithoutUserInput | PlaylistHistoryUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PlaylistHistoryUpdateManyWithWhereWithoutUserInput | PlaylistHistoryUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PlaylistHistoryScalarWhereInput | PlaylistHistoryScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutSessionsInput = {
     create?: XOR<UserCreateWithoutSessionsInput, UserUncheckedCreateWithoutSessionsInput>
     connectOrCreate?: UserCreateOrConnectWithoutSessionsInput
@@ -14667,6 +17554,13 @@ export namespace Prisma {
     connect?: FavoriteTrackWhereUniqueInput | FavoriteTrackWhereUniqueInput[]
   }
 
+  export type TrackHistoryCreateNestedManyWithoutTrackInput = {
+    create?: XOR<TrackHistoryCreateWithoutTrackInput, TrackHistoryUncheckedCreateWithoutTrackInput> | TrackHistoryCreateWithoutTrackInput[] | TrackHistoryUncheckedCreateWithoutTrackInput[]
+    connectOrCreate?: TrackHistoryCreateOrConnectWithoutTrackInput | TrackHistoryCreateOrConnectWithoutTrackInput[]
+    createMany?: TrackHistoryCreateManyTrackInputEnvelope
+    connect?: TrackHistoryWhereUniqueInput | TrackHistoryWhereUniqueInput[]
+  }
+
   export type PlaylistTrackUncheckedCreateNestedManyWithoutTrackInput = {
     create?: XOR<PlaylistTrackCreateWithoutTrackInput, PlaylistTrackUncheckedCreateWithoutTrackInput> | PlaylistTrackCreateWithoutTrackInput[] | PlaylistTrackUncheckedCreateWithoutTrackInput[]
     connectOrCreate?: PlaylistTrackCreateOrConnectWithoutTrackInput | PlaylistTrackCreateOrConnectWithoutTrackInput[]
@@ -14679,6 +17573,13 @@ export namespace Prisma {
     connectOrCreate?: FavoriteTrackCreateOrConnectWithoutTrackInput | FavoriteTrackCreateOrConnectWithoutTrackInput[]
     createMany?: FavoriteTrackCreateManyTrackInputEnvelope
     connect?: FavoriteTrackWhereUniqueInput | FavoriteTrackWhereUniqueInput[]
+  }
+
+  export type TrackHistoryUncheckedCreateNestedManyWithoutTrackInput = {
+    create?: XOR<TrackHistoryCreateWithoutTrackInput, TrackHistoryUncheckedCreateWithoutTrackInput> | TrackHistoryCreateWithoutTrackInput[] | TrackHistoryUncheckedCreateWithoutTrackInput[]
+    connectOrCreate?: TrackHistoryCreateOrConnectWithoutTrackInput | TrackHistoryCreateOrConnectWithoutTrackInput[]
+    createMany?: TrackHistoryCreateManyTrackInputEnvelope
+    connect?: TrackHistoryWhereUniqueInput | TrackHistoryWhereUniqueInput[]
   }
 
   export type PlaylistTrackUpdateManyWithoutTrackNestedInput = {
@@ -14709,6 +17610,20 @@ export namespace Prisma {
     deleteMany?: FavoriteTrackScalarWhereInput | FavoriteTrackScalarWhereInput[]
   }
 
+  export type TrackHistoryUpdateManyWithoutTrackNestedInput = {
+    create?: XOR<TrackHistoryCreateWithoutTrackInput, TrackHistoryUncheckedCreateWithoutTrackInput> | TrackHistoryCreateWithoutTrackInput[] | TrackHistoryUncheckedCreateWithoutTrackInput[]
+    connectOrCreate?: TrackHistoryCreateOrConnectWithoutTrackInput | TrackHistoryCreateOrConnectWithoutTrackInput[]
+    upsert?: TrackHistoryUpsertWithWhereUniqueWithoutTrackInput | TrackHistoryUpsertWithWhereUniqueWithoutTrackInput[]
+    createMany?: TrackHistoryCreateManyTrackInputEnvelope
+    set?: TrackHistoryWhereUniqueInput | TrackHistoryWhereUniqueInput[]
+    disconnect?: TrackHistoryWhereUniqueInput | TrackHistoryWhereUniqueInput[]
+    delete?: TrackHistoryWhereUniqueInput | TrackHistoryWhereUniqueInput[]
+    connect?: TrackHistoryWhereUniqueInput | TrackHistoryWhereUniqueInput[]
+    update?: TrackHistoryUpdateWithWhereUniqueWithoutTrackInput | TrackHistoryUpdateWithWhereUniqueWithoutTrackInput[]
+    updateMany?: TrackHistoryUpdateManyWithWhereWithoutTrackInput | TrackHistoryUpdateManyWithWhereWithoutTrackInput[]
+    deleteMany?: TrackHistoryScalarWhereInput | TrackHistoryScalarWhereInput[]
+  }
+
   export type PlaylistTrackUncheckedUpdateManyWithoutTrackNestedInput = {
     create?: XOR<PlaylistTrackCreateWithoutTrackInput, PlaylistTrackUncheckedCreateWithoutTrackInput> | PlaylistTrackCreateWithoutTrackInput[] | PlaylistTrackUncheckedCreateWithoutTrackInput[]
     connectOrCreate?: PlaylistTrackCreateOrConnectWithoutTrackInput | PlaylistTrackCreateOrConnectWithoutTrackInput[]
@@ -14737,6 +17652,20 @@ export namespace Prisma {
     deleteMany?: FavoriteTrackScalarWhereInput | FavoriteTrackScalarWhereInput[]
   }
 
+  export type TrackHistoryUncheckedUpdateManyWithoutTrackNestedInput = {
+    create?: XOR<TrackHistoryCreateWithoutTrackInput, TrackHistoryUncheckedCreateWithoutTrackInput> | TrackHistoryCreateWithoutTrackInput[] | TrackHistoryUncheckedCreateWithoutTrackInput[]
+    connectOrCreate?: TrackHistoryCreateOrConnectWithoutTrackInput | TrackHistoryCreateOrConnectWithoutTrackInput[]
+    upsert?: TrackHistoryUpsertWithWhereUniqueWithoutTrackInput | TrackHistoryUpsertWithWhereUniqueWithoutTrackInput[]
+    createMany?: TrackHistoryCreateManyTrackInputEnvelope
+    set?: TrackHistoryWhereUniqueInput | TrackHistoryWhereUniqueInput[]
+    disconnect?: TrackHistoryWhereUniqueInput | TrackHistoryWhereUniqueInput[]
+    delete?: TrackHistoryWhereUniqueInput | TrackHistoryWhereUniqueInput[]
+    connect?: TrackHistoryWhereUniqueInput | TrackHistoryWhereUniqueInput[]
+    update?: TrackHistoryUpdateWithWhereUniqueWithoutTrackInput | TrackHistoryUpdateWithWhereUniqueWithoutTrackInput[]
+    updateMany?: TrackHistoryUpdateManyWithWhereWithoutTrackInput | TrackHistoryUpdateManyWithWhereWithoutTrackInput[]
+    deleteMany?: TrackHistoryScalarWhereInput | TrackHistoryScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutPlaylistsInput = {
     create?: XOR<UserCreateWithoutPlaylistsInput, UserUncheckedCreateWithoutPlaylistsInput>
     connectOrCreate?: UserCreateOrConnectWithoutPlaylistsInput
@@ -14757,6 +17686,13 @@ export namespace Prisma {
     connect?: FavoritePlaylistWhereUniqueInput | FavoritePlaylistWhereUniqueInput[]
   }
 
+  export type PlaylistHistoryCreateNestedManyWithoutPlaylistInput = {
+    create?: XOR<PlaylistHistoryCreateWithoutPlaylistInput, PlaylistHistoryUncheckedCreateWithoutPlaylistInput> | PlaylistHistoryCreateWithoutPlaylistInput[] | PlaylistHistoryUncheckedCreateWithoutPlaylistInput[]
+    connectOrCreate?: PlaylistHistoryCreateOrConnectWithoutPlaylistInput | PlaylistHistoryCreateOrConnectWithoutPlaylistInput[]
+    createMany?: PlaylistHistoryCreateManyPlaylistInputEnvelope
+    connect?: PlaylistHistoryWhereUniqueInput | PlaylistHistoryWhereUniqueInput[]
+  }
+
   export type PlaylistTrackUncheckedCreateNestedManyWithoutPlaylistInput = {
     create?: XOR<PlaylistTrackCreateWithoutPlaylistInput, PlaylistTrackUncheckedCreateWithoutPlaylistInput> | PlaylistTrackCreateWithoutPlaylistInput[] | PlaylistTrackUncheckedCreateWithoutPlaylistInput[]
     connectOrCreate?: PlaylistTrackCreateOrConnectWithoutPlaylistInput | PlaylistTrackCreateOrConnectWithoutPlaylistInput[]
@@ -14769,6 +17705,13 @@ export namespace Prisma {
     connectOrCreate?: FavoritePlaylistCreateOrConnectWithoutPlaylistInput | FavoritePlaylistCreateOrConnectWithoutPlaylistInput[]
     createMany?: FavoritePlaylistCreateManyPlaylistInputEnvelope
     connect?: FavoritePlaylistWhereUniqueInput | FavoritePlaylistWhereUniqueInput[]
+  }
+
+  export type PlaylistHistoryUncheckedCreateNestedManyWithoutPlaylistInput = {
+    create?: XOR<PlaylistHistoryCreateWithoutPlaylistInput, PlaylistHistoryUncheckedCreateWithoutPlaylistInput> | PlaylistHistoryCreateWithoutPlaylistInput[] | PlaylistHistoryUncheckedCreateWithoutPlaylistInput[]
+    connectOrCreate?: PlaylistHistoryCreateOrConnectWithoutPlaylistInput | PlaylistHistoryCreateOrConnectWithoutPlaylistInput[]
+    createMany?: PlaylistHistoryCreateManyPlaylistInputEnvelope
+    connect?: PlaylistHistoryWhereUniqueInput | PlaylistHistoryWhereUniqueInput[]
   }
 
   export type EnumPlaylistCategoryFieldUpdateOperationsInput = {
@@ -14813,6 +17756,20 @@ export namespace Prisma {
     deleteMany?: FavoritePlaylistScalarWhereInput | FavoritePlaylistScalarWhereInput[]
   }
 
+  export type PlaylistHistoryUpdateManyWithoutPlaylistNestedInput = {
+    create?: XOR<PlaylistHistoryCreateWithoutPlaylistInput, PlaylistHistoryUncheckedCreateWithoutPlaylistInput> | PlaylistHistoryCreateWithoutPlaylistInput[] | PlaylistHistoryUncheckedCreateWithoutPlaylistInput[]
+    connectOrCreate?: PlaylistHistoryCreateOrConnectWithoutPlaylistInput | PlaylistHistoryCreateOrConnectWithoutPlaylistInput[]
+    upsert?: PlaylistHistoryUpsertWithWhereUniqueWithoutPlaylistInput | PlaylistHistoryUpsertWithWhereUniqueWithoutPlaylistInput[]
+    createMany?: PlaylistHistoryCreateManyPlaylistInputEnvelope
+    set?: PlaylistHistoryWhereUniqueInput | PlaylistHistoryWhereUniqueInput[]
+    disconnect?: PlaylistHistoryWhereUniqueInput | PlaylistHistoryWhereUniqueInput[]
+    delete?: PlaylistHistoryWhereUniqueInput | PlaylistHistoryWhereUniqueInput[]
+    connect?: PlaylistHistoryWhereUniqueInput | PlaylistHistoryWhereUniqueInput[]
+    update?: PlaylistHistoryUpdateWithWhereUniqueWithoutPlaylistInput | PlaylistHistoryUpdateWithWhereUniqueWithoutPlaylistInput[]
+    updateMany?: PlaylistHistoryUpdateManyWithWhereWithoutPlaylistInput | PlaylistHistoryUpdateManyWithWhereWithoutPlaylistInput[]
+    deleteMany?: PlaylistHistoryScalarWhereInput | PlaylistHistoryScalarWhereInput[]
+  }
+
   export type PlaylistTrackUncheckedUpdateManyWithoutPlaylistNestedInput = {
     create?: XOR<PlaylistTrackCreateWithoutPlaylistInput, PlaylistTrackUncheckedCreateWithoutPlaylistInput> | PlaylistTrackCreateWithoutPlaylistInput[] | PlaylistTrackUncheckedCreateWithoutPlaylistInput[]
     connectOrCreate?: PlaylistTrackCreateOrConnectWithoutPlaylistInput | PlaylistTrackCreateOrConnectWithoutPlaylistInput[]
@@ -14839,6 +17796,20 @@ export namespace Prisma {
     update?: FavoritePlaylistUpdateWithWhereUniqueWithoutPlaylistInput | FavoritePlaylistUpdateWithWhereUniqueWithoutPlaylistInput[]
     updateMany?: FavoritePlaylistUpdateManyWithWhereWithoutPlaylistInput | FavoritePlaylistUpdateManyWithWhereWithoutPlaylistInput[]
     deleteMany?: FavoritePlaylistScalarWhereInput | FavoritePlaylistScalarWhereInput[]
+  }
+
+  export type PlaylistHistoryUncheckedUpdateManyWithoutPlaylistNestedInput = {
+    create?: XOR<PlaylistHistoryCreateWithoutPlaylistInput, PlaylistHistoryUncheckedCreateWithoutPlaylistInput> | PlaylistHistoryCreateWithoutPlaylistInput[] | PlaylistHistoryUncheckedCreateWithoutPlaylistInput[]
+    connectOrCreate?: PlaylistHistoryCreateOrConnectWithoutPlaylistInput | PlaylistHistoryCreateOrConnectWithoutPlaylistInput[]
+    upsert?: PlaylistHistoryUpsertWithWhereUniqueWithoutPlaylistInput | PlaylistHistoryUpsertWithWhereUniqueWithoutPlaylistInput[]
+    createMany?: PlaylistHistoryCreateManyPlaylistInputEnvelope
+    set?: PlaylistHistoryWhereUniqueInput | PlaylistHistoryWhereUniqueInput[]
+    disconnect?: PlaylistHistoryWhereUniqueInput | PlaylistHistoryWhereUniqueInput[]
+    delete?: PlaylistHistoryWhereUniqueInput | PlaylistHistoryWhereUniqueInput[]
+    connect?: PlaylistHistoryWhereUniqueInput | PlaylistHistoryWhereUniqueInput[]
+    update?: PlaylistHistoryUpdateWithWhereUniqueWithoutPlaylistInput | PlaylistHistoryUpdateWithWhereUniqueWithoutPlaylistInput[]
+    updateMany?: PlaylistHistoryUpdateManyWithWhereWithoutPlaylistInput | PlaylistHistoryUpdateManyWithWhereWithoutPlaylistInput[]
+    deleteMany?: PlaylistHistoryScalarWhereInput | PlaylistHistoryScalarWhereInput[]
   }
 
   export type PlaylistCreateNestedOneWithoutTracksInput = {
@@ -14939,6 +17910,62 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFavoriteArtistsInput, UserUpdateWithoutFavoriteArtistsInput>, UserUncheckedUpdateWithoutFavoriteArtistsInput>
   }
 
+  export type UserCreateNestedOneWithoutTrackHistoryInput = {
+    create?: XOR<UserCreateWithoutTrackHistoryInput, UserUncheckedCreateWithoutTrackHistoryInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTrackHistoryInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type TrackCreateNestedOneWithoutHistoryInput = {
+    create?: XOR<TrackCreateWithoutHistoryInput, TrackUncheckedCreateWithoutHistoryInput>
+    connectOrCreate?: TrackCreateOrConnectWithoutHistoryInput
+    connect?: TrackWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutTrackHistoryNestedInput = {
+    create?: XOR<UserCreateWithoutTrackHistoryInput, UserUncheckedCreateWithoutTrackHistoryInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTrackHistoryInput
+    upsert?: UserUpsertWithoutTrackHistoryInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTrackHistoryInput, UserUpdateWithoutTrackHistoryInput>, UserUncheckedUpdateWithoutTrackHistoryInput>
+  }
+
+  export type TrackUpdateOneRequiredWithoutHistoryNestedInput = {
+    create?: XOR<TrackCreateWithoutHistoryInput, TrackUncheckedCreateWithoutHistoryInput>
+    connectOrCreate?: TrackCreateOrConnectWithoutHistoryInput
+    upsert?: TrackUpsertWithoutHistoryInput
+    connect?: TrackWhereUniqueInput
+    update?: XOR<XOR<TrackUpdateToOneWithWhereWithoutHistoryInput, TrackUpdateWithoutHistoryInput>, TrackUncheckedUpdateWithoutHistoryInput>
+  }
+
+  export type UserCreateNestedOneWithoutPlaylistHistoryInput = {
+    create?: XOR<UserCreateWithoutPlaylistHistoryInput, UserUncheckedCreateWithoutPlaylistHistoryInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPlaylistHistoryInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type PlaylistCreateNestedOneWithoutHistoryInput = {
+    create?: XOR<PlaylistCreateWithoutHistoryInput, PlaylistUncheckedCreateWithoutHistoryInput>
+    connectOrCreate?: PlaylistCreateOrConnectWithoutHistoryInput
+    connect?: PlaylistWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutPlaylistHistoryNestedInput = {
+    create?: XOR<UserCreateWithoutPlaylistHistoryInput, UserUncheckedCreateWithoutPlaylistHistoryInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPlaylistHistoryInput
+    upsert?: UserUpsertWithoutPlaylistHistoryInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPlaylistHistoryInput, UserUpdateWithoutPlaylistHistoryInput>, UserUncheckedUpdateWithoutPlaylistHistoryInput>
+  }
+
+  export type PlaylistUpdateOneRequiredWithoutHistoryNestedInput = {
+    create?: XOR<PlaylistCreateWithoutHistoryInput, PlaylistUncheckedCreateWithoutHistoryInput>
+    connectOrCreate?: PlaylistCreateOrConnectWithoutHistoryInput
+    upsert?: PlaylistUpsertWithoutHistoryInput
+    connect?: PlaylistWhereUniqueInput
+    update?: XOR<XOR<PlaylistUpdateToOneWithWhereWithoutHistoryInput, PlaylistUpdateWithoutHistoryInput>, PlaylistUncheckedUpdateWithoutHistoryInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -14996,6 +18023,17 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[]
@@ -15041,17 +18079,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
-  export type NestedIntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -15101,6 +18128,33 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -15160,6 +18214,7 @@ export namespace Prisma {
   export type SessionCreateWithoutUserInput = {
     id: string
     expiresAt: Date | string
+    token: string
     ipAddress?: string | null
     userAgent?: string | null
     createdAt?: Date | string
@@ -15169,6 +18224,7 @@ export namespace Prisma {
   export type SessionUncheckedCreateWithoutUserInput = {
     id: string
     expiresAt: Date | string
+    token: string
     ipAddress?: string | null
     userAgent?: string | null
     createdAt?: Date | string
@@ -15237,6 +18293,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     tracks?: PlaylistTrackCreateNestedManyWithoutPlaylistInput
     favoritedBy?: FavoritePlaylistCreateNestedManyWithoutPlaylistInput
+    history?: PlaylistHistoryCreateNestedManyWithoutPlaylistInput
   }
 
   export type PlaylistUncheckedCreateWithoutAuthorInput = {
@@ -15251,6 +18308,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     tracks?: PlaylistTrackUncheckedCreateNestedManyWithoutPlaylistInput
     favoritedBy?: FavoritePlaylistUncheckedCreateNestedManyWithoutPlaylistInput
+    history?: PlaylistHistoryUncheckedCreateNestedManyWithoutPlaylistInput
   }
 
   export type PlaylistCreateOrConnectWithoutAuthorInput = {
@@ -15271,7 +18329,7 @@ export namespace Prisma {
 
   export type FavoriteTrackUncheckedCreateWithoutUserInput = {
     id?: string
-    trackId: string
+    trackId: number
     createdAt?: Date | string
   }
 
@@ -15329,6 +18387,52 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type TrackHistoryCreateWithoutUserInput = {
+    id?: string
+    playedAt?: Date | string
+    listenedSec?: number
+    track: TrackCreateNestedOneWithoutHistoryInput
+  }
+
+  export type TrackHistoryUncheckedCreateWithoutUserInput = {
+    id?: string
+    trackId: number
+    playedAt?: Date | string
+    listenedSec?: number
+  }
+
+  export type TrackHistoryCreateOrConnectWithoutUserInput = {
+    where: TrackHistoryWhereUniqueInput
+    create: XOR<TrackHistoryCreateWithoutUserInput, TrackHistoryUncheckedCreateWithoutUserInput>
+  }
+
+  export type TrackHistoryCreateManyUserInputEnvelope = {
+    data: TrackHistoryCreateManyUserInput | TrackHistoryCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PlaylistHistoryCreateWithoutUserInput = {
+    id?: string
+    playedAt?: Date | string
+    playlist: PlaylistCreateNestedOneWithoutHistoryInput
+  }
+
+  export type PlaylistHistoryUncheckedCreateWithoutUserInput = {
+    id?: string
+    playlistId: string
+    playedAt?: Date | string
+  }
+
+  export type PlaylistHistoryCreateOrConnectWithoutUserInput = {
+    where: PlaylistHistoryWhereUniqueInput
+    create: XOR<PlaylistHistoryCreateWithoutUserInput, PlaylistHistoryUncheckedCreateWithoutUserInput>
+  }
+
+  export type PlaylistHistoryCreateManyUserInputEnvelope = {
+    data: PlaylistHistoryCreateManyUserInput | PlaylistHistoryCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type SessionUpsertWithWhereUniqueWithoutUserInput = {
     where: SessionWhereUniqueInput
     update: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
@@ -15352,6 +18456,7 @@ export namespace Prisma {
     id?: StringFilter<"Session"> | string
     userId?: StringFilter<"Session"> | string
     expiresAt?: DateTimeFilter<"Session"> | Date | string
+    token?: StringFilter<"Session"> | string
     ipAddress?: StringNullableFilter<"Session"> | string | null
     userAgent?: StringNullableFilter<"Session"> | string | null
     createdAt?: DateTimeFilter<"Session"> | Date | string
@@ -15447,7 +18552,7 @@ export namespace Prisma {
     NOT?: FavoriteTrackScalarWhereInput | FavoriteTrackScalarWhereInput[]
     id?: StringFilter<"FavoriteTrack"> | string
     userId?: StringFilter<"FavoriteTrack"> | string
-    trackId?: StringFilter<"FavoriteTrack"> | string
+    trackId?: IntFilter<"FavoriteTrack"> | number
     createdAt?: DateTimeFilter<"FavoriteTrack"> | Date | string
   }
 
@@ -15503,6 +18608,59 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"FavoriteArtist"> | Date | string
   }
 
+  export type TrackHistoryUpsertWithWhereUniqueWithoutUserInput = {
+    where: TrackHistoryWhereUniqueInput
+    update: XOR<TrackHistoryUpdateWithoutUserInput, TrackHistoryUncheckedUpdateWithoutUserInput>
+    create: XOR<TrackHistoryCreateWithoutUserInput, TrackHistoryUncheckedCreateWithoutUserInput>
+  }
+
+  export type TrackHistoryUpdateWithWhereUniqueWithoutUserInput = {
+    where: TrackHistoryWhereUniqueInput
+    data: XOR<TrackHistoryUpdateWithoutUserInput, TrackHistoryUncheckedUpdateWithoutUserInput>
+  }
+
+  export type TrackHistoryUpdateManyWithWhereWithoutUserInput = {
+    where: TrackHistoryScalarWhereInput
+    data: XOR<TrackHistoryUpdateManyMutationInput, TrackHistoryUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type TrackHistoryScalarWhereInput = {
+    AND?: TrackHistoryScalarWhereInput | TrackHistoryScalarWhereInput[]
+    OR?: TrackHistoryScalarWhereInput[]
+    NOT?: TrackHistoryScalarWhereInput | TrackHistoryScalarWhereInput[]
+    id?: StringFilter<"TrackHistory"> | string
+    userId?: StringFilter<"TrackHistory"> | string
+    trackId?: IntFilter<"TrackHistory"> | number
+    playedAt?: DateTimeFilter<"TrackHistory"> | Date | string
+    listenedSec?: IntFilter<"TrackHistory"> | number
+  }
+
+  export type PlaylistHistoryUpsertWithWhereUniqueWithoutUserInput = {
+    where: PlaylistHistoryWhereUniqueInput
+    update: XOR<PlaylistHistoryUpdateWithoutUserInput, PlaylistHistoryUncheckedUpdateWithoutUserInput>
+    create: XOR<PlaylistHistoryCreateWithoutUserInput, PlaylistHistoryUncheckedCreateWithoutUserInput>
+  }
+
+  export type PlaylistHistoryUpdateWithWhereUniqueWithoutUserInput = {
+    where: PlaylistHistoryWhereUniqueInput
+    data: XOR<PlaylistHistoryUpdateWithoutUserInput, PlaylistHistoryUncheckedUpdateWithoutUserInput>
+  }
+
+  export type PlaylistHistoryUpdateManyWithWhereWithoutUserInput = {
+    where: PlaylistHistoryScalarWhereInput
+    data: XOR<PlaylistHistoryUpdateManyMutationInput, PlaylistHistoryUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type PlaylistHistoryScalarWhereInput = {
+    AND?: PlaylistHistoryScalarWhereInput | PlaylistHistoryScalarWhereInput[]
+    OR?: PlaylistHistoryScalarWhereInput[]
+    NOT?: PlaylistHistoryScalarWhereInput | PlaylistHistoryScalarWhereInput[]
+    id?: StringFilter<"PlaylistHistory"> | string
+    userId?: StringFilter<"PlaylistHistory"> | string
+    playlistId?: StringFilter<"PlaylistHistory"> | string
+    playedAt?: DateTimeFilter<"PlaylistHistory"> | Date | string
+  }
+
   export type UserCreateWithoutSessionsInput = {
     id?: string
     email: string
@@ -15515,7 +18673,9 @@ export namespace Prisma {
     banned?: boolean
     loginCount?: number
     lastLoginAt?: Date | string | null
-    lastPlayedTrackId?: string | null
+    totalPlayTime?: number
+    queue?: string | null
+    lastPlayedTrackId?: number | null
     lastPlayedPlaylistId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -15524,6 +18684,8 @@ export namespace Prisma {
     favoriteTracks?: FavoriteTrackCreateNestedManyWithoutUserInput
     favoritePlaylists?: FavoritePlaylistCreateNestedManyWithoutUserInput
     favoriteArtists?: FavoriteArtistCreateNestedManyWithoutUserInput
+    trackHistory?: TrackHistoryCreateNestedManyWithoutUserInput
+    playlistHistory?: PlaylistHistoryCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -15538,7 +18700,9 @@ export namespace Prisma {
     banned?: boolean
     loginCount?: number
     lastLoginAt?: Date | string | null
-    lastPlayedTrackId?: string | null
+    totalPlayTime?: number
+    queue?: string | null
+    lastPlayedTrackId?: number | null
     lastPlayedPlaylistId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -15547,6 +18711,8 @@ export namespace Prisma {
     favoriteTracks?: FavoriteTrackUncheckedCreateNestedManyWithoutUserInput
     favoritePlaylists?: FavoritePlaylistUncheckedCreateNestedManyWithoutUserInput
     favoriteArtists?: FavoriteArtistUncheckedCreateNestedManyWithoutUserInput
+    trackHistory?: TrackHistoryUncheckedCreateNestedManyWithoutUserInput
+    playlistHistory?: PlaylistHistoryUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -15577,7 +18743,9 @@ export namespace Prisma {
     banned?: BoolFieldUpdateOperationsInput | boolean
     loginCount?: IntFieldUpdateOperationsInput | number
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastPlayedTrackId?: NullableStringFieldUpdateOperationsInput | string | null
+    totalPlayTime?: IntFieldUpdateOperationsInput | number
+    queue?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPlayedTrackId?: NullableIntFieldUpdateOperationsInput | number | null
     lastPlayedPlaylistId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15586,6 +18754,8 @@ export namespace Prisma {
     favoriteTracks?: FavoriteTrackUpdateManyWithoutUserNestedInput
     favoritePlaylists?: FavoritePlaylistUpdateManyWithoutUserNestedInput
     favoriteArtists?: FavoriteArtistUpdateManyWithoutUserNestedInput
+    trackHistory?: TrackHistoryUpdateManyWithoutUserNestedInput
+    playlistHistory?: PlaylistHistoryUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -15600,7 +18770,9 @@ export namespace Prisma {
     banned?: BoolFieldUpdateOperationsInput | boolean
     loginCount?: IntFieldUpdateOperationsInput | number
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastPlayedTrackId?: NullableStringFieldUpdateOperationsInput | string | null
+    totalPlayTime?: IntFieldUpdateOperationsInput | number
+    queue?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPlayedTrackId?: NullableIntFieldUpdateOperationsInput | number | null
     lastPlayedPlaylistId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15609,6 +18781,8 @@ export namespace Prisma {
     favoriteTracks?: FavoriteTrackUncheckedUpdateManyWithoutUserNestedInput
     favoritePlaylists?: FavoritePlaylistUncheckedUpdateManyWithoutUserNestedInput
     favoriteArtists?: FavoriteArtistUncheckedUpdateManyWithoutUserNestedInput
+    trackHistory?: TrackHistoryUncheckedUpdateManyWithoutUserNestedInput
+    playlistHistory?: PlaylistHistoryUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -15623,7 +18797,9 @@ export namespace Prisma {
     banned?: boolean
     loginCount?: number
     lastLoginAt?: Date | string | null
-    lastPlayedTrackId?: string | null
+    totalPlayTime?: number
+    queue?: string | null
+    lastPlayedTrackId?: number | null
     lastPlayedPlaylistId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -15632,6 +18808,8 @@ export namespace Prisma {
     favoriteTracks?: FavoriteTrackCreateNestedManyWithoutUserInput
     favoritePlaylists?: FavoritePlaylistCreateNestedManyWithoutUserInput
     favoriteArtists?: FavoriteArtistCreateNestedManyWithoutUserInput
+    trackHistory?: TrackHistoryCreateNestedManyWithoutUserInput
+    playlistHistory?: PlaylistHistoryCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -15646,7 +18824,9 @@ export namespace Prisma {
     banned?: boolean
     loginCount?: number
     lastLoginAt?: Date | string | null
-    lastPlayedTrackId?: string | null
+    totalPlayTime?: number
+    queue?: string | null
+    lastPlayedTrackId?: number | null
     lastPlayedPlaylistId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -15655,6 +18835,8 @@ export namespace Prisma {
     favoriteTracks?: FavoriteTrackUncheckedCreateNestedManyWithoutUserInput
     favoritePlaylists?: FavoritePlaylistUncheckedCreateNestedManyWithoutUserInput
     favoriteArtists?: FavoriteArtistUncheckedCreateNestedManyWithoutUserInput
+    trackHistory?: TrackHistoryUncheckedCreateNestedManyWithoutUserInput
+    playlistHistory?: PlaylistHistoryUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -15685,7 +18867,9 @@ export namespace Prisma {
     banned?: BoolFieldUpdateOperationsInput | boolean
     loginCount?: IntFieldUpdateOperationsInput | number
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastPlayedTrackId?: NullableStringFieldUpdateOperationsInput | string | null
+    totalPlayTime?: IntFieldUpdateOperationsInput | number
+    queue?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPlayedTrackId?: NullableIntFieldUpdateOperationsInput | number | null
     lastPlayedPlaylistId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15694,6 +18878,8 @@ export namespace Prisma {
     favoriteTracks?: FavoriteTrackUpdateManyWithoutUserNestedInput
     favoritePlaylists?: FavoritePlaylistUpdateManyWithoutUserNestedInput
     favoriteArtists?: FavoriteArtistUpdateManyWithoutUserNestedInput
+    trackHistory?: TrackHistoryUpdateManyWithoutUserNestedInput
+    playlistHistory?: PlaylistHistoryUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -15708,7 +18894,9 @@ export namespace Prisma {
     banned?: BoolFieldUpdateOperationsInput | boolean
     loginCount?: IntFieldUpdateOperationsInput | number
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastPlayedTrackId?: NullableStringFieldUpdateOperationsInput | string | null
+    totalPlayTime?: IntFieldUpdateOperationsInput | number
+    queue?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPlayedTrackId?: NullableIntFieldUpdateOperationsInput | number | null
     lastPlayedPlaylistId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15717,6 +18905,8 @@ export namespace Prisma {
     favoriteTracks?: FavoriteTrackUncheckedUpdateManyWithoutUserNestedInput
     favoritePlaylists?: FavoritePlaylistUncheckedUpdateManyWithoutUserNestedInput
     favoriteArtists?: FavoriteArtistUncheckedUpdateManyWithoutUserNestedInput
+    trackHistory?: TrackHistoryUncheckedUpdateManyWithoutUserNestedInput
+    playlistHistory?: PlaylistHistoryUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PlaylistTrackCreateWithoutTrackInput = {
@@ -15763,6 +18953,30 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type TrackHistoryCreateWithoutTrackInput = {
+    id?: string
+    playedAt?: Date | string
+    listenedSec?: number
+    user: UserCreateNestedOneWithoutTrackHistoryInput
+  }
+
+  export type TrackHistoryUncheckedCreateWithoutTrackInput = {
+    id?: string
+    userId: string
+    playedAt?: Date | string
+    listenedSec?: number
+  }
+
+  export type TrackHistoryCreateOrConnectWithoutTrackInput = {
+    where: TrackHistoryWhereUniqueInput
+    create: XOR<TrackHistoryCreateWithoutTrackInput, TrackHistoryUncheckedCreateWithoutTrackInput>
+  }
+
+  export type TrackHistoryCreateManyTrackInputEnvelope = {
+    data: TrackHistoryCreateManyTrackInput | TrackHistoryCreateManyTrackInput[]
+    skipDuplicates?: boolean
+  }
+
   export type PlaylistTrackUpsertWithWhereUniqueWithoutTrackInput = {
     where: PlaylistTrackWhereUniqueInput
     update: XOR<PlaylistTrackUpdateWithoutTrackInput, PlaylistTrackUncheckedUpdateWithoutTrackInput>
@@ -15785,7 +18999,7 @@ export namespace Prisma {
     NOT?: PlaylistTrackScalarWhereInput | PlaylistTrackScalarWhereInput[]
     id?: StringFilter<"PlaylistTrack"> | string
     playlistId?: StringFilter<"PlaylistTrack"> | string
-    trackId?: StringFilter<"PlaylistTrack"> | string
+    trackId?: IntFilter<"PlaylistTrack"> | number
     order?: IntFilter<"PlaylistTrack"> | number
   }
 
@@ -15805,6 +19019,22 @@ export namespace Prisma {
     data: XOR<FavoriteTrackUpdateManyMutationInput, FavoriteTrackUncheckedUpdateManyWithoutTrackInput>
   }
 
+  export type TrackHistoryUpsertWithWhereUniqueWithoutTrackInput = {
+    where: TrackHistoryWhereUniqueInput
+    update: XOR<TrackHistoryUpdateWithoutTrackInput, TrackHistoryUncheckedUpdateWithoutTrackInput>
+    create: XOR<TrackHistoryCreateWithoutTrackInput, TrackHistoryUncheckedCreateWithoutTrackInput>
+  }
+
+  export type TrackHistoryUpdateWithWhereUniqueWithoutTrackInput = {
+    where: TrackHistoryWhereUniqueInput
+    data: XOR<TrackHistoryUpdateWithoutTrackInput, TrackHistoryUncheckedUpdateWithoutTrackInput>
+  }
+
+  export type TrackHistoryUpdateManyWithWhereWithoutTrackInput = {
+    where: TrackHistoryScalarWhereInput
+    data: XOR<TrackHistoryUpdateManyMutationInput, TrackHistoryUncheckedUpdateManyWithoutTrackInput>
+  }
+
   export type UserCreateWithoutPlaylistsInput = {
     id?: string
     email: string
@@ -15817,7 +19047,9 @@ export namespace Prisma {
     banned?: boolean
     loginCount?: number
     lastLoginAt?: Date | string | null
-    lastPlayedTrackId?: string | null
+    totalPlayTime?: number
+    queue?: string | null
+    lastPlayedTrackId?: number | null
     lastPlayedPlaylistId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -15826,6 +19058,8 @@ export namespace Prisma {
     favoriteTracks?: FavoriteTrackCreateNestedManyWithoutUserInput
     favoritePlaylists?: FavoritePlaylistCreateNestedManyWithoutUserInput
     favoriteArtists?: FavoriteArtistCreateNestedManyWithoutUserInput
+    trackHistory?: TrackHistoryCreateNestedManyWithoutUserInput
+    playlistHistory?: PlaylistHistoryCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPlaylistsInput = {
@@ -15840,7 +19074,9 @@ export namespace Prisma {
     banned?: boolean
     loginCount?: number
     lastLoginAt?: Date | string | null
-    lastPlayedTrackId?: string | null
+    totalPlayTime?: number
+    queue?: string | null
+    lastPlayedTrackId?: number | null
     lastPlayedPlaylistId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -15849,6 +19085,8 @@ export namespace Prisma {
     favoriteTracks?: FavoriteTrackUncheckedCreateNestedManyWithoutUserInput
     favoritePlaylists?: FavoritePlaylistUncheckedCreateNestedManyWithoutUserInput
     favoriteArtists?: FavoriteArtistUncheckedCreateNestedManyWithoutUserInput
+    trackHistory?: TrackHistoryUncheckedCreateNestedManyWithoutUserInput
+    playlistHistory?: PlaylistHistoryUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPlaylistsInput = {
@@ -15864,7 +19102,7 @@ export namespace Prisma {
 
   export type PlaylistTrackUncheckedCreateWithoutPlaylistInput = {
     id?: string
-    trackId: string
+    trackId: number
     order?: number
   }
 
@@ -15900,6 +19138,28 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PlaylistHistoryCreateWithoutPlaylistInput = {
+    id?: string
+    playedAt?: Date | string
+    user: UserCreateNestedOneWithoutPlaylistHistoryInput
+  }
+
+  export type PlaylistHistoryUncheckedCreateWithoutPlaylistInput = {
+    id?: string
+    userId: string
+    playedAt?: Date | string
+  }
+
+  export type PlaylistHistoryCreateOrConnectWithoutPlaylistInput = {
+    where: PlaylistHistoryWhereUniqueInput
+    create: XOR<PlaylistHistoryCreateWithoutPlaylistInput, PlaylistHistoryUncheckedCreateWithoutPlaylistInput>
+  }
+
+  export type PlaylistHistoryCreateManyPlaylistInputEnvelope = {
+    data: PlaylistHistoryCreateManyPlaylistInput | PlaylistHistoryCreateManyPlaylistInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutPlaylistsInput = {
     update: XOR<UserUpdateWithoutPlaylistsInput, UserUncheckedUpdateWithoutPlaylistsInput>
     create: XOR<UserCreateWithoutPlaylistsInput, UserUncheckedCreateWithoutPlaylistsInput>
@@ -15923,7 +19183,9 @@ export namespace Prisma {
     banned?: BoolFieldUpdateOperationsInput | boolean
     loginCount?: IntFieldUpdateOperationsInput | number
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastPlayedTrackId?: NullableStringFieldUpdateOperationsInput | string | null
+    totalPlayTime?: IntFieldUpdateOperationsInput | number
+    queue?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPlayedTrackId?: NullableIntFieldUpdateOperationsInput | number | null
     lastPlayedPlaylistId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15932,6 +19194,8 @@ export namespace Prisma {
     favoriteTracks?: FavoriteTrackUpdateManyWithoutUserNestedInput
     favoritePlaylists?: FavoritePlaylistUpdateManyWithoutUserNestedInput
     favoriteArtists?: FavoriteArtistUpdateManyWithoutUserNestedInput
+    trackHistory?: TrackHistoryUpdateManyWithoutUserNestedInput
+    playlistHistory?: PlaylistHistoryUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPlaylistsInput = {
@@ -15946,7 +19210,9 @@ export namespace Prisma {
     banned?: BoolFieldUpdateOperationsInput | boolean
     loginCount?: IntFieldUpdateOperationsInput | number
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastPlayedTrackId?: NullableStringFieldUpdateOperationsInput | string | null
+    totalPlayTime?: IntFieldUpdateOperationsInput | number
+    queue?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPlayedTrackId?: NullableIntFieldUpdateOperationsInput | number | null
     lastPlayedPlaylistId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15955,6 +19221,8 @@ export namespace Prisma {
     favoriteTracks?: FavoriteTrackUncheckedUpdateManyWithoutUserNestedInput
     favoritePlaylists?: FavoritePlaylistUncheckedUpdateManyWithoutUserNestedInput
     favoriteArtists?: FavoriteArtistUncheckedUpdateManyWithoutUserNestedInput
+    trackHistory?: TrackHistoryUncheckedUpdateManyWithoutUserNestedInput
+    playlistHistory?: PlaylistHistoryUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PlaylistTrackUpsertWithWhereUniqueWithoutPlaylistInput = {
@@ -15989,6 +19257,22 @@ export namespace Prisma {
     data: XOR<FavoritePlaylistUpdateManyMutationInput, FavoritePlaylistUncheckedUpdateManyWithoutPlaylistInput>
   }
 
+  export type PlaylistHistoryUpsertWithWhereUniqueWithoutPlaylistInput = {
+    where: PlaylistHistoryWhereUniqueInput
+    update: XOR<PlaylistHistoryUpdateWithoutPlaylistInput, PlaylistHistoryUncheckedUpdateWithoutPlaylistInput>
+    create: XOR<PlaylistHistoryCreateWithoutPlaylistInput, PlaylistHistoryUncheckedCreateWithoutPlaylistInput>
+  }
+
+  export type PlaylistHistoryUpdateWithWhereUniqueWithoutPlaylistInput = {
+    where: PlaylistHistoryWhereUniqueInput
+    data: XOR<PlaylistHistoryUpdateWithoutPlaylistInput, PlaylistHistoryUncheckedUpdateWithoutPlaylistInput>
+  }
+
+  export type PlaylistHistoryUpdateManyWithWhereWithoutPlaylistInput = {
+    where: PlaylistHistoryScalarWhereInput
+    data: XOR<PlaylistHistoryUpdateManyMutationInput, PlaylistHistoryUncheckedUpdateManyWithoutPlaylistInput>
+  }
+
   export type PlaylistCreateWithoutTracksInput = {
     id?: string
     title: string
@@ -16001,6 +19285,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     author?: UserCreateNestedOneWithoutPlaylistsInput
     favoritedBy?: FavoritePlaylistCreateNestedManyWithoutPlaylistInput
+    history?: PlaylistHistoryCreateNestedManyWithoutPlaylistInput
   }
 
   export type PlaylistUncheckedCreateWithoutTracksInput = {
@@ -16015,6 +19300,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     favoritedBy?: FavoritePlaylistUncheckedCreateNestedManyWithoutPlaylistInput
+    history?: PlaylistHistoryUncheckedCreateNestedManyWithoutPlaylistInput
   }
 
   export type PlaylistCreateOrConnectWithoutTracksInput = {
@@ -16023,7 +19309,6 @@ export namespace Prisma {
   }
 
   export type TrackCreateWithoutPlaylistsInput = {
-    id?: string
     title: string
     artist: string
     src: string
@@ -16034,10 +19319,11 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     favoritedBy?: FavoriteTrackCreateNestedManyWithoutTrackInput
+    history?: TrackHistoryCreateNestedManyWithoutTrackInput
   }
 
   export type TrackUncheckedCreateWithoutPlaylistsInput = {
-    id?: string
+    id?: number
     title: string
     artist: string
     src: string
@@ -16048,6 +19334,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     favoritedBy?: FavoriteTrackUncheckedCreateNestedManyWithoutTrackInput
+    history?: TrackHistoryUncheckedCreateNestedManyWithoutTrackInput
   }
 
   export type TrackCreateOrConnectWithoutPlaylistsInput = {
@@ -16078,6 +19365,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     author?: UserUpdateOneWithoutPlaylistsNestedInput
     favoritedBy?: FavoritePlaylistUpdateManyWithoutPlaylistNestedInput
+    history?: PlaylistHistoryUpdateManyWithoutPlaylistNestedInput
   }
 
   export type PlaylistUncheckedUpdateWithoutTracksInput = {
@@ -16092,6 +19380,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     favoritedBy?: FavoritePlaylistUncheckedUpdateManyWithoutPlaylistNestedInput
+    history?: PlaylistHistoryUncheckedUpdateManyWithoutPlaylistNestedInput
   }
 
   export type TrackUpsertWithoutPlaylistsInput = {
@@ -16106,7 +19395,6 @@ export namespace Prisma {
   }
 
   export type TrackUpdateWithoutPlaylistsInput = {
-    id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     artist?: StringFieldUpdateOperationsInput | string
     src?: StringFieldUpdateOperationsInput | string
@@ -16117,10 +19405,11 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     favoritedBy?: FavoriteTrackUpdateManyWithoutTrackNestedInput
+    history?: TrackHistoryUpdateManyWithoutTrackNestedInput
   }
 
   export type TrackUncheckedUpdateWithoutPlaylistsInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     artist?: StringFieldUpdateOperationsInput | string
     src?: StringFieldUpdateOperationsInput | string
@@ -16131,6 +19420,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     favoritedBy?: FavoriteTrackUncheckedUpdateManyWithoutTrackNestedInput
+    history?: TrackHistoryUncheckedUpdateManyWithoutTrackNestedInput
   }
 
   export type UserCreateWithoutFavoriteTracksInput = {
@@ -16145,7 +19435,9 @@ export namespace Prisma {
     banned?: boolean
     loginCount?: number
     lastLoginAt?: Date | string | null
-    lastPlayedTrackId?: string | null
+    totalPlayTime?: number
+    queue?: string | null
+    lastPlayedTrackId?: number | null
     lastPlayedPlaylistId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -16154,6 +19446,8 @@ export namespace Prisma {
     playlists?: PlaylistCreateNestedManyWithoutAuthorInput
     favoritePlaylists?: FavoritePlaylistCreateNestedManyWithoutUserInput
     favoriteArtists?: FavoriteArtistCreateNestedManyWithoutUserInput
+    trackHistory?: TrackHistoryCreateNestedManyWithoutUserInput
+    playlistHistory?: PlaylistHistoryCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFavoriteTracksInput = {
@@ -16168,7 +19462,9 @@ export namespace Prisma {
     banned?: boolean
     loginCount?: number
     lastLoginAt?: Date | string | null
-    lastPlayedTrackId?: string | null
+    totalPlayTime?: number
+    queue?: string | null
+    lastPlayedTrackId?: number | null
     lastPlayedPlaylistId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -16177,6 +19473,8 @@ export namespace Prisma {
     playlists?: PlaylistUncheckedCreateNestedManyWithoutAuthorInput
     favoritePlaylists?: FavoritePlaylistUncheckedCreateNestedManyWithoutUserInput
     favoriteArtists?: FavoriteArtistUncheckedCreateNestedManyWithoutUserInput
+    trackHistory?: TrackHistoryUncheckedCreateNestedManyWithoutUserInput
+    playlistHistory?: PlaylistHistoryUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFavoriteTracksInput = {
@@ -16185,7 +19483,6 @@ export namespace Prisma {
   }
 
   export type TrackCreateWithoutFavoritedByInput = {
-    id?: string
     title: string
     artist: string
     src: string
@@ -16196,10 +19493,11 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     playlists?: PlaylistTrackCreateNestedManyWithoutTrackInput
+    history?: TrackHistoryCreateNestedManyWithoutTrackInput
   }
 
   export type TrackUncheckedCreateWithoutFavoritedByInput = {
-    id?: string
+    id?: number
     title: string
     artist: string
     src: string
@@ -16210,6 +19508,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     playlists?: PlaylistTrackUncheckedCreateNestedManyWithoutTrackInput
+    history?: TrackHistoryUncheckedCreateNestedManyWithoutTrackInput
   }
 
   export type TrackCreateOrConnectWithoutFavoritedByInput = {
@@ -16240,7 +19539,9 @@ export namespace Prisma {
     banned?: BoolFieldUpdateOperationsInput | boolean
     loginCount?: IntFieldUpdateOperationsInput | number
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastPlayedTrackId?: NullableStringFieldUpdateOperationsInput | string | null
+    totalPlayTime?: IntFieldUpdateOperationsInput | number
+    queue?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPlayedTrackId?: NullableIntFieldUpdateOperationsInput | number | null
     lastPlayedPlaylistId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16249,6 +19550,8 @@ export namespace Prisma {
     playlists?: PlaylistUpdateManyWithoutAuthorNestedInput
     favoritePlaylists?: FavoritePlaylistUpdateManyWithoutUserNestedInput
     favoriteArtists?: FavoriteArtistUpdateManyWithoutUserNestedInput
+    trackHistory?: TrackHistoryUpdateManyWithoutUserNestedInput
+    playlistHistory?: PlaylistHistoryUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFavoriteTracksInput = {
@@ -16263,7 +19566,9 @@ export namespace Prisma {
     banned?: BoolFieldUpdateOperationsInput | boolean
     loginCount?: IntFieldUpdateOperationsInput | number
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastPlayedTrackId?: NullableStringFieldUpdateOperationsInput | string | null
+    totalPlayTime?: IntFieldUpdateOperationsInput | number
+    queue?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPlayedTrackId?: NullableIntFieldUpdateOperationsInput | number | null
     lastPlayedPlaylistId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16272,6 +19577,8 @@ export namespace Prisma {
     playlists?: PlaylistUncheckedUpdateManyWithoutAuthorNestedInput
     favoritePlaylists?: FavoritePlaylistUncheckedUpdateManyWithoutUserNestedInput
     favoriteArtists?: FavoriteArtistUncheckedUpdateManyWithoutUserNestedInput
+    trackHistory?: TrackHistoryUncheckedUpdateManyWithoutUserNestedInput
+    playlistHistory?: PlaylistHistoryUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TrackUpsertWithoutFavoritedByInput = {
@@ -16286,7 +19593,6 @@ export namespace Prisma {
   }
 
   export type TrackUpdateWithoutFavoritedByInput = {
-    id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     artist?: StringFieldUpdateOperationsInput | string
     src?: StringFieldUpdateOperationsInput | string
@@ -16297,10 +19603,11 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     playlists?: PlaylistTrackUpdateManyWithoutTrackNestedInput
+    history?: TrackHistoryUpdateManyWithoutTrackNestedInput
   }
 
   export type TrackUncheckedUpdateWithoutFavoritedByInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     artist?: StringFieldUpdateOperationsInput | string
     src?: StringFieldUpdateOperationsInput | string
@@ -16311,6 +19618,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     playlists?: PlaylistTrackUncheckedUpdateManyWithoutTrackNestedInput
+    history?: TrackHistoryUncheckedUpdateManyWithoutTrackNestedInput
   }
 
   export type UserCreateWithoutFavoritePlaylistsInput = {
@@ -16325,7 +19633,9 @@ export namespace Prisma {
     banned?: boolean
     loginCount?: number
     lastLoginAt?: Date | string | null
-    lastPlayedTrackId?: string | null
+    totalPlayTime?: number
+    queue?: string | null
+    lastPlayedTrackId?: number | null
     lastPlayedPlaylistId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -16334,6 +19644,8 @@ export namespace Prisma {
     playlists?: PlaylistCreateNestedManyWithoutAuthorInput
     favoriteTracks?: FavoriteTrackCreateNestedManyWithoutUserInput
     favoriteArtists?: FavoriteArtistCreateNestedManyWithoutUserInput
+    trackHistory?: TrackHistoryCreateNestedManyWithoutUserInput
+    playlistHistory?: PlaylistHistoryCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFavoritePlaylistsInput = {
@@ -16348,7 +19660,9 @@ export namespace Prisma {
     banned?: boolean
     loginCount?: number
     lastLoginAt?: Date | string | null
-    lastPlayedTrackId?: string | null
+    totalPlayTime?: number
+    queue?: string | null
+    lastPlayedTrackId?: number | null
     lastPlayedPlaylistId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -16357,6 +19671,8 @@ export namespace Prisma {
     playlists?: PlaylistUncheckedCreateNestedManyWithoutAuthorInput
     favoriteTracks?: FavoriteTrackUncheckedCreateNestedManyWithoutUserInput
     favoriteArtists?: FavoriteArtistUncheckedCreateNestedManyWithoutUserInput
+    trackHistory?: TrackHistoryUncheckedCreateNestedManyWithoutUserInput
+    playlistHistory?: PlaylistHistoryUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFavoritePlaylistsInput = {
@@ -16376,6 +19692,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     author?: UserCreateNestedOneWithoutPlaylistsInput
     tracks?: PlaylistTrackCreateNestedManyWithoutPlaylistInput
+    history?: PlaylistHistoryCreateNestedManyWithoutPlaylistInput
   }
 
   export type PlaylistUncheckedCreateWithoutFavoritedByInput = {
@@ -16390,6 +19707,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tracks?: PlaylistTrackUncheckedCreateNestedManyWithoutPlaylistInput
+    history?: PlaylistHistoryUncheckedCreateNestedManyWithoutPlaylistInput
   }
 
   export type PlaylistCreateOrConnectWithoutFavoritedByInput = {
@@ -16420,7 +19738,9 @@ export namespace Prisma {
     banned?: BoolFieldUpdateOperationsInput | boolean
     loginCount?: IntFieldUpdateOperationsInput | number
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastPlayedTrackId?: NullableStringFieldUpdateOperationsInput | string | null
+    totalPlayTime?: IntFieldUpdateOperationsInput | number
+    queue?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPlayedTrackId?: NullableIntFieldUpdateOperationsInput | number | null
     lastPlayedPlaylistId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16429,6 +19749,8 @@ export namespace Prisma {
     playlists?: PlaylistUpdateManyWithoutAuthorNestedInput
     favoriteTracks?: FavoriteTrackUpdateManyWithoutUserNestedInput
     favoriteArtists?: FavoriteArtistUpdateManyWithoutUserNestedInput
+    trackHistory?: TrackHistoryUpdateManyWithoutUserNestedInput
+    playlistHistory?: PlaylistHistoryUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFavoritePlaylistsInput = {
@@ -16443,7 +19765,9 @@ export namespace Prisma {
     banned?: BoolFieldUpdateOperationsInput | boolean
     loginCount?: IntFieldUpdateOperationsInput | number
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastPlayedTrackId?: NullableStringFieldUpdateOperationsInput | string | null
+    totalPlayTime?: IntFieldUpdateOperationsInput | number
+    queue?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPlayedTrackId?: NullableIntFieldUpdateOperationsInput | number | null
     lastPlayedPlaylistId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16452,6 +19776,8 @@ export namespace Prisma {
     playlists?: PlaylistUncheckedUpdateManyWithoutAuthorNestedInput
     favoriteTracks?: FavoriteTrackUncheckedUpdateManyWithoutUserNestedInput
     favoriteArtists?: FavoriteArtistUncheckedUpdateManyWithoutUserNestedInput
+    trackHistory?: TrackHistoryUncheckedUpdateManyWithoutUserNestedInput
+    playlistHistory?: PlaylistHistoryUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PlaylistUpsertWithoutFavoritedByInput = {
@@ -16477,6 +19803,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     author?: UserUpdateOneWithoutPlaylistsNestedInput
     tracks?: PlaylistTrackUpdateManyWithoutPlaylistNestedInput
+    history?: PlaylistHistoryUpdateManyWithoutPlaylistNestedInput
   }
 
   export type PlaylistUncheckedUpdateWithoutFavoritedByInput = {
@@ -16491,6 +19818,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tracks?: PlaylistTrackUncheckedUpdateManyWithoutPlaylistNestedInput
+    history?: PlaylistHistoryUncheckedUpdateManyWithoutPlaylistNestedInput
   }
 
   export type UserCreateWithoutFavoriteArtistsInput = {
@@ -16505,7 +19833,9 @@ export namespace Prisma {
     banned?: boolean
     loginCount?: number
     lastLoginAt?: Date | string | null
-    lastPlayedTrackId?: string | null
+    totalPlayTime?: number
+    queue?: string | null
+    lastPlayedTrackId?: number | null
     lastPlayedPlaylistId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -16514,6 +19844,8 @@ export namespace Prisma {
     playlists?: PlaylistCreateNestedManyWithoutAuthorInput
     favoriteTracks?: FavoriteTrackCreateNestedManyWithoutUserInput
     favoritePlaylists?: FavoritePlaylistCreateNestedManyWithoutUserInput
+    trackHistory?: TrackHistoryCreateNestedManyWithoutUserInput
+    playlistHistory?: PlaylistHistoryCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFavoriteArtistsInput = {
@@ -16528,7 +19860,9 @@ export namespace Prisma {
     banned?: boolean
     loginCount?: number
     lastLoginAt?: Date | string | null
-    lastPlayedTrackId?: string | null
+    totalPlayTime?: number
+    queue?: string | null
+    lastPlayedTrackId?: number | null
     lastPlayedPlaylistId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -16537,6 +19871,8 @@ export namespace Prisma {
     playlists?: PlaylistUncheckedCreateNestedManyWithoutAuthorInput
     favoriteTracks?: FavoriteTrackUncheckedCreateNestedManyWithoutUserInput
     favoritePlaylists?: FavoritePlaylistUncheckedCreateNestedManyWithoutUserInput
+    trackHistory?: TrackHistoryUncheckedCreateNestedManyWithoutUserInput
+    playlistHistory?: PlaylistHistoryUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFavoriteArtistsInput = {
@@ -16567,7 +19903,9 @@ export namespace Prisma {
     banned?: BoolFieldUpdateOperationsInput | boolean
     loginCount?: IntFieldUpdateOperationsInput | number
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastPlayedTrackId?: NullableStringFieldUpdateOperationsInput | string | null
+    totalPlayTime?: IntFieldUpdateOperationsInput | number
+    queue?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPlayedTrackId?: NullableIntFieldUpdateOperationsInput | number | null
     lastPlayedPlaylistId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16576,6 +19914,8 @@ export namespace Prisma {
     playlists?: PlaylistUpdateManyWithoutAuthorNestedInput
     favoriteTracks?: FavoriteTrackUpdateManyWithoutUserNestedInput
     favoritePlaylists?: FavoritePlaylistUpdateManyWithoutUserNestedInput
+    trackHistory?: TrackHistoryUpdateManyWithoutUserNestedInput
+    playlistHistory?: PlaylistHistoryUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFavoriteArtistsInput = {
@@ -16590,7 +19930,9 @@ export namespace Prisma {
     banned?: BoolFieldUpdateOperationsInput | boolean
     loginCount?: IntFieldUpdateOperationsInput | number
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastPlayedTrackId?: NullableStringFieldUpdateOperationsInput | string | null
+    totalPlayTime?: IntFieldUpdateOperationsInput | number
+    queue?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPlayedTrackId?: NullableIntFieldUpdateOperationsInput | number | null
     lastPlayedPlaylistId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16599,11 +19941,412 @@ export namespace Prisma {
     playlists?: PlaylistUncheckedUpdateManyWithoutAuthorNestedInput
     favoriteTracks?: FavoriteTrackUncheckedUpdateManyWithoutUserNestedInput
     favoritePlaylists?: FavoritePlaylistUncheckedUpdateManyWithoutUserNestedInput
+    trackHistory?: TrackHistoryUncheckedUpdateManyWithoutUserNestedInput
+    playlistHistory?: PlaylistHistoryUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutTrackHistoryInput = {
+    id?: string
+    email: string
+    name?: string | null
+    image?: string | null
+    emailVerified?: boolean
+    role?: string
+    canMakePlaylistsPublic?: boolean
+    isReadOnly?: boolean
+    banned?: boolean
+    loginCount?: number
+    lastLoginAt?: Date | string | null
+    totalPlayTime?: number
+    queue?: string | null
+    lastPlayedTrackId?: number | null
+    lastPlayedPlaylistId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    playlists?: PlaylistCreateNestedManyWithoutAuthorInput
+    favoriteTracks?: FavoriteTrackCreateNestedManyWithoutUserInput
+    favoritePlaylists?: FavoritePlaylistCreateNestedManyWithoutUserInput
+    favoriteArtists?: FavoriteArtistCreateNestedManyWithoutUserInput
+    playlistHistory?: PlaylistHistoryCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutTrackHistoryInput = {
+    id?: string
+    email: string
+    name?: string | null
+    image?: string | null
+    emailVerified?: boolean
+    role?: string
+    canMakePlaylistsPublic?: boolean
+    isReadOnly?: boolean
+    banned?: boolean
+    loginCount?: number
+    lastLoginAt?: Date | string | null
+    totalPlayTime?: number
+    queue?: string | null
+    lastPlayedTrackId?: number | null
+    lastPlayedPlaylistId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    playlists?: PlaylistUncheckedCreateNestedManyWithoutAuthorInput
+    favoriteTracks?: FavoriteTrackUncheckedCreateNestedManyWithoutUserInput
+    favoritePlaylists?: FavoritePlaylistUncheckedCreateNestedManyWithoutUserInput
+    favoriteArtists?: FavoriteArtistUncheckedCreateNestedManyWithoutUserInput
+    playlistHistory?: PlaylistHistoryUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutTrackHistoryInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTrackHistoryInput, UserUncheckedCreateWithoutTrackHistoryInput>
+  }
+
+  export type TrackCreateWithoutHistoryInput = {
+    title: string
+    artist: string
+    src: string
+    fullSrc?: string | null
+    cover: string
+    colors?: NullableJsonNullValueInput | InputJsonValue
+    type?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    playlists?: PlaylistTrackCreateNestedManyWithoutTrackInput
+    favoritedBy?: FavoriteTrackCreateNestedManyWithoutTrackInput
+  }
+
+  export type TrackUncheckedCreateWithoutHistoryInput = {
+    id?: number
+    title: string
+    artist: string
+    src: string
+    fullSrc?: string | null
+    cover: string
+    colors?: NullableJsonNullValueInput | InputJsonValue
+    type?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    playlists?: PlaylistTrackUncheckedCreateNestedManyWithoutTrackInput
+    favoritedBy?: FavoriteTrackUncheckedCreateNestedManyWithoutTrackInput
+  }
+
+  export type TrackCreateOrConnectWithoutHistoryInput = {
+    where: TrackWhereUniqueInput
+    create: XOR<TrackCreateWithoutHistoryInput, TrackUncheckedCreateWithoutHistoryInput>
+  }
+
+  export type UserUpsertWithoutTrackHistoryInput = {
+    update: XOR<UserUpdateWithoutTrackHistoryInput, UserUncheckedUpdateWithoutTrackHistoryInput>
+    create: XOR<UserCreateWithoutTrackHistoryInput, UserUncheckedCreateWithoutTrackHistoryInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutTrackHistoryInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTrackHistoryInput, UserUncheckedUpdateWithoutTrackHistoryInput>
+  }
+
+  export type UserUpdateWithoutTrackHistoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    role?: StringFieldUpdateOperationsInput | string
+    canMakePlaylistsPublic?: BoolFieldUpdateOperationsInput | boolean
+    isReadOnly?: BoolFieldUpdateOperationsInput | boolean
+    banned?: BoolFieldUpdateOperationsInput | boolean
+    loginCount?: IntFieldUpdateOperationsInput | number
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalPlayTime?: IntFieldUpdateOperationsInput | number
+    queue?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPlayedTrackId?: NullableIntFieldUpdateOperationsInput | number | null
+    lastPlayedPlaylistId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    playlists?: PlaylistUpdateManyWithoutAuthorNestedInput
+    favoriteTracks?: FavoriteTrackUpdateManyWithoutUserNestedInput
+    favoritePlaylists?: FavoritePlaylistUpdateManyWithoutUserNestedInput
+    favoriteArtists?: FavoriteArtistUpdateManyWithoutUserNestedInput
+    playlistHistory?: PlaylistHistoryUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutTrackHistoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    role?: StringFieldUpdateOperationsInput | string
+    canMakePlaylistsPublic?: BoolFieldUpdateOperationsInput | boolean
+    isReadOnly?: BoolFieldUpdateOperationsInput | boolean
+    banned?: BoolFieldUpdateOperationsInput | boolean
+    loginCount?: IntFieldUpdateOperationsInput | number
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalPlayTime?: IntFieldUpdateOperationsInput | number
+    queue?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPlayedTrackId?: NullableIntFieldUpdateOperationsInput | number | null
+    lastPlayedPlaylistId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    playlists?: PlaylistUncheckedUpdateManyWithoutAuthorNestedInput
+    favoriteTracks?: FavoriteTrackUncheckedUpdateManyWithoutUserNestedInput
+    favoritePlaylists?: FavoritePlaylistUncheckedUpdateManyWithoutUserNestedInput
+    favoriteArtists?: FavoriteArtistUncheckedUpdateManyWithoutUserNestedInput
+    playlistHistory?: PlaylistHistoryUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type TrackUpsertWithoutHistoryInput = {
+    update: XOR<TrackUpdateWithoutHistoryInput, TrackUncheckedUpdateWithoutHistoryInput>
+    create: XOR<TrackCreateWithoutHistoryInput, TrackUncheckedCreateWithoutHistoryInput>
+    where?: TrackWhereInput
+  }
+
+  export type TrackUpdateToOneWithWhereWithoutHistoryInput = {
+    where?: TrackWhereInput
+    data: XOR<TrackUpdateWithoutHistoryInput, TrackUncheckedUpdateWithoutHistoryInput>
+  }
+
+  export type TrackUpdateWithoutHistoryInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    artist?: StringFieldUpdateOperationsInput | string
+    src?: StringFieldUpdateOperationsInput | string
+    fullSrc?: NullableStringFieldUpdateOperationsInput | string | null
+    cover?: StringFieldUpdateOperationsInput | string
+    colors?: NullableJsonNullValueInput | InputJsonValue
+    type?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    playlists?: PlaylistTrackUpdateManyWithoutTrackNestedInput
+    favoritedBy?: FavoriteTrackUpdateManyWithoutTrackNestedInput
+  }
+
+  export type TrackUncheckedUpdateWithoutHistoryInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    artist?: StringFieldUpdateOperationsInput | string
+    src?: StringFieldUpdateOperationsInput | string
+    fullSrc?: NullableStringFieldUpdateOperationsInput | string | null
+    cover?: StringFieldUpdateOperationsInput | string
+    colors?: NullableJsonNullValueInput | InputJsonValue
+    type?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    playlists?: PlaylistTrackUncheckedUpdateManyWithoutTrackNestedInput
+    favoritedBy?: FavoriteTrackUncheckedUpdateManyWithoutTrackNestedInput
+  }
+
+  export type UserCreateWithoutPlaylistHistoryInput = {
+    id?: string
+    email: string
+    name?: string | null
+    image?: string | null
+    emailVerified?: boolean
+    role?: string
+    canMakePlaylistsPublic?: boolean
+    isReadOnly?: boolean
+    banned?: boolean
+    loginCount?: number
+    lastLoginAt?: Date | string | null
+    totalPlayTime?: number
+    queue?: string | null
+    lastPlayedTrackId?: number | null
+    lastPlayedPlaylistId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    playlists?: PlaylistCreateNestedManyWithoutAuthorInput
+    favoriteTracks?: FavoriteTrackCreateNestedManyWithoutUserInput
+    favoritePlaylists?: FavoritePlaylistCreateNestedManyWithoutUserInput
+    favoriteArtists?: FavoriteArtistCreateNestedManyWithoutUserInput
+    trackHistory?: TrackHistoryCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutPlaylistHistoryInput = {
+    id?: string
+    email: string
+    name?: string | null
+    image?: string | null
+    emailVerified?: boolean
+    role?: string
+    canMakePlaylistsPublic?: boolean
+    isReadOnly?: boolean
+    banned?: boolean
+    loginCount?: number
+    lastLoginAt?: Date | string | null
+    totalPlayTime?: number
+    queue?: string | null
+    lastPlayedTrackId?: number | null
+    lastPlayedPlaylistId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    playlists?: PlaylistUncheckedCreateNestedManyWithoutAuthorInput
+    favoriteTracks?: FavoriteTrackUncheckedCreateNestedManyWithoutUserInput
+    favoritePlaylists?: FavoritePlaylistUncheckedCreateNestedManyWithoutUserInput
+    favoriteArtists?: FavoriteArtistUncheckedCreateNestedManyWithoutUserInput
+    trackHistory?: TrackHistoryUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutPlaylistHistoryInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPlaylistHistoryInput, UserUncheckedCreateWithoutPlaylistHistoryInput>
+  }
+
+  export type PlaylistCreateWithoutHistoryInput = {
+    id?: string
+    title: string
+    cover?: string | null
+    type?: string
+    category?: $Enums.PlaylistCategory
+    isPublic?: boolean
+    colors?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    author?: UserCreateNestedOneWithoutPlaylistsInput
+    tracks?: PlaylistTrackCreateNestedManyWithoutPlaylistInput
+    favoritedBy?: FavoritePlaylistCreateNestedManyWithoutPlaylistInput
+  }
+
+  export type PlaylistUncheckedCreateWithoutHistoryInput = {
+    id?: string
+    title: string
+    cover?: string | null
+    type?: string
+    category?: $Enums.PlaylistCategory
+    isPublic?: boolean
+    colors?: NullableJsonNullValueInput | InputJsonValue
+    authorId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tracks?: PlaylistTrackUncheckedCreateNestedManyWithoutPlaylistInput
+    favoritedBy?: FavoritePlaylistUncheckedCreateNestedManyWithoutPlaylistInput
+  }
+
+  export type PlaylistCreateOrConnectWithoutHistoryInput = {
+    where: PlaylistWhereUniqueInput
+    create: XOR<PlaylistCreateWithoutHistoryInput, PlaylistUncheckedCreateWithoutHistoryInput>
+  }
+
+  export type UserUpsertWithoutPlaylistHistoryInput = {
+    update: XOR<UserUpdateWithoutPlaylistHistoryInput, UserUncheckedUpdateWithoutPlaylistHistoryInput>
+    create: XOR<UserCreateWithoutPlaylistHistoryInput, UserUncheckedCreateWithoutPlaylistHistoryInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutPlaylistHistoryInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutPlaylistHistoryInput, UserUncheckedUpdateWithoutPlaylistHistoryInput>
+  }
+
+  export type UserUpdateWithoutPlaylistHistoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    role?: StringFieldUpdateOperationsInput | string
+    canMakePlaylistsPublic?: BoolFieldUpdateOperationsInput | boolean
+    isReadOnly?: BoolFieldUpdateOperationsInput | boolean
+    banned?: BoolFieldUpdateOperationsInput | boolean
+    loginCount?: IntFieldUpdateOperationsInput | number
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalPlayTime?: IntFieldUpdateOperationsInput | number
+    queue?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPlayedTrackId?: NullableIntFieldUpdateOperationsInput | number | null
+    lastPlayedPlaylistId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    playlists?: PlaylistUpdateManyWithoutAuthorNestedInput
+    favoriteTracks?: FavoriteTrackUpdateManyWithoutUserNestedInput
+    favoritePlaylists?: FavoritePlaylistUpdateManyWithoutUserNestedInput
+    favoriteArtists?: FavoriteArtistUpdateManyWithoutUserNestedInput
+    trackHistory?: TrackHistoryUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutPlaylistHistoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    role?: StringFieldUpdateOperationsInput | string
+    canMakePlaylistsPublic?: BoolFieldUpdateOperationsInput | boolean
+    isReadOnly?: BoolFieldUpdateOperationsInput | boolean
+    banned?: BoolFieldUpdateOperationsInput | boolean
+    loginCount?: IntFieldUpdateOperationsInput | number
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalPlayTime?: IntFieldUpdateOperationsInput | number
+    queue?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPlayedTrackId?: NullableIntFieldUpdateOperationsInput | number | null
+    lastPlayedPlaylistId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    playlists?: PlaylistUncheckedUpdateManyWithoutAuthorNestedInput
+    favoriteTracks?: FavoriteTrackUncheckedUpdateManyWithoutUserNestedInput
+    favoritePlaylists?: FavoritePlaylistUncheckedUpdateManyWithoutUserNestedInput
+    favoriteArtists?: FavoriteArtistUncheckedUpdateManyWithoutUserNestedInput
+    trackHistory?: TrackHistoryUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type PlaylistUpsertWithoutHistoryInput = {
+    update: XOR<PlaylistUpdateWithoutHistoryInput, PlaylistUncheckedUpdateWithoutHistoryInput>
+    create: XOR<PlaylistCreateWithoutHistoryInput, PlaylistUncheckedCreateWithoutHistoryInput>
+    where?: PlaylistWhereInput
+  }
+
+  export type PlaylistUpdateToOneWithWhereWithoutHistoryInput = {
+    where?: PlaylistWhereInput
+    data: XOR<PlaylistUpdateWithoutHistoryInput, PlaylistUncheckedUpdateWithoutHistoryInput>
+  }
+
+  export type PlaylistUpdateWithoutHistoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    cover?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    category?: EnumPlaylistCategoryFieldUpdateOperationsInput | $Enums.PlaylistCategory
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
+    colors?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    author?: UserUpdateOneWithoutPlaylistsNestedInput
+    tracks?: PlaylistTrackUpdateManyWithoutPlaylistNestedInput
+    favoritedBy?: FavoritePlaylistUpdateManyWithoutPlaylistNestedInput
+  }
+
+  export type PlaylistUncheckedUpdateWithoutHistoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    cover?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    category?: EnumPlaylistCategoryFieldUpdateOperationsInput | $Enums.PlaylistCategory
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
+    colors?: NullableJsonNullValueInput | InputJsonValue
+    authorId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tracks?: PlaylistTrackUncheckedUpdateManyWithoutPlaylistNestedInput
+    favoritedBy?: FavoritePlaylistUncheckedUpdateManyWithoutPlaylistNestedInput
   }
 
   export type SessionCreateManyUserInput = {
     id: string
     expiresAt: Date | string
+    token: string
     ipAddress?: string | null
     userAgent?: string | null
     createdAt?: Date | string
@@ -16639,7 +20382,7 @@ export namespace Prisma {
 
   export type FavoriteTrackCreateManyUserInput = {
     id?: string
-    trackId: string
+    trackId: number
     createdAt?: Date | string
   }
 
@@ -16655,9 +20398,23 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type TrackHistoryCreateManyUserInput = {
+    id?: string
+    trackId: number
+    playedAt?: Date | string
+    listenedSec?: number
+  }
+
+  export type PlaylistHistoryCreateManyUserInput = {
+    id?: string
+    playlistId: string
+    playedAt?: Date | string
+  }
+
   export type SessionUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    token?: StringFieldUpdateOperationsInput | string
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16667,6 +20424,7 @@ export namespace Prisma {
   export type SessionUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    token?: StringFieldUpdateOperationsInput | string
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16676,6 +20434,7 @@ export namespace Prisma {
   export type SessionUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    token?: StringFieldUpdateOperationsInput | string
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16739,6 +20498,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tracks?: PlaylistTrackUpdateManyWithoutPlaylistNestedInput
     favoritedBy?: FavoritePlaylistUpdateManyWithoutPlaylistNestedInput
+    history?: PlaylistHistoryUpdateManyWithoutPlaylistNestedInput
   }
 
   export type PlaylistUncheckedUpdateWithoutAuthorInput = {
@@ -16753,6 +20513,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tracks?: PlaylistTrackUncheckedUpdateManyWithoutPlaylistNestedInput
     favoritedBy?: FavoritePlaylistUncheckedUpdateManyWithoutPlaylistNestedInput
+    history?: PlaylistHistoryUncheckedUpdateManyWithoutPlaylistNestedInput
   }
 
   export type PlaylistUncheckedUpdateManyWithoutAuthorInput = {
@@ -16775,13 +20536,13 @@ export namespace Prisma {
 
   export type FavoriteTrackUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    trackId?: StringFieldUpdateOperationsInput | string
+    trackId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type FavoriteTrackUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    trackId?: StringFieldUpdateOperationsInput | string
+    trackId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -16821,6 +20582,45 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type TrackHistoryUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    playedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    listenedSec?: IntFieldUpdateOperationsInput | number
+    track?: TrackUpdateOneRequiredWithoutHistoryNestedInput
+  }
+
+  export type TrackHistoryUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    trackId?: IntFieldUpdateOperationsInput | number
+    playedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    listenedSec?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type TrackHistoryUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    trackId?: IntFieldUpdateOperationsInput | number
+    playedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    listenedSec?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type PlaylistHistoryUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    playedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    playlist?: PlaylistUpdateOneRequiredWithoutHistoryNestedInput
+  }
+
+  export type PlaylistHistoryUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    playlistId?: StringFieldUpdateOperationsInput | string
+    playedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlaylistHistoryUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    playlistId?: StringFieldUpdateOperationsInput | string
+    playedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type PlaylistTrackCreateManyTrackInput = {
     id?: string
     playlistId: string
@@ -16831,6 +20631,13 @@ export namespace Prisma {
     id?: string
     userId: string
     createdAt?: Date | string
+  }
+
+  export type TrackHistoryCreateManyTrackInput = {
+    id?: string
+    userId: string
+    playedAt?: Date | string
+    listenedSec?: number
   }
 
   export type PlaylistTrackUpdateWithoutTrackInput = {
@@ -16869,9 +20676,30 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type TrackHistoryUpdateWithoutTrackInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    playedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    listenedSec?: IntFieldUpdateOperationsInput | number
+    user?: UserUpdateOneRequiredWithoutTrackHistoryNestedInput
+  }
+
+  export type TrackHistoryUncheckedUpdateWithoutTrackInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    playedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    listenedSec?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type TrackHistoryUncheckedUpdateManyWithoutTrackInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    playedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    listenedSec?: IntFieldUpdateOperationsInput | number
+  }
+
   export type PlaylistTrackCreateManyPlaylistInput = {
     id?: string
-    trackId: string
+    trackId: number
     order?: number
   }
 
@@ -16879,6 +20707,12 @@ export namespace Prisma {
     id?: string
     userId: string
     createdAt?: Date | string
+  }
+
+  export type PlaylistHistoryCreateManyPlaylistInput = {
+    id?: string
+    userId: string
+    playedAt?: Date | string
   }
 
   export type PlaylistTrackUpdateWithoutPlaylistInput = {
@@ -16889,13 +20723,13 @@ export namespace Prisma {
 
   export type PlaylistTrackUncheckedUpdateWithoutPlaylistInput = {
     id?: StringFieldUpdateOperationsInput | string
-    trackId?: StringFieldUpdateOperationsInput | string
+    trackId?: IntFieldUpdateOperationsInput | number
     order?: IntFieldUpdateOperationsInput | number
   }
 
   export type PlaylistTrackUncheckedUpdateManyWithoutPlaylistInput = {
     id?: StringFieldUpdateOperationsInput | string
-    trackId?: StringFieldUpdateOperationsInput | string
+    trackId?: IntFieldUpdateOperationsInput | number
     order?: IntFieldUpdateOperationsInput | number
   }
 
@@ -16915,6 +20749,24 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlaylistHistoryUpdateWithoutPlaylistInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    playedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutPlaylistHistoryNestedInput
+  }
+
+  export type PlaylistHistoryUncheckedUpdateWithoutPlaylistInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    playedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlaylistHistoryUncheckedUpdateManyWithoutPlaylistInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    playedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

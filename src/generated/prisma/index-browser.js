@@ -24,12 +24,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 7.6.0
- * Query Engine version: 75cbdc1eb7150937890ad5465d861175c6624711
+ * Prisma Client JS version: 7.8.0
+ * Query Engine version: 3c6e192761c0362d496ed980de936e2f3cebcd3a
  */
 Prisma.prismaVersion = {
-  client: "7.6.0",
-  engine: "75cbdc1eb7150937890ad5465d861175c6624711"
+  client: "7.8.0",
+  engine: "3c6e192761c0362d496ed980de936e2f3cebcd3a"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -132,6 +132,8 @@ exports.Prisma.UserScalarFieldEnum = {
   banned: 'banned',
   loginCount: 'loginCount',
   lastLoginAt: 'lastLoginAt',
+  totalPlayTime: 'totalPlayTime',
+  queue: 'queue',
   lastPlayedTrackId: 'lastPlayedTrackId',
   lastPlayedPlaylistId: 'lastPlayedPlaylistId',
   createdAt: 'createdAt',
@@ -142,6 +144,7 @@ exports.Prisma.SessionScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   expiresAt: 'expiresAt',
+  token: 'token',
   ipAddress: 'ipAddress',
   userAgent: 'userAgent',
   createdAt: 'createdAt',
@@ -227,6 +230,21 @@ exports.Prisma.FavoriteArtistScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.TrackHistoryScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  trackId: 'trackId',
+  playedAt: 'playedAt',
+  listenedSec: 'listenedSec'
+};
+
+exports.Prisma.PlaylistHistoryScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  playlistId: 'playlistId',
+  playedAt: 'playedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -248,13 +266,14 @@ exports.Prisma.UserOrderByRelevanceFieldEnum = {
   name: 'name',
   image: 'image',
   role: 'role',
-  lastPlayedTrackId: 'lastPlayedTrackId',
+  queue: 'queue',
   lastPlayedPlaylistId: 'lastPlayedPlaylistId'
 };
 
 exports.Prisma.SessionOrderByRelevanceFieldEnum = {
   id: 'id',
   userId: 'userId',
+  token: 'token',
   ipAddress: 'ipAddress',
   userAgent: 'userAgent'
 };
@@ -289,7 +308,6 @@ exports.Prisma.QueryMode = {
 };
 
 exports.Prisma.TrackOrderByRelevanceFieldEnum = {
-  id: 'id',
   title: 'title',
   artist: 'artist',
   src: 'src',
@@ -308,14 +326,12 @@ exports.Prisma.PlaylistOrderByRelevanceFieldEnum = {
 
 exports.Prisma.PlaylistTrackOrderByRelevanceFieldEnum = {
   id: 'id',
-  playlistId: 'playlistId',
-  trackId: 'trackId'
+  playlistId: 'playlistId'
 };
 
 exports.Prisma.FavoriteTrackOrderByRelevanceFieldEnum = {
   id: 'id',
-  userId: 'userId',
-  trackId: 'trackId'
+  userId: 'userId'
 };
 
 exports.Prisma.FavoritePlaylistOrderByRelevanceFieldEnum = {
@@ -328,6 +344,17 @@ exports.Prisma.FavoriteArtistOrderByRelevanceFieldEnum = {
   id: 'id',
   userId: 'userId',
   artistName: 'artistName'
+};
+
+exports.Prisma.TrackHistoryOrderByRelevanceFieldEnum = {
+  id: 'id',
+  userId: 'userId'
+};
+
+exports.Prisma.PlaylistHistoryOrderByRelevanceFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  playlistId: 'playlistId'
 };
 exports.PlaylistCategory = exports.$Enums.PlaylistCategory = {
   OTHER: 'OTHER',
@@ -348,7 +375,9 @@ exports.Prisma.ModelName = {
   PlaylistTrack: 'PlaylistTrack',
   FavoriteTrack: 'FavoriteTrack',
   FavoritePlaylist: 'FavoritePlaylist',
-  FavoriteArtist: 'FavoriteArtist'
+  FavoriteArtist: 'FavoriteArtist',
+  TrackHistory: 'TrackHistory',
+  PlaylistHistory: 'PlaylistHistory'
 };
 
 /**

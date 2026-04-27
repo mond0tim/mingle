@@ -1,4 +1,5 @@
-import { PrismaClient } from '../src/generated/prisma/client';
+// import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '../generated/prisma/client';
 import { PrismaMariaDb } from '@prisma/adapter-mariadb';
 
 const dbConfig = {
@@ -16,7 +17,7 @@ const prisma = new PrismaClient({ adapter });
 async function main() {
   const userId = 'sHHWLKC6qq3n67JGBgtBH4NrJhJzBpNJ';
   console.log('Checking user:', userId);
-  
+
   try {
     const user = await (prisma as any).user.findUnique({
       where: { id: userId }

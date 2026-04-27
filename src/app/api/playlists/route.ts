@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
-import type { Prisma } from '@/generated/prisma';
+// import type { Prisma } from '@prisma/client';
+import { Prisma } from '@/generated/prisma/client';
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
 
@@ -60,7 +61,7 @@ export async function GET() {
       }
 
       // Hide legacy duplicate titles if any leftover with random IDs
-      if (playlist.title.toLowerCase() === "все треки" && playlist.id !== 'all-tracks') return; 
+      if (playlist.title.toLowerCase() === "все треки" && playlist.id !== 'all-tracks') return;
       if ((playlist.title.toLowerCase() === "понравившиеся" || playlist.title.toLowerCase() === "нравится") && playlist.id !== 'liked-tracks') return;
 
       mappedPlaylists.push({
