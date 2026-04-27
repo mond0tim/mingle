@@ -142,3 +142,4 @@ public/sw.js.map
 public/vibeInfo.json
 /tmp
 .env.production
+*.zip
