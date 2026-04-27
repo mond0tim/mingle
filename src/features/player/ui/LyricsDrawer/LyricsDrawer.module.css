@@ -1,0 +1,151 @@
+.lyricsDrawerContent {
+    
+    position: fixed;
+    z-index: 100;
+    background-color: color-mix(in srgb, var(--dominant-20, #0f0f23) 95%, transparent 2%);
+    backdrop-filter: blur(60px) saturate(1.5) contrast(0.6);
+    display: flex;
+    flex-direction: column;
+    outline: none;
+      animation-duration: 0.25s;
+}
+.lyricsDrawerBackground {
+      background: url("/noise.png");
+      background-size: 100px;
+      background-repeat: repeat;
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      border-radius: 30px;
+      touch-action: none;
+      pointer-events: none;
+}
+.lyricsDrawerCloseButton {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      top: 12px;
+      right: 0px;
+      z-index: 4;
+      background-color: var(--dominant-color, #0f0f23);
+      color:lch(from var(--dominant-color, #0f0f23) calc((49.44 - l) * infinity) 0 0);
+      cursor: pointer;
+      @media (max-width: 768px) {
+        top: 5px;
+        left:50%;
+        width: 40px;
+        height: 20px;
+      }
+}
+.lyricsDrawerCloseButton svg {
+      height: 16px;
+      width: 16px;
+}
+
+.mobileLyricsDrawer {
+    position: fixed;
+      top: auto;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100dvh;
+      transition: 0.3s ;
+}
+.mobileLyricsDrawer::after {
+      background-color: color-mix(in srgb, var(--dominant-color, #0f0f23), black 20%) !important;
+}
+.mobileLyricsPlayer {
+    height: auto;
+    margin-top: 23px;
+    padding-bottom: 20px;
+    width: 100%;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    grid-template-columns: 50px 1fr 40px;
+    grid-template-rows: 1fr;
+    grid-template-areas: 'mobileLyricsCover mobileLyricsInfo mobileLyricsPlay';
+}   
+.mobileLyricsCover {
+    grid-area: mobileLyricsCover;
+    border-radius: 8px;
+    justify-self: center;
+}
+.mobileLyricsInfo {
+    grid-area: mobileLyricsInfo;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 1px;
+    padding: 2px 9px 2px 5px;
+    border-radius: 13px;
+    width: 100%;
+    justify-self: flex-start;
+    max-width: 65vw;
+}
+.mobileLyricsPlayerButton {
+    grid-area: mobileLyricsPlay;
+    background-color: var(--dominant-color, #0f0f23);
+    color: lch(from var(--dominant-color, #0f0f23) calc((49.44 - l) * infinity) 0 0);
+    cursor: pointer;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    justify-self: center;
+    align-self: center;
+    margin-right: 10px;
+    height: 33px;
+}
+@media (min-width: 640px) {
+  .lyricsDrawerContent {
+	  right: 20px;
+	  top: 20px;
+	  bottom: 20px;
+	  width: 310px;
+	  border-radius: 30px;
+	  height: 73vh;
+	}
+  .lyricsDrawerContent::after {
+		content: '';
+		background-color: transparent !important;
+	}
+}
+
+
+
+.LyricsDrawerTrigger {
+    --lyrics-background: color-mix(in srgb, var(--dominant-color, #0f0f23), black 30%);
+    height: 48px;
+	  padding: 0 20px;
+    border-radius: 9999px;
+    width: auto;
+    background-color: var(--lyrics-background) !important;
+    color: lch(from var(--lyrics-background) calc((49.44 - l) * infinity) 0 0) !important;
+}
+
+.LyricsDrawerTrigger:hover {
+    border-radius: 9999px !important;
+    background-color: color-mix(in srgb, var(--dominant-color, #0f0f23), black 20%) !important;
+}
+
+.LyricsDrawerTrigger[data-state="open"] {
+    background-color: color-mix(in srgb, var(--dominant-color, #0f0f23), #000000 40%) !important;
+}
+
+.LyricsDrawerTrigger svg {
+    width: 20px !important;
+    height: 20px !important;
+}
+
+.toggleHighlight {
+    background-color: color-mix(in srgb, var(--dominant-color, #0f0f23), #000000 40%) !important;
+    border-radius: 999px !important;
+}

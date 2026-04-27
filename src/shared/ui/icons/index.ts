@@ -1,0 +1,30 @@
+export { default as AboutIcon } from './AboutIcon.svg';
+export { default as BackIcon } from './arrow_back4.svg';
+export { default as DownloadIcon } from './download.svg';
+export { default as LogoIcon } from './LogoIcon.svg';
+export { default as LogoText } from './LogoText.svg';
+export { default as MoreIcon } from './more.svg';
+export { default as NextIcon } from './next.svg';
+export { default as PauseIcon } from './pause.svg';
+export { default as OtherPause } from './pauseOtherIcon.svg';
+export { default as PausePlaylistIcon } from './PausePlaylistIcon.svg';
+export { default as PlayIcon } from './play.svg';
+export { default as PlaylistIcon } from './PlaylistIcon.svg';
+export { default as OtherPlay } from './playOtherIcon.svg';
+export { default as PlayPlaylistIcon } from './PlayPlaylistIcon.svg';
+export { default as PrevIcon } from './previous.svg';
+export { default as QueueIcon } from './QueueMusic.svg';
+export { default as SearchIcon } from './searchIcon.svg';
+export { default as VinylIcon } from './simple-very-rounded-bold--vinyl-discs-icon.svg';
+export { default as TextIcon } from './textIcon.svg';
+export { default as VibeIcon } from './VibeIcon.svg';
+export { default as LibraryIcon } from './Library.svg';
+export { default as HeartIcon } from './Heart.svg';
+export { default as UserIcon } from './User.svg';
+export { default as Music1Icon } from './Music1.svg';
+export { default as Music2Icon } from './Music2.svg';
+export { default as MicroIcon } from './Micro.svg';
+export { default as OtherIcon } from './other.svg';
+export { default as DragIcon } from './drag.svg';
+
+

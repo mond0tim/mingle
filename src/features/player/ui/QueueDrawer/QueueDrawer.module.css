@@ -1,0 +1,221 @@
+.queueDrawerContent {
+    position: fixed;
+    z-index: 100;
+    background-color: color-mix(in srgb, var(--dominant-20, #0f0f23) 95%, transparent 10%);
+    backdrop-filter: blur(60px) contrast(6);
+    display: flex;
+    flex-direction: column;
+    outline: none;
+    animation-duration: 0.25s;
+}
+
+.queueDrawerBackground {
+    background: url("/noise.png");
+    background-size: 100px;
+    background-repeat: repeat;
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    border-radius: 30px;
+    touch-action: none;
+    pointer-events: none;
+}
+
+.queueDrawerCloseButton {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 12px;
+    right: 0px;
+    z-index: 10;
+    background-color: var(--dominant-color, #0f0f23);
+    color: lch(from var(--dominant-color, #0f0f23) calc((49.44 - l) * infinity) 0 0);
+    cursor: pointer;
+    @media (max-width: 768px) {
+        top: 5px;
+        /* left: 50%; */
+        width: 40px;
+        height: 20px;
+    }
+}
+
+.queueDrawerExpandButton {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 12px;
+    right: 40px;
+    z-index: 10;
+    background-color: var(--dominant-color, #0f0f23);
+    color: lch(from var(--dominant-color, #0f0f23) calc((49.44 - l) * infinity) 0 0);
+    cursor: pointer;
+    @media (max-width: 768px) {
+        top: 5px;
+        left: 50%;
+        width: 40px;
+        height: 20px;
+    }
+}
+
+.queueDrawerExpandButton svg,
+.queueDrawerCloseButton svg {
+    height: 16px;
+    width: 16px;
+}
+
+.mobileHandleContainer {
+    padding-top: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    display: flex;
+    justify-content: center;
+    z-index: 10;
+    position: relative;
+}
+
+.mobileHandle {
+    width: 48px;
+    height: 4px;
+    flex-shrink: 0;
+    border-radius: 166px;
+    background-color: #d6d4d8;
+}
+
+.mobileQueueDrawer {
+    position: fixed;
+    top: auto;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100dvh;
+    transition: 0.3s;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.mobileQueueDrawer::after {
+    background-color: color-mix(in srgb, var(--dominant-color, #0f0f23), black 20%) !important;
+}
+
+@media (min-width: 640px) {
+    .queueDrawerContent {
+        right: 20px;
+        top: 20px;
+        bottom: 20px;
+        width: 310px;
+        border-radius: 30px;
+        height: 73vh;
+    }
+    .queueDrawerContent::after {
+        content: '';
+        background-color: transparent !important;
+    }
+}
+
+/* Inner layout */
+.drawerTitle {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    color: lch(from var(--dominant-color, #0f0f23) calc((49.44 - l) * infinity) 0 0);
+    /* margin-left: 1.5rem; */
+    font-weight: 900;
+    font-family: var(--font-oddval);
+    font-size: 1.5rem;
+}
+
+.drawerTrackList {
+    /* padding: 10px; */
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    z-index: 4;
+    position: relative;
+}
+
+.tracklistDrawer {
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex: 1;
+    min-height: 0;
+    height: 90%;
+    padding: 10px;
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 10%, #000 95%, transparent 100%);
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge Legacy */
+}
+
+.tracklistDrawer::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, and Opera */
+}
+
+/* Mobile scrolling logic */
+.mobileQueueDrawer .tracklistDrawer {
+    overflow-y: hidden;
+}
+
+.mobileQueueDrawer[data-snap="1"] .tracklistDrawer {
+    overflow-y: auto;
+}
+
+
+/* Desktop trigger button */
+
+/* Desktop trigger button */
+.QueueDrawerButton {
+    display: flex;
+}
+
+/* .queueDrawerTrigger {
+    
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    border-radius: 50% !important;
+    padding: 0 !important;
+    color: lch(from var(--dominant-color, #0f0f23) calc((49.44 - l) * infinity) 0 0) !important;
+}
+
+.toggleHighlight {
+    background-color: color-mix(in srgb, var(--dominant-color, #0f0f23), white 20%) !important;
+    border-radius: 999px !important;
+} */
+
+
+.queueDrawerTrigger {
+    --queue-background: color-mix(in srgb, var(--dominant-color, #0f0f23), black 30%);
+    height: 48px;
+    padding: 0 20px;
+    border-radius: 9999px;
+    width: auto;
+    background-color: var(--queue-background) !important;
+    color: lch(from var(--queue-background) calc((49.44 - l) * infinity) 0 0) !important;
+}
+
+.queueDrawerTrigger:hover {
+    border-radius: 9999px !important;
+    background-color: color-mix(in srgb, var(--dominant-color, #0f0f23), black 20%) !important;
+}
+
+.queueDrawerTrigger[data-state="open"] {
+    background-color: color-mix(in srgb, var(--dominant-color, #0f0f23), #000000 40%) !important;
+}
+
+.queueDrawerTrigger svg {
+    width: 20px !important;
+    height: 20px !important;
+}
+
+.toggleHighlight {
+    background-color: color-mix(in srgb, var(--dominant-color, #0f0f23), #000000 40%) !important;
+    border-radius: 999px !important;
+}

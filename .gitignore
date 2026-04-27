@@ -136,5 +136,11 @@ data/backups/
 backups/
 public/audio/
 public/covers
+public/sw.js.map
+public/vibeInfo.json
+public/sw.js.map
+public/vibeInfo.json
 /tmp
+.env.production
 *.zip
+

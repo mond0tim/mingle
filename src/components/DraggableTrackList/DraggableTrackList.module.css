@@ -1,0 +1,59 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem;
+}
+
+.draggableItem {
+  position: relative;
+  list-style: none;
+}
+
+.innerCard {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1.1), background 0.2s;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  position: relative;
+}
+
+.innerCard:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.innerCard[data-active="true"] {
+  border-color: rgba(var(--mg-neon-rgb), 0.3);
+}
+
+.innerCardDragging {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.2);
+  z-index: 9999;
+}
+
+.dragHandle {
+  padding: 0.5rem;
+  color: rgba(255, 255, 255, 0.15);
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s, opacity 0.2s;
+  margin-right: 4px;
+}
+
+.dragHandle:hover {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.dragHandle:active {
+  cursor: grabbing;
+}
+

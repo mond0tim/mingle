@@ -1,0 +1,30 @@
+.playerLoader {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100px; /* Или любая другая высота, подходящая для вашего дизайна */
+	background-color: transparent; /* Подберите цвет фона под ваш дизайн */
+  backdrop-filter: blur(40px);
+}
+
+.loaderSpinner {
+	border: 4px solid #f3f3f3; /* Цвет фона спиннера */
+	border-top: 4px solid #3498db; /* Цвет самого спиннера */
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+	animation: spin 2s linear infinite;
+}
+
+.loaderText {
+	margin-top: 10px;
+	font-size: 14px;
+	color: #333; /* Цвет текста */
+}
+
+@keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}

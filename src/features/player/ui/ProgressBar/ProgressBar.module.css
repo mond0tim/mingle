@@ -1,0 +1,28 @@
+.playerProgress {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	flex-grow: 1;
+	cursor: pointer;
+	grid-area: progressBar;
+	width: 100%;
+	padding: 0px;
+}
+.progressBarContainer {
+	width: 100%;
+    background-color: #ddd;
+    border-radius: 28px;
+    overflow: hidden;
+    padding: 3px;
+}
+.progressBar {
+    height: 7px;
+    background-color: var(--dominant-color, #0f0f23);
+    transition: width 0.1s linear;
+    border-radius: 25px;
+    position: relative;
+	filter: brightness(0.7);
+}
+.progressBar.dragging {
+	transition: none;
+}

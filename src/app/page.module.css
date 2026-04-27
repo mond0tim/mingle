@@ -1,0 +1,43 @@
+.vibe {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    z-index: 10;
+}
+
+.title {
+    font-family: var(--font-raydis);
+    font-size: clamp(3rem, 10vw, 8rem);
+    line-height: 0.9;
+    letter-spacing: -0.05em;
+    mix-blend-mode: plus-lighter;
+    color: white;
+    text-align: center;
+    text-transform: lowercase;
+    opacity: 0.9;
+    filter: drop-shadow(0 0 20px rgba(255,255,255,0.2));
+}
+
+.vibe_button {
+    backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.vibe_button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.05);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.canvas_container {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+}

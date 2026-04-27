@@ -1,0 +1,11 @@
+.tracksGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .tracksGrid {
+    grid-template-columns: 1fr;
+  }
+}
