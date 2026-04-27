@@ -143,3 +143,4 @@ public/vibeInfo.json
 /tmp
 .env.production
 *.zip
+.env.production
